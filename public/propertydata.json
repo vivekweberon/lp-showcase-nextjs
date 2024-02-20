@@ -1,0 +1,89 @@
+{
+    "home": {
+      "youtubeVideoID": "xjpQRTNhbwk",
+      "menu": "Home"
+    },
+    "priceAndFeatures": {
+      "title1": "Tracy Hills Residence-1",
+      "title2": "$892,880",
+      "beds": "4 Beds",
+      "baths": "3.5 Baths",
+      "homeType": "Single-Home",
+      "sqft": "Building 2,914 sq/ft",
+      "yearBuilt": "Year Built: 2021",
+      "price": "HOA: $77/mo",
+      "menu": "Price & Features"
+    },
+    "photos": {
+      "menu": "Photos",
+      "urls": [
+        "data/888/images/39517_eleC_lg.jpg",
+        "data/888/images/39517_flpA_lg.jpg",
+        "data/888/images/PLAN_1_IMG_01-Home.jpg",
+        "data/888/images/PLAN_1_IMG_03.jpg",
+        "data/888/images/PLAN_1_IMG_04.jpg",
+        "data/888/images/PLAN_1_IMG_05.jpg",
+        "data/888/images/PLAN_1_IMG_06.jpg",
+        "data/888/images/PLAN_1_IMG_08.jpg",
+        "data/888/images/PLAN_1_IMG_09.jpg",
+        "data/888/images/PLAN_1_IMG_11.jpg",
+        "data/888/images/PLAN_1_IMG_13.jpg",
+        "data/888/images/PLAN_1_IMG_14.jpg"
+      ]
+    },
+    "video": {
+      "youtubeVideoID": "xjpQRTNhbwk",
+      "menu": "Video"
+    },
+    "virtualTour": {
+      "title": "Tracy Hills Residence-1",
+      "matterportID": "XF9HmuP3iE2&mls=2&brand=0&hr=0&gt=0&dh=0&help=2&qs=1&title=0&portal=0",
+      "menu": "Virtual Tour"
+    },
+    "showcase": {
+      "url": "index.html",
+      "menu": "Showcase"
+    },
+    "homePageData": {
+      "url": "data/888/images/PLAN_1_IMG_01-Home.jpg",
+      "addressLine1": "Tracy Hills Residence-1",
+      "addressLine2": "",
+      "bedsAndBaths": "",
+      "price": "",
+      "listingPageURL": "index.html?id=888"
+    },
+    "realtor": {
+      "photo": "data/global/images/praveen.jpg",
+      "name": "Praveen Kumar",
+      "company": "Broker & Owner, WebERealty",
+      "id": "CA BRE License #: 01928307",
+      "phone": "925-452-7483",
+      "logo": "data/global/images/YHSG-Final.png",
+      "menu": "Realtor",
+      "sectionTitle": "Get Instant Alerts on Coming Soon listings and homes NOT available online."
+    },
+    "footertext": {
+      "line1": "Information courtesy of Praveen Kumar 01928307 @ WebERealty",
+      "line2": "12935 Alcosta Blvd. #3681, San Ramon ,California, 94583",
+      "line3": "praveen@weberealty.com"
+    },
+    "page": {
+      "title": "Praveen Kumar - Your Home Sold Guaranteed."
+    },
+    "contact": {
+      "menu": "Contact",
+      "mauticForm": {
+        "formSetName": "showcase",
+        "emailFormHeader": "Access COMING SOON houses for SALE:",
+        "phoneFormHeader": "Best number to reach you?",
+        "popupForm": {
+          "enable": false,
+          "x": 5000,
+          "y": 3,
+          "z": 10000
+        },
+        "pageType": "lp"
+      }
+    }
+  }
+  
