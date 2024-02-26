@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 const Showcase = ({ properties }) => {
   return (
@@ -51,6 +52,22 @@ const Showcase = ({ properties }) => {
       </div>
     </div>
   );
+};
+
+Showcase.propTypes = {
+  properties: PropTypes.shape({
+    sectionTitle: PropTypes.string.isRequired,
+    properties: PropTypes.arrayOf(
+      PropTypes.shape({
+        url: PropTypes.string.isRequired,
+        addressLine1: PropTypes.string.isRequired,
+        addressLine2: PropTypes.string.isRequired,
+        bedsAndBaths: PropTypes.string.isRequired,
+        price: PropTypes.string.isRequired,
+        pageUrl: PropTypes.string.isRequired,
+      })
+    ).isRequired,
+  }).isRequired,
 };
 
 export default Showcase;

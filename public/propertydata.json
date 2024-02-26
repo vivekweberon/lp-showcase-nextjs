@@ -1,8 +1,4 @@
 {
-    "home": {
-      "youtubeVideoID": "xjpQRTNhbwk",
-      "menu": "Home"
-    },
     "priceAndFeatures": {
       "title1": "Tracy Hills Residence-1",
       "title2": "$892,880",
@@ -17,18 +13,9 @@
     "photos": {
       "menu": "Photos",
       "urls": [
-        "data/888/images/39517_eleC_lg.jpg",
-        "data/888/images/39517_flpA_lg.jpg",
-        "data/888/images/PLAN_1_IMG_01-Home.jpg",
-        "data/888/images/PLAN_1_IMG_03.jpg",
-        "data/888/images/PLAN_1_IMG_04.jpg",
-        "data/888/images/PLAN_1_IMG_05.jpg",
-        "data/888/images/PLAN_1_IMG_06.jpg",
-        "data/888/images/PLAN_1_IMG_08.jpg",
-        "data/888/images/PLAN_1_IMG_09.jpg",
-        "data/888/images/PLAN_1_IMG_11.jpg",
-        "data/888/images/PLAN_1_IMG_13.jpg",
-        "data/888/images/PLAN_1_IMG_14.jpg"
+        "imgs/39517_eleC_lg.jpg",
+        "imgs/39517_eleC_lg.jpg",
+        "imgs/39517_eleC_lg.jpg"
       ]
     },
     "video": {
@@ -45,7 +32,7 @@
       "menu": "Showcase"
     },
     "homePageData": {
-      "url": "data/888/images/PLAN_1_IMG_01-Home.jpg",
+      "url": "/data/888/images/PLAN_1_IMG_01-Home.jpg",
       "addressLine1": "Tracy Hills Residence-1",
       "addressLine2": "",
       "bedsAndBaths": "",
@@ -86,4 +73,5 @@
       }
     }
   }
+  
   

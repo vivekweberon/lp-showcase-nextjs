@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 const Realtor = ({ realtorData }) => {
   const { photo, name, company, id, phone, logo, sectionTitle } = realtorData;
@@ -59,6 +60,18 @@ const Realtor = ({ realtorData }) => {
       </div>
     </div>
   );
+};
+
+Realtor.propTypes = {
+  realtorData: PropTypes.shape({
+    photo: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    company: PropTypes.string.isRequired,
+    id: PropTypes.string.isRequired,
+    phone: PropTypes.string.isRequired,
+    logo: PropTypes.string.isRequired,
+    sectionTitle: PropTypes.string.isRequired,
+  }).isRequired,
 };
 
 export default Realtor;
