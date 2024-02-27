@@ -23,7 +23,6 @@ MyNavbar.propTypes = {
   navbar: PropTypes.arrayOf(
     PropTypes.shape({
       menu: PropTypes.string.isRequired,
-      // Add additional PropTypes for other properties if needed
     })
   ).isRequired,
   isHomePage: PropTypes.bool.isRequired,

@@ -32,7 +32,7 @@
       "menu": "Showcase"
     },
     "homePageData": {
-      "url": "/data/888/images/PLAN_1_IMG_01-Home.jpg",
+      "url": "imgs/39517_eleC_lg.jpg",
       "addressLine1": "Tracy Hills Residence-1",
       "addressLine2": "",
       "bedsAndBaths": "",
@@ -40,12 +40,12 @@
       "listingPageURL": "index.html?id=888"
     },
     "realtor": {
-      "photo": "data/global/images/praveen.jpg",
+      "photo": "imgs/image-002.jpg",
       "name": "Praveen Kumar",
       "company": "Broker & Owner, WebERealty",
       "id": "CA BRE License #: 01928307",
       "phone": "925-452-7483",
-      "logo": "data/global/images/YHSG-Final.png",
+      "logo": "imgs/image-026.jpg",
       "menu": "Realtor",
       "sectionTitle": "Get Instant Alerts on Coming Soon listings and homes NOT available online."
     },

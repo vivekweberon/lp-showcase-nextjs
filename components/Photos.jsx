@@ -22,10 +22,10 @@ const Photos = ({ photoUrls }) => {
             style={{
               margin: "auto",
               backgroundColor: "black",
-              width: "800px", // Set width to 800 pixels
-              height: "450px", // Set height to 450 pixels
+              width: "800px",
+              height: "450px",
             }}
-            interval={3000} // Set automatic sliding interval to 3 seconds
+            interval={3000}
           >
             {photoUrls.map((url, index) => (
               <Carousel.Item key={index}>
