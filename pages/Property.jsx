@@ -82,7 +82,7 @@ const Property = () => {
     <>
       {isValidId ? (
         <>
-          <Navbar navbar={navbar} isHomePage={false} />
+          <Navbar navbar={navbar} />
           <VirtualTour virtualTour={virtualTour} />
           <PriceAndFeatures priceAndFeatures={priceAndFeatures} />
           <Photos photoUrls={photos.urls} />

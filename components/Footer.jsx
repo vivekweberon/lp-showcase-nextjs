@@ -18,12 +18,10 @@ const Footer = ({ footerMenu, footertext }) => {
         style={{ marginBottom: "40px" }}
       >
         <div className="col-12 text-center">
-          {/* Ensure footerMenu is properly initialized before rendering */}
+          {/* Ensure footerMenu is properly initialized and menuItem is not undefined/null before rendering */}
           {footerMenu &&
             footerMenu.map((menuItem, index) => {
-              // Check if menuItem is a string and not undefined
-              if (typeof menuItem === "string" && menuItem.trim() !== "") {
-                // Conditionally render menu items based on whether it's the home page or property page
+              if (menuItem) {
                 return (
                   <a
                     key={index}
@@ -33,8 +31,9 @@ const Footer = ({ footerMenu, footertext }) => {
                     {menuItem}
                   </a>
                 );
+              } else {
+                return null;
               }
-              return null; // Render nothing if menuItem is not a string or empty
             })}
         </div>
       </div>
@@ -50,7 +49,7 @@ const Footer = ({ footerMenu, footertext }) => {
 };
 
 Footer.propTypes = {
-  footerMenu: PropTypes.arrayOf(PropTypes.string.isRequired),
+  footerMenu: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
   footertext: PropTypes.shape({
     line1: PropTypes.string.isRequired,
     line2: PropTypes.string.isRequired,
