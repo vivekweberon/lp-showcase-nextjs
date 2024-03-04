@@ -13,9 +13,9 @@
     "photos": {
       "menu": "Photos",
       "urls": [
-        "imgs/39517_eleC_lg.jpg",
-        "imgs/39517_eleC_lg.jpg",
-        "imgs/39517_eleC_lg.jpg"
+        "/lp-showcase/imgs/39517_eleC_lg.jpg",
+        "/lp-showcase/imgs/39517_eleC_lg.jpg",
+        "/lp-showcase/imgs/39517_eleC_lg.jpg"
       ]
     },
     "video": {
@@ -37,15 +37,15 @@
       "addressLine2": "",
       "bedsAndBaths": "",
       "price": "",
-      "listingPageURL": "index.html?id=888"
+      "listingPageURL": "/lp-showcase/?id=888"
     },
     "realtor": {
-      "photo": "imgs/image-002.jpg",
+      "photo": "/lp-showcase/imgs/image-002.jpg",
       "name": "Praveen Kumar",
       "company": "Broker & Owner, WebERealty",
       "id": "CA BRE License #: 01928307",
       "phone": "925-452-7483",
-      "logo": "imgs/image-026.jpg",
+      "logo": "/lp-showcase/imgs/image-026.jpg",
       "menu": "Realtor",
       "sectionTitle": "Get Instant Alerts on Coming Soon listings and homes NOT available online."
     },

@@ -48,13 +48,5 @@ const Footer = ({ footerMenu, footertext }) => {
   );
 };
 
-Footer.propTypes = {
-  footerMenu: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
-  footertext: PropTypes.shape({
-    line1: PropTypes.string.isRequired,
-    line2: PropTypes.string.isRequired,
-    line3: PropTypes.string.isRequired,
-  }).isRequired,
-};
 
 export default Footer;

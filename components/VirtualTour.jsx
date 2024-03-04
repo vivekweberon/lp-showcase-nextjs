@@ -29,11 +29,4 @@ const VirtualTour = ({ virtualTour }) => {
   );
 };
 
-VirtualTour.propTypes = {
-  virtualTour: PropTypes.shape({
-    title: PropTypes.string.isRequired,
-    matterportID: PropTypes.string.isRequired,
-  }).isRequired,
-};
-
 export default VirtualTour;

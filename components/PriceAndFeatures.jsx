@@ -74,17 +74,4 @@ const PriceAndFeatures = ({ priceAndFeatures }) => {
   );
 };
 
-PriceAndFeatures.propTypes = {
-  priceAndFeatures: PropTypes.shape({
-    title1: PropTypes.string.isRequired,
-    title2: PropTypes.string.isRequired,
-    beds: PropTypes.string.isRequired,
-    baths: PropTypes.string.isRequired,
-    homeType: PropTypes.string.isRequired,
-    sqft: PropTypes.string.isRequired,
-    yearBuilt: PropTypes.string.isRequired,
-    price: PropTypes.string.isRequired,
-  }).isRequired,
-};
-
 export default PriceAndFeatures;

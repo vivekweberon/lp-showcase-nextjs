@@ -3,28 +3,20 @@
     "menu": "Showcase",
     "properties": [
       {
-        "url": "imgs/39517_eleC_lg.jpg",
+        "url": "/lp-showcase/imgs/39517_eleC_lg.jpg",
         "addressLine1": "Tracy Hills Residence-1",
         "addressLine2": "",
         "bedsAndBaths": "",
         "price": "",
-        "pageUrl": "Property?id=888"
+        "pageUrl": "/lp-showcase/888-111"
       },
       {
-        "url": "imgs/39517_eleC_lg.jpg",
+        "url": "/lp-showcase/imgs/home1.jpg",
         "addressLine1": "Italian Victorian home for RENT:     1239 Scott St, SFO.",
         "addressLine2": "2 BR + formal dining & 1.5 bath",
         "bedsAndBaths": "$4,500 per month + optional garage/storage.",
         "price": "",
-        "pageUrl": "Property?id=0678"
-      },
-      {
-        "url": "imgs/39517_eleC_lg.jpg",
-        "addressLine1": "Italian Victorian home for RENT:     1239 Scott St, SFO.",
-        "addressLine2": "2 BR + formal dining & 1.5 bath",
-        "bedsAndBaths": "$4,500 per month + optional garage/storage.",
-        "price": "",
-        "pageUrl": "Property?id=0679"
+        "pageUrl": "/lp-showcase/propertydata1"
       }
     ],
     "sectionTitle": "Showcase"
@@ -35,12 +27,12 @@
     "Realtor"
   ],
   "realtor": {
-    "photo": "imgs/image-002.jpg",
+    "photo": "/lp-showcase/imgs/image-002.jpg",
     "name": "Praveen Kumar",
     "company": "Broker & Owner, WebERealty",
     "id": "CA BRE License #: 01928307",
     "phone": "925-452-7483",
-    "logo": "imgs/image-026.jpg",
+    "logo": "/lp-showcase/imgs/image-026.jpg",
     "menu": "Realtor",
     "sectionTitle": "Get Instant Alerts on Coming Soon listings and homes NOT available online."
   },
