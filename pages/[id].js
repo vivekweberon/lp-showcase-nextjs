@@ -1,5 +1,5 @@
 import React from "react";
-import fs from "fs/promises"; // Use fs promises for asynchronous file operations
+import fs from "fs/promises";
 import path from "path";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
@@ -9,10 +9,11 @@ import Video from "../components/Video";
 import VirtualTour from "../components/VirtualTour";
 import Contact from "../components/Contact";
 import Realtor from "../components/Realtor";
+import Description from "../components/Description";
 
 const PropertyPage = ({ propertyData }) => {
   if (!propertyData) {
-    return <div>Loading...</div>; // Handle the case where data is not yet available
+    return <div>Loading...</div>;
   }
 
   const {
@@ -23,24 +24,52 @@ const PropertyPage = ({ propertyData }) => {
     realtor,
     footertext,
     contact,
+    propertyPageSectionsOrder,
+    description,
   } = propertyData;
 
-  console.log("Price", priceAndFeatures);
+  console.log("Price", propertyData);
 
-  const menuValues = Object.values(propertyData)
-    .filter((obj) => obj.menu !== undefined)
-    .map((obj) => obj.menu);
-  console.log("Extracting menu:", menuValues);
+  let menuValues = [];
+
+  const orderedComponents = propertyPageSectionsOrder.map((section) => {
+    console.log("OrderedComponents:", section);
+    switch (section) {
+      case "Virtual Tour":
+        menuValues.push("Virtual Tour");
+        return <VirtualTour virtualTour={virtualTour} />;
+      case "Price & Features":
+        menuValues.push("Price & Features");
+        return <PriceAndFeatures priceAndFeatures={priceAndFeatures} />;
+      case "Photos":
+        menuValues.push("Photos");
+        return <Photos photoUrls={photos.urls} />;
+      case "Video":
+        menuValues.push("Video");
+        return <Video youtubeVideoID={video.youtubeVideoID} />;
+      case "Contact":
+        menuValues.push("Contact");
+        return <Contact contact={contact} />;
+      case "Realtor":
+        menuValues.push("Realtor");
+        return <Realtor realtorData={realtor} />;
+      case "Description": // Add case for Description
+        menuValues.push("Description");
+        return (
+          <Description
+            sectionTitle={description.sectionTitle}
+            content={description.content}
+          />
+        );
+      default:
+        return null;
+    }
+  });
 
   return (
     <div>
       <Navbar navbar={menuValues} />
-      <VirtualTour virtualTour={virtualTour} />
-      <PriceAndFeatures priceAndFeatures={priceAndFeatures} />
-      <Photos photoUrls={photos.urls} />
-      <Video youtubeVideoID={video.youtubeVideoID} />
-      <Contact contact={contact} />
-      <Realtor realtorData={realtor} />
+      {orderedComponents}
       <Footer footerMenu={menuValues} footertext={footertext} />
     </div>
   );
@@ -66,19 +95,16 @@ export async function getStaticProps(context) {
   console.log("Executing getStaticProps");
   const { id } = context.params;
 
-  try {
-    const filePath = path.join("data", `${id}.json`);
-    const propertyData = await fs.readFile(filePath, "utf-8");
+  const filePath = path.join("data", `${id}.json`);
+  console.log("FilePath", filePath);
 
-    return {
-      props: { propertyData: JSON.parse(propertyData) },
-    };
-  } catch (error) {
-    console.error("Error reading property data:", error);
-    return {
-      props: { propertyData: null },
-    };
-  }
+  const propertyData = await fs.readFile(filePath, "utf-8");
+
+  return {
+    props: {
+      propertyData: JSON.parse(propertyData),
+    },
+  };
 }
 
 export default PropertyPage;

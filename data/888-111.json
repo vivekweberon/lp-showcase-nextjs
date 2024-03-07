@@ -10,12 +10,16 @@
       "price": "HOA: $77/mo",
       "menu": "Price & Features"
     },
+    "description": {
+      "sectionTitle": "RENT a room in this Brand New Home!",
+      "content": "* This home has open floor plan in the kitchen and dining area, stainless steel appliances, a large pantry.\n* The Master Suite is spacious with a walk-in closet and master bath featuring dual sinks, tile floors & a stall shower.\n* The common bath has tile floors & a shower over the tub.\n* Wired with Smart-Home devices to keep you secure.\n#### An Absolutely Gorgeous Home for your quiet enjoyment!"
+    },  
     "photos": {
       "menu": "Photos",
       "urls": [
-        "/lp-showcase/imgs/39517_eleC_lg.jpg",
-        "/lp-showcase/imgs/39517_eleC_lg.jpg",
-        "/lp-showcase/imgs/39517_eleC_lg.jpg"
+        "/imgs/39517_eleC_lg.jpg",
+        "/imgs/39517_eleC_lg.jpg",
+        "/imgs/39517_eleC_lg.jpg"
       ]
     },
     "video": {
@@ -31,6 +35,16 @@
       "url": "index.html",
       "menu": "Showcase"
     },
+    "propertyPageSectionsOrder": [
+      "Virtual Tour",
+      "Price & Features",
+      "Description",
+      "Photos",
+      "Video",
+      "Realtor",
+      "Contact"
+      
+    ],
     "homePageData": {
       "url": "imgs/39517_eleC_lg.jpg",
       "addressLine1": "Tracy Hills Residence-1",
