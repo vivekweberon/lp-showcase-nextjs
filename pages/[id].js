@@ -10,6 +10,7 @@ import VirtualTour from "../components/VirtualTour";
 import Contact from "../components/Contact";
 import Realtor from "../components/Realtor";
 import Description from "../components/Description";
+import yaml from "js-yaml";
 
 const PropertyPage = ({ propertyData }) => {
   if (!propertyData) {
@@ -53,7 +54,7 @@ const PropertyPage = ({ propertyData }) => {
       case "Realtor":
         menuValues.push("Realtor");
         return <Realtor realtorData={realtor} />;
-      case "Description": // Add case for Description
+      case "Description":
         menuValues.push("Description");
         return (
           <Description
@@ -82,7 +83,7 @@ export async function getStaticPaths() {
   const files = await fs.readdir("data");
 
   const paths = files.map((file) => ({
-    params: { id: file.replace(".json", "") },
+    params: { id: file.replace(".yaml", "") },
   }));
   console.log("Static paths", paths);
   return {
@@ -95,14 +96,15 @@ export async function getStaticProps(context) {
   console.log("Executing getStaticProps");
   const { id } = context.params;
 
-  const filePath = path.join("data", `${id}.json`);
+  const filePath = path.join("data", `${id}.yaml`);
   console.log("FilePath", filePath);
 
   const propertyData = await fs.readFile(filePath, "utf-8");
+  const parsedData = yaml.load(propertyData);
 
   return {
     props: {
-      propertyData: JSON.parse(propertyData),
+      propertyData: parsedData,
     },
   };
 }

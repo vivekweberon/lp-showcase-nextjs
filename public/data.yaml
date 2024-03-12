@@ -1,0 +1,47 @@
+showcase:
+  menu: Showcase
+  properties:
+    - url: /imgs/39517_eleC_lg.jpg
+      addressLine1: Tracy Hills Residence-1
+      addressLine2: ''
+      bedsAndBaths: ''
+      price: ''
+      pageUrl: /888-111
+    - url: /imgs/home1.jpg
+      addressLine1: Italian Victorian home for RENT 1239 Scott St, SFO.
+      addressLine2: 2 BR + formal dining & 1.5 bath
+      bedsAndBaths: $4,500 per month + optional garage/storage.
+      price: ''
+      pageUrl: /propertydata1
+  sectionTitle: Showcase
+homePageSectionsOrder:
+  - Showcase
+  - Contact
+  - Realtor
+realtor:
+  photo: /imgs/image-002.jpg
+  name: Praveen Kumar
+  company: Broker & Owner, WebERealty
+  id: CA BRE License - 01928307
+  phone: '925-452-7483'
+  logo: /imgs/image-026.jpg
+  menu: Realtor
+  sectionTitle: Get Instant Alerts on Coming Soon listings and homes NOT available online.
+footertext:
+  line1: Information courtesy of Praveen Kumar 01928307 @ WebERealty
+  line2: '12935 Alcosta Blvd. #3681, San Ramon ,California, 94583'
+  line3: praveen@weberealty.com
+page:
+  title: Praveen Kumar - Your Home Sold Guaranteed.
+contact:
+  menu: Contact
+  mauticForm:
+    formSetName: showcase
+    emailFormHeader: Access COMING SOON houses for SALE
+    phoneFormHeader: Best number to reach you?
+    popupForm:
+      enable: false
+      x: 5000
+      y: 3
+      z: 10000
+    pageType: lp

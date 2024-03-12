@@ -1,5 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
 import { basePath } from "@/next.config";
 
 const Realtor = ({ realtorData }) => {
@@ -23,7 +22,9 @@ const Realtor = ({ realtorData }) => {
         <div className="col-8 col-sm-4 col-lg-3" style={{ marginTop: "20px" }}>
           <img
             id="rImage"
-            src={basePath + photo}
+            srcSet={`${basePath + photo}?width=360 360w, ${basePath + photo}?width=576 576w, ${basePath + photo}?width=768 768w, ${basePath + photo}?width=992 992w, ${basePath + photo}?width=1200 1200w, ${basePath + photo}?width=1400 1400w, ${basePath + photo}?width=1600 1600w, ${basePath + photo}?width=1920 1920w`}
+            sizes="(max-width: 600px) 576px, (max-width: 768px) 768px, (max-width: 992px) 992px, (max-width: 1200px) 1200px, (max-width: 1400px) 1400px, (max-width: 1600px) 1600px, (max-width: 1920px) 1920px, 2000px"
+            src={`${basePath + photo}?width=1920`}
             style={{ width: "100%" }}
             alt={name}
           />

@@ -1,0 +1,85 @@
+---
+priceAndFeatures:
+  title1: Tracy Hills Residence-1
+  title2: $892,880
+  beds: 4 Beds
+  baths: 3.5 Baths
+  homeType: Single-Home
+  sqft: Building 2,914 sq/ft
+  yearBuilt: Year Built 2021
+  price: HOA $77/mo
+  menu: Price & Features
+description:
+  sectionTitle: 'Benefits of RENTING this Windemere Home'
+  content: >
+  
+     * Walking distance to prestigious schools: Dougherty Valley High School, Gail Ranch Middle School & Windemere Ranch Middle School.
+
+     * Lots of natural sunlight with all rooms in one level consisting of spacious living room with fireplace. dining area and two bedrooms and 2 bathrooms.
+
+     * Tastefully upgraded with new designer flooring throughout the house
+
+     * New blinds in all windows and freshly painted to make it "Ready to move-in" condition
+
+     * Lower level has a 2 car garage.
+
+     * Enjoy the community pool and friendly neighbors.
+
+     * Walking distance to hiking trails, bus stop, Walgreens, Safeway and the prestigious LOT in Bishop Ranch featuring shops and entertainment.
+photos:
+  menu: Photos
+  urls:
+    - /imgs/39517_eleC_lg.jpg
+    - /imgs/39517_eleC_lg.jpg
+    - /imgs/39517_eleC_lg.jpg
+video:
+  youtubeVideoID: xjpQRTNhbwk
+  menu: Video
+virtualTour:
+  title: Tracy Hills Residence-1
+  matterportID: XF9HmuP3iE2&mls=2&brand=0&hr=0&gt=0&dh=0&help=2&qs=1&title=0&portal=0
+  menu: Virtual Tour
+showcase:
+  url: index.html
+  menu: Showcase
+propertyPageSectionsOrder:
+  - Virtual Tour
+  - Price & Features
+  - Description
+  - Photos
+  - Video
+  - Realtor
+  - Contact
+homePageData:
+  url: imgs/39517_eleC_lg.jpg
+  addressLine1: Tracy Hills Residence-1
+  addressLine2: ""
+  bedsAndBaths: ""
+  price: ""
+realtor:
+  photo: /imgs/image-002.jpg
+  name: Praveen Kumar
+  company: Broker & Owner, WebERealty
+  id: CA BRE License 01928307
+  phone: "925-452-7483"
+  logo: /imgs/image-026.jpg
+  menu: Realtor
+  sectionTitle: Get Instant Alerts on Coming Soon listings and homes NOT available online.
+footertext:
+  line1: Information courtesy of Praveen Kumar 01928307 @ WebERealty
+  line2: "12935 Alcosta Blvd. #3681, San Ramon ,California, 94583"
+  line3: praveen@weberealty.com
+page:
+  title: Praveen Kumar - Your Home Sold Guaranteed.
+contact:
+  menu: Contact
+  mauticForm:
+    formSetName: showcase
+    emailFormHeader: Access COMING SOON houses for SALE
+    phoneFormHeader: Best number to reach you?
+    popupForm:
+      enable: false
+      x: 5000
+      y: 3
+      z: 10000
+    pageType: lp

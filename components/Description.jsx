@@ -1,7 +1,7 @@
 import React from "react";
+import ReactMarkdown from "react-markdown";
 
 const Description = ({ sectionTitle, content }) => {
-  console.log("descriptionST", sectionTitle);
   return (
     <div
       id="description"
@@ -19,7 +19,7 @@ const Description = ({ sectionTitle, content }) => {
       </div>
       <div className="row justify-content-center">
         <div className="col-10">
-          <p id="dContent" dangerouslySetInnerHTML={{ __html: content }} />
+          <ReactMarkdown id="dContent">{content}</ReactMarkdown>
         </div>
       </div>
     </div>

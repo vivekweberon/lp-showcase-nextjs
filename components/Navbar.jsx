@@ -5,7 +5,13 @@ import { Nav, Navbar } from "react-bootstrap";
 function MyNavbar({ navbar }) {
   // console.log(navbar)
   return (
-    <Navbar bg="dark" variant="dark" expand="md" fixed="top" data-testid="navbar">
+    <Navbar
+      bg="dark"
+      variant="dark"
+      expand="md"
+      fixed="top"
+      data-testid="navbar"
+    >
       <Navbar.Toggle aria-controls="navbar-nav" />
       <Navbar.Collapse id="navbar-nav" className="justify-content-center">
         <Nav>

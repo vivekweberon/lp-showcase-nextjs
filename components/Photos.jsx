@@ -1,5 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
 import Carousel from "react-bootstrap/Carousel";
 import { basePath } from "@/next.config";
 
@@ -44,10 +43,6 @@ const Photos = ({ photoUrls }) => {
       </div>
     </div>
   );
-};
-
-Photos.propTypes = {
-  photoUrls: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 export default Photos;

@@ -48,5 +48,4 @@ const Footer = ({ footerMenu, footertext }) => {
   );
 };
 
-
 export default Footer;

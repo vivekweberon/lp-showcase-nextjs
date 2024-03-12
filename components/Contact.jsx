@@ -20,7 +20,7 @@ const Contact = () => {
       </div>
       <div className="row">
         <div id="aside" className="col-12" style={{ textAlign: "center" }}>
-          {}
+          { }
         </div>
       </div>
     </div>
