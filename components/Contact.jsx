@@ -1,6 +1,10 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
-const Contact = () => {
+const Contact = ({ contact }) => {
+  const [data, setData] = useState(contact);
+  useEffect(() => {
+    console.log(data);
+  });
   return (
     <div
       id="contact"
