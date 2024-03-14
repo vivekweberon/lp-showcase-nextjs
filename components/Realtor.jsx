@@ -1,9 +1,9 @@
 import React from "react";
-import { basePath } from "@/next.config";
+// import { basePath } from "@/next.config";
 
 const Realtor = ({ realtorData }) => {
   const { photo, name, company, id, phone, logo, sectionTitle } = realtorData;
-  console.log(basePath);
+  // console.log(basePath);
   return (
     <div
       id="realtor"
@@ -22,9 +22,9 @@ const Realtor = ({ realtorData }) => {
         <div className="col-8 col-sm-4 col-lg-3" style={{ marginTop: "20px" }}>
           <img
             id="rImage"
-            srcSet={`${basePath + photo}?width=360 360w, ${basePath + photo}?width=576 576w, ${basePath + photo}?width=768 768w, ${basePath + photo}?width=992 992w, ${basePath + photo}?width=1200 1200w, ${basePath + photo}?width=1400 1400w, ${basePath + photo}?width=1600 1600w, ${basePath + photo}?width=1920 1920w`}
+            srcSet={`${photo}?width=360 360w, ${photo}?width=576 576w, ${photo}?width=768 768w, ${photo}?width=992 992w, ${photo}?width=1200 1200w, ${photo}?width=1400 1400w, ${photo}?width=1600 1600w, ${photo}?width=1920 1920w`}
             sizes="(max-width: 600px) 576px, (max-width: 768px) 768px, (max-width: 992px) 992px, (max-width: 1200px) 1200px, (max-width: 1400px) 1400px, (max-width: 1600px) 1600px, (max-width: 1920px) 1920px, 2000px"
-            src={`${basePath + photo}?width=1920`}
+            src={`${photo}?width=1920`}
             style={{ width: "100%" }}
             alt={name}
           />
@@ -45,12 +45,7 @@ const Realtor = ({ realtorData }) => {
               {phone}
             </a>
           </h3>
-          <img
-            id="rLogo"
-            src={basePath + logo}
-            alt={name}
-            style={{ width: "50%" }}
-          />
+          <img id="rLogo" src={logo} alt={name} style={{ width: "50%" }} />
         </div>
       </div>
       <div

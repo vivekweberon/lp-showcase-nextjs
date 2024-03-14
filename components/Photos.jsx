@@ -1,6 +1,6 @@
 import React from "react";
 import Carousel from "react-bootstrap/Carousel";
-import { basePath } from "@/next.config";
+// import { basePath } from "@/next.config";
 
 const Photos = ({ photoUrls }) => {
   return (
@@ -30,9 +30,9 @@ const Photos = ({ photoUrls }) => {
             {photoUrls.map((url, index) => (
               <Carousel.Item key={index}>
                 <img
-                  srcSet={`${basePath + url}?width=360 360w, ${basePath + url}?width=576 576w, ${basePath + url}?width=768 768w, ${basePath + url}?width=992 992w, ${basePath + url}?width=1200 1200w, ${basePath + url}?width=1400 1400w, ${basePath + url}?width=1600 1600w, ${basePath + url}?width=1920 1920w`}
+                  srcSet={`${url}?width=360 360w, ${url}?width=576 576w, ${url}?width=768 768w, ${url}?width=992 992w, ${url}?width=1200 1200w, ${url}?width=1400 1400w, ${url}?width=1600 1600w, ${url}?width=1920 1920w`}
                   sizes="(max-width: 600px) 576px, (max-width: 768px) 768px, (max-width: 992px) 992px, (max-width: 1200px) 1200px, (max-width: 1400px) 1400px, (max-width: 1600px) 1600px, (max-width: 1920px) 1920px, 2000px"
-                  src={`${basePath + url}?width=1920`}
+                  src={`${url}?width=1920`}
                   className="d-block w-100"
                   alt={`Photo ${index}`}
                 />

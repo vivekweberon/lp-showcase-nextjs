@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { basePath } from "@/next.config";
+// import { basePath } from "@/next.config";
 
 const Showcase = ({ properties }) => {
   // console.log(properties)
@@ -27,7 +27,7 @@ const Showcase = ({ properties }) => {
           >
             <div className="card">
               <img
-                src={basePath + property.url}
+                src={property.url}
                 alt="Property"
                 className="card-img-top"
                 style={{ objectFit: "contain", width: "100%" }}
@@ -41,7 +41,7 @@ const Showcase = ({ properties }) => {
                   </div>
                   <div style={{ fontWeight: "lighter" }}>{property.price}</div>
                   <a
-                    href={basePath + property.pageUrl}
+                    href={property.pageUrl}
                     style={{ textDecoration: "underline" }}
                   >
                     Learn More
