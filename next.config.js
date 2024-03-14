@@ -2,6 +2,7 @@
 const nextConfig = {
   reactStrictMode: false,
   trailingSlash: true,
+  // basePath: "/lp-showcase",
   output: "export",
 
   eslint: {
