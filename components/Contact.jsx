@@ -54,6 +54,7 @@ const Contact = ({ contact }) => {
         src="/lp-showcase/js/showdown-1.9.1.min.js"
         onError="logResourceLoadError(this)"
       ></script>
+
       <div
         id="contact"
         className="container-fluid"
