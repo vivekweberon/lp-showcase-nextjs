@@ -2,8 +2,8 @@
 const nextConfig = {
   reactStrictMode: false,
   trailingSlash: true,
-  basePath: process.env.NEXT_PUBLIC_BASE_PATH,
-  output: "export",
+  basePath: "/lp-showcase",
+  // output: "export",
 
   eslint: {
     // Warning: This allows production builds to successfully complete even if

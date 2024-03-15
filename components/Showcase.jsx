@@ -44,7 +44,7 @@ const Showcase = ({ properties }) => {
                   </div>
                   <div style={{ fontWeight: "lighter" }}>{property.price}</div>
                   <a
-                    href={property.pageUrl}
+                    href={basePath + property.pageUrl}
                     style={{ textDecoration: "underline" }}
                   >
                     Learn More
