@@ -1,9 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
-// import { basePath } from "@/next.config";
+import { basePath } from "@/next.config";
 
 const Showcase = ({ properties }) => {
-  // console.log(properties)
+  console.log("BasePath:", basePath); // Log basePath
+
   return (
     <div
       id="showcase"
@@ -26,8 +27,10 @@ const Showcase = ({ properties }) => {
             key={property.url}
           >
             <div className="card">
+              {/* Log Image URL */}
+              {console.log("Image URL:", basePath + property.url)}
               <img
-                src={property.url}
+                src={basePath + property.url}
                 alt="Property"
                 className="card-img-top"
                 style={{ objectFit: "contain", width: "100%" }}
