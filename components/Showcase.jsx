@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { basePath } from "@/next.config";
 
 const Showcase = ({ properties }) => {
-  console.log("BasePath:", basePath); // Log basePath
+  // console.log("BasePath:", basePath); 
 
   return (
     <div
@@ -28,7 +28,7 @@ const Showcase = ({ properties }) => {
           >
             <div className="card">
               {/* Log Image URL */}
-              {console.log("Image URL:", basePath + property.url)}
+              {/* {console.log("Image URL:", basePath + property.url)} */}
               <img
                 src={basePath + property.url}
                 alt="Property"

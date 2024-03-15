@@ -16,12 +16,12 @@ const Contact = ({ contact }) => {
   return (
     <>
       <script
-        src="/lp-showcase/lp-showcase/js/jquery-3.5.1.min.js"
+        src="/lp-showcase/js/jquery-3.5.1.min.js"
         onError="logResourceLoadError(this)"
       ></script>
       <script
         type="text/javascript"
-        src="/lp-showcase/lp-showcase/js/jwt-decode.js"
+        src="/lp-showcase/js/jwt-decode.js"
         onError="logResourceLoadError(this)"
       ></script>
       <script
@@ -31,27 +31,27 @@ const Contact = ({ contact }) => {
       ></script>
       <script
         type="text/javascript"
-        src="/lp-showcase/lp-showcase/js/tracker-config.js"
+        src="/lp-showcase/js/tracker-config.js"
         onError="logResourceLoadError(this)"
       ></script>
       <script
         type="text/javascript"
-        src="/lp-showcase/lp-showcase/js/tracker-util.js"
+        src="/lp-showcase/js/tracker-util.js"
         onError="logResourceLoadError(this)"
       ></script>
       <script
         type="text/javascript"
-        src="/lp-showcase/lp-showcase/js/showcase.js"
+        src="/lp-showcase/js/showcase.js"
         onError="logResourceLoadError(this)"
       ></script>
       <script
         type="text/javascript"
-        src="/lp-showcase/lp-showcase/js/tracker.js"
+        src="/lp-showcase/js/tracker.js"
         onError="logResourceLoadError(this)"
       ></script>
       <script
         type="text/javascript"
-        src="/lp-showcase/lp-showcase/js/showdown-1.9.1.min.js"
+        src="/lp-showcase/js/showdown-1.9.1.min.js"
         onError="logResourceLoadError(this)"
       ></script>
       <div

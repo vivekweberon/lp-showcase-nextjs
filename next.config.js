@@ -2,7 +2,7 @@
 const nextConfig = {
   reactStrictMode: false,
   trailingSlash: true,
-  basePath: "/lp-showcase",
+  basePath: process.env.NODE_ENV === "production" ? "/lp-showcase" : "",
   output: "export",
 
   eslint: {
