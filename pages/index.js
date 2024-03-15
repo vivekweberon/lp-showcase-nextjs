@@ -22,9 +22,9 @@ function Index({
       case "Showcase":
         menuValues.push("Showcase");
         return <Showcase properties={showcase} />;
-      case "Contact":
-        menuValues.push("Contact");
-        return <Contact contact={contact} />;
+      // case "Contact":
+      //   menuValues.push("Contact");
+      //   return <Contact contact={contact} />;
       case "Realtor":
         menuValues.push("Realtor");
         return <Realtor realtorData={realtor} />;
