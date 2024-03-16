@@ -48,8 +48,8 @@ propertyPageSectionsOrder:
   - Description
   - Photos
   - Video
-  - Realtor
   - Contact
+  - Realtor
 homePageData:
   url: imgs/39517_eleC_lg.jpg
   addressLine1: Tracy Hills Residence-1

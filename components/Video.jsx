@@ -21,8 +21,7 @@ const Video = ({ youtubeVideoID }) => {
         <div className="col-12" style={{ textAlign: "center" }}>
           <iframe
             id="homeVideo"
-            width="800px"
-            height="450px"
+            style={{ width: "80%", height: "40vw" }}
             src={`https://www.youtube.com/embed/${youtubeVideoID}`}
             frameBorder="0"
             allowFullScreen

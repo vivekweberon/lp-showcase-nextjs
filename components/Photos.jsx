@@ -22,8 +22,8 @@ const Photos = ({ photoUrls }) => {
             style={{
               margin: "auto",
               backgroundColor: "black",
-              width: "800px",
-              height: "450px",
+              width: "70%",
+              height: "40vw",
             }}
             interval={3000}
           >
@@ -35,6 +35,7 @@ const Photos = ({ photoUrls }) => {
                   src={`${basePath + url}?width=1920`}
                   className="d-block w-100"
                   alt={`Photo ${index}`}
+                  style={{ width: "70%", height: "40vw" }}
                 />
               </Carousel.Item>
             ))}

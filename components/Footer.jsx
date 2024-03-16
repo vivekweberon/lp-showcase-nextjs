@@ -17,25 +17,28 @@ const Footer = ({ footerMenu, footertext }) => {
         className="row justify-content-center"
         style={{ marginBottom: "40px" }}
       >
-        <div className="col-12 text-center">
-          {/* Ensure footerMenu is properly initialized and menuItem is not undefined/null before rendering */}
-          {footerMenu &&
-            footerMenu.map((menuItem, index) => {
-              if (menuItem) {
-                return (
+        {/* Ensure footerMenu is properly initialized and menuItem is not undefined/null before rendering */}
+        {footerMenu &&
+          footerMenu.map((menuItem, index) => {
+            if (menuItem) {
+              return (
+                <div
+                  key={index}
+                  className="col-6 col-sm-4 col-md-3 text-center"
+                  style={{ textDecoration: "underline" }}
+                >
                   <a
-                    key={index}
                     href={`#${menuItem.toLowerCase()}`}
-                    className="mx-3"
+                    style={{ color: "#212529" }}
                   >
                     {menuItem}
                   </a>
-                );
-              } else {
-                return null;
-              }
-            })}
-        </div>
+                </div>
+              );
+            } else {
+              return null;
+            }
+          })}
       </div>
       <div className="row">
         <div className="col-12" style={{ textAlign: "center" }}>
@@ -46,6 +49,15 @@ const Footer = ({ footerMenu, footertext }) => {
       </div>
     </div>
   );
+};
+
+Footer.propTypes = {
+  footerMenu: PropTypes.arrayOf(PropTypes.string), // Array of footer menu items
+  footertext: PropTypes.shape({
+    line1: PropTypes.string,
+    line2: PropTypes.string,
+    line3: PropTypes.string,
+  }), // Footer text lines
 };
 
 export default Footer;

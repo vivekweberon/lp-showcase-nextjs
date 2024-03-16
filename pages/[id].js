@@ -37,34 +37,56 @@ const PropertyPage = ({ propertyData }) => {
     console.log("OrderedComponents:", section);
     switch (section) {
       case "Virtual Tour":
-        menuValues.push("Virtual Tour");
-        return <VirtualTour virtualTour={virtualTour} />;
+        if (virtualTour) {
+          menuValues.push("Virtual Tour");
+          return <VirtualTour virtualTour={virtualTour} />;
+        }
+        break;
       case "Price & Features":
-        menuValues.push("Price & Features");
-        return <PriceAndFeatures priceAndFeatures={priceAndFeatures} />;
+        if (priceAndFeatures) {
+          menuValues.push("Price & Features");
+          return <PriceAndFeatures priceAndFeatures={priceAndFeatures} />;
+        }
+        break;
       case "Photos":
-        menuValues.push("Photos");
-        return <Photos photoUrls={photos.urls} />;
+        if (photos && photos.urls) {
+          menuValues.push("Photos");
+          return <Photos photoUrls={photos.urls} />;
+        }
+        break;
       case "Video":
-        menuValues.push("Video");
-        return <Video youtubeVideoID={video.youtubeVideoID} />;
+        if (video && video.youtubeVideoID) {
+          menuValues.push("Video");
+          return <Video youtubeVideoID={video.youtubeVideoID} />;
+        }
+        break;
       case "Contact":
-        menuValues.push("Contact");
-        return <Contact contact={contact} />;
+        if (contact) {
+          menuValues.push("Contact");
+          return <Contact contact={contact} />;
+        }
+        break;
       case "Realtor":
-        menuValues.push("Realtor");
-        return <Realtor realtorData={realtor} />;
+        if (realtor) {
+          menuValues.push("Realtor");
+          return <Realtor realtorData={realtor} />;
+        }
+        break;
       case "Description":
-        menuValues.push("Description");
-        return (
-          <Description
-            sectionTitle={description.sectionTitle}
-            content={description.content}
-          />
-        );
+        if (description && description.sectionTitle && description.content) {
+          menuValues.push("Description");
+          return (
+            <Description
+              sectionTitle={description.sectionTitle}
+              content={description.content}
+            />
+          );
+        }
+        break;
       default:
         return null;
     }
+    return null;
   });
 
   return (
@@ -99,14 +121,23 @@ export async function getStaticProps(context) {
   const filePath = path.join("data", `${id}.yaml`);
   console.log("FilePath", filePath);
 
-  const propertyData = await fs.readFile(filePath, "utf-8");
-  const parsedData = yaml.load(propertyData);
+  try {
+    const propertyData = await fs.readFile(filePath, "utf-8");
+    const parsedData = yaml.load(propertyData);
 
-  return {
-    props: {
-      propertyData: parsedData,
-    },
-  };
+    return {
+      props: {
+        propertyData: parsedData,
+      },
+    };
+  } catch (error) {
+    console.error("Error fetching property data:", error);
+    return {
+      props: {
+        propertyData: null,
+      },
+    };
+  }
 }
 
 export default PropertyPage;

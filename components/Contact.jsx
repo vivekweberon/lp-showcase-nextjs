@@ -3,13 +3,14 @@ import React, { useEffect, useState } from "react";
 
 const Contact = ({ contact }) => {
   const [data, setData] = useState(contact);
+  console.log("Form data", data);
 
   useEffect(() => {
     // Configure Mautic form
-    let mauticForm = contact.mauticForm;
-    setMauticForms(mauticForm.formSetName);
-    setEmailFormHeader(mauticForm.emailFormHeader);
-    setPhoneFormHeader(mauticForm.phoneFormHeader);
+    let mauticForm1 = data.mauticForm;
+    setMauticForms(mauticForm1.formSetName);
+    setEmailFormHeader(mauticForm1.emailFormHeader);
+    setPhoneFormHeader(mauticForm1.phoneFormHeader);
     loadForm("aside");
   });
 
