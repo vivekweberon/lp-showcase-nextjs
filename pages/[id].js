@@ -68,7 +68,13 @@ const PropertyPage = ({ propertyData }) => {
       case "Video":
         if (video && video.youtubeVideoID) {
           menuValues.push("Video");
-          return <Video key={index} youtubeVideoID={video.youtubeVideoID} />;
+          return (
+            <Video
+              key={index}
+              youtubeVideoID={video.youtubeVideoID}
+              navbarRef={navbarRef}
+            />
+          );
         }
         break;
       case "Contact":
