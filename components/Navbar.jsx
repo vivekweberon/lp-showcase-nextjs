@@ -1,9 +1,9 @@
 import React from "react";
-import PropTypes from "prop-types";
 import { Nav, Navbar } from "react-bootstrap";
+import PropTypes from "prop-types";
 
-function MyNavbar({ navbar }) {
-  // console.log(navbar)
+function MyNavbar({ navbar, forwardedRef }) {
+  console.log("Navbar", navbar);
   return (
     <Navbar
       bg="dark"
@@ -11,6 +11,8 @@ function MyNavbar({ navbar }) {
       expand="md"
       fixed="top"
       data-testid="navbar"
+      id="nav"
+      ref={forwardedRef}
     >
       <Navbar.Toggle aria-controls="navbar-nav" />
       <Navbar.Collapse id="navbar-nav" className="justify-content-center">
@@ -26,12 +28,8 @@ function MyNavbar({ navbar }) {
   );
 }
 
-// MyNavbar.propTypes = {
-//   navbar: PropTypes.arrayOf(
-//     PropTypes.shape({
-//       menu: PropTypes.string.isRequired,
-//     })
-//   ).isRequired,
-// };
+MyNavbar.propTypes = {
+  navbar: PropTypes.arrayOf(PropTypes.string).isRequired,
+};
 
 export default MyNavbar;

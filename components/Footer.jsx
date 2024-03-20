@@ -17,7 +17,6 @@ const Footer = ({ footerMenu, footertext }) => {
         className="row justify-content-center"
         style={{ marginBottom: "40px" }}
       >
-        {/* Ensure footerMenu is properly initialized and menuItem is not undefined/null before rendering */}
         {footerMenu &&
           footerMenu.map((menuItem, index) => {
             if (menuItem) {
@@ -52,12 +51,12 @@ const Footer = ({ footerMenu, footertext }) => {
 };
 
 Footer.propTypes = {
-  footerMenu: PropTypes.arrayOf(PropTypes.string), // Array of footer menu items
+  footerMenu: PropTypes.arrayOf(PropTypes.string),
   footertext: PropTypes.shape({
     line1: PropTypes.string,
     line2: PropTypes.string,
     line3: PropTypes.string,
-  }), // Footer text lines
+  }),
 };
 
 export default Footer;

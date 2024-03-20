@@ -5,7 +5,7 @@ const PriceAndFeatures = ({ priceAndFeatures }) => {
   // Destructure the properties from the priceAndFeatures object
   const { title1, title2, beds, baths, homeType, sqft, yearBuilt, price } =
     priceAndFeatures;
-
+  console.log("PriceAndFeatures", priceAndFeatures);
   return (
     <div
       id="price & features"
@@ -72,6 +72,19 @@ const PriceAndFeatures = ({ priceAndFeatures }) => {
       </div>
     </div>
   );
+};
+
+PriceAndFeatures.propTypes = {
+  priceAndFeatures: PropTypes.shape({
+    title1: PropTypes.string.isRequired,
+    title2: PropTypes.string.isRequired,
+    beds: PropTypes.string.isRequired,
+    baths: PropTypes.string.isRequired,
+    homeType: PropTypes.string.isRequired,
+    sqft: PropTypes.string.isRequired,
+    yearBuilt: PropTypes.string.isRequired,
+    price: PropTypes.string.isRequired,
+  }).isRequired,
 };
 
 export default PriceAndFeatures;

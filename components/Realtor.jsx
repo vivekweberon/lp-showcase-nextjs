@@ -1,9 +1,11 @@
 import React from "react";
 import { basePath } from "@/next.config";
+import PropTypes from "prop-types";
 
 const Realtor = ({ realtorData }) => {
   const { photo, name, company, id, phone, logo, sectionTitle } = realtorData;
-  // console.log(basePath);
+  console.log("Realtor", realtorData);
+
   return (
     <div
       id="realtor"
@@ -45,7 +47,12 @@ const Realtor = ({ realtorData }) => {
               {phone}
             </a>
           </h3>
-          <img id="rLogo" src={basePath + logo} alt={name} style={{ width: "50%" }} />
+          <img
+            id="rLogo"
+            src={basePath + logo}
+            alt={name}
+            style={{ width: "50%" }}
+          />
         </div>
       </div>
       <div
@@ -67,6 +74,18 @@ const Realtor = ({ realtorData }) => {
       </div>
     </div>
   );
+};
+
+Realtor.propTypes = {
+  realtorData: PropTypes.shape({
+    photo: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    company: PropTypes.string.isRequired,
+    id: PropTypes.string.isRequired,
+    phone: PropTypes.string.isRequired,
+    logo: PropTypes.string.isRequired,
+    sectionTitle: PropTypes.string.isRequired,
+  }).isRequired,
 };
 
 export default Realtor;

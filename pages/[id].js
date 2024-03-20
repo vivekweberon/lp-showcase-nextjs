@@ -11,8 +11,9 @@ import Contact from "../components/Contact";
 import Realtor from "../components/Realtor";
 import Description from "../components/Description";
 import yaml from "js-yaml";
-
+import { useRef } from "react";
 const PropertyPage = ({ propertyData }) => {
+  const navbarRef = useRef(null);
   if (!propertyData) {
     return <div>Loading...</div>;
   }
@@ -33,43 +34,53 @@ const PropertyPage = ({ propertyData }) => {
 
   let menuValues = [];
 
-  const orderedComponents = propertyPageSectionsOrder.map((section) => {
+  const orderedComponents = propertyPageSectionsOrder.map((section, index) => {
     console.log("OrderedComponents:", section);
     switch (section) {
       case "Virtual Tour":
         if (virtualTour) {
           menuValues.push("Virtual Tour");
-          return <VirtualTour virtualTour={virtualTour} />;
+          return (
+            <VirtualTour
+              key={index}
+              virtualTour={virtualTour}
+              navbarRef={navbarRef}
+            />
+          );
         }
         break;
       case "Price & Features":
         if (priceAndFeatures) {
           menuValues.push("Price & Features");
-          return <PriceAndFeatures priceAndFeatures={priceAndFeatures} />;
+          return (
+            <PriceAndFeatures key={index} priceAndFeatures={priceAndFeatures} />
+          );
         }
         break;
       case "Photos":
         if (photos && photos.urls) {
           menuValues.push("Photos");
-          return <Photos photoUrls={photos.urls} />;
+          return (
+            <Photos key={index} photoUrls={photos.urls} navbarRef={navbarRef} />
+          );
         }
         break;
       case "Video":
         if (video && video.youtubeVideoID) {
           menuValues.push("Video");
-          return <Video youtubeVideoID={video.youtubeVideoID} />;
+          return <Video key={index} youtubeVideoID={video.youtubeVideoID} />;
         }
         break;
       case "Contact":
         if (contact) {
           menuValues.push("Contact");
-          return <Contact contact={contact} />;
+          return <Contact key={index} contact={contact} />;
         }
         break;
       case "Realtor":
         if (realtor) {
           menuValues.push("Realtor");
-          return <Realtor realtorData={realtor} />;
+          return <Realtor key={index} realtorData={realtor} />;
         }
         break;
       case "Description":
@@ -77,6 +88,7 @@ const PropertyPage = ({ propertyData }) => {
           menuValues.push("Description");
           return (
             <Description
+              key={index}
               sectionTitle={description.sectionTitle}
               content={description.content}
             />
@@ -91,7 +103,7 @@ const PropertyPage = ({ propertyData }) => {
 
   return (
     <div>
-      <Navbar navbar={menuValues} />
+      <Navbar navbar={menuValues} forwardedRef={navbarRef} />
       {orderedComponents}
       <Footer footerMenu={menuValues} footertext={footertext} />
     </div>

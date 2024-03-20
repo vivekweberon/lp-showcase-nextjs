@@ -7,19 +7,19 @@ let playedByCode = false;
 let playedByUser = false;
 
 function onYouTubeIframeAPIReady() {
-  if (isVisible('home')) {
-    player = new YT.Player('ytVideo', {
+  if (isVisible("home")) {
+    player = new YT.Player("ytVideo", {
       events: {
-        'onReady': onPlayerReady,
-        'onStateChange': onPlayerStateChange
-      }
+        onReady: onPlayerReady,
+        onStateChange: onPlayerStateChange,
+      },
     });
   }
-  if (isVisible('video')) { 
-    player2 = new YT.Player('homeVideo', {
+  if (isVisible("video")) {
+    player2 = new YT.Player("homeVideo", {
       events: {
-      'onStateChange': onPlayer2StateChange
-      }
+        onStateChange: onPlayer2StateChange,
+      },
     });
   }
   window.onscroll = playVisibleVideos;
@@ -27,10 +27,9 @@ function onYouTubeIframeAPIReady() {
 
 function onPlayer2StateChange(event) {
   let playerStatus = event.data;
-  if ((playerStatus == 2)&&(!pausedByCode)) {
+  if (playerStatus == 2 && !pausedByCode) {
     setVideoStateVariables(false, true, false, false);
-  }
-  else if ((playerStatus == 1)&&(!playedByCode)) {
+  } else if (playerStatus == 1 && !playedByCode) {
     setVideoStateVariables(true, false, false, false);
   }
 }
@@ -44,7 +43,7 @@ function setVideoStateVariables(userPlay, userPause, codePlay, codePause) {
 
 function checkPlayerStateToRemoveHeaderAndFooter() {
   let state;
-  let interval = setInterval( function(){
+  let interval = setInterval(function () {
     state = player.getPlayerState();
     if (state == 1) {
       removeVideoHeaderAndFooter();
@@ -52,7 +51,7 @@ function checkPlayerStateToRemoveHeaderAndFooter() {
     }
   }, 500);
 }
-    
+
 function onPlayerReady(event) {
   player.playVideo();
   checkPlayerStateToRemoveHeaderAndFooter();
@@ -63,8 +62,8 @@ function onPlayerStateChange(event) {
   if (playerStatus == -1) {
     console.log("unstarted");
     let label = document.getElementById("playSound").innerHTML;
-    if(label == "Mute Sound"){
-      sessionStorage.setItem("bgvv", "yes");  
+    if (label == "Mute Sound") {
+      sessionStorage.setItem("bgvv", "yes");
     }
   } else if (playerStatus == 0) {
     console.log("ended");
@@ -84,21 +83,21 @@ function onPlayerStateChange(event) {
 function removeVideoHeaderAndFooter() {
   if (!vhfRemoved) {
     vhfRemoved = true;
-    let vHeader = document.getElementById('vHeader');
-    let vFooter = document.getElementById('vFooter');
+    let vHeader = document.getElementById("vHeader");
+    let vFooter = document.getElementById("vFooter");
     let timer;
-    timer = setInterval(function() {
+    timer = setInterval(function () {
       clearInterval(timer);
-      vHeader.style.height = '0px';
-      vFooter.style.height = '0px';
+      vHeader.style.height = "0px";
+      vFooter.style.height = "0px";
     }, 4000);
-  } 
+  }
 }
 
 function setVideoHeaderAndFooter() {
   vhfRemoved = false;
-  document.getElementById('vHeader').style.height = '70px';
-  document.getElementById('vFooter').style.height = '70px';
+  document.getElementById("vHeader").style.height = "70px";
+  document.getElementById("vFooter").style.height = "70px";
 }
 
 function isInViewport(element) {
@@ -106,14 +105,14 @@ function isInViewport(element) {
   let contentHeight = document.documentElement.clientHeight;
   let top = rect.top;
   let bottom = rect.bottom;
-  let topVisible = (top >= 50) && (top < contentHeight);
-  let bottomVisible = (bottom < contentHeight) && (bottom > 55);
+  let topVisible = top >= 50 && top < contentHeight;
+  let bottomVisible = bottom < contentHeight && bottom > 55;
   return topVisible || bottomVisible;
 }
 
 function playVideo(iframePlayer) {
   let state = iframePlayer.getPlayerState();
-  if(state == 2){
+  if (state == 2) {
     iframePlayer.playVideo();
   }
 }
@@ -129,31 +128,29 @@ function isVisible(sectionID) {
   let ret = false;
   let elem = document.getElementById(sectionID);
   if (elem) {
-    if (elem.style.display != 'none') {
+    if (elem.style.display != "none") {
       ret = true;
-    }  
+    }
   }
   return ret;
 }
 
 function playVisibleVideos() {
-  if (isVisible('home')) { 
+  if (isVisible("home")) {
     if (isInViewport(document.getElementById("ytVideo"))) {
       playVideo(player);
-    }
-    else {
+    } else {
       pauseVideo(player);
     }
   }
-  if (isVisible('video')) { 
+  if (isVisible("video")) {
     if (isInViewport(document.getElementById("homeVideo"))) {
       if (pausedByCode) {
         setVideoStateVariables(false, false, true, false);
         playVideo(player2);
       }
-    }
-    else {
-      if ((playedByCode)||(playedByUser)) {
+    } else {
+      if (playedByCode || playedByUser) {
         setVideoStateVariables(false, false, false, true);
         pauseVideo(player2);
       }

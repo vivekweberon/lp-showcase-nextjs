@@ -1,7 +1,9 @@
 import React from "react";
 import ReactMarkdown from "react-markdown";
+import PropTypes from "prop-types";
 
 const Description = ({ sectionTitle, content }) => {
+  console.log("Description", sectionTitle, content);
   return (
     <div
       id="description"
@@ -24,6 +26,11 @@ const Description = ({ sectionTitle, content }) => {
       </div>
     </div>
   );
+};
+
+Description.propTypes = {
+  sectionTitle: PropTypes.string.isRequired,
+  content: PropTypes.string.isRequired,
 };
 
 export default Description;

@@ -1,8 +1,41 @@
 import React from "react";
 import Carousel from "react-bootstrap/Carousel";
 import { basePath } from "@/next.config";
+import PropTypes from "prop-types";
+import { useState, useEffect } from "react";
 
-const Photos = ({ photoUrls }) => {
+const Photos = ({ photoUrls, navbarRef }) => {
+  const [carouselHeight, setCarouselHeight] = useState();
+  const [imageWidth, setImageWidth] = useState();
+
+  useEffect(() => {
+    function getImageWidth() {
+      const windowHeight = window.innerHeight;
+      const windowWidth = window.innerWidth;
+      const navHeight = navbarRef.current.clientHeight;
+      console.log("NavbarHeight", navbarRef.current.clientHeight);
+      const availHeight = windowHeight - navHeight - 20;
+      let width = availHeight * 1.777;
+      if (width + 30 > windowWidth) {
+        width = windowWidth - 30;
+      }
+      return width + "px";
+    }
+    function setCarouselDimensions() {
+      const width = getImageWidth();
+      const height = parseFloat(width) / 1.777 + "px";
+      console.log("Image Height", height);
+      setCarouselHeight(height);
+      setImageWidth(width);
+    }
+    setCarouselDimensions();
+    window.addEventListener("resize", setCarouselDimensions);
+    return () => {
+      window.removeEventListener("resize", setCarouselDimensions);
+    };
+  }, [navbarRef]);
+
+  console.log("PhotoURLS", photoUrls);
   return (
     <div
       id="photos"
@@ -20,10 +53,11 @@ const Photos = ({ photoUrls }) => {
             id="photosCarousel"
             className="carousel slide"
             style={{
-              margin: "auto",
               backgroundColor: "black",
-              width: "70%",
-              height: "40vw",
+              maxWidth: "100%",
+              width: imageWidth,
+              height: carouselHeight,
+              margin: "auto",
             }}
             interval={3000}
           >
@@ -33,9 +67,9 @@ const Photos = ({ photoUrls }) => {
                   srcSet={`${basePath + url}?width=360 360w, ${basePath + url}?width=576 576w, ${basePath + url}?width=768 768w, ${basePath + url}?width=992 992w, ${basePath + url}?width=1200 1200w, ${basePath + url}?width=1400 1400w, ${basePath + url}?width=1600 1600w, ${basePath + url}?width=1920 1920w`}
                   sizes="(max-width: 600px) 576px, (max-width: 768px) 768px, (max-width: 992px) 992px, (max-width: 1200px) 1200px, (max-width: 1400px) 1400px, (max-width: 1600px) 1600px, (max-width: 1920px) 1920px, 2000px"
                   src={`${basePath + url}?width=1920`}
-                  className="d-block w-100"
+                  className="d-block"
                   alt={`Photo ${index}`}
-                  style={{ width: "70%", height: "40vw" }}
+                  style={{ width: imageWidth, height: carouselHeight }}
                 />
               </Carousel.Item>
             ))}
@@ -44,6 +78,10 @@ const Photos = ({ photoUrls }) => {
       </div>
     </div>
   );
+};
+
+Photos.propTypes = {
+  photoUrls: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 export default Photos;

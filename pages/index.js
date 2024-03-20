@@ -7,30 +7,36 @@ import Footer from "../components/Footer";
 import yaml from "js-yaml";
 import fs from "fs";
 
-function Index({
-  contact,
-  showcase,
-  footertext,
-  realtor,
-  homePageSectionsOrder,
-}) {
+function Index(props) {
+  const { contact, showcase, footertext, realtor, homePageSectionsOrder } =
+    props;
   const menuValues = [];
 
   const orderedComponents = homePageSectionsOrder.map((section) => {
     console.log("OrderedComponents:", section);
     switch (section) {
       case "Showcase":
-        menuValues.push("Showcase");
-        return <Showcase properties={showcase} />;
+        if (showcase) {
+          menuValues.push("Showcase");
+          return <Showcase properties={showcase} />;
+        }
+        break;
       case "Contact":
-        menuValues.push("Contact");
-        return <Contact contact={contact} />;
+        if (contact) {
+          menuValues.push("Contact");
+          return <Contact contact={contact} />;
+        }
+        break;
       case "Realtor":
-        menuValues.push("Realtor");
-        return <Realtor realtorData={realtor} />;
+        if (realtor) {
+          menuValues.push("Realtor");
+          return <Realtor realtorData={realtor} />;
+        }
+        break;
       default:
         return null;
     }
+    return null;
   });
 
   console.log("MenuValues", menuValues);
@@ -45,13 +51,11 @@ function Index({
 }
 
 export async function getStaticProps() {
-  const yamlData = fs.readFileSync("./public/data.yaml", "utf8");
+  const yamlData = fs.readFileSync("./data/data.yaml", "utf8");
   const data = yaml.load(yamlData);
 
   return {
-    props: {
-      ...data,
-    },
+    props: data,
   };
 }
 

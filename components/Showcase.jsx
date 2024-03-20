@@ -3,8 +3,7 @@ import PropTypes from "prop-types";
 import { basePath } from "@/next.config";
 
 const Showcase = ({ properties }) => {
-  // console.log("BasePath:", basePath); 
-
+  console.log("Properties", properties);
   return (
     <div
       id="showcase"
@@ -27,8 +26,6 @@ const Showcase = ({ properties }) => {
             key={property.url}
           >
             <div className="card">
-              {/* Log Image URL */}
-              {/* {console.log("Image URL:", basePath + property.url)} */}
               <img
                 src={basePath + property.url}
                 alt="Property"
@@ -57,6 +54,22 @@ const Showcase = ({ properties }) => {
       </div>
     </div>
   );
+};
+
+Showcase.propTypes = {
+  properties: PropTypes.shape({
+    sectionTitle: PropTypes.string.isRequired,
+    properties: PropTypes.arrayOf(
+      PropTypes.shape({
+        url: PropTypes.string.isRequired,
+        addressLine1: PropTypes.string.isRequired,
+        addressLine2: PropTypes.string.isRequired,
+        bedsAndBaths: PropTypes.string.isRequired,
+        price: PropTypes.string.isRequired,
+        pageUrl: PropTypes.string.isRequired,
+      })
+    ).isRequired,
+  }).isRequired,
 };
 
 export default Showcase;

@@ -1,9 +1,10 @@
 import Script from "next/script";
 import React, { useEffect, useState } from "react";
+import PropTypes from "prop-types";
 
 const Contact = ({ contact }) => {
   const [data, setData] = useState(contact);
-  console.log("Form data", data);
+  console.log("Form data", contact);
 
   useEffect(() => {
     // Configure Mautic form
@@ -83,6 +84,24 @@ const Contact = ({ contact }) => {
       <Script>{`let page = "lp"`}</Script>
     </>
   );
+};
+
+Contact.propTypes = {
+  contact: PropTypes.shape({
+    menu: PropTypes.string.isRequired,
+    mauticForm: PropTypes.shape({
+      emailFormHeader: PropTypes.string.isRequired,
+      formSetName: PropTypes.string.isRequired,
+      pageType: PropTypes.string.isRequired,
+      phoneFormHeader: PropTypes.string.isRequired,
+      popupForm: PropTypes.shape({
+        enable: PropTypes.bool.isRequired,
+        x: PropTypes.number.isRequired,
+        y: PropTypes.number.isRequired,
+        z: PropTypes.number.isRequired,
+      }).isRequired,
+    }).isRequired,
+  }).isRequired,
 };
 
 export default Contact;
