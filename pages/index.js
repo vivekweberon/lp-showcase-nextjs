@@ -51,7 +51,7 @@ function Index(props) {
 }
 
 export async function getStaticProps() {
-  const yamlData = fs.readFileSync("./data/data.yaml", "utf8");
+  const yamlData = fs.readFileSync("./public/data.yaml", "utf8");
   const data = yaml.load(yamlData);
 
   return {
