@@ -70,7 +70,7 @@ const Video = ({ youtubeVideoID, navbarRef }) => {
 
 Video.propTypes = {
   youtubeVideoID: PropTypes.string.isRequired,
-  navbarRef: PropTypes.object.isRequired, // Ensure navbarRef is passed as prop
+  navbarRef: PropTypes.object.isRequired,
 };
 
 export default Video;

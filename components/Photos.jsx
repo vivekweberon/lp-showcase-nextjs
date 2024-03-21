@@ -82,6 +82,7 @@ const Photos = ({ photoUrls, navbarRef }) => {
 
 Photos.propTypes = {
   photoUrls: PropTypes.arrayOf(PropTypes.string).isRequired,
+  navbarRef: PropTypes.object.isRequired,
 };
 
 export default Photos;
