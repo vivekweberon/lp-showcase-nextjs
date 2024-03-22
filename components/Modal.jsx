@@ -1,7 +1,18 @@
 /* eslint-disable prettier/prettier */
-import React from "react";
+// Modal component
+import React, { useEffect } from "react";
 
 const Modal = ({ clickedUrl, onCloseModal }) => {
+    useEffect(() => {
+        // Disable scrolling on the body when the modal is open
+        document.body.style.overflow = "hidden";
+
+        // Re-enable scrolling on the body when the modal is closed
+        return () => {
+            document.body.style.overflow = "unset";
+        };
+    }, []);
+
     return (
         <>
             <div
@@ -50,5 +61,6 @@ const Modal = ({ clickedUrl, onCloseModal }) => {
 };
 
 export default Modal;
+
 
 
