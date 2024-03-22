@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useRef } from "react";
 import fs from "fs/promises";
 import path from "path";
 import Navbar from "../components/Navbar";
@@ -11,9 +11,19 @@ import Contact from "../components/Contact";
 import Realtor from "../components/Realtor";
 import Description from "../components/Description";
 import yaml from "js-yaml";
-import { useRef } from "react";
+import Modal from "../components/Modal";
+
 const PropertyPage = ({ propertyData }) => {
+  const [modalUrl, setModalUrl] = useState(null);
+  const [showModal, setShowModal] = useState(false);
   const navbarRef = useRef(null);
+
+  // Function to handle link click in Description component
+  const handleLinkClick = (url) => {
+    setModalUrl(url);
+    setShowModal(true);
+  };
+
   if (!propertyData) {
     return <div>Loading...</div>;
   }
@@ -30,12 +40,9 @@ const PropertyPage = ({ propertyData }) => {
     description,
   } = propertyData;
 
-  console.log("Price", propertyData);
-
   let menuValues = [];
 
   const orderedComponents = propertyPageSectionsOrder.map((section, index) => {
-    console.log("OrderedComponents:", section);
     switch (section) {
       case "Virtual Tour":
         if (virtualTour) {
@@ -97,6 +104,7 @@ const PropertyPage = ({ propertyData }) => {
               key={index}
               sectionTitle={description.sectionTitle}
               content={description.content}
+              onLinkClick={handleLinkClick} // Passing the handler to Description
             />
           );
         }
@@ -107,10 +115,18 @@ const PropertyPage = ({ propertyData }) => {
     return null;
   });
 
+  // Function to close the modal
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
+
   return (
     <div>
       <Navbar navbar={menuValues} forwardedRef={navbarRef} />
       {orderedComponents}
+      {showModal && (
+        <Modal clickedUrl={modalUrl} onCloseModal={handleCloseModal} />
+      )}
       <Footer footerMenu={menuValues} footertext={footertext} />
     </div>
   );
