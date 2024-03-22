@@ -17,6 +17,7 @@ const Contact = ({ contact }) => {
 
   return (
     <>
+      <script src="/lp-showcase/js/areacodes.json"></script>
       <script
         type="text/javascript"
         src="/lp-showcase/js/rb-config.js"

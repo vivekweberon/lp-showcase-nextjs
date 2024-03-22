@@ -53,7 +53,7 @@ function enablePopupForm(x, y, z) {
 }
 
 function setAreaCodeRegEx() {
-  let areaCodes = "lp-showcase/js/areacodes.json";
+  let areaCodes = "/lp-showcase/js/areacodes.json";
   let path = window.location.pathname;
   path = decodeURIComponent(path);
   areaCodes =
