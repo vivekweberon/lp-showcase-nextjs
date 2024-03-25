@@ -1,4 +1,3 @@
-// Updated Description component
 import React from "react";
 import ReactMarkdown from "react-markdown";
 import PropTypes from "prop-types";
@@ -6,13 +5,16 @@ import PropTypes from "prop-types";
 const Description = ({ sectionTitle, content, onLinkClick }) => {
   // Function to handle link click
   const handleClick = (event) => {
-    event.preventDefault();
-    const url = event.target.href;
-    onLinkClick(url);
+    const { tagName, href } = event.target;
+    // Ensure the clicked element is an anchor tag
+    if (tagName === "A") {
+      event.preventDefault();
+      onLinkClick(href);
+    }
   };
 
   return (
-    <div id="description" className="container-fluid">
+    <div id="description" className="container-fluid" onClick={handleClick}>
       <div className="row justify-content-center">
         <div className="col-10" style={{ textAlign: "center" }}>
           <h1 id="descriptionST">{sectionTitle}</h1>
@@ -20,15 +22,7 @@ const Description = ({ sectionTitle, content, onLinkClick }) => {
       </div>
       <div className="row justify-content-center">
         <div className="col-10">
-          <ReactMarkdown
-            id="dContent"
-            components={{
-              // Customizing the anchor tag to call handleClick function
-              a: ({ node, ...props }) => <a {...props} onClick={handleClick} />,
-            }}
-          >
-            {content}
-          </ReactMarkdown>
+          <ReactMarkdown id="dContent">{content}</ReactMarkdown>
         </div>
       </div>
     </div>

@@ -57,7 +57,6 @@ const Contact = ({ contact }) => {
         src="/lp-showcase/js/tracker-util.js"
       //onError="logResourceLoadError(this)"
       ></script>
-
       <script
         type="text/javascript"
         src="/lp-showcase/js/tracker.js"
@@ -68,7 +67,11 @@ const Contact = ({ contact }) => {
         src="/lp-showcase/js/showdown-1.9.1.min.js"
       //onError="logResourceLoadError(this)"
       ></script>
-
+      <script
+        type="text/javascript"
+        src="/lp-showcase/js/inline-script.js"
+      //onError="logResourceLoadError(this)"
+      ></script>
       <div
         id="contact"
         className="container-fluid"

@@ -30,6 +30,9 @@ function MyNavbar({ navbar, forwardedRef }) {
 
 MyNavbar.propTypes = {
   navbar: PropTypes.arrayOf(PropTypes.string).isRequired,
+  forwardedRef: PropTypes.oneOfType([
+    PropTypes.shape({ current: PropTypes.any }),
+  ]),
 };
 
 export default MyNavbar;
