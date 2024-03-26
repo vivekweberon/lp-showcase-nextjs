@@ -12,6 +12,7 @@ import Realtor from "../components/Realtor";
 import Description from "../components/Description";
 import yaml from "js-yaml";
 import Modal from "../components/Modal";
+import PropTypes from "prop-types";
 
 const PropertyPage = ({ propertyData }) => {
   const [modalUrl, setModalUrl] = useState(null);
@@ -173,5 +174,23 @@ export async function getStaticProps(context) {
     };
   }
 }
+
+// Define prop types for PropertyPage component
+PropertyPage.propTypes = {
+  propertyData: PropTypes.shape({
+    priceAndFeatures: PropTypes.object,
+    photos: PropTypes.object,
+    video: PropTypes.object,
+    virtualTour: PropTypes.object,
+    realtor: PropTypes.object,
+    footertext: PropTypes.string,
+    contact: PropTypes.object,
+    propertyPageSectionsOrder: PropTypes.array,
+    description: PropTypes.shape({
+      sectionTitle: PropTypes.string,
+      content: PropTypes.string,
+    }),
+  }),
+};
 
 export default PropertyPage;

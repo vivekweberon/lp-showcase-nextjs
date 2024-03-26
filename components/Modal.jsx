@@ -1,5 +1,6 @@
 /* eslint-disable prettier/prettier */
 import React, { useEffect, useRef } from "react";
+import PropTypes from "prop-types"; // Import PropTypes
 
 const Modal = ({ clickedUrl, onCloseModal }) => {
     const bodyRef = useRef(document.body);
@@ -60,6 +61,12 @@ const Modal = ({ clickedUrl, onCloseModal }) => {
             <div className="modal-backdrop fade show"></div>
         </>
     );
+};
+
+// Define prop types for Modal component
+Modal.propTypes = {
+    clickedUrl: PropTypes.string.isRequired,
+    onCloseModal: PropTypes.func.isRequired,
 };
 
 export default Modal;

@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import Navbar from "../components/Navbar";
 import Showcase from "../components/Showcase";
 import Contact from "../components/Contact";
@@ -49,6 +50,15 @@ function Index(props) {
     </div>
   );
 }
+
+// Define prop types for Index component
+Index.propTypes = {
+  contact: PropTypes.object,
+  showcase: PropTypes.object,
+  footertext: PropTypes.string,
+  realtor: PropTypes.object,
+  homePageSectionsOrder: PropTypes.array,
+};
 
 export async function getStaticProps() {
   const yamlData = fs.readFileSync("./public/data.yaml", "utf8");
