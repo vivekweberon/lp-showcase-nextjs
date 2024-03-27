@@ -13,8 +13,22 @@ const Description = ({ sectionTitle, content, onLinkClick }) => {
     }
   };
 
+  // Function to handle keyboard events
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter" || event.key === " ") {
+      handleClick(event);
+    }
+  };
+
   return (
-    <div id="description" className="container-fluid" onClick={handleClick}>
+    <div
+      id="description"
+      className="container-fluid"
+      onClick={handleClick}
+      onKeyDown={handleKeyDown}
+      role="button" // Adding role="button" to indicate it's clickable
+      tabIndex="0" // Making it focusable
+    >
       <div className="row justify-content-center">
         <div className="col-10" style={{ textAlign: "center" }}>
           <h1 id="descriptionST">{sectionTitle}</h1>
