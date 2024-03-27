@@ -15,18 +15,18 @@ jobs:
     
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4  # Updated to use version 4 of actions/checkout
-
+        uses: actions/checkout@v3
+      
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '20'  # Updated to use Node.js version 20
+          node-version: '20'
 
       - name: Install dependencies
         run: npm install
 
       - name: SonarQube Scan
-        uses: sonarsource/sonarqube-scan-action@master
+        uses: sonarsource/sonarqube-scan-action@main
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
