@@ -37,6 +37,7 @@ const VirtualTour = ({ virtualTour, navbarRef }) => {
             id="vtVideo"
             style={{ width: "100%", height: virtualTourHeight }}
             data={`https://my.matterport.com/show/?m=${matterportID}`}
+            aria-label="Virtual tour of the property"
           ></object>
         </div>
       </div>

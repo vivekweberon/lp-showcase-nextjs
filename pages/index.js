@@ -11,26 +11,22 @@ import fs from "fs";
 function Index(props) {
   const { contact, showcase, footertext, realtor, homePageSectionsOrder } =
     props;
-  const menuValues = [];
 
   const orderedComponents = homePageSectionsOrder.map((section) => {
     console.log("OrderedComponents:", section);
     switch (section) {
       case "Showcase":
         if (showcase) {
-          menuValues.push("Showcase");
           return <Showcase properties={showcase} />;
         }
         break;
       case "Contact":
         if (contact) {
-          menuValues.push("Contact");
           return <Contact contact={contact} />;
         }
         break;
       case "Realtor":
         if (realtor) {
-          menuValues.push("Realtor");
           return <Realtor realtorData={realtor} />;
         }
         break;
@@ -40,13 +36,11 @@ function Index(props) {
     return null;
   });
 
-  console.log("MenuValues", menuValues);
-
   return (
     <div>
-      <Navbar navbar={menuValues} />
+      <Navbar navbar={homePageSectionsOrder} />
       {orderedComponents}
-      <Footer footerMenu={menuValues} footertext={footertext} />
+      <Footer footerMenu={homePageSectionsOrder} footertext={footertext} />
     </div>
   );
 }

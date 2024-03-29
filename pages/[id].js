@@ -41,80 +41,97 @@ const PropertyPage = ({ propertyData }) => {
     description,
   } = propertyData;
 
-  let menuValues = [];
-
   const orderedComponents = propertyPageSectionsOrder.map((section, index) => {
     switch (section) {
       case "Virtual Tour":
-        if (virtualTour) {
-          menuValues.push("Virtual Tour");
-          return (
-            <VirtualTour
-              key={index}
-              virtualTour={virtualTour}
-              navbarRef={navbarRef}
-            />
-          );
-        }
-        break;
+        return renderVirtualTour(virtualTour, index);
       case "Price & Features":
-        if (priceAndFeatures) {
-          menuValues.push("Price & Features");
-          return (
-            <PriceAndFeatures key={index} priceAndFeatures={priceAndFeatures} />
-          );
-        }
-        break;
+        return renderPriceAndFeatures(priceAndFeatures, index);
       case "Photos":
-        if (photos && photos.urls) {
-          menuValues.push("Photos");
-          return (
-            <Photos key={index} photoUrls={photos.urls} navbarRef={navbarRef} />
-          );
-        }
-        break;
+        return renderPhotos(photos, index);
       case "Video":
-        if (video && video.youtubeVideoID) {
-          menuValues.push("Video");
-          return (
-            <Video
-              key={index}
-              youtubeVideoID={video.youtubeVideoID}
-              navbarRef={navbarRef}
-            />
-          );
-        }
-        break;
+        return renderVideo(video, index);
       case "Contact":
-        if (contact) {
-          menuValues.push("Contact");
-          return <Contact key={index} contact={contact} />;
-        }
-        break;
+        return renderContact(contact, index);
       case "Realtor":
-        if (realtor) {
-          menuValues.push("Realtor");
-          return <Realtor key={index} realtorData={realtor} />;
-        }
-        break;
+        return renderRealtor(realtor, index);
       case "Description":
-        if (description && description.sectionTitle && description.content) {
-          menuValues.push("Description");
-          return (
-            <Description
-              key={index}
-              sectionTitle={description.sectionTitle}
-              content={description.content}
-              onLinkClick={handleLinkClick} // Passing the handler to Description
-            />
-          );
-        }
-        break;
+        return renderDescription(description, index);
       default:
         return null;
     }
-    return null;
   });
+
+  function renderVirtualTour(virtualTour, index) {
+    return (
+      virtualTour && (
+        <VirtualTour
+          key={`virtualTour_${index}`}
+          virtualTour={virtualTour}
+          navbarRef={navbarRef}
+        />
+      )
+    );
+  }
+
+  function renderPriceAndFeatures(priceAndFeatures, index) {
+    return (
+      priceAndFeatures && (
+        <PriceAndFeatures
+          key={`priceAndFeatures_${index}`}
+          priceAndFeatures={priceAndFeatures}
+        />
+      )
+    );
+  }
+
+  function renderPhotos(photos, index) {
+    return (
+      photos?.urls && (
+        <Photos
+          key={`photos_${index}`}
+          photoUrls={photos.urls}
+          navbarRef={navbarRef}
+        />
+      )
+    );
+  }
+
+  function renderVideo(video, index) {
+    return (
+      video?.youtubeVideoID && (
+        <Video
+          key={`video_${index}`}
+          youtubeVideoID={video.youtubeVideoID}
+          navbarRef={navbarRef}
+        />
+      )
+    );
+  }
+
+  function renderContact(contact, index) {
+    return contact && <Contact key={`contact_${index}`} contact={contact} />;
+  }
+
+  function renderRealtor(realtor, index) {
+    return (
+      realtor && <Realtor key={`realtor_${index}`} realtorData={realtor} />
+    );
+  }
+
+  function renderDescription(description, index) {
+    return (
+      description?.sectionTitle &&
+      description.content && (
+        <Description
+          key={`description_${index}`}
+          sectionTitle={description.sectionTitle}
+          content={description.content}
+          onLinkClick={handleLinkClick}
+        />
+      )
+    );
+  }
 
   // Function to close the modal
   const handleCloseModal = () => {
@@ -123,12 +140,12 @@ const PropertyPage = ({ propertyData }) => {
 
   return (
     <div>
-      <Navbar navbar={menuValues} forwardedRef={navbarRef} />
+      <Navbar navbar={propertyPageSectionsOrder} forwardedRef={navbarRef} />
       {orderedComponents}
       {showModal && (
         <Modal clickedUrl={modalUrl} onCloseModal={handleCloseModal} />
       )}
-      <Footer footerMenu={menuValues} footertext={footertext} />
+      <Footer footerMenu={propertyPageSectionsOrder} footertext={footertext} />
     </div>
   );
 };

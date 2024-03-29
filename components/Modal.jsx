@@ -22,7 +22,6 @@ const Modal = ({ clickedUrl, onCloseModal }) => {
                 className="modal fade show"
                 id="extLinkModal"
                 tabIndex="-1"
-                role="dialog"
                 aria-labelledby="modalLabel"
                 aria-hidden="true"
                 style={{ display: "block", paddingRight: "0px" }}
@@ -37,7 +36,7 @@ const Modal = ({ clickedUrl, onCloseModal }) => {
                 >
                     <div className="modal-content">
                         <div className="modal-header">
-                            <h5 className="modal-title" id="modalLabel"></h5>
+                            <h5 className="modal-title" id="modalLabel" style={{ visibility: "hidden" }}>Modal</h5>
                             <button
                                 type="button"
                                 className="close"
@@ -52,6 +51,7 @@ const Modal = ({ clickedUrl, onCloseModal }) => {
                             <iframe
                                 id="modalIframe"
                                 style={{ height: "80vh", width: "80vw" }}
+                                title="Modal"
                                 src={clickedUrl}
                             ></iframe>
                         </div>

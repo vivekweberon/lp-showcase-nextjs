@@ -1,19 +1,16 @@
 import Script from "next/script";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 
 const Contact = ({ contact }) => {
-  const [data, setData] = useState(contact);
-  console.log("Form data", contact);
-
   useEffect(() => {
     // Configure Mautic form
-    let mauticForm1 = data.mauticForm;
+    let mauticForm1 = contact.mauticForm;
     setMauticForms(mauticForm1.formSetName);
     setEmailFormHeader(mauticForm1.emailFormHeader);
     setPhoneFormHeader(mauticForm1.phoneFormHeader);
     loadForm("aside");
-  });
+  }, [contact]);
 
   return (
     <>

@@ -40,8 +40,7 @@ const Realtor = ({ realtorData }) => {
           <h3 id="rId">{id}</h3>
           <h3>
             <a
-              id="rPhone"
-              href={`tel:${phone}`}
+              href={`tel:${phone}`} // Valid href for telephone link
               style={{ color: "darkblue", textDecoration: "underline" }}
             >
               {phone}
@@ -59,19 +58,7 @@ const Realtor = ({ realtorData }) => {
         id="rFooter"
         className="row no-gutters justify-content-center"
         style={{ display: "none", marginTop: "20px" }}
-      >
-        <div className="col-12" style={{ textAlign: "center" }}>
-          <h3 id="rFooterText">
-            <a
-              id="rFooterLink"
-              href=""
-              style={{ color: "darkblue", textDecoration: "underline" }}
-            >
-              {sectionTitle}
-            </a>
-          </h3>
-        </div>
-      </div>
+      ></div>
     </div>
   );
 };

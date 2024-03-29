@@ -17,27 +17,22 @@ const Footer = ({ footerMenu, footertext }) => {
         className="row justify-content-center"
         style={{ marginBottom: "40px" }}
       >
-        {footerMenu &&
-          footerMenu.map((menuItem, index) => {
-            if (menuItem) {
-              return (
-                <div
-                  key={index}
-                  className="col-6 col-sm-4 col-md-3 text-center"
-                  style={{ textDecoration: "underline" }}
-                >
-                  <a
-                    href={`#${menuItem.toLowerCase()}`}
-                    style={{ color: "#212529" }}
-                  >
-                    {menuItem}
-                  </a>
-                </div>
-              );
-            } else {
-              return null;
-            }
-          })}
+        {footerMenu?.map((menuItem) => {
+          return menuItem ? (
+            <div
+              key={menuItem}
+              className="col-6 col-sm-4 col-md-3 text-center"
+              style={{ textDecoration: "underline" }}
+            >
+              <a
+                href={`#${menuItem.toLowerCase()}`}
+                style={{ color: "#212529" }}
+              >
+                {menuItem}
+              </a>
+            </div>
+          ) : null;
+        })}
       </div>
       <div className="row">
         <div className="col-12" style={{ textAlign: "center" }}>

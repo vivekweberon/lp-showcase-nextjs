@@ -2,5 +2,5 @@ projectKey=lpshowcase
 serverUrl=http://localhost:9000
 serverVersion=10.4.1.88267
 dashboardUrl=http://localhost:9000/dashboard?id=lpshowcase
-ceTaskId=f223ab9b-d59e-47ad-b586-5545824c620b
-ceTaskUrl=http://localhost:9000/api/ce/task?id=f223ab9b-d59e-47ad-b586-5545824c620b
+ceTaskId=0cdbc4ec-9152-4667-b508-9de295b19a71
+ceTaskUrl=http://localhost:9000/api/ce/task?id=0cdbc4ec-9152-4667-b508-9de295b19a71
