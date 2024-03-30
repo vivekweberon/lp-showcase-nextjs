@@ -16,8 +16,8 @@ showcase:
   sectionTitle: Showcase
 homePageSectionsOrder:
   - Showcase
-  - Contact
   - Realtor
+  - Contact
 realtor:
   photo: /imgs/image-002.jpg
   name: Praveen Kumar
