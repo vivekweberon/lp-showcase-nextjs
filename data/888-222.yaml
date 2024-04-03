@@ -82,6 +82,6 @@ contact:
     popupForm:
       enable: false
       x: 5000
-      'y': 3
+      y: 3
       z: 10000
     pageType: lp

@@ -1,38 +1,7 @@
 import React from "react";
 import ReactMarkdown from "react-markdown";
 import PropTypes from "prop-types";
-
-// Custom Anchor component to render anchor tags
-const CustomAnchor = ({ href, children, onLinkClick }) => {
-  const handleAnchorClick = (event) => {
-    event.preventDefault();
-    onLinkClick(href);
-  };
-
-  const handleAnchorKeyDown = (event) => {
-    if (event.key === "Enter" || event.key === " ") {
-      handleAnchorClick(event);
-    }
-  };
-
-  return (
-    <a
-      href={href}
-      onClick={handleAnchorClick}
-      onKeyDown={handleAnchorKeyDown}
-      tabIndex={0}
-      className="markdown-link"
-    >
-      {children}
-    </a>
-  );
-};
-
-CustomAnchor.propTypes = {
-  href: PropTypes.string.isRequired,
-  children: PropTypes.node.isRequired,
-  onLinkClick: PropTypes.func.isRequired,
-};
+import CustomAnchor from "./CustomAnchor";
 
 const Description = ({ sectionTitle, content, onLinkClick }) => {
   const renderAnchor = ({ children, href }) => (

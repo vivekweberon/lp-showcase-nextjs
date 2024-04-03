@@ -3,12 +3,15 @@ import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 
 const Contact = ({ contact }) => {
+  console.log("CONTACT", contact);
   useEffect(() => {
     // Configure Mautic form
     let mauticForm1 = contact.mauticForm;
     setMauticForms(mauticForm1.formSetName);
     setEmailFormHeader(mauticForm1.emailFormHeader);
     setPhoneFormHeader(mauticForm1.phoneFormHeader);
+    enablePopupForm(popupForm.x, popupForm.y, popupForm.z);
+    loadForm("lpContent");
     loadForm("aside");
   }, [contact]);
 
@@ -93,6 +96,15 @@ const Contact = ({ contact }) => {
           ></div>
         </div>
       </div>
+      {/* Added markup here */}
+      <div id="lpModal" className="cmodal">
+        <div id="lpContent" className="cmodal-content">
+          <span id="lpClose" className="close">
+            ×
+          </span>
+        </div>
+      </div>
+      {/* End of added markup */}
       <Script>{`let page = "lp"`}</Script>
     </>
   );
