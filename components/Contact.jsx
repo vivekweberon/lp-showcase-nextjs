@@ -5,14 +5,24 @@ import PropTypes from "prop-types";
 const Contact = ({ contact }) => {
   console.log("CONTACT", contact);
   useEffect(() => {
+    const { mauticForm } = contact;
+
     // Configure Mautic form
-    let mauticForm1 = contact.mauticForm;
-    setMauticForms(mauticForm1.formSetName);
-    setEmailFormHeader(mauticForm1.emailFormHeader);
-    setPhoneFormHeader(mauticForm1.phoneFormHeader);
-    enablePopupForm(popupForm.x, popupForm.y, popupForm.z);
-    loadForm("lpContent");
-    loadForm("aside");
+    if (mauticForm) {
+      // Configure Mautic form
+      setMauticForms(mauticForm.formSetName);
+      setEmailFormHeader(mauticForm.emailFormHeader);
+      setPhoneFormHeader(mauticForm.phoneFormHeader);
+
+      // Load Mautic form
+      let popupForm = mauticForm.popupForm;
+      if (popupForm && popupForm.enable === true) {
+        enablePopupForm(popupForm.x, popupForm.y, popupForm.z);
+        loadForm("lpContent");
+      } else {
+        loadForm("aside");
+      }
+    }
   }, [contact]);
 
   return (
@@ -37,11 +47,7 @@ const Contact = ({ contact }) => {
         src="/lp-showcase/js/jwt-decode.js"
       //onError="logResourceLoadError(this)"
       ></script>
-      <script
-        type="text/javascript"
-        src="https://accounts.google.com/gsi/client"
-      //onError="logResourceLoadError(this)"
-      ></script>
+
       <script
         type="text/javascript"
         src="/lp-showcase/js/tracker-config.js"
@@ -72,6 +78,12 @@ const Contact = ({ contact }) => {
         src="/lp-showcase/js/inline-script.js"
       //onError="logResourceLoadError(this)"
       ></script>
+      <script
+        type="text/javascript"
+        src="https://accounts.google.com/gsi/client"
+      //onError="logResourceLoadError(this)"
+      ></script>
+
       <div
         id="contact"
         className="container-fluid"
