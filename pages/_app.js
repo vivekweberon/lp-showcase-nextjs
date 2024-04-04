@@ -4,7 +4,6 @@ import Head from "next/head";
 import "../styles/globals.css";
 
 function MyApp({ Component, pageProps }) {
-  const basePath = process.env.BASE_PATH || "";
   return (
     <>
       <Head></Head>

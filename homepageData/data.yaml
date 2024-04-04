@@ -40,7 +40,7 @@ contact:
     emailFormHeader: Access COMING SOON houses for SALE
     phoneFormHeader: Best number to reach you?
     popupForm:
-      enable: true
+      enable: false
       x: 5000
       y: 3
       z: 5000
