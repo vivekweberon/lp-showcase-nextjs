@@ -27,63 +27,6 @@ const Contact = ({ contact }) => {
 
   return (
     <>
-      <script src="/lp-showcase/js/areacodes.json"></script>
-      <script
-        type="text/javascript"
-        src="/lp-showcase/js/rb-config.js"
-      //onError="logResourceLoadError(this)"
-      ></script>
-      <script
-        type="text/javascript"
-        src="/lp-showcase/js/logger.js"
-      //onError="logResourceLoadError(this)"
-      ></script>
-      <script
-        src="/lp-showcase/js/jquery-3.5.1.min.js"
-      //onError="logResourceLoadError(this)"
-      ></script>
-      <script
-        type="text/javascript"
-        src="/lp-showcase/js/jwt-decode.js"
-      //onError="logResourceLoadError(this)"
-      ></script>
-
-      <script
-        type="text/javascript"
-        src="/lp-showcase/js/tracker-config.js"
-      //onError="logResourceLoadError(this)"
-      ></script>
-      <script
-        type="text/javascript"
-        src="/lp-showcase/js/showcase.js"
-      //onError="logResourceLoadError(this)"
-      ></script>
-      <script
-        type="text/javascript"
-        src="/lp-showcase/js/tracker-util.js"
-      //onError="logResourceLoadError(this)"
-      ></script>
-      <script
-        type="text/javascript"
-        src="/lp-showcase/js/tracker.js"
-      //onError="logResourceLoadError(this)"
-      ></script>
-      <script
-        type="text/javascript"
-        src="/lp-showcase/js/showdown-1.9.1.min.js"
-      //onError="logResourceLoadError(this)"
-      ></script>
-      <script
-        type="text/javascript"
-        src="/lp-showcase/js/inline-script.js"
-      //onError="logResourceLoadError(this)"
-      ></script>
-      <script
-        type="text/javascript"
-        src="https://accounts.google.com/gsi/client"
-      //onError="logResourceLoadError(this)"
-      ></script>
-
       <div
         id="contact"
         className="container-fluid"

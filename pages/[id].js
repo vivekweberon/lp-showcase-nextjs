@@ -10,6 +10,7 @@ import VirtualTour from "../components/VirtualTour";
 import Contact from "../components/Contact";
 import Realtor from "../components/Realtor";
 import Description from "../components/Description";
+import PopupForm from "../components/PopupForm";
 import yaml from "js-yaml";
 import Modal from "../components/Modal";
 import PropTypes from "prop-types";
@@ -41,6 +42,8 @@ const PropertyPage = ({ propertyData }) => {
     description,
   } = propertyData;
 
+  let menuValues = [];
+
   const orderedComponents = propertyPageSectionsOrder.map((section, index) => {
     switch (section) {
       case "Virtual Tour":
@@ -63,6 +66,7 @@ const PropertyPage = ({ propertyData }) => {
   });
 
   function renderVirtualTour(virtualTour, index) {
+    menuValues.push("Virtual Tour");
     return (
       virtualTour && (
         <VirtualTour
@@ -75,6 +79,7 @@ const PropertyPage = ({ propertyData }) => {
   }
 
   function renderPriceAndFeatures(priceAndFeatures, index) {
+    menuValues.push("Price & Features");
     return (
       priceAndFeatures && (
         <PriceAndFeatures
@@ -86,6 +91,7 @@ const PropertyPage = ({ propertyData }) => {
   }
 
   function renderPhotos(photos, index) {
+    menuValues.push("Photos");
     return (
       photos?.urls && (
         <Photos
@@ -98,6 +104,7 @@ const PropertyPage = ({ propertyData }) => {
   }
 
   function renderVideo(video, index) {
+    menuValues.push("Video");
     return (
       video?.youtubeVideoID && (
         <Video
@@ -110,16 +117,23 @@ const PropertyPage = ({ propertyData }) => {
   }
 
   function renderContact(contact, index) {
-    return contact && <Contact key={`contact_${index}`} contact={contact} />;
+    if (contact && contact.mauticForm.popupForm.enable === false) {
+      menuValues.push("Contact");
+      return <Contact contact={contact} key={`contact_${index}`} />;
+    } else {
+      return <PopupForm contact={contact} key={`popupForm_${index}`} />;
+    }
   }
 
   function renderRealtor(realtor, index) {
+    menuValues.push("Realtor");
     return (
       realtor && <Realtor key={`realtor_${index}`} realtorData={realtor} />
     );
   }
 
   function renderDescription(description, index) {
+    menuValues.push("Description");
     return (
       description?.sectionTitle &&
       description.content && (
@@ -140,12 +154,12 @@ const PropertyPage = ({ propertyData }) => {
 
   return (
     <div>
-      <Navbar navbar={propertyPageSectionsOrder} forwardedRef={navbarRef} />
+      <Navbar navbar={menuValues} forwardedRef={navbarRef} />
       {orderedComponents}
       {showModal && (
         <Modal clickedUrl={modalUrl} onCloseModal={handleCloseModal} />
       )}
-      <Footer footerMenu={propertyPageSectionsOrder} footertext={footertext} />
+      <Footer footerMenu={menuValues} footertext={footertext} />
     </div>
   );
 };
