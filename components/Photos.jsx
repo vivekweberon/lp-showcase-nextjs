@@ -12,7 +12,6 @@ const Photos = ({ photoUrls, navbarRef }) => {
       const windowHeight = window.innerHeight;
       const windowWidth = window.innerWidth;
       const navHeight = navbarRef.current.clientHeight;
-      console.log("NavbarHeight", navbarRef.current.clientHeight);
       const availHeight = windowHeight - navHeight - 20;
       let width = availHeight * 1.777;
       if (width + 30 > windowWidth) {
@@ -23,7 +22,7 @@ const Photos = ({ photoUrls, navbarRef }) => {
     function setCarouselDimensions() {
       const width = getImageWidth();
       const height = parseFloat(width) / 1.777 + "px";
-      console.log("Image Height", height);
+      // console.log("Image Height", height);
       setCarouselHeight(height);
       setImageWidth(width);
     }
@@ -34,7 +33,7 @@ const Photos = ({ photoUrls, navbarRef }) => {
     };
   }, [navbarRef]);
 
-  console.log("PhotoURLS", photoUrls);
+  // console.log("PhotoURLS", photoUrls);
   return (
     <div
       id="photos"

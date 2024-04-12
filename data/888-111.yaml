@@ -53,11 +53,13 @@ propertyPageSectionsOrder:
   - Contact
   - Realtor
 homePageData:
-  url: imgs/39517_eleC_lg.jpg
+  url: /imgs/39517_eleC_lg.jpg
   addressLine1: Tracy Hills Residence-1
   addressLine2: ""
   bedsAndBaths: ""
   price: ""
+  pageUrl: /888-111
+  sectionTitle: Showcase
 realtor:
   photo: /imgs/image-002.jpg
   name: Praveen Kumar

@@ -15,15 +15,15 @@ const Showcase = ({ properties }) => {
     >
       <div className="row">
         <div className="col-12" style={{ textAlign: "center" }}>
-          <h1 id="showcaseST">{properties.sectionTitle}</h1>
+          <h1 id="showcaseST">{properties[0].sectionTitle}</h1>
         </div>
       </div>
       <div id="scGrid" className="row no-gutters justify-content-center">
-        {properties.properties.map((property) => (
+        {properties.map((property, index) => (
           <div
             className="col-sm-6 col-md-4 col-lg-3"
             style={{ padding: "2.5px" }}
-            key={property.url}
+            key={index}
           >
             <div className="card">
               <img
@@ -57,19 +57,17 @@ const Showcase = ({ properties }) => {
 };
 
 Showcase.propTypes = {
-  properties: PropTypes.shape({
-    sectionTitle: PropTypes.string.isRequired,
-    properties: PropTypes.arrayOf(
-      PropTypes.shape({
-        url: PropTypes.string.isRequired,
-        addressLine1: PropTypes.string.isRequired,
-        addressLine2: PropTypes.string.isRequired,
-        bedsAndBaths: PropTypes.string.isRequired,
-        price: PropTypes.string.isRequired,
-        pageUrl: PropTypes.string.isRequired,
-      })
-    ).isRequired,
-  }).isRequired,
+  properties: PropTypes.arrayOf(
+    PropTypes.shape({
+      url: PropTypes.string.isRequired,
+      addressLine1: PropTypes.string.isRequired,
+      addressLine2: PropTypes.string.isRequired,
+      bedsAndBaths: PropTypes.string.isRequired,
+      price: PropTypes.string.isRequired,
+      // Assuming you have a pageUrl property
+      // pageUrl: PropTypes.string.isRequired,
+    })
+  ).isRequired,
 };
 
 export default Showcase;

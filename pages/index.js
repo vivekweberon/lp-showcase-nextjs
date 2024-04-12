@@ -1,30 +1,35 @@
 import React from "react";
-import PropTypes from "prop-types";
-import Navbar from "../components/Navbar";
-import Showcase from "../components/Showcase";
-import Contact from "../components/Contact";
-import Realtor from "../components/Realtor";
-import Footer from "../components/Footer";
-import PopupForm from "../components/PopupForm";
-import yaml from "js-yaml";
 import fs from "fs";
+import path from "path";
+import yaml from "js-yaml";
+import Showcase from "@/components/Showcase";
+import Realtor from "@/components/Realtor";
+import Contact from "@/components/Contact";
+import Navbar from "@/components/Navbar";
+import PopupForm from "../components/PopupForm";
+import Footer from "@/components/Footer";
 
-function Index(props) {
-  const { contact, showcase, footertext, realtor, homePageSectionsOrder } =
-    props;
-  console.log("MAUTICFORM", contact.mauticForm.popupForm.enable);
+export default function Home({ propertiesData, globalData }) {
+  console.log("PropertyData", propertiesData);
+  console.log("globalData", globalData);
+  const { realtor, contact, homePageSectionsOrder, footertext } = globalData;
+
+  // Extract homePageData from each property file, ensuring to filter out undefined values
+  const homePageDataList = Object.values(propertiesData)
+    .map((propertyData) => propertyData.homePageData)
+    .filter(Boolean);
+  console.log("HomePageDataList", homePageDataList);
 
   let menuValues = [];
 
   const orderedComponents = homePageSectionsOrder.map((section) => {
-    console.log("OrderedComponents:", section);
     switch (section) {
       case "Showcase":
-        if (showcase) {
-          menuValues.push("Showcase");
-          return <Showcase properties={showcase} />;
-        }
-        break;
+        menuValues.push("Showcase");
+        return <Showcase properties={homePageDataList} />;
+      case "Realtor":
+        menuValues.push("Realtor");
+        return <Realtor realtorData={realtor} />;
       case "Contact":
         if (contact && contact.mauticForm.popupForm.enable === false) {
           menuValues.push("Contact");
@@ -32,16 +37,7 @@ function Index(props) {
         } else {
           return <PopupForm contact={contact} />;
         }
-      case "Realtor":
-        if (realtor) {
-          menuValues.push("Realtor");
-          return <Realtor realtorData={realtor} />;
-        }
-        break;
-      default:
-        return null;
     }
-    return null;
   });
 
   return (
@@ -53,22 +49,39 @@ function Index(props) {
   );
 }
 
-// Define prop types for Index component
-Index.propTypes = {
-  contact: PropTypes.object,
-  showcase: PropTypes.object,
-  footertext: PropTypes.string,
-  realtor: PropTypes.object,
-  homePageSectionsOrder: PropTypes.array,
-};
-
 export async function getStaticProps() {
-  const yamlData = fs.readFileSync("./homepageData/data.yaml", "utf8");
-  const data = yaml.load(yamlData);
+  try {
+    // Read data from global file
+    const globalFilePath = path.join("global", "data.yaml");
+    const globalFileData = await fs.readFileSync(globalFilePath, "utf-8");
+    const globalData = yaml.load(globalFileData);
 
-  return {
-    props: data,
-  };
+    const files = await fs.readdirSync("data");
+
+    const propertiesData = {};
+
+    for (const file of files) {
+      const filePath = path.join("data", file);
+      const propertyData = await fs.readFileSync(filePath, "utf-8");
+
+      const parsedData = yaml.load(propertyData);
+
+      propertiesData[file] = parsedData;
+    }
+
+    return {
+      props: {
+        propertiesData: propertiesData,
+        globalData: globalData,
+      },
+    };
+  } catch (error) {
+    console.error("Error fetching property data:", error);
+    return {
+      props: {
+        propertiesData: {},
+        globalData: {},
+      },
+    };
+  }
 }
-
-export default Index;
