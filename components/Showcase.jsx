@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { basePath } from "@/next.config";
 
-const Showcase = ({ properties }) => {
+const Showcase = ({ properties, sectionTitle }) => {
   console.log("Properties", properties);
   return (
     <div
@@ -15,7 +15,7 @@ const Showcase = ({ properties }) => {
     >
       <div className="row">
         <div className="col-12" style={{ textAlign: "center" }}>
-          <h1 id="showcaseST">{properties[0].sectionTitle}</h1>
+          <h1 id="showcaseST">{sectionTitle}</h1>
         </div>
       </div>
       <div id="scGrid" className="row no-gutters justify-content-center">

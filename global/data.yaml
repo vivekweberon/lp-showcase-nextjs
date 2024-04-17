@@ -18,6 +18,14 @@ homePageSectionsOrder:
   - Showcase
   - Realtor
   - Contact
+propertyPageSectionsOrder:
+  - Virtual Tour
+  - Price & Features
+  - Description
+  - Photos
+  - Video
+  - Contact
+  - Realtor
 contact:
   menu: Contact
   mauticForm:

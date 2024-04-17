@@ -168,11 +168,11 @@ export async function getStaticPaths() {
   console.log("Executing getStaticPaths");
 
   try {
-    // Fetch the list of available properties dynamically
-    const files = await fs.readdir("data");
+    const dataFolderPath = path.join(process.cwd(), "data");
+    const files = await fs.readdir(dataFolderPath);
 
     const paths = files.map((file) => ({
-      params: { id: file.replace(".yaml", "") },
+      params: { id: file },
     }));
     console.log("Static paths", paths);
     return {
@@ -192,7 +192,7 @@ export async function getStaticProps(context) {
   console.log("Executing getStaticProps");
   const { id } = context.params;
 
-  const filePath = path.join("data", `${id}.yaml`);
+  const filePath = path.join(process.cwd(), "data", id, "data.yaml");
   console.log("FilePath", filePath);
 
   try {
@@ -200,9 +200,11 @@ export async function getStaticProps(context) {
     const parsedData = yaml.load(propertyData);
 
     // Merge property-specific data with global data
-    const globalData = await fs.readFile("./global/data.yaml", "utf-8");
+    const globalFilePath = path.join(process.cwd(), "global", "data.yaml");
+    const globalData = await fs.readFile(globalFilePath, "utf-8");
     const parsedGlobalData = yaml.load(globalData);
     const mergedData = { ...parsedGlobalData, ...parsedData };
+
     return {
       props: {
         propertyData: mergedData,

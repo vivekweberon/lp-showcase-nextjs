@@ -1,0 +1,8 @@
+showcase:
+  menu: Showcase
+  properties:
+  sectionTitle: Showcase
+homePageSectionsOrder: 
+  - Showcase
+  - Contact
+  - Realtor
