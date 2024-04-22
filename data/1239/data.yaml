@@ -31,9 +31,9 @@ description:
 photos:
   menu: Photos
   urls:
-    - /imgs/39517_eleC_lg.jpg
-    - /imgs/39517_eleC_lg.jpg
-    - /imgs/39517_eleC_lg.jpg
+    - data/1239/images/39517_eleC_lg.jpg
+    - data/1239/images/39517_eleC_lg.jpg
+    - data/1239/images/39517_eleC_lg.jpg
 video:
   youtubeVideoID: xjpQRTNhbwk
   menu: Video
