@@ -9,7 +9,7 @@ const GLOBAL_SCHEMA = "schema/global_schema.yaml";
 const HOME_SCHEMA = "schema/home_schema.yaml";
 const PROPERTY_SCHEMA = "schema/property_schema.yaml";
 
-function validateInputData(inputDir) {
+function validateInputData() {
   let msg = "";
   let count = 0;
   let globalKeys;
@@ -19,39 +19,40 @@ function validateInputData(inputDir) {
 
   console.log("Starting validation process...");
   if (!fs.existsSync(inputDir)) {
-    msg += `${++count} Input data directory path provided does not exist \nSolution: Provide the correct input data directory path\n\n`;
+    msg += `${++count} Input data directory path provided does not exists \nSolution: Provide right input data directory path\n\n`;
   } else {
     // Check if home directory exists
-    if (!fs.existsSync(`${inputDir}/${LP_HOME_DIR}`)) {
-      msg += `${++count} Home directory does not exist \nSolution: Input data directory should contain 'home' directory\n\n`;
+    if (!fs.existsSync(`${LP_HOME_DIR}`)) {
+      msg += `${++count} Home directory does not exists \nSolution: Input data directory should contain 'home' directory\n\n`;
     } else {
       // Check if global directory exists
-      if (!fs.existsSync(`${inputDir}/${LP_GLOBAL_DIR}`)) {
-        msg += `${++count} Global directory does not exist \nSolution: Input data directory should contain 'global' directory\n\n`;
+      if (!fs.existsSync(`${LP_GLOBAL_DIR}`)) {
+        msg += `${++count} Global directory does not exists \nSolution: Input data directory should contain 'global' directory\n\n`;
       } else {
-        // Check the structure of each property directory
+        // Check if the directory names are correct
         fs.readdirSync(inputDir).forEach((propertyDir) => {
           if (
-            propertyDir !== LP_HOME_DIR &&
-            propertyDir !== LP_GLOBAL_DIR &&
+            propertyDir != LP_HOME_DIR &&
+            propertyDir != LP_GLOBAL_DIR &&
             !/^[0-9][0-9-]+[0-9]$/.test(propertyDir)
           ) {
-            msg += `${++count} '${inputDir}/${propertyDir}' is an invalid File/Directory name.\nSolution: Directory name should be 'global', 'home', or APN of the property\n\n`;
+            msg += `${++count} '${inputDir}/${propertyDir}' is an invalid File/Directory name.\nSolution: Directory name should be 'global', 'home' or APN of the property\n\n`;
           } else {
+            // Check if it is a directory
             if (!fs.lstatSync(`${inputDir}/${propertyDir}`).isDirectory()) {
-              msg += `${++count} '${inputDir}/${propertyDir}' is not a directory \nSolution: Input data directory can only contain 'global', 'home', and property directories\n\n`;
+              msg += `${++count} '${inputDir}/${propertyDir}' is not a directory \nSolution: Input data directory can only contain 'global', 'home' and property directories\n\n`;
             } else {
-              // Check for the presence of YAML file in each property directory
+              // Check if yaml file exists
               if (
                 !fs.existsSync(`${inputDir}/${propertyDir}/${YAML_FILE_NAME}`)
               ) {
-                msg += `${++count} '${inputDir}/${propertyDir}/${YAML_FILE_NAME}' does not exist \nSolution: '${inputDir}/${propertyDir}/' should contain '${YAML_FILE_NAME}' file\n\n`;
+                msg += `${++count} '${inputDir}/${propertyDir}/${YAML_FILE_NAME}' does not exists \nSolution: '${inputDir}/${propertyDir}/' should contain '${YAML_FILE_NAME}' file\n\n`;
               }
 
-              // Validate other files and directories in the property directory
+              // Check if the file and directory names are correct
               fs.readdirSync(`${inputDir}/${propertyDir}`).forEach(
                 (subFile) => {
-                  if (subFile === PHOTOS_FOLDER_NAME) {
+                  if (subFile == PHOTOS_FOLDER_NAME) {
                     if (
                       !fs
                         .lstatSync(`${inputDir}/${propertyDir}/${subFile}`)
@@ -67,20 +68,20 @@ function validateInputData(inputDir) {
                         }
                       });
                     }
-                  } else if (subFile === YAML_FILE_NAME) {
-                    // Validate YAML file
-                    if (`${propertyDir}` === LP_GLOBAL_DIR) {
-                      if (!globalKeys) {
+                  } else if (subFile == YAML_FILE_NAME) {
+                    // Validate YAML
+                    if (`${propertyDir}` == LP_GLOBAL_DIR) {
+                      if (globalKeys == undefined) {
                         globalKeys = getKeyValueMapFromYAML(GLOBAL_SCHEMA);
                       }
                       schemaKeys = globalKeys;
-                    } else if (`${propertyDir}` === LP_HOME_DIR) {
-                      if (!homeKeys) {
+                    } else if (`${propertyDir}` == LP_HOME_DIR) {
+                      if (homeKeys == undefined) {
                         homeKeys = getKeyValueMapFromYAML(HOME_SCHEMA);
                       }
                       schemaKeys = homeKeys;
                     } else {
-                      if (!propertyKeys) {
+                      if (propertyKeys == undefined) {
                         propertyKeys = getKeyValueMapFromYAML(PROPERTY_SCHEMA);
                       }
                       schemaKeys = propertyKeys;
@@ -108,11 +109,11 @@ function validateInputData(inputDir) {
                             // Validate property type
                             schemaType = schemaKeys.get(result.value[0]).type;
                             schemaType =
-                              schemaType === undefined ? "object" : schemaType;
+                              schemaType == undefined ? "object" : schemaType;
                             inputType = typeof result.value[1];
                             if (
-                              result.value[1] !== null &&
-                              inputType !== schemaType
+                              result.value[1] != null &&
+                              inputType != schemaType
                             ) {
                               msg += `${++count} Data type of the property '${result.value[0]}' is not correct in the file '${inputDir}/${propertyDir}/${subFile}'\nSolution: Expected data type is '${schemaType}' \n\n`;
                             }
@@ -124,7 +125,7 @@ function validateInputData(inputDir) {
                       msg += `${++count} YAML data file '${inputDir}/${propertyDir}/${subFile}' is empty\nSolution: Provide a valid ${subFile}\n\n`;
                     }
                   } else {
-                    msg += `${++count} '${subFile}' is not allowed in the directory '${inputDir}/${propertyDir}' \nSolution: Allowed files and directories in '${inputDir}/${propertyDir}' are 'data.yaml' and 'images' respectively\n\n`;
+                    msg += `${++count} '${subFile}' is not allowed in the directory '${inputDir}/${propertyDir}' \nSolution: Allowed file and directory in '${inputDir}/${propertyDir}' are 'data.yaml' and 'images' respectively\n\n`;
                   }
                 }
               );
@@ -158,23 +159,20 @@ function getAllKeysAndValues(inputData, keys = new Map(), ref = "") {
   let allKeys = keys;
   let newKey;
   Object.keys(inputData).forEach((key) => {
-    if (ref !== "") {
+    if (ref != "") {
       newKey = `${ref}.${key}`;
     } else {
       newKey = key;
     }
     allKeys.set(newKey, inputData[key]);
-    if (inputData[key] !== undefined && typeof inputData[key] === "object") {
+    if (inputData[key] != undefined && typeof inputData[key] === "object") {
       getAllKeysAndValues(inputData[key], allKeys, newKey);
     }
   });
   return allKeys;
 }
 
-// Determine the input directory dynamically from Jenkins environment variables
-const inputDir = process.env.WORKSPACE
-  ? `${process.env.WORKSPACE}/data`
-  : "data";
+const inputDir = "data";
 
 const msg = validateInputData(inputDir); // Call the function and store the result in 'msg'
 console.log(msg); // Print the message to the console

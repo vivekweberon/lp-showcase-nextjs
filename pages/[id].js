@@ -14,6 +14,7 @@ import PopupForm from "../components/PopupForm";
 import yaml from "js-yaml";
 import Modal from "../components/Modal";
 import PropTypes from "prop-types";
+import { getPropertyOutputDirectoryName } from "../utils/renameUtils";
 
 const PropertyPage = ({ propertyData }) => {
   const [modalUrl, setModalUrl] = useState(null);
@@ -171,9 +172,12 @@ export async function getStaticPaths() {
     const dataFolderPath = path.join(process.cwd(), "data");
     const files = await fs.readdir(dataFolderPath);
 
-    const paths = files.map((file) => ({
-      params: { id: file },
-    }));
+    const paths = files.map((file) => {
+      const id = getPropertyOutputDirectoryName(file); // Use the function here
+      return {
+        params: { id: id },
+      };
+    });
     console.log("Static paths", paths);
     return {
       paths,

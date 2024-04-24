@@ -1,62 +1,32 @@
----
+---	
+home:
+  youtubeVideoID: DPV2v2-Bh2s
+  menu: Home
 priceAndFeatures:
-  title1: 'Historic Italian Edwardian home in Western Addition, SFO, for RENT'
-  title2: >-
-    Live luxuriously, enjoy high ceilings with shared backyard. Near Divisadero
-    corridor, Walk to UCSF or Japan town.
-  beds: 2 beds + 1 formal dining room
+  title1: 'Italian Edwardian Top Story home in SFO, for RENT'
+  title2: "Live luxuriously, enjoy high ceilings with private deck and shared backyard. Near Divisadero corridor, Walk to UCSF or Japan town."
+  beds: 3 beds + 1 formal dining room
   baths: 1.5 Baths
   homeType: Optional garage parking & storage
-  sqft: 'Building 1,246 sqft'
+  sqft: Building 1,303 sqft
   yearBuilt: 'Year Built: 1911'
-  price: 'Rent: 4,500/month'
+  price: 'Rent: 5,200/month'
   menu: Price & Features
-description:
-  sectionTitle: 'Benefits of RENTING this Windemere Home'
-  content: >
-  
-     * Walking distance to prestigious schools: Dougherty Valley High School, Gail Ranch Middle School & Windemere Ranch Middle School.
-
-     * Lots of natural sunlight with all rooms in one level consisting of spacious living room with fireplace. dining area and two bedrooms and 2 bathrooms.
-
-     * Tastefully upgraded with new designer flooring throughout the house
-
-     * New blinds in all windows and freshly painted to make it "Ready to move-in" condition
-
-     * Lower level has a 2 car garage.
-
-     * Enjoy the community pool and friendly neighbors.
-
-     * Walking distance to hiking trails, bus stop, Walgreens, Safeway and the prestigious LOT in Bishop Ranch featuring shops and entertainment.
-
-     * [Schedule Appointment](https://calendly.com/yourhomesoldguaranteed/tour-400-arlewoodct-sanramon)
 photos:
   menu: Photos
-  urls:
-    - /imgs/39517_eleC_lg.jpg
-    - /imgs/39517_eleC_lg.jpg
-    - /imgs/39517_eleC_lg.jpg
 video:
-  youtubeVideoID: 3nVSG5O_D-M
+  youtubeVideoID: DPV2v2-Bh2s
   menu: Video
 virtualTour:
-  title: '1239 Scott St, San Francisco, CA 94115'
-  matterportID: mYQREqUonJt
+  title: '1241 Scott St, San Francisco, CA 94115'
+  matterportID: enqRSzxhRU5
   menu: Virtual Tour
-propertyPageSectionsOrder:
-  - Virtual Tour
-  - Price & Features
-  - Description
-  - Photos
-  - Video
-  - Realtor
-  - Contact
 homePageData:
-  url: /imgs/39517_eleC_lg.jpg
-  addressLine1: Tracy Hills Residence-2
-  addressLine2: ""
-  bedsAndBaths: ""
-  price: ""
-  pageUrl: /1241
-  sectionTitle: Showcase
+  url: images/A4-1241-Scott-LivingRoom-576x324.jpg
+  addressLine1: 'Impeccable Top story Edwardian home for RENT: 1241 Scott St, SFO.'
+  addressLine2: '3 BR + formal dining & 1.5 bath'
+  bedsAndBaths: '$5,200 per month + optional garage/storage.'
+  price: ''
+  listingPageURL: "/1241"
+  
   
