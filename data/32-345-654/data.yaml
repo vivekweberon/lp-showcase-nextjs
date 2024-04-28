@@ -1,0 +1,29 @@
+---	
+home:
+  youtubeVideoID: s6nIXXw4Ons
+  menu: Home
+priceAndFeatures:
+  title1: '34228 Northwind Ter, Fremont, CA, 94555'
+  title2: '$1,310,000'
+  beds: 3 Beds
+  baths: 2.5 Baths
+  homeType: Single-Home
+  sqft: 'Building 1,527 sq/ft'
+  yearBuilt: 'Year Built: 1990'
+  price: 'HOA: $77/mo'
+  menu: Price & Features
+photos:
+  menu: Photos
+video:
+  youtubeVideoID: s6nIXXw4Ons
+  menu: Video
+showcase:
+  url: 
+  menu: Showcase
+homePageData:
+  url: images/a0-576x324-34228Northwind2020-12-07-16h48m22s151.jpg
+  addressLine1: 'Beautiful contemporary Fremont Home - SOLD!'
+  addressLine2: ''
+  bedsAndBaths: ''
+  price: ''
+  listingPageURL:

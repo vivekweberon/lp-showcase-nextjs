@@ -9,17 +9,21 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
 export default function Home({ parsedHomeData, parsedGlobalData }) {
+  console.log("parsedHomeData", parsedHomeData);
+  console.log("parsedGlobalData", parsedGlobalData);
+
   // Determine which homePageSectionsOrder to use
   const homePageSectionsOrder =
     parsedHomeData.homePageSectionsOrder ||
     parsedGlobalData.homePageSectionsOrder;
+  console.log("homePageSectionsOrder", homePageSectionsOrder);
 
   let menuValues = [];
 
   // Map through the ordered sections and render components accordingly
   const orderedComponents = homePageSectionsOrder.map((section, index) => {
     switch (section) {
-      case "Showcase":
+      case "showcase":
         menuValues.push("Showcase");
         return (
           <Showcase
@@ -28,7 +32,7 @@ export default function Home({ parsedHomeData, parsedGlobalData }) {
             sectionTitle={parsedHomeData.showcase.sectionTitle}
           />
         );
-      case "Realtor":
+      case "realtor":
         menuValues.push("Realtor");
         return (
           <Realtor
@@ -36,7 +40,7 @@ export default function Home({ parsedHomeData, parsedGlobalData }) {
             realtorData={parsedGlobalData.realtor}
           />
         );
-      case "Contact":
+      case "contact":
         menuValues.push("Contact");
         return (
           <Contact
@@ -48,6 +52,8 @@ export default function Home({ parsedHomeData, parsedGlobalData }) {
         return null;
     }
   });
+
+  console.log("ORDEREDCOMPONENTS", orderedComponents);
 
   return (
     <div>

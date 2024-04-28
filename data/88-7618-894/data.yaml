@@ -1,0 +1,35 @@
+---	
+home:
+  youtubeVideoID: _YJk4ObZXIg
+  menu: Home
+priceAndFeatures:
+  title1: Fremont, CA 94536
+  title2: 
+  beds: 3 Beds
+  baths: 3 Baths
+  homeType: Townhouse
+  sqft: Building 1,600 sq/ft
+  yearBuilt: 'Year Built: 2015'
+  price: 'HOA: $40/mo'
+  menu: Price & Features
+photos:
+  menu: Photos
+video:
+  youtubeVideoID: _YJk4ObZXIg
+  menu: Video
+virtualTour:
+  title: Fremont, CA 94536
+  matterportID: AquafMTVuqx
+  menu: Virtual Tour
+showcase:
+  url: 
+  menu: Showcase
+homePageData:
+  url: images/A01-Fremont-Blvd-Townhome-Living-Room-576x324.jpg
+  addressLine1: 'Newly Constructed Home in Fremont'
+  addressLine2: 'Available Now'
+  bedsAndBaths: 'Call for private showing'
+  price: ''
+  listingPageURL:
+  
+  

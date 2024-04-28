@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { basePath } from "@/next.config";
 
 const Showcase = ({ properties, sectionTitle }) => {
-  console.log("Properties", properties);
+  console.log("PropertiesXYXY", properties);
   return (
     <div
       id="showcase"

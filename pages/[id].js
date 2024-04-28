@@ -11,12 +11,14 @@ import Contact from "../components/Contact";
 import Realtor from "../components/Realtor";
 import Description from "../components/Description";
 import PopupForm from "../components/PopupForm";
-import yaml from "js-yaml";
 import Modal from "../components/Modal";
+import yaml from "js-yaml";
 import PropTypes from "prop-types";
-import { getPropertyOutputDirectoryName } from "../utils/renameUtils";
 
-const PropertyPage = ({ propertyData }) => {
+const PropertyPage = ({ propertyData, images }) => {
+  console.log("PROPERTYDATA", propertyData);
+  console.log("IMAGEDATA", images);
+
   const [modalUrl, setModalUrl] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const navbarRef = useRef(null);
@@ -39,27 +41,39 @@ const PropertyPage = ({ propertyData }) => {
     realtor,
     footertext,
     contact,
-    propertyPageSectionsOrder,
     description,
   } = propertyData;
 
+  const defaultOrder = [
+    "virtualTour",
+    "priceAndFeatures",
+    "description",
+    "photos",
+    "video",
+    "contact",
+    "realtor",
+  ];
+
   let menuValues = [];
+
+  const propertyPageSectionsOrder =
+    propertyData.propertyPageSectionsOrder || defaultOrder;
 
   const orderedComponents = propertyPageSectionsOrder.map((section, index) => {
     switch (section) {
-      case "Virtual Tour":
+      case "virtualTour":
         return renderVirtualTour(virtualTour, index);
-      case "Price & Features":
+      case "priceAndFeatures":
         return renderPriceAndFeatures(priceAndFeatures, index);
-      case "Photos":
+      case "photos":
         return renderPhotos(photos, index);
-      case "Video":
+      case "video":
         return renderVideo(video, index);
-      case "Contact":
+      case "contact":
         return renderContact(contact, index);
-      case "Realtor":
+      case "realtor":
         return renderRealtor(realtor, index);
-      case "Description":
+      case "description":
         return renderDescription(description, index);
       default:
         return null;
@@ -94,10 +108,10 @@ const PropertyPage = ({ propertyData }) => {
   function renderPhotos(photos, index) {
     menuValues.push("Photos");
     return (
-      photos?.urls && (
+      photos && (
         <Photos
           key={`photos_${index}`}
-          photoUrls={photos.urls}
+          imageUrls={{ urls: images }} // Pass images as an object with 'urls' property
           navbarRef={navbarRef}
         />
       )
@@ -118,8 +132,8 @@ const PropertyPage = ({ propertyData }) => {
   }
 
   function renderContact(contact, index) {
+    menuValues.push("Contact");
     if (contact && contact.mauticForm.popupForm.enable === false) {
-      menuValues.push("Contact");
       return <Contact contact={contact} key={`contact_${index}`} />;
     } else {
       return <PopupForm contact={contact} key={`popupForm_${index}`} />;
@@ -165,6 +179,11 @@ const PropertyPage = ({ propertyData }) => {
   );
 };
 
+PropertyPage.propTypes = {
+  propertyData: PropTypes.object.isRequired,
+  images: PropTypes.arrayOf(PropTypes.string).isRequired,
+};
+
 export async function getStaticPaths() {
   console.log("Executing getStaticPaths");
 
@@ -172,12 +191,9 @@ export async function getStaticPaths() {
     const dataFolderPath = path.join(process.cwd(), "data");
     const files = await fs.readdir(dataFolderPath);
 
-    const paths = files.map((file) => {
-      const id = getPropertyOutputDirectoryName(file); // Use the function here
-      return {
-        params: { id: id },
-      };
-    });
+    const paths = files.map((file) => ({
+      params: { id: file },
+    }));
     console.log("Static paths", paths);
     return {
       paths,
@@ -209,9 +225,15 @@ export async function getStaticProps(context) {
     const parsedGlobalData = yaml.load(globalData);
     const mergedData = { ...parsedGlobalData, ...parsedData };
 
+    // Read images from the images folder
+    const imagesFolderPath = path.join(process.cwd(), "data", id, "images");
+    const imageFiles = await fs.readdir(imagesFolderPath);
+    const imageUrls = imageFiles.map((fileName) => `/${id}/images/${fileName}`);
+
     return {
       props: {
         propertyData: mergedData,
+        images: imageUrls,
       },
     };
   } catch (error) {
@@ -219,27 +241,10 @@ export async function getStaticProps(context) {
     return {
       props: {
         propertyData: null,
+        images: [],
       },
     };
   }
 }
-
-// Define prop types for PropertyPage component
-PropertyPage.propTypes = {
-  propertyData: PropTypes.shape({
-    priceAndFeatures: PropTypes.object,
-    photos: PropTypes.object,
-    video: PropTypes.object,
-    virtualTour: PropTypes.object,
-    realtor: PropTypes.object,
-    footertext: PropTypes.string,
-    contact: PropTypes.object,
-    propertyPageSectionsOrder: PropTypes.array,
-    description: PropTypes.shape({
-      sectionTitle: PropTypes.string,
-      content: PropTypes.string,
-    }),
-  }),
-};
 
 export default PropertyPage;
