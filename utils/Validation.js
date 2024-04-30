@@ -1,7 +1,5 @@
 const fs = require("fs");
 const yaml = require("js-yaml");
-const yargs = require("yargs");
-const path = require("path");
 
 const LP_GLOBAL_DIR = "global";
 const LP_HOME_DIR = "home";
@@ -10,17 +8,6 @@ const PHOTOS_FOLDER_NAME = "images";
 const GLOBAL_SCHEMA = "schema/global_schema.yaml";
 const HOME_SCHEMA = "schema/home_schema.yaml";
 const PROPERTY_SCHEMA = "schema/property_schema.yaml";
-const PUBLIC_DIR = "../../public"; // Adjust the path as needed
-
-const argv = yargs
-  .option("inputDir", {
-    alias: "i",
-    describe: "Input directory path",
-    demandOption: true,
-    type: "string",
-  })
-  .help()
-  .alias("help", "h").argv;
 
 function validateInputData() {
   let msg = "";
@@ -32,31 +19,37 @@ function validateInputData() {
 
   console.log("Starting validation process...");
   if (!fs.existsSync(inputDir)) {
-    msg += `${++count} Input data directory path provided does not exist \nSolution: Provide the correct input data directory path\n\n`;
+    msg += `${++count} Input data directory path provided does not exists \nSolution: Provide right input data directory path\n\n`;
   } else {
-    if (!fs.existsSync(`${inputDir}/${LP_HOME_DIR}`)) {
-      msg += `${++count} Home directory does not exist \nSolution: Input data directory should contain 'home' directory\n\n`;
+    // Check if home directory exists
+    if (!fs.existsSync(`${LP_HOME_DIR}`)) {
+      msg += `${++count} Home directory does not exists \nSolution: Input data directory should contain 'home' directory\n\n`;
     } else {
-      if (!fs.existsSync(`${inputDir}/${LP_GLOBAL_DIR}`)) {
-        msg += `${++count} Global directory does not exist \nSolution: Input data directory should contain 'global' directory\n\n`;
+      // Check if global directory exists
+      if (!fs.existsSync(`${LP_GLOBAL_DIR}`)) {
+        msg += `${++count} Global directory does not exists \nSolution: Input data directory should contain 'global' directory\n\n`;
       } else {
+        // Check if the directory names are correct
         fs.readdirSync(inputDir).forEach((propertyDir) => {
           if (
             propertyDir != LP_HOME_DIR &&
             propertyDir != LP_GLOBAL_DIR &&
             !/^[0-9][0-9-]+[0-9]$/.test(propertyDir)
           ) {
-            msg += `${++count} '${inputDir}/${propertyDir}' is an invalid File/Directory name.\nSolution: Directory name should be 'global', 'home', or APN of the property\n\n`;
+            msg += `${++count} '${inputDir}/${propertyDir}' is an invalid File/Directory name.\nSolution: Directory name should be 'global', 'home' or APN of the property\n\n`;
           } else {
+            // Check if it is a directory
             if (!fs.lstatSync(`${inputDir}/${propertyDir}`).isDirectory()) {
-              msg += `${++count} '${inputDir}/${propertyDir}' is not a directory \nSolution: Input data directory can only contain 'global', 'home', and property directories\n\n`;
+              msg += `${++count} '${inputDir}/${propertyDir}' is not a directory \nSolution: Input data directory can only contain 'global', 'home' and property directories\n\n`;
             } else {
+              // Check if yaml file exists
               if (
                 !fs.existsSync(`${inputDir}/${propertyDir}/${YAML_FILE_NAME}`)
               ) {
-                msg += `${++count} '${inputDir}/${propertyDir}/${YAML_FILE_NAME}' does not exist \nSolution: '${inputDir}/${propertyDir}/' should contain '${YAML_FILE_NAME}' file\n\n`;
+                msg += `${++count} '${inputDir}/${propertyDir}/${YAML_FILE_NAME}' does not exists \nSolution: '${inputDir}/${propertyDir}/' should contain '${YAML_FILE_NAME}' file\n\n`;
               }
 
+              // Check if the file and directory names are correct
               fs.readdirSync(`${inputDir}/${propertyDir}`).forEach(
                 (subFile) => {
                   if (subFile == PHOTOS_FOLDER_NAME) {
@@ -70,15 +63,17 @@ function validateInputData() {
                       fs.readdirSync(
                         `${inputDir}/${propertyDir}/${subFile}`
                       ).forEach((image) => {
-                        if (!/[.jpg|.JPG|.JPEG|.jpeg|.png|.PNG]$/.test(image)) {
+                        if (
+                          !/[\.jpg|\.JPG|\.JPEG|\.jpeg|\.png|\.PNG]$/.test(
+                            image
+                          )
+                        ) {
                           msg += `${++count} '${inputDir}/${propertyDir}/${subFile}/${image}' is an invalid image file \nSolution: Allowed image formats are JPG and PNG\n\n`;
                         }
                       });
-                      const source = `${inputDir}/${propertyDir}/${subFile}`;
-                      const destination = `${PUBLIC_DIR}/${propertyDir}/${subFile}`;
-                      moveFolder(source, destination);
                     }
                   } else if (subFile == YAML_FILE_NAME) {
+                    // Validate YAML
                     if (`${propertyDir}` == LP_GLOBAL_DIR) {
                       if (globalKeys == undefined) {
                         globalKeys = getKeyValueMapFromYAML(GLOBAL_SCHEMA);
@@ -111,9 +106,11 @@ function validateInputData() {
                           ) &&
                           !result.value[0].includes("homePageSectionsOrder.")
                         ) {
+                          // Validate property name
                           if (!schemaKeys.has(result.value[0])) {
                             msg += `${++count} '${result.value[0]}' is not a valid property name in the file '${inputDir}/${propertyDir}/${subFile}'\n\n`;
                           } else {
+                            // Validate property type
                             schemaType = schemaKeys.get(result.value[0]).type;
                             schemaType =
                               schemaType == undefined ? "object" : schemaType;
@@ -143,7 +140,7 @@ function validateInputData() {
     }
   }
   console.log("Validation process completed.");
-  return msg;
+  return msg; // Return the message
 }
 
 function getKeyValueMapFromYAML(filePath) {
@@ -179,13 +176,7 @@ function getAllKeysAndValues(inputData, keys = new Map(), ref = "") {
   return allKeys;
 }
 
-function moveFolder(source, destination) {
-  fs.mkdirSync(path.dirname(destination), { recursive: true });
-  fs.renameSync(source, destination);
-  console.log(`Moved '${source}' to '${destination}'`);
-}
-
-const inputDir = argv.inputDir;
+const inputDir = "data";
 
 const msg = validateInputData(inputDir);
 console.log(msg);

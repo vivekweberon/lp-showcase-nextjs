@@ -14,6 +14,7 @@ import PopupForm from "../components/PopupForm";
 import Modal from "../components/Modal";
 import yaml from "js-yaml";
 import PropTypes from "prop-types";
+import { getPropertyOutputDirectoryName } from "../utils/renameUtils";
 
 const PropertyPage = ({ propertyData, images }) => {
   console.log("PROPERTYDATA", propertyData);
@@ -192,7 +193,7 @@ export async function getStaticPaths() {
     const files = await fs.readdir(dataFolderPath);
 
     const paths = files.map((file) => ({
-      params: { id: file },
+      params: { id: getPropertyOutputDirectoryName(file) }, // Convert the ID using getPropertyOutputDirectoryName
     }));
     console.log("Static paths", paths);
     return {
@@ -212,7 +213,10 @@ export async function getStaticProps(context) {
   console.log("Executing getStaticProps");
   const { id } = context.params;
 
-  const filePath = path.join(process.cwd(), "data", id, "data.yaml");
+  // Convert back to the original input directory ID
+  const originalId = getPropertyOutputDirectoryName(id); // Reverse the conversion
+
+  const filePath = path.join(process.cwd(), "data", originalId, "data.yaml");
   console.log("FilePath", filePath);
 
   try {
@@ -226,9 +230,16 @@ export async function getStaticProps(context) {
     const mergedData = { ...parsedGlobalData, ...parsedData };
 
     // Read images from the images folder
-    const imagesFolderPath = path.join(process.cwd(), "data", id, "images");
+    const imagesFolderPath = path.join(
+      process.cwd(),
+      "data",
+      originalId,
+      "images"
+    );
     const imageFiles = await fs.readdir(imagesFolderPath);
-    const imageUrls = imageFiles.map((fileName) => `/${id}/images/${fileName}`);
+    const imageUrls = imageFiles.map(
+      (fileName) => `/${originalId}/images/${fileName}`
+    );
 
     return {
       props: {
