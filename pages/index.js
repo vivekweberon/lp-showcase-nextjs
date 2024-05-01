@@ -7,6 +7,7 @@ import Realtor from "@/components/Realtor";
 import Contact from "@/components/Contact";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { getPropertyOutputDirectoryName } from "../utils/renameUtils";
 
 export default function Home({ parsedHomeData, parsedGlobalData }) {
   console.log("parsedHomeData", parsedHomeData);
@@ -83,6 +84,8 @@ export async function getStaticProps() {
     const dataFolderPath = path.join(process.cwd(), "data");
     const propertyFolders = await fs.promises.readdir(dataFolderPath);
 
+    console.log("PROPERTYFOLDERS", propertyFolders);
+
     const propertiesData = [];
 
     for (const folder of propertyFolders) {
@@ -93,10 +96,19 @@ export async function getStaticProps() {
       if (fs.existsSync(dataYamlPath)) {
         const propertyData = await fs.promises.readFile(dataYamlPath, "utf-8");
         const parsedData = yaml.load(propertyData);
+
+        // Use getPropertyOutputDirectoryName on the folder name to get the listingPageURL
+        const listingPageURL = getPropertyOutputDirectoryName(folder);
+
+        // Append listingPageURL to the property data
+        parsedData.homePageData.listingPageURL = listingPageURL;
+
         // Extract homePageData and store it in propertiesData
         propertiesData.push(parsedData.homePageData);
       }
     }
+
+    console.log("PROPERTIESDATA", propertiesData);
 
     // Update home data.yaml with properties data
     parsedHomeData.showcase.properties = propertiesData;

@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { basePath } from "@/next.config";
+import { getPropertyOutputDirectoryName } from "../utils/renameUtils";
 
 const Showcase = ({ properties, sectionTitle }) => {
   console.log("PropertiesXYXY", properties);
@@ -27,7 +28,11 @@ const Showcase = ({ properties, sectionTitle }) => {
           >
             <div className="card">
               <img
-                src={basePath + property.url}
+                src={
+                  getPropertyOutputDirectoryName(property.listingPageURL) +
+                  "/" +
+                  property.url
+                }
                 alt="Property"
                 className="card-img-top"
                 style={{ objectFit: "contain", width: "100%" }}
@@ -41,8 +46,8 @@ const Showcase = ({ properties, sectionTitle }) => {
                   </div>
                   <div style={{ fontWeight: "lighter" }}>{property.price}</div>
                   <a
-                    href={basePath + property.listingPageURL}
-                    style={{ textDecoration: "underline" }}
+                    href={basePath + "/" + property.listingPageURL}
+                    style={{ textDecoration: "underline" }} // Assuming getPropertyOutputDirectoryName returns the correct path
                   >
                     Learn More
                   </a>
