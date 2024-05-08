@@ -4,6 +4,8 @@ import { basePath } from "@/next.config";
 import PropTypes from "prop-types";
 
 const Photos = ({ navbarRef, imageUrls }) => {
+  console.log("PhotoURLS", imageUrls);
+
   const [carouselHeight, setCarouselHeight] = useState();
   const [imageWidth, setImageWidth] = useState();
 
@@ -33,7 +35,6 @@ const Photos = ({ navbarRef, imageUrls }) => {
     };
   }, [navbarRef]);
 
-  // console.log("PhotoURLS", photoUrls);
   return (
     <div
       id="photos"
