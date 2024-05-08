@@ -18,16 +18,17 @@ function validateInputData() {
   let schemaKeys;
 
   console.log("Starting validation process...");
+
   if (!fs.existsSync(inputDir)) {
     msg += `${++count} Input data directory path provided does not exists \nSolution: Provide right input data directory path\n\n`;
   } else {
     // Check if home directory exists
     if (!fs.existsSync(`${LP_HOME_DIR}`)) {
-      msg += `${++count} Home directory does not exists \nSolution: Input data directory should contain 'home' directory\n\n`;
+      msg += `${++count} Home directory does not exist \nSolution: Input data directory should contain 'home' directory\n\n`;
     } else {
       // Check if global directory exists
       if (!fs.existsSync(`${LP_GLOBAL_DIR}`)) {
-        msg += `${++count} Global directory does not exists \nSolution: Input data directory should contain 'global' directory\n\n`;
+        msg += `${++count} Global directory does not exist \nSolution: Input data directory should contain 'global' directory\n\n`;
       } else {
         // Check if the directory names are correct
         fs.readdirSync(inputDir).forEach((propertyDir) => {
@@ -46,7 +47,7 @@ function validateInputData() {
               if (
                 !fs.existsSync(`${inputDir}/${propertyDir}/${YAML_FILE_NAME}`)
               ) {
-                msg += `${++count} '${inputDir}/${propertyDir}/${YAML_FILE_NAME}' does not exists \nSolution: '${inputDir}/${propertyDir}/' should contain '${YAML_FILE_NAME}' file\n\n`;
+                msg += `${++count} '${inputDir}/${propertyDir}/${YAML_FILE_NAME}' does not exist \nSolution: '${inputDir}/${propertyDir}/' should contain '${YAML_FILE_NAME}' file\n\n`;
               }
 
               // Check if the file and directory names are correct
@@ -139,8 +140,13 @@ function validateInputData() {
       }
     }
   }
+
+  if (msg) {
+    console.error(msg); // Log error message
+    process.exit(1); // Exit with non-zero status
+  }
+
   console.log("Validation process completed.");
-  return msg; // Return the message
 }
 
 function getKeyValueMapFromYAML(filePath) {
@@ -178,5 +184,4 @@ function getAllKeysAndValues(inputData, keys = new Map(), ref = "") {
 
 const inputDir = "data";
 
-const msg = validateInputData(inputDir);
-console.log(msg);
+validateInputData(inputDir);
