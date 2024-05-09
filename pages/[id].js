@@ -45,96 +45,92 @@ const PropertyPage = ({ propertyData, images }) => {
     description,
   } = propertyData;
 
-  const defaultOrder = [
-    "virtualTour",
-    "priceAndFeatures",
-    "description",
-    "photos",
-    "video",
-    "contact",
-    "realtor",
-  ];
-
   let menuValues = [];
 
-  const propertyPageSectionsOrder =
-    propertyData.propertyPageSectionsOrder || defaultOrder;
+  const propertyPageSectionsOrder = propertyData.propertyPageSectionsOrder;
 
-  const orderedComponents = propertyPageSectionsOrder.map((section, index) => {
-    switch (section) {
-      case "virtualTour":
-        return renderVirtualTour(virtualTour, index);
-      case "priceAndFeatures":
-        return renderPriceAndFeatures(priceAndFeatures, index);
-      case "photos":
-        return renderPhotos(photos, index);
-      case "video":
-        return renderVideo(video, index);
-      case "contact":
-        return renderContact(contact, index);
-      case "realtor":
-        return renderRealtor(realtor, index);
-      case "description":
-        return renderDescription(description, index);
-      default:
-        return null;
-    }
-  });
+  const orderedComponents = propertyPageSectionsOrder
+    ? propertyPageSectionsOrder.map((section, index) => {
+        switch (section) {
+          case "virtualTour":
+            return renderVirtualTour(virtualTour, index);
+          case "priceAndFeatures":
+            return renderPriceAndFeatures(priceAndFeatures, index);
+          case "photos":
+            return renderPhotos(photos, index);
+          case "video":
+            return renderVideo(video, index);
+          case "contact":
+            return renderContact(contact, index);
+          case "realtor":
+            return renderRealtor(realtor, index);
+          case "description":
+            return renderDescription(description, index);
+          default:
+            return null;
+        }
+      })
+    : [
+        renderVirtualTour(virtualTour, 0),
+        renderPriceAndFeatures(priceAndFeatures, 1),
+        renderPhotos(photos, 2),
+        renderVideo(video, 3),
+        renderContact(contact, 4),
+        renderRealtor(realtor, 5),
+        renderDescription(description, 6),
+      ];
 
   function renderVirtualTour(virtualTour, index) {
+    if (!virtualTour) return null;
     menuValues.push("Virtual Tour");
     return (
-      virtualTour && (
-        <VirtualTour
-          key={`virtualTour_${index}`}
-          virtualTour={virtualTour}
-          navbarRef={navbarRef}
-        />
-      )
+      <VirtualTour
+        key={`virtualTour_${index}`}
+        virtualTour={virtualTour}
+        navbarRef={navbarRef}
+      />
     );
   }
 
   function renderPriceAndFeatures(priceAndFeatures, index) {
+    if (!priceAndFeatures) return null;
     menuValues.push("Price & Features");
     return (
-      priceAndFeatures && (
-        <PriceAndFeatures
-          key={`priceAndFeatures_${index}`}
-          priceAndFeatures={priceAndFeatures}
-        />
-      )
+      <PriceAndFeatures
+        key={`priceAndFeatures_${index}`}
+        priceAndFeatures={priceAndFeatures}
+      />
     );
   }
 
   function renderPhotos(photos, index) {
+    if (!photos) return null;
     menuValues.push("Photos");
     return (
-      photos && (
-        <Photos
-          key={`photos_${index}`}
-          imageUrls={{ urls: images }} // Pass images as an object with 'urls' property
-          navbarRef={navbarRef}
-        />
-      )
+      <Photos
+        key={`photos_${index}`}
+        imageUrls={{ urls: images }} // Pass images as an object with 'urls' property
+        navbarRef={navbarRef}
+      />
     );
   }
 
   function renderVideo(video, index) {
+    if (!video?.youtubeVideoID) return null;
     menuValues.push("Video");
     return (
-      video?.youtubeVideoID && (
-        <Video
-          key={`video_${index}`}
-          youtubeVideoID={video.youtubeVideoID}
-          navbarRef={navbarRef}
-        />
-      )
+      <Video
+        key={`video_${index}`}
+        youtubeVideoID={video.youtubeVideoID}
+        navbarRef={navbarRef}
+      />
     );
   }
 
   function renderContact(contact, index) {
+    if (!contact) return null;
     menuValues.push("Contact");
-    if (contact && contact.mauticForm.popupForm.enable === false) {
+    if (contact.mauticForm.popupForm.enable === false) {
       return <Contact contact={contact} key={`contact_${index}`} />;
     } else {
       return <PopupForm contact={contact} key={`popupForm_${index}`} />;
@@ -142,24 +138,21 @@ const PropertyPage = ({ propertyData, images }) => {
   }
 
   function renderRealtor(realtor, index) {
+    if (!realtor) return null;
     menuValues.push("Realtor");
-    return (
-      realtor && <Realtor key={`realtor_${index}`} realtorData={realtor} />
-    );
+    return <Realtor key={`realtor_${index}`} realtorData={realtor} />;
   }
 
   function renderDescription(description, index) {
+    if (!description?.sectionTitle || !description.content) return null;
     menuValues.push("Description");
     return (
-      description?.sectionTitle &&
-      description.content && (
-        <Description
-          key={`description_${index}`}
-          sectionTitle={description.sectionTitle}
-          content={description.content}
-          onLinkClick={handleLinkClick}
-        />
-      )
+      <Description
+        key={`description_${index}`}
+        sectionTitle={description.sectionTitle}
+        content={description.content}
+        onLinkClick={handleLinkClick}
+      />
     );
   }
 

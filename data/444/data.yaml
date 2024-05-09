@@ -1,0 +1,33 @@
+---	
+home:
+  youtubeVideoID: g1i0SGvp-T8
+  menu: Home
+priceAndFeatures:
+  title1: 'Tracy Hills Residence-4'
+  title2: '$1,062,880'
+  beds: 5 Beds
+  baths: 3.5 Baths
+  homeType: Single-Home
+  sqft: 'Building 4,100 sq/ft'
+  yearBuilt: 'Year Built: 2021'
+  price: 'HOA: $77/mon' 
+  menu: Price & Features
+photos:
+  menu: Photos
+video:
+  youtubeVideoID: g1i0SGvp-T8
+  menu: Video
+virtualTour:
+  title: 'Tracy Hills Residence-4'
+  matterportID: cRdhqTMC6wH&mls=2&brand=0&hr=0&gt=0&dh=0&help=2&qs=1&title=0&portal=0
+  menu: Virtual Tour
+showcase:
+  url: 
+  menu: Showcase
+homePageData:
+  url: images/PLAN4IMG01-Home.jpg
+  addressLine1: 'Tracy Hills Residence-4'
+  addressLine2: ''
+  bedsAndBaths: ''
+  price: ''
+  listingPageURL:

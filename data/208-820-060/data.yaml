@@ -1,0 +1,29 @@
+---
+home:
+  menu: Home
+priceAndFeatures:
+  title1: 'Sip your coffee and watch the Sun rise in San Ramon!'
+  title2: "This beautiful home sits on a 7,570 sq.ft premium corner lot with a stunning panoramic view. Lots of windows bring in abundant natural light. A large kitchen featuring granite countertop and island, walk-in pantry, and stainless steel appliances. One bedroom and full bathroom in the ground floor. Master bedroom has a balcony to enjoy the panoramic view. Tankless water heater, solar that is owned and only minutes away from Costco and Home Depot in San Ramon. Clubhouse and swimming pool for the exclusive use of residents in this community."
+  beds: 4 Beds
+  baths: 3 Baths
+  homeType: Single Family Residence
+  sqft: Building 2,456 sq.ft on 7,570 sq.ft lot
+  yearBuilt: 'Year Built: 2019'
+  price: 'HOA: $180/mo'
+  menu: Price & Features
+photos:
+  menu: Photos
+virtualTour:
+  title: 518 Caprio Ct, San Ramon, CA 94583
+  matterportID: rrbAygC4Lxs
+  menu: Virtual Tour
+showcase:
+  url: 
+  menu: Showcase
+homePageData:
+  url: images/01-Living-Room.jpg
+  addressLine1: 'Panoramic sunrise in San Ramon!'
+  addressLine2: ''
+  bedsAndBaths: '4 bedroom 3 bath, 2,456 sq.ft on 7,570 sq.ft lot, HOA is $180/month.'
+  price: ''
+  listingPageURL:
