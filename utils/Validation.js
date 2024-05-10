@@ -1,10 +1,5 @@
 const fs = require("fs");
 const yaml = require("js-yaml");
-const path = require("path");
-const { promisify } = require("util");
-
-const mkdir = promisify(fs.mkdir);
-const copyFile = promisify(fs.copyFile);
 
 const LP_GLOBAL_DIR = "global";
 const LP_HOME_DIR = "home";
@@ -13,9 +8,8 @@ const PHOTOS_FOLDER_NAME = "images";
 const GLOBAL_SCHEMA = "schema/global_schema.yaml";
 const HOME_SCHEMA = "schema/home_schema.yaml";
 const PROPERTY_SCHEMA = "schema/property_schema.yaml";
-const PUBLIC_DIR = "public";
 
-async function validateInputData() {
+function validateInputData() {
   let msg = "";
   let count = 0;
   let globalKeys;
@@ -25,21 +19,19 @@ async function validateInputData() {
 
   console.log("Starting validation process...");
 
-  const inputDir = "data";
-
   if (!fs.existsSync(inputDir)) {
     msg += `${++count} Input data directory path provided does not exists \nSolution: Provide right input data directory path\n\n`;
   } else {
     // Check if home directory exists
-    if (!fs.existsSync(`${inputDir}/${LP_HOME_DIR}`)) {
+    if (!fs.existsSync(`${LP_HOME_DIR}`)) {
       msg += `${++count} Home directory does not exist \nSolution: Input data directory should contain 'home' directory\n\n`;
     } else {
       // Check if global directory exists
-      if (!fs.existsSync(`${inputDir}/${LP_GLOBAL_DIR}`)) {
+      if (!fs.existsSync(`${LP_GLOBAL_DIR}`)) {
         msg += `${++count} Global directory does not exist \nSolution: Input data directory should contain 'global' directory\n\n`;
       } else {
         // Check if the directory names are correct
-        fs.readdirSync(inputDir).forEach(async (propertyDir) => {
+        fs.readdirSync(inputDir).forEach((propertyDir) => {
           if (
             propertyDir != LP_HOME_DIR &&
             propertyDir != LP_GLOBAL_DIR &&
@@ -60,7 +52,7 @@ async function validateInputData() {
 
               // Check if the file and directory names are correct
               fs.readdirSync(`${inputDir}/${propertyDir}`).forEach(
-                async (subFile) => {
+                (subFile) => {
                   if (subFile == PHOTOS_FOLDER_NAME) {
                     if (
                       !fs
@@ -154,37 +146,7 @@ async function validateInputData() {
     process.exit(1); // Exit with non-zero status
   }
 
-  // If validation is successful, copy folders into the public directory
-  console.log(
-    "Validation process completed. Copying folders to public directory..."
-  );
-  await copyFoldersToPublic(inputDir);
-  console.log("Folders copied successfully.");
-}
-
-async function copyFoldersToPublic(inputDir) {
-  const propertyDirectories = fs
-    .readdirSync(inputDir)
-    .filter(
-      (item) =>
-        item != LP_HOME_DIR &&
-        item != LP_GLOBAL_DIR &&
-        /^[0-9][0-9-]+[0-9]$/.test(item)
-    );
-
-  for (const propertyDir of propertyDirectories) {
-    const source = path.join(inputDir, propertyDir);
-    const destination = path.join(PUBLIC_DIR, propertyDir);
-
-    // Make sure the destination directory exists
-    await mkdir(destination, { recursive: true });
-
-    // Copy files from source to destination
-    const files = fs.readdirSync(source);
-    for (const file of files) {
-      await copyFile(path.join(source, file), path.join(destination, file));
-    }
-  }
+  console.log("Validation process completed.");
 }
 
 function getKeyValueMapFromYAML(filePath) {
@@ -220,4 +182,6 @@ function getAllKeysAndValues(inputData, keys = new Map(), ref = "") {
   return allKeys;
 }
 
-validateInputData();
+const inputDir = "data";
+
+validateInputData(inputDir);
