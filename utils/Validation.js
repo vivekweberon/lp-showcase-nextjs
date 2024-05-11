@@ -34,7 +34,7 @@ function validateInputData() {
         console.log("Global directory exists.");
         //checking if the directory names are correct
         fs.readdirSync(inputDir).forEach((propertyDir) => {
-          if (!/^[0-9][0-9-]+[0-9]$/.test(propertyDir)) {
+          if (!/^[0]$/.test(propertyDir)) {
             msg += `${++count} '${inputDir}/${propertyDir}' Invalid property name`;
           } else {
             console.log(`Property directory '${propertyDir}' is valid.`);

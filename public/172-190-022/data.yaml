@@ -1,0 +1,30 @@
+---	
+home:
+  youtubeVideoID: dvpLvbMNk40
+  menu: Home
+priceAndFeatures:
+  title1: '2600 Jones Rd, #22, Walnut Creek, CA 94597'
+  title2: 
+  beds: 3 Beds
+  baths: 2 Baths
+  homeType: Condo
+  sqft: Building 1,088 sq/ft
+  yearBuilt: 'Year Built: 1963'
+  price: 'HOA: $410/mo'
+  menu: Price & Features
+photos:
+  menu: Photos
+video:
+  youtubeVideoID: dvpLvbMNk40
+  menu: Video
+showcase:
+  url: 
+  menu: Showcase
+homePageData:
+  url: images/Walnut-Creek-Home-near-BART.jpg
+  addressLine1: 'Walnut Creek Home near BART'
+  addressLine2: ''
+  bedsAndBaths: ''
+  price: ''
+  listingPageURL:
+  

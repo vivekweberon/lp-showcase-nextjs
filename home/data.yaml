@@ -1,0 +1,5 @@
+showcase:
+  menu: Showcase
+  properties:
+  sectionTitle: Showcase
+homePageSectionsOrder: [description, showcase, contact, realtor]

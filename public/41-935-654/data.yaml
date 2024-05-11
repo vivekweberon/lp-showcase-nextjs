@@ -1,0 +1,29 @@
+---	
+home:
+  youtubeVideoID: hwQnmiIKjPs
+  menu: Home
+priceAndFeatures:
+  title1: '34157 Donahue Ter, Fremont, CA, 94555'
+  title2: '$1,620,000'
+  beds: 4 Beds
+  baths: 3 Baths
+  homeType: Single-Home
+  sqft: 'Building 2,102 sq/ft'
+  yearBuilt: 'Year Built: 1990'
+  price: 'HOA: $77/mo'
+  menu: Price & Features
+photos:
+  menu: Photos
+video:
+  youtubeVideoID: hwQnmiIKjPs
+  menu: Video
+showcase:
+  url: 
+  menu: Showcase
+homePageData:
+  url: images/a0-34157Donahue2020-12-07-12h10m41s905.jpg
+  addressLine1: 'Stunning Ardenwood Home - SOLD!'
+  addressLine2: ''
+  bedsAndBaths: ''
+  price: ''
+  listingPageURL:

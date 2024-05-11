@@ -1,0 +1,30 @@
+---	
+home:
+  youtubeVideoID: qxWvpSkVY_8
+  menu: Home
+priceAndFeatures:
+  title1: '34343 Tupelo St, Fremont, CA, 94555'
+  title2: '$1,480,000'
+  beds: 4 Beds
+  baths: 2.5 Baths
+  homeType: Single-Home
+  sqft: 'Building 1,782 sq/ft'
+  yearBuilt: 'Year Built: 1991'
+  price: 'HOA: $40/mo'
+  menu: Price & Features
+photos:
+  menu: Photos
+video:
+  youtubeVideoID: qxWvpSkVY_8
+  menu: Video
+showcase:
+  url: 
+  menu: Showcase
+homePageData:
+  url: images/b4-576x32434343Tupelo2020-12-15-20h14m45s682.jpg
+  addressLine1: 'Gorgeous, Radiant Ardenwood Home - SOLD!'
+  addressLine2: ''
+  bedsAndBaths: ''
+  price: ''
+  listingPageURL:
+propertyPageSectionsOrder: [priceAndFeatures, description, contact, virtualTour, realtor]  
