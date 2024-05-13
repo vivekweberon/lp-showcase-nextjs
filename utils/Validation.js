@@ -1,5 +1,17 @@
 const fs = require("fs");
 const yaml = require("js-yaml");
+const yargs = require("yargs");
+
+// Command-line arguments configuration
+const argv = yargs.option("inputDir", {
+  alias: "i",
+  description: "Input data directory path",
+  type: "string",
+  demandOption: true, // Require input directory path
+}).argv;
+
+// Extract input directory path from command-line arguments
+const inputDir = argv.inputDir;
 
 const LP_GLOBAL_DIR = "global";
 const LP_HOME_DIR = "home";
@@ -8,7 +20,6 @@ const PHOTOS_FOLDER_NAME = "images";
 const GLOBAL_SCHEMA = "schema/global_schema.yaml";
 const HOME_SCHEMA = "schema/home_schema.yaml";
 const PROPERTY_SCHEMA = "schema/property_schema.yaml";
-const inputDir = "data";
 
 function validateInputData() {
   let msg = "";

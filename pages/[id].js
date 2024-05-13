@@ -230,9 +230,7 @@ export async function getStaticProps(context) {
       "images"
     );
     const imageFiles = await fs.readdir(imagesFolderPath);
-    const imageUrls = imageFiles.map(
-      (fileName) => `/${originalId}/images/${fileName}`
-    );
+    const imageUrls = imageFiles.map((fileName) => `/${id}/images/${fileName}`);
 
     return {
       props: {

@@ -17,8 +17,8 @@ function MyNavbar({ navbar, forwardedRef }) {
       <Navbar.Toggle aria-controls="navbar-nav" />
       <Navbar.Collapse id="navbar-nav" className="justify-content-center">
         <Nav>
-          {navbar.map((item) => (
-            <Nav.Link key={item.id} href={`#${item.toLowerCase()}`}>
+          {navbar.map((item, index) => (
+            <Nav.Link key={index} href={`#${item.toLowerCase()}`}>
               {item}
             </Nav.Link>
           ))}
