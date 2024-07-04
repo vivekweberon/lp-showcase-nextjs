@@ -14,55 +14,55 @@ const MyDocument = () => (
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
         crossOrigin="anonymous"
       />
-      <script src={`${basePath}/js/areacodes.json`}></script>
+      <script src={`/js/areacodes.json`}></script>
       <script
         type="text/javascript"
-        src={`${basePath}/js/rb-config.js`}
+        src={`/js/rb-config.js`}
         //onError="logResourceLoadError(this)"
       ></script>
       <script
         type="text/javascript"
-        src={`${basePath}/js/logger.js`}
+        src={`/js/logger.js`}
         //onError="logResourceLoadError(this)"
       ></script>
       <script
-        src={`${basePath}/js/jquery-3.5.1.min.js`}
+        src={`/js/jquery-3.5.1.min.js`}
         //onError="logResourceLoadError(this)"
       ></script>
       <script
         type="text/javascript"
-        src={`${basePath}/js/jwt-decode.js`}
+        src={`/js/jwt-decode.js`}
         //onError="logResourceLoadError(this)"
       ></script>
 
       <script
         type="text/javascript"
-        src={`${basePath}/js/tracker-config.js`}
+        src={`/js/tracker-config.js`}
         //onError="logResourceLoadError(this)"
       ></script>
       <script
         type="text/javascript"
-        src={`${basePath}/js/showcase.js`}
+        src={`/js/showcase.js`}
         //onError="logResourceLoadError(this)"
       ></script>
       <script
         type="text/javascript"
-        src={`${basePath}/js/tracker-util.js`}
+        src={`/js/tracker-util.js`}
         //onError="logResourceLoadError(this)"
       ></script>
       <script
         type="text/javascript"
-        src={`${basePath}/js/tracker.js`}
+        src={`/js/tracker.js`}
         //onError="logResourceLoadError(this)"
       ></script>
       <script
         type="text/javascript"
-        src={`${basePath}/js/showdown-1.9.1.min.js`}
+        src={`/js/showdown-1.9.1.min.js`}
         //onError="logResourceLoadError(this)"
       ></script>
       <script
         type="text/javascript"
-        src={`${basePath}/js/inline-script.js`}
+        src={`/js/inline-script.js`}
         //onError="logResourceLoadError(this)"
       ></script>
       <script
