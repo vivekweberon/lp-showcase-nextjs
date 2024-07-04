@@ -1,3 +1,4 @@
+import { basePath } from "@/next.config";
 import { Html, Head, Main, NextScript } from "next/document";
 import React from "react";
 const MyDocument = () => (
@@ -13,55 +14,55 @@ const MyDocument = () => (
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
         crossOrigin="anonymous"
       />
-      <script src="/lp-showcase/js/areacodes.json"></script>
+      <script src={`${basePath}/js/areacodes.json`}></script>
       <script
         type="text/javascript"
-        src="/lp-showcase/js/rb-config.js"
+        src={`${basePath}/js/rb-config.js`}
         //onError="logResourceLoadError(this)"
       ></script>
       <script
         type="text/javascript"
-        src="/lp-showcase/js/logger.js"
+        src={`${basePath}/js/logger.js`}
         //onError="logResourceLoadError(this)"
       ></script>
       <script
-        src="/lp-showcase/js/jquery-3.5.1.min.js"
+        src={`${basePath}/js/jquery-3.5.1.min.js`}
         //onError="logResourceLoadError(this)"
       ></script>
       <script
         type="text/javascript"
-        src="/lp-showcase/js/jwt-decode.js"
+        src={`${basePath}/js/jwt-decode.js`}
         //onError="logResourceLoadError(this)"
       ></script>
 
       <script
         type="text/javascript"
-        src="/lp-showcase/js/tracker-config.js"
+        src={`${basePath}/js/tracker-config.js`}
         //onError="logResourceLoadError(this)"
       ></script>
       <script
         type="text/javascript"
-        src="/lp-showcase/js/showcase.js"
+        src={`${basePath}/js/showcase.js`}
         //onError="logResourceLoadError(this)"
       ></script>
       <script
         type="text/javascript"
-        src="/lp-showcase/js/tracker-util.js"
+        src={`${basePath}/js/tracker-util.js`}
         //onError="logResourceLoadError(this)"
       ></script>
       <script
         type="text/javascript"
-        src="/lp-showcase/js/tracker.js"
+        src={`${basePath}/js/tracker.js`}
         //onError="logResourceLoadError(this)"
       ></script>
       <script
         type="text/javascript"
-        src="/lp-showcase/js/showdown-1.9.1.min.js"
+        src={`${basePath}/js/showdown-1.9.1.min.js`}
         //onError="logResourceLoadError(this)"
       ></script>
       <script
         type="text/javascript"
-        src="/lp-showcase/js/inline-script.js"
+        src={`${basePath}/js/inline-script.js`}
         //onError="logResourceLoadError(this)"
       ></script>
       <script

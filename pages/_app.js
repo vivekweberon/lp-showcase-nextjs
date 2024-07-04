@@ -6,7 +6,9 @@ import "../styles/globals.css";
 function MyApp({ Component, pageProps }) {
   return (
     <>
-      <Head></Head>
+      <Head>
+        {/* <script src="/lp-showcase/js/areacodes.json"></script> */}
+      </Head>
       <Component {...pageProps} />
     </>
   );
