@@ -47,7 +47,7 @@ const Showcase = ({ properties, sectionTitle }) => {
                   <div style={{ fontWeight: "lighter" }}>{property.price}</div>
                   <a
                     href={basePath + "/" + property.listingPageURL}
-                    style={{ textDecoration: "underline" }} // Assuming getPropertyOutputDirectoryName returns the correct path
+                    style={{ textDecoration: "underline" }}
                   >
                     Learn More
                   </a>
