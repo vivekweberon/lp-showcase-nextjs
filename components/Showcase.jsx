@@ -28,11 +28,7 @@ const Showcase = ({ properties, sectionTitle }) => {
           >
             <div className="card">
               <img
-                src={
-                  getPropertyOutputDirectoryName(property.listingPageURL) +
-                  "/" +
-                  property.url
-                }
+                src={property.listingPageURL + "/" + property.url}
                 alt="Property"
                 className="card-img-top"
                 style={{ objectFit: "contain", width: "100%" }}
