@@ -39,7 +39,7 @@ const MAUTIC_SRC_CONFIG = {
   "ns-blue-weberealty.thrivebrokers.com":
     "https://leads-blue-weberealty.thrivebrokers.com",
   localhost: "https://leads-blue-weberealty.thrivebrokers.com",
-  "https://lp-showcase-final-repo.pages.dev":
+  "lp-showcase-final-repo.pages.dev":
     "https://leads-blue-weberealty.thrivebrokers.com",
 };
 
