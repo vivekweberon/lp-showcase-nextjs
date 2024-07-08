@@ -41,6 +41,7 @@ export default function Home({ parsedHomeData, parsedGlobalData }) {
   console.log("parsedGlobalData", parsedGlobalData);
 
   const title = parsedHomeData.showcase.sectionTitle;
+  const menus = parsedHomeData.showcase.menu;
   const homePageSectionsOrder = parsedHomeData.homePageSectionsOrder ||
     parsedGlobalData.homePageSectionsOrder || [
       "description",
@@ -56,7 +57,7 @@ export default function Home({ parsedHomeData, parsedGlobalData }) {
     switch (section) {
       case "showcase":
       case title:
-        menuValues.push(title || "Showcase");
+        menuValues.push(menus);
         return (
           <Showcase
             key={`showcase_${index}`}
