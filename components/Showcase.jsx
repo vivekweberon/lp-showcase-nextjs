@@ -3,11 +3,11 @@ import PropTypes from "prop-types";
 import { basePath } from "@/next.config";
 import { getPropertyOutputDirectoryName } from "../utils/renameUtils";
 
-const Showcase = ({ properties, sectionTitle }) => {
+const Showcase = ({ properties, sectionTitle, navbarMenu }) => {
   console.log("PropertiesXYXY", properties);
   return (
     <div
-      id="showcase"
+      id={`${navbarMenu.toLowerCase()}`}
       className="container-fluid"
       style={{
         paddingTop: "50px",

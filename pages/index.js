@@ -63,6 +63,7 @@ export default function Home({ parsedHomeData, parsedGlobalData }) {
             key={`showcase_${index}`}
             properties={parsedHomeData.showcase.properties}
             sectionTitle={parsedHomeData.showcase.sectionTitle}
+            navbarMenu={menus}
           />
         );
       case "realtor":
