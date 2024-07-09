@@ -4,7 +4,6 @@ import PropTypes from "prop-types";
 
 const Realtor = ({ realtorData }) => {
   const { photo, name, company, id, phone, logo, sectionTitle } = realtorData;
-  console.log("RealtorXXX", realtorData.photo);
 
   return (
     <div

@@ -1,10 +1,12 @@
 import React from "react";
+import PropTypes from "prop-types";
 import path from "path";
 import fs from "fs";
 import yaml from "js-yaml";
 import Showcase from "@/components/Showcase";
 import Realtor from "@/components/Realtor";
 import Contact from "@/components/Contact";
+import PopupForm from "@/components/PopupForm"; // Import the PopupForm component
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { getPropertyOutputDirectoryName } from "../utils/renameUtils";
@@ -36,10 +38,7 @@ const readPropertyFiles = async (dataFolderPath) => {
 };
 
 // Home component
-export default function Home({ parsedHomeData, parsedGlobalData }) {
-  console.log("parsedHomeData", parsedHomeData);
-  console.log("parsedGlobalData", parsedGlobalData);
-
+function Home({ parsedHomeData, parsedGlobalData }) {
   const title = parsedHomeData.showcase.sectionTitle;
   const menus = parsedHomeData.showcase.menu;
   const homePageSectionsOrder = parsedHomeData.homePageSectionsOrder ||
@@ -49,8 +48,6 @@ export default function Home({ parsedHomeData, parsedGlobalData }) {
       "contact",
       "realtor",
     ];
-
-  console.log("homePageSectionsOrder", homePageSectionsOrder);
 
   const menuValues = [];
   const orderedComponents = homePageSectionsOrder.map((section, index) => {
@@ -75,19 +72,26 @@ export default function Home({ parsedHomeData, parsedGlobalData }) {
           />
         );
       case "contact":
-        menuValues.push("Contact");
-        return (
-          <Contact
-            key={`contact_${index}`}
-            contact={parsedGlobalData.contact}
-          />
-        );
+        if (parsedGlobalData.contact.mauticForm.popupForm.enable === false) {
+          menuValues.push("Contact");
+          return (
+            <Contact
+              key={`contact_${index}`}
+              contact={parsedGlobalData.contact}
+            />
+          );
+        } else {
+          return (
+            <PopupForm
+              key={`popupForm_${index}`}
+              contact={parsedGlobalData.contact}
+            />
+          );
+        }
       default:
         return null;
     }
   });
-
-  console.log("ORDEREDCOMPONENTS", orderedComponents);
 
   return (
     <div>
@@ -100,6 +104,47 @@ export default function Home({ parsedHomeData, parsedGlobalData }) {
     </div>
   );
 }
+
+Home.propTypes = {
+  parsedHomeData: PropTypes.shape({
+    showcase: PropTypes.shape({
+      sectionTitle: PropTypes.string.isRequired,
+      menu: PropTypes.arrayOf(PropTypes.string).isRequired,
+      properties: PropTypes.arrayOf(
+        PropTypes.shape({
+          url: PropTypes.string.isRequired,
+          addressLine1: PropTypes.string.isRequired,
+          addressLine2: PropTypes.string.isRequired,
+          bedsAndBaths: PropTypes.string.isRequired,
+          price: PropTypes.string.isRequired,
+          listingPageURL: PropTypes.string.isRequired,
+        })
+      ).isRequired,
+    }).isRequired,
+    homePageSectionsOrder: PropTypes.arrayOf(PropTypes.string),
+  }).isRequired,
+  parsedGlobalData: PropTypes.shape({
+    homePageSectionsOrder: PropTypes.arrayOf(PropTypes.string),
+    realtor: PropTypes.shape({
+      name: PropTypes.string,
+      photo: PropTypes.string,
+      bio: PropTypes.string,
+    }),
+    contact: PropTypes.shape({
+      phone: PropTypes.string,
+      email: PropTypes.string,
+      address: PropTypes.string,
+      mauticForm: PropTypes.shape({
+        popupForm: PropTypes.shape({
+          enable: PropTypes.bool,
+        }),
+      }),
+    }),
+    footertext: PropTypes.string,
+  }).isRequired,
+};
+
+export default Home;
 
 // getStaticProps function
 export async function getStaticProps() {

@@ -17,9 +17,6 @@ import PropTypes from "prop-types";
 import { getPropertyOutputDirectoryName } from "../utils/renameUtils";
 
 const PropertyPage = ({ propertyData, images }) => {
-  console.log("PROPERTYDATA", propertyData);
-  console.log("IMAGEDATA", images);
-
   const [modalUrl, setModalUrl] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const navbarRef = useRef(null);
@@ -129,8 +126,8 @@ const PropertyPage = ({ propertyData, images }) => {
 
   function renderContact(contact, index) {
     if (!contact) return null;
-    menuValues.push("Contact");
     if (contact.mauticForm.popupForm.enable === false) {
+      menuValues.push("Contact");
       return <Contact contact={contact} key={`contact_${index}`} />;
     } else {
       return <PopupForm contact={contact} key={`popupForm_${index}`} />;
@@ -179,8 +176,6 @@ PropertyPage.propTypes = {
 };
 
 export async function getStaticPaths() {
-  console.log("Executing getStaticPaths");
-
   try {
     const dataFolderPath = path.join(process.cwd(), "data");
     const files = await fs.readdir(dataFolderPath);
@@ -188,7 +183,6 @@ export async function getStaticPaths() {
     const paths = files.map((file) => ({
       params: { id: getPropertyOutputDirectoryName(file) }, // Convert the ID using getPropertyOutputDirectoryName
     }));
-    console.log("Static paths", paths);
     return {
       paths,
       fallback: false,
@@ -203,14 +197,12 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps(context) {
-  console.log("Executing getStaticProps");
   const { id } = context.params;
 
   // Convert back to the original input directory ID
   const originalId = getPropertyOutputDirectoryName(id); // Reverse the conversion
 
   const filePath = path.join(process.cwd(), "data", originalId, "data.yaml");
-  console.log("FilePath", filePath);
 
   try {
     const propertyData = await fs.readFile(filePath, "utf-8");

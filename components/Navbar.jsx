@@ -3,7 +3,6 @@ import { Nav, Navbar } from "react-bootstrap";
 import PropTypes from "prop-types";
 
 function MyNavbar({ navbar, forwardedRef }) {
-  console.log("Navbar", navbar);
   return (
     <Navbar
       bg="dark"

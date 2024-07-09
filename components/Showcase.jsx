@@ -1,10 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { basePath } from "@/next.config";
-import { getPropertyOutputDirectoryName } from "../utils/renameUtils";
 
 const Showcase = ({ properties, sectionTitle, navbarMenu }) => {
-  console.log("PropertiesXYXY", properties);
   return (
     <div
       id={`${navbarMenu.toLowerCase()}`}
@@ -67,10 +65,11 @@ Showcase.propTypes = {
       addressLine2: PropTypes.string.isRequired,
       bedsAndBaths: PropTypes.string.isRequired,
       price: PropTypes.string.isRequired,
-      // Assuming you have a pageUrl property
-      // pageUrl: PropTypes.string.isRequired,
+      listingPageURL: PropTypes.string.isRequired,
     })
   ).isRequired,
+  sectionTitle: PropTypes.string.isRequired,
+  navbarMenu: PropTypes.string.isRequired,
 };
 
 export default Showcase;

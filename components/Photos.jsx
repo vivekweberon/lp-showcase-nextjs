@@ -4,8 +4,6 @@ import { basePath } from "@/next.config";
 import PropTypes from "prop-types";
 
 const Photos = ({ navbarRef, imageUrls }) => {
-  console.log("PhotoURLS", imageUrls);
-
   const [carouselHeight, setCarouselHeight] = useState();
   const [imageWidth, setImageWidth] = useState();
 
@@ -24,7 +22,6 @@ const Photos = ({ navbarRef, imageUrls }) => {
     function setCarouselDimensions() {
       const width = getImageWidth();
       const height = parseFloat(width) / 1.777 + "px";
-      // console.log("Image Height", height);
       setCarouselHeight(height);
       setImageWidth(width);
     }
@@ -77,6 +74,17 @@ const Photos = ({ navbarRef, imageUrls }) => {
       </div>
     </div>
   );
+};
+
+Photos.propTypes = {
+  navbarRef: PropTypes.shape({
+    current: PropTypes.shape({
+      clientHeight: PropTypes.number.isRequired,
+    }).isRequired,
+  }).isRequired,
+  imageUrls: PropTypes.shape({
+    urls: PropTypes.arrayOf(PropTypes.string).isRequired,
+  }).isRequired,
 };
 
 export default Photos;
