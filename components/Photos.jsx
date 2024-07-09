@@ -80,7 +80,7 @@ Photos.propTypes = {
   navbarRef: PropTypes.shape({
     current: PropTypes.shape({
       clientHeight: PropTypes.number.isRequired,
-    }).isRequired,
+    }),
   }).isRequired,
   imageUrls: PropTypes.shape({
     urls: PropTypes.arrayOf(PropTypes.string).isRequired,

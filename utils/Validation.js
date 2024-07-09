@@ -104,7 +104,6 @@ function validateInputData() {
                       }
                       schemaKeys = propertyKeys;
                     }
-                    console.log("Schema keys:", schemaKeys);
                     let inputKeys = getKeyValueMapFromYAML(
                       `${inputDir}/${propertyDir}/${subFile}`
                     );
