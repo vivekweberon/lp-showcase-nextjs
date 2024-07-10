@@ -32,6 +32,7 @@
     "react-bootstrap": "^2.10.1",
     "react-dom": "^18",
     "react-markdown": "^9.0.1",
+    "rehype-raw": "^7.0.0",
     "yargs": "^17.7.2"
   },
   "devDependencies": {
