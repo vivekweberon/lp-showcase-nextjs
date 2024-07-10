@@ -6,7 +6,7 @@ import yaml from "js-yaml";
 import Showcase from "@/components/Showcase";
 import Realtor from "@/components/Realtor";
 import Contact from "@/components/Contact";
-import PopupForm from "@/components/PopupForm"; // Import the PopupForm component
+import PopupForm from "@/components/PopupForm";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { getPropertyOutputDirectoryName } from "../utils/renameUtils";
@@ -109,7 +109,10 @@ Home.propTypes = {
   parsedHomeData: PropTypes.shape({
     showcase: PropTypes.shape({
       sectionTitle: PropTypes.string.isRequired,
-      menu: PropTypes.arrayOf(PropTypes.string).isRequired,
+      menu: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.arrayOf(PropTypes.string),
+      ]).isRequired,
       properties: PropTypes.arrayOf(
         PropTypes.shape({
           url: PropTypes.string.isRequired,
@@ -140,7 +143,7 @@ Home.propTypes = {
         }),
       }),
     }),
-    footertext: PropTypes.string,
+    footertext: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   }).isRequired,
 };
 
