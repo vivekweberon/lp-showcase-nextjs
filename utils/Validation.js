@@ -50,12 +50,14 @@ function validateInputData() {
           } else {
             console.log(`Property directory '${propertyDir}' is valid.`);
             //check if it is a directory
-            if (!fs.lstatSync(`${propertyDir}`).isDirectory()) {
-              msg += `${++count} '${propertyDir}' is not a directory `;
+            if (!fs.lstatSync(`${inputDir}/${propertyDir}`).isDirectory()) {
+              msg += `${++count} '${inputDir}/${propertyDir}' is not a directory `;
             } else {
               //check if yaml file exists
-              if (!fs.existsSync(`${propertyDir}/${YAML_FILE_NAME}`)) {
-                msg += `${++count} '${propertyDir}/${YAML_FILE_NAME}' does not exist `;
+              if (
+                !fs.existsSync(`${inputDir}/${propertyDir}/${YAML_FILE_NAME}`)
+              ) {
+                msg += `${++count} '${inputDir}/${propertyDir}/${YAML_FILE_NAME}' does not exist `;
               } else {
                 console.log(
                   `YAML file '${YAML_FILE_NAME}' exists in '${propertyDir}' directory.`
@@ -63,83 +65,87 @@ function validateInputData() {
               }
 
               //check if the file and directory names are correct
-              fs.readdirSync(`${propertyDir}`).forEach((subFile) => {
-                if (subFile == PHOTOS_FOLDER_NAME) {
-                  if (
-                    !fs.lstatSync(`${propertyDir}/${subFile}`).isDirectory()
-                  ) {
-                    msg += `${++count} '${propertyDir}/${subFile}' is not a directory `;
-                  } else {
-                    fs.readdirSync(`${propertyDir}/${subFile}`).forEach(
-                      (image) => {
+              fs.readdirSync(`${inputDir}/${propertyDir}`).forEach(
+                (subFile) => {
+                  if (subFile == PHOTOS_FOLDER_NAME) {
+                    if (
+                      !fs
+                        .lstatSync(`${inputDir}/${propertyDir}/${subFile}`)
+                        .isDirectory()
+                    ) {
+                      msg += `${++count} '${inputDir}/${propertyDir}/${subFile}' is not a directory `;
+                    } else {
+                      fs.readdirSync(
+                        `${inputDir}/${propertyDir}/${subFile}`
+                      ).forEach((image) => {
                         if (!/[.jpg|.JPG|.JPEG|.jpeg|.png|.PNG]$/.test(image)) {
-                          msg += `${++count} '${propertyDir}/${subFile}/${image}' is an invalid image file `;
+                          msg += `${++count} '${inputDir}/${propertyDir}/${subFile}/${image}' is an invalid image file `;
                         }
+                      });
+                    }
+                  } else if (subFile == YAML_FILE_NAME) {
+                    //Validate YAML
+                    if (`${propertyDir}` == LP_GLOBAL_DIR) {
+                      console.log("Schema for Global directory.");
+                      if (globalKeys == undefined) {
+                        globalKeys = getKeyValueMapFromYAML(GLOBAL_SCHEMA);
                       }
+                      schemaKeys = globalKeys;
+                    } else if (`${propertyDir}` == LP_HOME_DIR) {
+                      console.log("Schema for Home directory.");
+                      if (homeKeys == undefined) {
+                        homeKeys = getKeyValueMapFromYAML(HOME_SCHEMA);
+                      }
+                      schemaKeys = homeKeys;
+                    } else {
+                      console.log("Schema for Property directory.");
+                      if (propertyKeys == undefined) {
+                        propertyKeys = getKeyValueMapFromYAML(PROPERTY_SCHEMA);
+                      }
+                      schemaKeys = propertyKeys;
+                    }
+                    let inputKeys = getKeyValueMapFromYAML(
+                      `${inputDir}/${propertyDir}/${subFile}`
                     );
-                  }
-                } else if (subFile == YAML_FILE_NAME) {
-                  //Validate YAML
-                  if (`${propertyDir}` == LP_GLOBAL_DIR) {
-                    console.log("Schema for Global directory.");
-                    if (globalKeys == undefined) {
-                      globalKeys = getKeyValueMapFromYAML(GLOBAL_SCHEMA);
-                    }
-                    schemaKeys = globalKeys;
-                  } else if (`${propertyDir}` == LP_HOME_DIR) {
-                    console.log("Schema for Home directory.");
-                    if (homeKeys == undefined) {
-                      homeKeys = getKeyValueMapFromYAML(HOME_SCHEMA);
-                    }
-                    schemaKeys = homeKeys;
-                  } else {
-                    console.log("Schema for Property directory.");
-                    if (propertyKeys == undefined) {
-                      propertyKeys = getKeyValueMapFromYAML(PROPERTY_SCHEMA);
-                    }
-                    schemaKeys = propertyKeys;
-                  }
-                  let inputKeys = getKeyValueMapFromYAML(
-                    `${propertyDir}/${subFile}`
-                  );
-                  if (inputKeys) {
-                    let schemaType;
-                    let inputType;
-                    let entries = inputKeys.entries();
-                    let result = entries.next();
-                    while (!result.done) {
-                      if (
-                        !result.value[0].includes(
-                          "propertyPageSectionsOrder."
-                        ) &&
-                        !result.value[0].includes("homePageSectionsOrder.")
-                      ) {
-                        // Validate property name
-                        if (!schemaKeys.has(result.value[0])) {
-                          msg += `${++count} '${result.value[0]}' is not a valid property name in the file '${propertyDir}/${subFile}'\n\n`;
-                        } else {
-                          // Validate property type
-                          schemaType = schemaKeys.get(result.value[0]).type;
-                          schemaType =
-                            schemaType == undefined ? "object" : schemaType;
-                          inputType = typeof result.value[1];
-                          if (
-                            result.value[1] != null &&
-                            inputType != schemaType
-                          ) {
-                            msg += `${++count} Data type of the property '${result.value[0]}' is not correct in the file '${inputDir}/${propertyDir}/${subFile}'\nSolution: Expected data type is '${schemaType}' \n\n`;
+                    if (inputKeys) {
+                      let schemaType;
+                      let inputType;
+                      let entries = inputKeys.entries();
+                      let result = entries.next();
+                      while (!result.done) {
+                        if (
+                          !result.value[0].includes(
+                            "propertyPageSectionsOrder."
+                          ) &&
+                          !result.value[0].includes("homePageSectionsOrder.")
+                        ) {
+                          // Validate property name
+                          if (!schemaKeys.has(result.value[0])) {
+                            msg += `${++count} '${result.value[0]}' is not a valid property name in the file '${inputDir}/${propertyDir}/${subFile}'\n\n`;
+                          } else {
+                            // Validate property type
+                            schemaType = schemaKeys.get(result.value[0]).type;
+                            schemaType =
+                              schemaType == undefined ? "object" : schemaType;
+                            inputType = typeof result.value[1];
+                            if (
+                              result.value[1] != null &&
+                              inputType != schemaType
+                            ) {
+                              msg += `${++count} Data type of the property '${result.value[0]}' is not correct in the file '${inputDir}/${propertyDir}/${subFile}'\nSolution: Expected data type is '${schemaType}' \n\n`;
+                            }
                           }
                         }
+                        result = entries.next();
                       }
-                      result = entries.next();
+                    } else {
+                      msg += `${++count} YAML data file '${inputDir}/${propertyDir}/${subFile}' is empty\nSolution: Provide a valid ${subFile}\n\n`;
                     }
                   } else {
-                    msg += `${++count} YAML data file '${propertyDir}/${subFile}' is empty\nSolution: Provide a valid ${subFile}\n\n`;
+                    msg += `${++count} '${subFile}' is not allowed in the directory '${inputDir}/${propertyDir}' \nSolution: Allowed file and directory in '${inputDir}/${propertyDir}' are 'data.yaml' and 'images' respectively\n\n`;
                   }
-                } else {
-                  msg += `${++count} '${subFile}' is not allowed in the directory '${inputDir}/${propertyDir}' \nSolution: Allowed file and directory in '${inputDir}/${propertyDir}' are 'data.yaml' and 'images' respectively\n\n`;
                 }
-              });
+              );
             }
           }
         });
