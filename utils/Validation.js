@@ -35,29 +35,37 @@ function validateInputData() {
     msg += `${++count} Input data directory path provided does not exist \nSolution: Provide the correct input data directory path\n\n`;
   } else {
     console.log("Input data directory exists.");
-    if (!fs.existsSync(`${LP_HOME_DIR}`)) {
+    if (!fs.existsSync(`${inputDir}/${LP_HOME_DIR}`)) {
       msg += `${++count} Home directory does not exist`;
     } else {
       console.log("Home directory exists.");
-      if (!fs.existsSync(`${LP_GLOBAL_DIR}`)) {
+      if (!fs.existsSync(`${inputDir}/${LP_GLOBAL_DIR}`)) {
         msg += `${++count} Global directory does not exist`;
       } else {
         console.log("Global directory exists.");
         //checking if the directory names are correct
         fs.readdirSync(inputDir).forEach((propertyDir) => {
+          // Skip hidden directories and special directories like global and home
+          if (
+            propertyDir.startsWith(".") ||
+            propertyDir === LP_GLOBAL_DIR ||
+            propertyDir === LP_HOME_DIR
+          ) {
+            return;
+          }
           if (!/^[0-9][0-9-]+[0-9]$/.test(propertyDir)) {
-            msg += `${++count} '${inputDir}/${propertyDir}' Invalid property name`;
+            msg += `${++count} '${inputDir}/${propertyDir}' Invalid property name\n`;
           } else {
             console.log(`Property directory '${propertyDir}' is valid.`);
             //check if it is a directory
             if (!fs.lstatSync(`${inputDir}/${propertyDir}`).isDirectory()) {
-              msg += `${++count} '${inputDir}/${propertyDir}' is not a directory `;
+              msg += `${++count} '${inputDir}/${propertyDir}' is not a directory\n`;
             } else {
               //check if yaml file exists
               if (
                 !fs.existsSync(`${inputDir}/${propertyDir}/${YAML_FILE_NAME}`)
               ) {
-                msg += `${++count} '${inputDir}/${propertyDir}/${YAML_FILE_NAME}' does not exist `;
+                msg += `${++count} '${inputDir}/${propertyDir}/${YAML_FILE_NAME}' does not exist\n`;
               } else {
                 console.log(
                   `YAML file '${YAML_FILE_NAME}' exists in '${propertyDir}' directory.`
@@ -73,13 +81,13 @@ function validateInputData() {
                         .lstatSync(`${inputDir}/${propertyDir}/${subFile}`)
                         .isDirectory()
                     ) {
-                      msg += `${++count} '${inputDir}/${propertyDir}/${subFile}' is not a directory `;
+                      msg += `${++count} '${inputDir}/${propertyDir}/${subFile}' is not a directory\n`;
                     } else {
                       fs.readdirSync(
                         `${inputDir}/${propertyDir}/${subFile}`
                       ).forEach((image) => {
                         if (!/[.jpg|.JPG|.JPEG|.jpeg|.png|.PNG]$/.test(image)) {
-                          msg += `${++count} '${inputDir}/${propertyDir}/${subFile}/${image}' is an invalid image file `;
+                          msg += `${++count} '${inputDir}/${propertyDir}/${subFile}/${image}' is an invalid image file\n`;
                         }
                       });
                     }
@@ -142,7 +150,7 @@ function validateInputData() {
                       msg += `${++count} YAML data file '${inputDir}/${propertyDir}/${subFile}' is empty\nSolution: Provide a valid ${subFile}\n\n`;
                     }
                   } else {
-                    msg += `${++count} '${subFile}' is not allowed in the directory '${inputDir}/${propertyDir}' \nSolution: Allowed file and directory in '${inputDir}/${propertyDir}' are 'data.yaml' and 'images' respectively\n\n`;
+                    msg += `${++count} '${subFile}' is not allowed in the directory '${inputDir}/${propertyDir}'\nSolution: Allowed file and directory in '${inputDir}/${propertyDir}' are 'data.yaml' and 'images' respectively\n\n`;
                   }
                 }
               );
