@@ -141,11 +141,11 @@ const PropertyPage = ({ propertyData, images }) => {
   }
 
   function renderDescription(description, index) {
+    if (!description || !description.content) return null;
     menuValues.push("Description");
     return (
       <Description
         key={`description_${index}`}
-        sectionTitle={description.sectionTitle}
         content={description.content}
         onLinkClick={handleLinkClick}
       />
