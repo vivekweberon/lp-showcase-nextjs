@@ -141,7 +141,6 @@ const PropertyPage = ({ propertyData, images }) => {
   }
 
   function renderDescription(description, index) {
-    // if (!description?.sectionTitle || !description.content) return null;
     menuValues.push("Description");
     return (
       <Description
