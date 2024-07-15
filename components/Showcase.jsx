@@ -26,9 +26,18 @@ const Showcase = ({ properties, sectionTitle, navbarMenu }) => {
           >
             <div className="card">
               <img
-                src={
-                  basePath + "/" + property.listingPageURL + "/" + property.url
-                }
+                srcSet={`
+    ${basePath + "/" + property.listingPageURL + "/" + property.url}?width=360 360w,
+    ${basePath + "/" + property.listingPageURL + "/" + property.url}?width=576 576w,
+    ${basePath + "/" + property.listingPageURL + "/" + property.url}?width=768 768w,
+    ${basePath + "/" + property.listingPageURL + "/" + property.url}?width=992 992w,
+    ${basePath + "/" + property.listingPageURL + "/" + property.url}?width=1200 1200w,
+    ${basePath + "/" + property.listingPageURL + "/" + property.url}?width=1400 1400w,
+    ${basePath + "/" + property.listingPageURL + "/" + property.url}?width=1600 1600w,
+    ${basePath + "/" + property.listingPageURL + "/" + property.url}?width=1920 1920w
+  `}
+                sizes="(max-width: 600px) 576px, (max-width: 768px) 768px, (max-width: 992px) 992px, (max-width: 1200px) 1200px, (max-width: 1400px) 1400px, (max-width: 1600px) 1600px, (max-width: 1920px) 1920px, 2000px"
+                src={`${basePath + "/" + property.listingPageURL + "/" + property.url}?width=1920`}
                 alt="Property"
                 className="card-img-top"
                 style={{ objectFit: "contain", width: "100%" }}

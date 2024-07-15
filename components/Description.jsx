@@ -1,26 +1,13 @@
 import React from "react";
 import ReactMarkdown from "react-markdown";
 import PropTypes from "prop-types";
+import CustomAnchor from "./CustomAnchor";
 
 const Description = ({ sectionTitle, content, onLinkClick }) => {
   const renderAnchor = ({ children, href }) => (
-    <a
-      href={href}
-      onClick={(event) => {
-        event.preventDefault();
-        onLinkClick(href);
-      }}
-      onKeyDown={(event) => {
-        if (event.key === "Enter" || event.key === " ") {
-          event.preventDefault();
-          onLinkClick(href);
-        }
-      }}
-      tabIndex={0}
-      className="markdown-link"
-    >
+    <CustomAnchor href={href} onLinkClick={onLinkClick}>
       {children}
-    </a>
+    </CustomAnchor>
   );
 
   return (
@@ -42,7 +29,7 @@ const Description = ({ sectionTitle, content, onLinkClick }) => {
 };
 
 Description.propTypes = {
-  sectionTitle: PropTypes.string.isRequired,
+  sectionTitle: PropTypes.string,
   content: PropTypes.string.isRequired,
   onLinkClick: PropTypes.func.isRequired,
 };

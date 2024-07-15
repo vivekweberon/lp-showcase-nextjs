@@ -21,13 +21,10 @@ const PropertyPage = ({ propertyData, images }) => {
   const [showModal, setShowModal] = useState(false);
   const navbarRef = useRef(null);
 
+  // Function to handle link click in Description component
   const handleLinkClick = (url) => {
     setModalUrl(url);
     setShowModal(true);
-  };
-
-  const handleCloseModal = () => {
-    setShowModal(false);
   };
 
   if (!propertyData) {
@@ -109,7 +106,7 @@ const PropertyPage = ({ propertyData, images }) => {
     return (
       <Photos
         key={`photos_${index}`}
-        imageUrls={{ urls: images }}
+        imageUrls={{ urls: images }} // Pass images as an object with 'urls' property
         navbarRef={navbarRef}
       />
     );
@@ -144,9 +141,8 @@ const PropertyPage = ({ propertyData, images }) => {
   }
 
   function renderDescription(description, index) {
-    if (!description?.content) return null;
+    // if (!description?.sectionTitle || !description.content) return null;
     menuValues.push("Description");
-    console.log("Rendering Description:", description);
     return (
       <Description
         key={`description_${index}`}
@@ -156,6 +152,11 @@ const PropertyPage = ({ propertyData, images }) => {
       />
     );
   }
+
+  // Function to close the modal
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
 
   return (
     <div>
@@ -180,7 +181,7 @@ export async function getStaticPaths() {
     const files = await fs.readdir(dataFolderPath);
 
     const paths = files.map((file) => ({
-      params: { id: getPropertyOutputDirectoryName(file) },
+      params: { id: getPropertyOutputDirectoryName(file) }, // Convert the ID using getPropertyOutputDirectoryName
     }));
     return {
       paths,
@@ -198,7 +199,8 @@ export async function getStaticPaths() {
 export async function getStaticProps(context) {
   const { id } = context.params;
 
-  const originalId = getPropertyOutputDirectoryName(id);
+  // Convert back to the original input directory ID
+  const originalId = getPropertyOutputDirectoryName(id); // Reverse the conversion
 
   const filePath = path.join(process.cwd(), "data", originalId, "data.yaml");
 
@@ -206,11 +208,13 @@ export async function getStaticProps(context) {
     const propertyData = await fs.readFile(filePath, "utf-8");
     const parsedData = yaml.load(propertyData);
 
+    // Merge property-specific data with global data
     const globalFilePath = path.join(process.cwd(), "global", "data.yaml");
     const globalData = await fs.readFile(globalFilePath, "utf-8");
     const parsedGlobalData = yaml.load(globalData);
     const mergedData = { ...parsedGlobalData, ...parsedData };
 
+    // Read images from the images folder
     const imagesFolderPath = path.join(
       process.cwd(),
       "data",
@@ -230,7 +234,10 @@ export async function getStaticProps(context) {
   } catch (error) {
     console.error("Error fetching property data:", error);
     return {
-      notFound: true,
+      props: {
+        propertyData: null,
+        images: [],
+      },
     };
   }
 }
