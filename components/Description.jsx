@@ -1,4 +1,4 @@
-// Description.jsx (Simplified Markdown Content for Testing)
+// Description.jsx
 
 import React from "react";
 import ReactMarkdown from "react-markdown";
