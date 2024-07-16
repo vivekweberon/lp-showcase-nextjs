@@ -1,3 +1,5 @@
+// PropertyPage.jsx
+
 import React, { useState, useRef } from "react";
 import fs from "fs/promises";
 import path from "path";
@@ -21,10 +23,14 @@ const PropertyPage = ({ propertyData, images }) => {
   const [showModal, setShowModal] = useState(false);
   const navbarRef = useRef(null);
 
-  // Function to handle link click in Description component
   const handleLinkClick = (url) => {
+    console.log("Link clicked:", url); // Debugging line
     setModalUrl(url);
     setShowModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
   };
 
   if (!propertyData) {
@@ -147,15 +153,10 @@ const PropertyPage = ({ propertyData, images }) => {
       <Description
         key={`description_${index}`}
         content={description.content}
-        onLinkClick={handleLinkClick}
+        onLinkClick={handleLinkClick} // Ensure this function is passed correctly
       />
     );
   }
-
-  // Function to close the modal
-  const handleCloseModal = () => {
-    setShowModal(false);
-  };
 
   return (
     <div>

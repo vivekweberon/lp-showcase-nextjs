@@ -1,25 +1,20 @@
 /* eslint-disable prettier/prettier */
+// CustomAnchor.jsx
+
 import React from "react";
 import PropTypes from "prop-types";
 
 const CustomAnchor = ({ href, children, onLinkClick }) => {
     const handleAnchorClick = (event) => {
         event.preventDefault();
+        console.log('CustomAnchor clicked:', href);  // Debugging line
         onLinkClick(href);
-    };
-
-    const handleAnchorKeyDown = (event) => {
-        if (event.key === "Enter" || event.key === " ") {
-            handleAnchorClick(event);
-        }
     };
 
     return (
         <a
             href={href}
             onClick={handleAnchorClick}
-            onKeyDown={handleAnchorKeyDown}
-            tabIndex={0}
             className="markdown-link"
         >
             {children}
@@ -34,3 +29,4 @@ CustomAnchor.propTypes = {
 };
 
 export default CustomAnchor;
+

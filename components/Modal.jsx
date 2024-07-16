@@ -16,6 +16,8 @@ const Modal = ({ clickedUrl, onCloseModal }) => {
         };
     }, []);
 
+    console.log('Modal clickedUrl:', clickedUrl);  // Debugging line
+
     return (
         <>
             <div
