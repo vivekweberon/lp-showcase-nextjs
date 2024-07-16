@@ -1,12 +1,9 @@
-// utils/Validation.js
-
-import fs from "fs";
-import yaml from "js-yaml";
-import yargs from "yargs/yargs";
-import { hideBin } from "yargs/helpers";
+const fs = require("fs");
+const yaml = require("js-yaml");
+const yargs = require("yargs");
 
 // Command-line arguments configuration
-const argv = yargs(hideBin(process.argv)).option("inputDir", {
+const argv = yargs.option("inputDir", {
   alias: "i",
   description: "Input data directory path",
   type: "string",
@@ -24,7 +21,7 @@ const GLOBAL_SCHEMA = "schema/global_schema.yaml";
 const HOME_SCHEMA = "schema/home_schema.yaml";
 const PROPERTY_SCHEMA = "schema/property_schema.yaml";
 
-function validateInputData(inputDir) {
+function validateInputData() {
   let msg = "";
   let count = 0;
   let globalKeys;
