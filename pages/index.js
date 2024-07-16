@@ -9,7 +9,7 @@ import Contact from "@/components/Contact";
 import PopupForm from "@/components/PopupForm";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { getPropertyOutputDirectoryName } from "../utils/renameUtils";
+import { getPropertyOutputDirectoryName } from "../utils/renameUtils.mjs";
 
 // Utility function to load YAML files
 const loadYamlFile = async (filePath) => {

@@ -14,7 +14,7 @@ import PopupForm from "../components/PopupForm";
 import Modal from "../components/Modal";
 import yaml from "js-yaml";
 import PropTypes from "prop-types";
-import { getPropertyOutputDirectoryName } from "../utils/renameUtils";
+import { getPropertyOutputDirectoryName } from "../utils/renameUtils.mjs";
 
 const PropertyPage = ({ propertyData, images }) => {
   const [modalUrl, setModalUrl] = useState(null);
