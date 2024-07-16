@@ -1,5 +1,5 @@
 import React from "react";
-import { basePath } from "@/next.config";
+import { basePath } from "@/next.config.js";
 import PropTypes from "prop-types";
 
 const Realtor = ({ realtorData }) => {

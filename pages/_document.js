@@ -1,4 +1,4 @@
-import { basePath } from "@/next.config";
+import { basePath } from "@/next.config.js";
 import { Html, Head, Main, NextScript } from "next/document";
 import React from "react";
 const MyDocument = () => (

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Carousel from "react-bootstrap/Carousel";
-import { basePath } from "@/next.config";
+import { basePath } from "@/next.config.js";
 import PropTypes from "prop-types";
 
 const Photos = ({ navbarRef, imageUrls }) => {

@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { basePath } from "@/next.config";
+import { basePath } from "@/next.config.js";
 
 const Showcase = ({ properties, sectionTitle, navbarMenu }) => {
   return (
