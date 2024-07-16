@@ -1,6 +1,6 @@
-// utils/renameUtils.js
+// utils/renameUtils.mjs
 
-function getPropertyOutputDirectoryName(inputDirName) {
+export function getPropertyOutputDirectoryName(inputDirName) {
   let ret = [];
   if (inputDirName && inputDirName != "") {
     let reversedArr = inputDirName.trim().split("").reverse();
@@ -16,7 +16,3 @@ function getPropertyOutputDirectoryName(inputDirName) {
   }
   return ret.join("");
 }
-
-module.exports = {
-  getPropertyOutputDirectoryName,
-};
