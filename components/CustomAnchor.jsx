@@ -5,20 +5,24 @@ import React from "react";
 import PropTypes from "prop-types";
 
 const CustomAnchor = ({ href, children, onLinkClick }) => {
+    console.log("HREF!@#", href)
+    console.log("children!@#", children)
     const handleAnchorClick = (event) => {
-        event.preventDefault();
-        console.log('CustomAnchor clicked:', href);  // Debugging line
+        event.preventDefault();  // Prevent the default link behavior
+        console.log('CustomAnchor clicked:', href);  // Debugging line to show the href
 
         // Check if the href is a javascript:openModal link
         if (href.startsWith("javascript:openModal(")) {
             // Extract the URL from the javascript:openModal link
-            const url = href.match(/javascript:openModal\('(.+)'\)/)?.[1];
+            const url = href.match(/javascript:openModal\('(.+?)'\)/)?.[1];
             if (url) {
-                onLinkClick(url);
+                onLinkClick(url);  // Call onLinkClick with the extracted URL
+            } else {
+                console.error('Failed to extract URL from JavaScript command');
             }
         } else {
-            // Handle regular links (if needed)
-            onLinkClick(href);
+            // Handle regular links
+            onLinkClick(href);  // Call onLinkClick with the regular href
         }
     };
 
@@ -40,4 +44,3 @@ CustomAnchor.propTypes = {
 };
 
 export default CustomAnchor;
-

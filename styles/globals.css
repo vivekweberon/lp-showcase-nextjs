@@ -164,3 +164,7 @@ button[type="submit"]:hover {
   height: auto;
   object-fit: contain;
 }
+
+#nav {
+  background-color: black !important;
+}
