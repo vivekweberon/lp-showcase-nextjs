@@ -10,6 +10,8 @@ const Showcase = ({ properties, sectionTitle, navbarMenu }) => {
       style={{
         paddingTop: "50px",
         paddingBottom: "50px",
+        paddingLeft: "30px", // Add padding here
+        paddingRight: "30px", // Add padding here
       }}
     >
       <div className="row">

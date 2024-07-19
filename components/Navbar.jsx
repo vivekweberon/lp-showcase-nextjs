@@ -12,6 +12,7 @@ function MyNavbar({ navbar, forwardedRef }) {
       data-testid="navbar"
       id="nav"
       ref={forwardedRef}
+      style={{ padding: "8px 12px" }} // Add padding here
     >
       <Navbar.Toggle aria-controls="navbar-nav" />
       <Navbar.Collapse id="navbar-nav" className="justify-content-center">
