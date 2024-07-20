@@ -14,7 +14,6 @@ const MyDocument = () => (
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
         crossOrigin="anonymous"
       />
-      <script src={`${basePath}/js/areacodes.json`}></script>
       <script
         type="text/javascript"
         src={`${basePath}/js/rb-config.js`}
