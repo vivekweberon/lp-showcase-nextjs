@@ -4,6 +4,7 @@ import React, { useState, useRef } from "react";
 import fs from "fs/promises";
 import path from "path";
 import Navbar from "../components/Navbar";
+import Home from "../components/Home";
 import Footer from "../components/Footer";
 import PriceAndFeatures from "../components/PriceAndFeatures";
 import Photos from "../components/Photos";
@@ -55,6 +56,8 @@ const PropertyPage = ({ propertyData, images }) => {
   const orderedComponents = propertyPageSectionsOrder
     ? propertyPageSectionsOrder.map((section, index) => {
         switch (section) {
+          case "home":
+              return renderHome(propertyData.home, index);
           case "virtualTour":
             return renderVirtualTour(virtualTour, index);
           case "priceAndFeatures":
@@ -74,13 +77,14 @@ const PropertyPage = ({ propertyData, images }) => {
         }
       })
     : [
-        renderVirtualTour(virtualTour, 0),
-        renderPriceAndFeatures(priceAndFeatures, 1),
-        renderPhotos(photos, 2),
-        renderVideo(video, 3),
-        renderContact(contact, 4),
-        renderRealtor(realtor, 5),
-        renderDescription(description, 6),
+        renderHome(propertyData.home, 0),
+        renderVirtualTour(virtualTour, 1),
+        renderPriceAndFeatures(priceAndFeatures, 2),
+        renderPhotos(photos, 3),
+        renderVideo(video, 4),
+        renderContact(contact, 5),
+        renderRealtor(realtor, 6),
+        renderDescription(description, 7),
       ];
 
   function renderVirtualTour(virtualTour, index) {
@@ -91,6 +95,21 @@ const PropertyPage = ({ propertyData, images }) => {
         key={`virtualTour_${index}`}
         virtualTour={virtualTour}
         navbarRef={navbarRef}
+      />
+    );
+  }
+
+  function renderHome(homeData, index) {
+    if (!homeData || !homeData.youtubeVideoID) return null;
+    menuValues.push(homeData.menu);
+    return (
+      <Home
+        key={`home_${index}`}
+        youtubeVideoID={homeData.youtubeVideoID}
+        videoStart={homeData.videoStart}
+        videoEnd={homeData.videoEnd}
+        menu={homeData.menu}
+        sectionTitle={homeData.sectionTitle}
       />
     );
   }
@@ -225,7 +244,7 @@ export async function getStaticProps(context) {
     const imageUrls = imageFiles.map(
       (fileName) => `/data/${id}/images/${fileName}`
     );
-
+    
     return {
       props: {
         propertyData: mergedData,

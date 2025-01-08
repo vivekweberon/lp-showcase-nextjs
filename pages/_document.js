@@ -69,6 +69,11 @@ const MyDocument = () => (
         src="https://accounts.google.com/gsi/client"
         //onError="logResourceLoadError(this)"
       ></script>
+         <script
+        type="text/javascript"
+        src={`${basePath}/js/ytvideo_v1.js`}
+        //onError="logResourceLoadError(this)"
+      ></script>
     </Head>
     <body>
       <Main />
