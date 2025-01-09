@@ -38,3 +38,8 @@ next-env.d.ts
 /data/
 /global/
 /home/
+
+public/js/logger.js
+public/js/rb-config.js
+public/js/tracker-util.js
+public/js/tracker.js

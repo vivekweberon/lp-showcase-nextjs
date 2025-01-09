@@ -19,11 +19,11 @@ const MyDocument = () => (
         src={`${basePath}/js/rb-config.js`}
         //onError="logResourceLoadError(this)"
       ></script>
-      {/* <script
+      <script
         type="text/javascript"
         src={`${basePath}/js/generateUI_v1.js`}
         //onError="logResourceLoadError(this)"
-      ></script> */}
+      ></script>
       <script
         type="text/javascript"
         src={`${basePath}/js/ytvideo_v1.js`}

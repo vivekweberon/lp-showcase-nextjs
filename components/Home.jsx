@@ -7,10 +7,11 @@ console.log("youtubeVideoID",youtubeVideoID)
 
 useEffect(()=>{
   console.log("useEffect",youtubeVideoID)
+  loadYoutubeIframeAPI()
 if(youtubeVideoID){
   setIsVisible(true)
   console.log("isVisible",isVisible)
-  loadYoutubeIframeAPI()
+
 }
 },[isVisible])
 

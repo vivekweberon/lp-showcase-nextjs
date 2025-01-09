@@ -20,6 +20,30 @@ function loadYoutubeIframeAPI() {
     firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
   } 
 
+  function onYouTubeIframeAPIReady () {
+    console.log("onYouTubeIframeAPIReady");
+    if (isVisible('home')) {
+      console.log("isVisible('home')");
+      player = new YT.Player('video1', {
+        events: {
+          'onReady': onPlayerReady,
+          'onStateChange': onPlayerStateChange,
+          'onError': onPlayerError
+        }
+      });
+      console.log("PLAYER instance", player)
+    }
+    console.log("player6", player)
+    if (isVisible('video')) { 
+      player2 = new YT.Player('video2', {
+        events: {
+          'onStateChange': onPlayer2StateChange,
+          'onError': onPlayerError
+        }
+      });
+    }
+    window.onscroll = playVisibleVideos;
+  }
 
   const handlePlaySoundButtonClick = (e) => {
     console.log("Clicked")
@@ -44,28 +68,7 @@ function loadYoutubeIframeAPI() {
 }
 
 
-function onYouTubeIframeAPIReady() {
-  console.log("onYouTubeIframeAPIReady");
-  if (isVisible('home')) {
-    console.log("isVisible('home')");
-    player = new YT.Player('video1', {
-      events: {
-        'onReady': onPlayerReady,
-        'onStateChange': onPlayerStateChange,
-        'onError': onPlayerError
-      }
-    });
-  }
-  if (isVisible('video')) { 
-    player2 = new YT.Player('video2', {
-      events: {
-        'onStateChange': onPlayer2StateChange,
-        'onError': onPlayerError
-      }
-    });
-  }
-  window.onscroll = playVisibleVideos;
-}
+
 
 function onPlayerError(event){
   let errMsg = "yt_video_load_error: " + event.data;
