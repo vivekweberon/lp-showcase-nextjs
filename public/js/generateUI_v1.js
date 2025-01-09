@@ -383,7 +383,7 @@ function addNavbarToggleEvent() {
 }
 
 function loadYoutubeIframeAPI() {
-  if (ytAPIRequired) {
+  console.log('ytAPIRequired:');
     var tag = document.createElement('script');
     tag.id = 'iframe-yt';
     tag.src = 'https://www.youtube.com/iframe_api';
@@ -393,7 +393,6 @@ function loadYoutubeIframeAPI() {
     var firstScriptTag = document.getElementsByTagName('script')[0];
     firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
   }   
-}
 
 function addChatBot(uiConfig) {
   let chatbot = uiConfig.chatbot;

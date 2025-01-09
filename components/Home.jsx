@@ -3,42 +3,25 @@ import PropTypes from 'prop-types';
 
 const Home = ({ youtubeVideoID, videoStart, videoEnd, menu, sectionTitle }) => {
   const [isVisible, setIsVisible] = useState(false);
-
+console.log("youtubeVideoID",youtubeVideoID)
 
 useEffect(()=>{
+  console.log("useEffect",youtubeVideoID)
 if(youtubeVideoID){
   setIsVisible(true)
+  console.log("isVisible",isVisible)
+  loadYoutubeIframeAPI()
 }
 },[isVisible])
 
-const handleClick = (e) => {
-console.log("Clicked")
-    if (player.isMuted()) {
-      playBGVideoFromBeginning();
-    }
-    else {
-      let playerAction = document.getElementById("playSound").innerHTML;
-      if(playerAction == 'Play Video'){
-        let state = player.getPlayerState();
-        if(state == 0){
-          playBGVideoFromBeginning();
-        }else{
-          resumeBGVideo();
-        }
-      } else if(playerAction == 'Pause Video'){
-        player.pauseVideo();
-        document.getElementById("playSound").innerHTML = "Play Video";
-      } 
-    }
-  
-}
+
 
  
 
   const videoUrl = `https://www.youtube.com/embed/xjpQRTNhbwk?start=5&end=10&autoplay=1`;
 
   return (
-    isVisible && <div
+ <div
       id="home"
       style={{
         
@@ -64,8 +47,8 @@ console.log("Clicked")
           textDecoration: 'underline',
         }}
       >
-        <a id="playSound" onClick={(e)=>{handleClick(e)}}>
-         Play Sound
+        <a id="playSound" onClick={(e)=>{handlePlaySoundButtonClick(e)}}>
+         Play Video
         </a>
       </div>
     </div>

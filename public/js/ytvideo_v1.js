@@ -8,8 +8,46 @@ let playedByUser = false;
 let pausedByForm = false;
 let bgVideoStart = 0;
 
+function loadYoutubeIframeAPI() {
+  console.log('ytAPIRequired:');
+    var tag = document.createElement('script');
+    tag.id = 'iframe-yt';
+    tag.src = 'https://www.youtube.com/iframe_api';
+    tag.onerror = function() {
+      logResourceLoadError(this);
+    };
+    var firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+  } 
+
+
+  const handlePlaySoundButtonClick = (e) => {
+    console.log("Clicked")
+    console.log("player",player)
+        if (player.isMuted()) {
+          playBGVideoFromBeginning();
+        }
+        else {
+          let playerAction = document.getElementById("playSound").innerHTML;
+          if(playerAction == 'Play Video'){
+            let state = player.getPlayerState();
+            if(state == 0){
+              playBGVideoFromBeginning();
+            }else{
+              resumeBGVideo();
+            }
+          } else if(playerAction == 'Pause Video'){
+            player.pauseVideo();
+            document.getElementById("playSound").innerHTML = "Play Video";
+          } 
+        }  
+}
+
+
 function onYouTubeIframeAPIReady() {
+  console.log("onYouTubeIframeAPIReady");
   if (isVisible('home')) {
+    console.log("isVisible('home')");
     player = new YT.Player('video1', {
       events: {
         'onReady': onPlayerReady,
@@ -149,12 +187,14 @@ function pauseVideo(iframePlayer) {
 function isVisible(sectionID) {
   let ret = false;
   let element = document.getElementById(sectionID);
+  console.log("element", sectionID, element);
   if(element){
     let display = element.style.display;
     if (display != 'none') {
       ret = true;
     }
   }
+  console.log("isVisible", sectionID, ret);
   return ret;
 }
 
