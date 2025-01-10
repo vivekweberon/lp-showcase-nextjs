@@ -15,6 +15,7 @@ import Realtor from "../components/Realtor";
 import Description from "../components/Description";
 import PopupForm from "../components/PopupForm";
 import Modal from "../components/Modal";
+import ChatBot from "../components/ChatBot";
 import yaml from "js-yaml";
 import PropTypes from "prop-types";
 import { getPropertyOutputDirectoryName } from "../utils/renameUtils.mjs";
@@ -42,6 +43,12 @@ useEffect(() => {
     loadYoutubeIframeAPI();
     console.log("YouTube API loaded");
   }
+
+  if (propertyData?.chatbot?.enable) {
+    addChatBot(propertyData);
+    console.log("Chatbot enabled");
+  }
+
 }, [propertyData]);
 
   const handleLinkClick = (url) => {
@@ -92,6 +99,8 @@ useEffect(() => {
             return renderRealtor(realtor, index);
           case "description":
             return renderDescription(description, index);
+          case "chatbot":
+            return renderChatBot(propertyData.chatbot, index);
           default:
             return null;
         }
@@ -105,6 +114,7 @@ useEffect(() => {
         renderContact(contact, 5),
         renderRealtor(realtor, 6),
         renderDescription(description, 7),
+        renderChatBot(propertyData.chatbot, 8),
       ];
 
   function renderVirtualTour(virtualTour, index) {
@@ -119,6 +129,11 @@ useEffect(() => {
     );
   }
 
+  function renderChatBot(chatbot, index) {
+    if (!chatbot || !chatbot.enable) return null;
+    return <ChatBot key={`chatbot_${index}`} />;
+  }
+  
   function renderHome(homeData, index) {
     if (!homeData || !homeData.youtubeVideoID) return null;
     menuValues.push(homeData.menu);

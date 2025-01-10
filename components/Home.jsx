@@ -34,7 +34,7 @@ const videoUrl = `https://www.youtube.com/embed/xjpQRTNhbwk?start=5&end=10&autop
         frameBorder="0"
         style={{ pointerEvents: 'none', width: '80%', height: '400px' }}
         allow="autoplay; fullscreen"
-        src="https://www.youtube.com/embed/xjpQRTNhbwk?start=5&end=10&autoplay=1&controls=0&showinfo=0&disablekb=1&modestbranding=1&rel=0&mute=1&playsinline=1&enablejsapi=1&origin=https://ns-blue-weberealty.thrivebrokers.com"
+        src="https://www.youtube.com/embed/xjpQRTNhbwk?start=5&end=10&autoplay=1&controls=0&showinfo=0&disablekb=1&modestbranding=1&rel=0&mute=1&playsinline=1&enablejsapi=1&origin=http://localhost:3000"
       />
       <div
         style={{

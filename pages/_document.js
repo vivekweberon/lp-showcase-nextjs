@@ -14,6 +14,10 @@ const MyDocument = () => (
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
         crossOrigin="anonymous"
       />
+      <link
+        rel="stylesheet"
+        href={`${basePath}/css/chatbot.css`}
+      />
       <script
         type="text/javascript"
         src={`${basePath}/js/rb-config.js`}
@@ -29,7 +33,11 @@ const MyDocument = () => (
         src={`${basePath}/js/ytvideo_v1.js`}
         //onError="logResourceLoadError(this)"
       ></script>
-      
+      <script
+        type="text/javascript"
+        src={`${basePath}/js/chatbot.js`}
+        //onError="logResourceLoadError(this)"
+      ></script>
       <script
         type="text/javascript"
         src={`${basePath}/js/logger.js`}
