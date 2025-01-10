@@ -1,6 +1,6 @@
 // PropertyPage.jsx
 
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import fs from "fs/promises";
 import path from "path";
 import Navbar from "../components/Navbar";
@@ -19,10 +19,30 @@ import yaml from "js-yaml";
 import PropTypes from "prop-types";
 import { getPropertyOutputDirectoryName } from "../utils/renameUtils.mjs";
 
+
+
 const PropertyPage = ({ propertyData, images }) => {
   const [modalUrl, setModalUrl] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const navbarRef = useRef(null);
+  
+  // Flag for loading the YouTube API
+let ytAPIRequired = false;
+
+useEffect(() => {
+  if (
+    propertyData?.home?.youtubeVideoID ||
+    propertyData?.video?.youtubeVideoID
+  ) {
+    ytAPIRequired = true;
+    console.log("YouTube API required:", ytAPIRequired);
+  }
+
+  if (ytAPIRequired) {
+    loadYoutubeIframeAPI();
+    console.log("YouTube API loaded");
+  }
+}, [propertyData]);
 
   const handleLinkClick = (url) => {
     console.log("Link clicked:", url); // Debugging line

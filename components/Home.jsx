@@ -1,25 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 
-const Home = ({ youtubeVideoID, videoStart, videoEnd, menu, sectionTitle }) => {
-  const [isVisible, setIsVisible] = useState(false);
+const Home = ({ youtubeVideoID, videoStart, videoEnd, sectionTitle }) => {
+  // const [isVisible, setIsVisible] = useState(false);
 console.log("youtubeVideoID",youtubeVideoID)
 
-useEffect(()=>{
-  console.log("useEffect",youtubeVideoID)
-  loadYoutubeIframeAPI()
-if(youtubeVideoID){
-  setIsVisible(true)
-  console.log("isVisible",isVisible)
+// useEffect(()=>{
+//   console.log("useEffect",youtubeVideoID)
+//   loadYoutubeIframeAPI()
+// if(youtubeVideoID){
+//   setIsVisible(true)
+//   console.log("isVisible",isVisible)
 
-}
-},[isVisible])
+// }
+// },[isVisible])
 
-
-
- 
-
-  const videoUrl = `https://www.youtube.com/embed/xjpQRTNhbwk?start=5&end=10&autoplay=1`;
+const videoUrl = `https://www.youtube.com/embed/xjpQRTNhbwk?start=5&end=10&autoplay=1`;
 
   return (
  <div
@@ -38,7 +34,7 @@ if(youtubeVideoID){
         frameBorder="0"
         style={{ pointerEvents: 'none', width: '80%', height: '400px' }}
         allow="autoplay; fullscreen"
-        src="https://www.youtube.com/embed/xjpQRTNhbwk?start=5&end=10&autoplay=1"
+        src="https://www.youtube.com/embed/xjpQRTNhbwk?start=5&end=10&autoplay=1&controls=0&showinfo=0&disablekb=1&modestbranding=1&rel=0&mute=1&playsinline=1&enablejsapi=1&origin=http://localhost:3000"
       />
       <div
         style={{
@@ -49,7 +45,7 @@ if(youtubeVideoID){
         }}
       >
         <a id="playSound" onClick={(e)=>{handlePlaySoundButtonClick(e)}}>
-         Play Video
+         Play Sound
         </a>
       </div>
     </div>

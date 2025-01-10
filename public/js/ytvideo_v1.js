@@ -9,7 +9,6 @@ let pausedByForm = false;
 let bgVideoStart = 0;
 
 function loadYoutubeIframeAPI() {
-  console.log('ytAPIRequired:');
     var tag = document.createElement('script');
     tag.id = 'iframe-yt';
     tag.src = 'https://www.youtube.com/iframe_api';
@@ -21,7 +20,6 @@ function loadYoutubeIframeAPI() {
   } 
 
   function onYouTubeIframeAPIReady () {
-    console.log("onYouTubeIframeAPIReady");
     if (isVisible('home')) {
       console.log("isVisible('home')");
       player = new YT.Player('video1', {
@@ -31,9 +29,7 @@ function loadYoutubeIframeAPI() {
           'onError': onPlayerError
         }
       });
-      console.log("PLAYER instance", player)
     }
-    console.log("player6", player)
     if (isVisible('video')) { 
       player2 = new YT.Player('video2', {
         events: {
@@ -66,9 +62,6 @@ function loadYoutubeIframeAPI() {
           } 
         }  
 }
-
-
-
 
 function onPlayerError(event){
   let errMsg = "yt_video_load_error: " + event.data;

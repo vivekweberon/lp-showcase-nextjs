@@ -51,14 +51,14 @@ const Video = ({ youtubeVideoID, navbarRef }) => {
       <div className="row">
         <div className="col-12" style={{ textAlign: "center" }}>
           <iframe
-            id="homeVideo"
+            id="video2"
             style={{
               width: videoWidth,
               height: videoHeight,
               margin: "auto",
               maxWidth: "100%",
             }}
-            src={`https://www.youtube.com/embed/${youtubeVideoID}`}
+            src={`https://www.youtube.com/embed/${youtubeVideoID}?rel=0&controls=1&autoplay=0&cc_load_policy=1&modestbranding=1&showinfo=0&playsinline=1&enablejsapi=1`}
             allowFullScreen
             title="Property Video"
           ></iframe>
