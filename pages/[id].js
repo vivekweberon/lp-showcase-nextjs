@@ -130,7 +130,7 @@ useEffect(() => {
   }
 
   function renderChatBot(chatbot, index) {
-    if (!chatbot || !chatbot.enable) return null;
+    // if (!chatbot || !chatbot.enable) return null;
     return <ChatBot key={`chatbot_${index}`} />;
   }
   

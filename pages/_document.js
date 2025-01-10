@@ -14,20 +14,14 @@ const MyDocument = () => (
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
         crossOrigin="anonymous"
       />
-      <link
-        rel="stylesheet"
-        href={`${basePath}/css/chatbot.css`}
-      />
+      
+      
       <script
         type="text/javascript"
         src={`${basePath}/js/rb-config.js`}
         //onError="logResourceLoadError(this)"
       ></script>
-      <script
-        type="text/javascript"
-        src="https://kit.fontawesome.com/c3c47df7d6.js"
-        //onError="logResourceLoadError(this)"
-      ></script>
+      
       <script
         type="text/javascript"
         src={`${basePath}/js/generateUI_v1.js`}
@@ -36,16 +30,6 @@ const MyDocument = () => (
       <script
         type="text/javascript"
         src={`${basePath}/js/ytvideo_v1.js`}
-        //onError="logResourceLoadError(this)"
-      ></script>
-      <script
-        type="text/javascript"
-        src={`${basePath}/js/chatbot.js`}
-        //onError="logResourceLoadError(this)"
-      ></script>
-      <script
-        type="text/javascript"
-        src={`${basePath}/js/index.js`}
         //onError="logResourceLoadError(this)"
       ></script>
       <script
@@ -96,6 +80,25 @@ const MyDocument = () => (
       <script
         type="text/javascript"
         src="https://accounts.google.com/gsi/client"
+        //onError="logResourceLoadError(this)"
+      ></script>
+      <link
+        rel="stylesheet"
+        href={`${basePath}/css/chatbot.css`}
+      />
+      <script
+        type="text/javascript"
+        src={`${basePath}/js/chatbot.js`}
+        //onError="logResourceLoadError(this)"
+      ></script>
+      <script
+        type="text/javascript"
+        src={`${basePath}/js/index.js`}
+        //onError="logResourceLoadError(this)"
+      ></script>
+      <script
+        type="text/javascript"
+        src="https://kit.fontawesome.com/c3c47df7d6.js"
         //onError="logResourceLoadError(this)"
       ></script>
          
