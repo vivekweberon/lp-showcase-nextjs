@@ -44,10 +44,10 @@ useEffect(() => {
     console.log("YouTube API loaded");
   }
 
-  if (propertyData?.chatbot?.enable) {
-    addChatBot(propertyData);
-    console.log("Chatbot enabled");
-  }
+  // if (propertyData?.chatbot?.enable) {
+  //   addChatBot(propertyData);
+  //   console.log("Chatbot enabled");
+  // }
 
 }, [propertyData]);
 

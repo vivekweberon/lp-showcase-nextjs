@@ -58,7 +58,7 @@ const Video = ({ youtubeVideoID, navbarRef }) => {
               margin: "auto",
               maxWidth: "100%",
             }}
-            src={`https://www.youtube.com/embed/${youtubeVideoID}?rel=0&controls=1&autoplay=0&cc_load_policy=1&modestbranding=1&showinfo=0&playsinline=1&enablejsapi=1&origin=https://localhost:3000`}
+            src={`https://www.youtube.com/embed/${youtubeVideoID}?rel=0&controls=1&autoplay=0&cc_load_policy=1&modestbranding=1&showinfo=0&playsinline=1&enablejsapi=1&origin=https://ns-blue-weberealty.thrivebrokers.com`}
             allowFullScreen
             title="Property Video"
           ></iframe>

@@ -105,6 +105,9 @@ function addHome(uiConfig){
       videoURL += "&end="+home.videoEnd;
     }
     $('#video1').attr("src", videoURL + origin);
+    if(home.sectionTitle){
+      setSectionTitle(home.sectionTitle, 'homeST');
+    }
     $('#home').show();
     addMenu(home.menu, 'Home', '#home');
     ytAPIRequired = true;
@@ -383,7 +386,7 @@ function addNavbarToggleEvent() {
 }
 
 function loadYoutubeIframeAPI() {
-  console.log('ytAPIRequired:');
+  if (ytAPIRequired) {
     var tag = document.createElement('script');
     tag.id = 'iframe-yt';
     tag.src = 'https://www.youtube.com/iframe_api';
@@ -393,6 +396,7 @@ function loadYoutubeIframeAPI() {
     var firstScriptTag = document.getElementsByTagName('script')[0];
     firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
   }   
+}
 
 function addChatBot(uiConfig) {
   let chatbot = uiConfig.chatbot;
@@ -402,12 +406,19 @@ function addChatBot(uiConfig) {
     $(document.head).append(chatbotCSS);
     //Add placeholder for chatbot
     $(document.body).append('<div id="chatContain"></div>');
-    // Add chatbot.js
-    let chatbotJS = '<script src="'+LISTINGS_ROOT_DIR+'/js/chatbot.js" onerror="logResourceLoadError(this)"></script>';
-    $(document.body).append(chatbotJS);
-    // Add index.js
-    let indexJS = '<script src="'+LISTINGS_ROOT_DIR+'/js/index.js" onerror="logResourceLoadError(this)"></script>';
-    $(document.body).append(indexJS);
+    // Add chatbot scripts
+    let chatbotScripts = [LISTINGS_ROOT_DIR+'/js/chatbot.js', LISTINGS_ROOT_DIR+'/js/index.js', 'https://kit.fontawesome.com/c3c47df7d6.js']
+    appendScriptTagsToDocumentBody(chatbotScripts);
+  }
+}
+
+function appendScriptTagsToDocumentBody(chatbotScripts){
+  if(Array.isArray(chatbotScripts)&& chatbotScripts.length > 0){
+    let chatbotJS;
+    for (const value of chatbotScripts) {
+      chatbotJS = '<script src="'+value+'" onerror="logResourceLoadError(this)"></script>';
+      $(document.body).append(chatbotJS);
+    }
   }
 }
 

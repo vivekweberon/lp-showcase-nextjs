@@ -25,6 +25,11 @@ const MyDocument = () => (
       ></script>
       <script
         type="text/javascript"
+        src="https://kit.fontawesome.com/c3c47df7d6.js"
+        //onError="logResourceLoadError(this)"
+      ></script>
+      <script
+        type="text/javascript"
         src={`${basePath}/js/generateUI_v1.js`}
         //onError="logResourceLoadError(this)"
       ></script>
@@ -36,6 +41,11 @@ const MyDocument = () => (
       <script
         type="text/javascript"
         src={`${basePath}/js/chatbot.js`}
+        //onError="logResourceLoadError(this)"
+      ></script>
+      <script
+        type="text/javascript"
+        src={`${basePath}/js/index.js`}
         //onError="logResourceLoadError(this)"
       ></script>
       <script
