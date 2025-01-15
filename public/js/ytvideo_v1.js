@@ -21,7 +21,7 @@ function loadYoutubeIframeAPI() {
 
   function onYouTubeIframeAPIReady () {
     if (isVisible('home')) {
-      console.log("isVisible('home')");
+      // console.log("isVisible('home')");
       player = new YT.Player('video1', {
         events: {
           'onReady': onPlayerReady,
@@ -42,8 +42,8 @@ function loadYoutubeIframeAPI() {
   }
 
   const handlePlaySoundButtonClick = (e) => {
-    console.log("Clicked")
-    console.log("player",player)
+    // console.log("Clicked")
+    // console.log("player",player)
         if (player.isMuted()) {
           playBGVideoFromBeginning();
         }
@@ -183,14 +183,14 @@ function pauseVideo(iframePlayer) {
 function isVisible(sectionID) {
   let ret = false;
   let element = document.getElementById(sectionID);
-  console.log("element", sectionID, element);
+  // console.log("element", sectionID, element);
   if(element){
     let display = element.style.display;
     if (display != 'none') {
       ret = true;
     }
   }
-  console.log("isVisible", sectionID, ret);
+  // console.log("isVisible", sectionID, ret);
   return ret;
 }
 

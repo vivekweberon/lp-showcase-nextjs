@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 const Home = ({ youtubeVideoID, videoStart, videoEnd, sectionTitle }) => {
   // const [isVisible, setIsVisible] = useState(false);
 console.log("youtubeVideoID",youtubeVideoID)
+console.log("sectionTitle",sectionTitle)
 
 // useEffect(()=>{
 //   console.log("useEffect",youtubeVideoID)
