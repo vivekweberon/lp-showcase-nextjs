@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { basePath } from "@/next.config";
 import Head from "next/head";
 import fs from "fs/promises";
@@ -26,6 +26,30 @@ const PropertyPage = ({ propertyData, images }) => {
   const [modalUrl, setModalUrl] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const navbarRef = useRef(null);
+
+  // Flag for loading the YouTube API
+let ytAPIRequired = false;
+
+useEffect(() => {
+  if (
+    propertyData?.home?.youtubeVideoID ||
+    propertyData?.video?.youtubeVideoID
+  ) {
+    ytAPIRequired = true;
+    console.log("YouTube API required:", ytAPIRequired);
+  }
+
+  if (ytAPIRequired) {
+    loadYoutubeIframeAPI();
+    console.log("YouTube API loaded");
+  }
+
+  // if (propertyData?.chatbot?.enable) {
+  //   addChatBot(propertyData);
+  //   console.log("Chatbot enabled");
+  // }
+
+}, [propertyData]);
 
   const handleLinkClick = (url) => {
     setModalUrl(url);
@@ -213,7 +237,7 @@ const PropertyPage = ({ propertyData, images }) => {
       </Head>
         <Script strategy="beforeInteractive" async type="text/javascript" src={`${basePath}/js/rb-config.js`} />
         <Script strategy="beforeInteractive" async type="text/javascript" src={`${basePath}/js/generateUI_v1.js`} />
-        <Script strategy="beforeInteractive" async type="text/javascript" src={`${basePath}/js/ytvideo_v1.js`} />
+        <Script async type="text/javascript" src={`${basePath}/js/ytvideo_v1.js`} />
         <Script strategy="beforeInteractive" async type="text/javascript" src={`${basePath}/js/logger.js`} />
         <Script strategy="beforeInteractive" async type="text/javascript" src={`${basePath}/js/jquery-3.5.1.min.js`} />
         <Script strategy="beforeInteractive" async type="text/javascript" src={`${basePath}/js/jwt-decode.js`} />
