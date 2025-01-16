@@ -1,4 +1,5 @@
-import React, { useState, useRef, useEffect } from "react";
+"use client";
+import React, { useState, useRef } from "react";
 import { basePath } from "@/next.config";
 import Head from "next/head";
 import fs from "fs/promises";
@@ -200,28 +201,27 @@ const PropertyPage = ({ propertyData, images }) => {
           rel="stylesheet"
           href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
         />
-        <script async src={`${basePath}/js/rb-config.js`} />
-        <script async src={`${basePath}/js/generateUI_v1.js`} />
-        <script async src={`${basePath}/js/ytvideo_v1.js`} />
-        <script async src={`${basePath}/js/logger.js`} />
-        <script async src={`${basePath}/js/jquery-3.5.1.min.js`} />
-        <script async src={`${basePath}/js/jwt-decode.js`} />
-        <script async src={`${basePath}/js/tracker-config.js`} />
-        <script async src={`${basePath}/js/showcase.js`} />
-        <script async src={`${basePath}/js/tracker-util.js`} />
-        <script async src={`${basePath}/js/tracker.js`} />
-        <script async src={`${basePath}/js/showdown-1.9.1.min.js`} />
-        <script async src={`${basePath}/js/inline-script.js`} />
+        <script async type="text/javascript" src={`${basePath}/js/rb-config.js`} />
+        <script async type="text/javascript" src={`${basePath}/js/generateUI_v1.js`} />
+        <script async type="text/javascript" src={`${basePath}/js/ytvideo_v1.js`} />
+        <script async type="text/javascript" src={`${basePath}/js/logger.js`} />
+        <script async type="text/javascript" src={`${basePath}/js/jquery-3.5.1.min.js`} />
+        <script async type="text/javascript" src={`${basePath}/js/jwt-decode.js`} />
+        <script async type="text/javascript" src={`${basePath}/js/tracker-config.js`} />
+        <script async type="text/javascript" src={`${basePath}/js/showcase.js`} />
+        <script async type="text/javascript" src={`${basePath}/js/tracker-util.js`} />
+        <script async type="text/javascript" src={`${basePath}/js/tracker.js`} />
+        <script async type="text/javascript" src={`${basePath}/js/showdown-1.9.1.min.js`} />
+        <script async type="text/javascript" src={`${basePath}/js/inline-script.js`} />
         <script
           async
           src="https://accounts.google.com/gsi/client"
         />
-        {isChatbotEnabled && <>
+        
         <link rel="stylesheet" href={`${basePath}/css/chatbot.css`} />
-        <script async src={`${basePath}/js/chatbot.js`} />
-        <script async src={`${basePath}/js/index.js`} />
-        </>
-      }
+        <script async type="text/javascript" src={`${basePath}/js/chatbot.js`} />
+        <script async type="text/javascript" src={`${basePath}/js/index.js`} />
+    
         <script
           async
           src="https://kit.fontawesome.com/c3c47df7d6.js"
