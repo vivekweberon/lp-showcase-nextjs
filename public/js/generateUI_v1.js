@@ -1,3 +1,5 @@
+console.log("generateUI_v1.js")
+
 const LISTINGS_ROOT_DIR = getRootDir();
 const DATA_DIR = 'data';
 const YAML_FILENAME = 'data.yaml';

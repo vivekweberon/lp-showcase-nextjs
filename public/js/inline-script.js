@@ -1,3 +1,4 @@
+console.log("inline-script.js loaded");
 (function (w, d, t, u, n, a, m) {
   w["MauticTrackingObject"] = n;
   (w[n] =

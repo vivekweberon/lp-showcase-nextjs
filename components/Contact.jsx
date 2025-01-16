@@ -4,10 +4,12 @@ import PropTypes from "prop-types";
 
 const Contact = ({ contact }) => {
   useEffect(() => {
+    console.log("useEffect contact");
     const { mauticForm } = contact;
 
     // Configure Mautic form
     if (mauticForm) {
+      console.log("setMauticForms before")
       // Configure Mautic form
       setMauticForms(mauticForm.formSetName);
       setEmailFormHeader(mauticForm.emailFormHeader);

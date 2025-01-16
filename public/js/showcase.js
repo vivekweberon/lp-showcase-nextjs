@@ -1,3 +1,4 @@
+console.log("showcase.js loaded");
 let controlVideos = false;
 let reports;
 

@@ -1,3 +1,4 @@
+console.log("ytvideo_v1.js loaded");
 let player;
 let player2;
 let vhfRemoved = false;

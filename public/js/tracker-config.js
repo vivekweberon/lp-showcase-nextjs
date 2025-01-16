@@ -1,3 +1,4 @@
+console.log("tracker-config.js loaded");
 const MAUTIC_FORMSET = {
   showcase: ["pfshowcase", "32"],
   bayrentals: ["pfbayrentals", "33"],
