@@ -237,7 +237,7 @@ useEffect(() => {
       </Head>
         <Script strategy="beforeInteractive" async type="text/javascript" src={`${basePath}/js/rb-config.js`} />
         <Script strategy="beforeInteractive" async type="text/javascript" src={`${basePath}/js/generateUI_v1.js`} />
-        <Script async type="text/javascript" src={`${basePath}/js/ytvideo_v1.js`} />
+        <Script strategy="beforeInteractive" async type="text/javascript" src={`${basePath}/js/ytvideo_v1.js`} />
         <Script strategy="beforeInteractive" async type="text/javascript" src={`${basePath}/js/logger.js`} />
         <Script strategy="beforeInteractive" async type="text/javascript" src={`${basePath}/js/jquery-3.5.1.min.js`} />
         <Script strategy="beforeInteractive" async type="text/javascript" src={`${basePath}/js/jwt-decode.js`} />

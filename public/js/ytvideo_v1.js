@@ -9,7 +9,7 @@ let pausedByForm = false;
 let bgVideoStart = 0;
 
 function loadYoutubeIframeAPI() {
-  console.log("loadYoutubeIframeAPI6969");
+  console.log("loadYoutubeIframeAPI");
     var tag = document.createElement('script');
     tag.id = 'iframe-yt';
     tag.src = 'https://www.youtube.com/iframe_api';
