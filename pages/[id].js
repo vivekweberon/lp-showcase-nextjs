@@ -19,7 +19,7 @@ import Realtor from "../components/Realtor";
 import Description from "../components/Description";
 import PopupForm from "../components/PopupForm";
 import Modal from "../components/Modal";
-import ChatBot from "../components/ChatBot";
+// import ChatBot from "../components/ChatBot";
 import Script from "next/script";
 
 const PropertyPage = ({ propertyData, images }) => {
@@ -100,8 +100,8 @@ useEffect(() => {
             return renderRealtor(realtor, index);
           case "description":
             return renderDescription(description, index);
-          case "chatbot":
-            return renderChatBot(propertyData.chatbot, index);
+          // case "chatbot":
+          //   return renderChatBot(propertyData.chatbot, index);
           default:
             return null;
         }
@@ -115,7 +115,7 @@ useEffect(() => {
         renderContact(contact, 5),
         renderRealtor(realtor, 6),
         renderDescription(description, 7),
-        renderChatBot(propertyData.chatbot, 8),
+        // renderChatBot(propertyData.chatbot, 8),
       ];
 
   function renderVirtualTour(virtualTour, index) {
@@ -130,9 +130,9 @@ useEffect(() => {
     );
   }
 
-  function renderChatBot(chatbot, index) {
-    return <ChatBot key={`chatbot_${index}`} />;
-  }
+  // function renderChatBot(chatbot, index) {
+  //   return <ChatBot key={`chatbot_${index}`} />;
+  // }
 
   function renderHome(homeData, index) {
     if (!homeData || !homeData.youtubeVideoID) return null;
@@ -232,12 +232,12 @@ useEffect(() => {
           src="https://accounts.google.com/gsi/client"
         />
         
-        <link rel="stylesheet" href={`${basePath}/css/chatbot.css`} />
+        {/* <link rel="stylesheet" href={`${basePath}/css/chatbot.css`} /> */}
         
       </Head>
+      <Script strategy="beforeInteractive" src={`${basePath}/js/areacode.json`} type="application/json"/>
         <Script strategy="beforeInteractive" async type="text/javascript" src={`${basePath}/js/rb-config.js`} />
         <Script strategy="beforeInteractive" async type="text/javascript" src={`${basePath}/js/generateUI_v1.js`} />
-        <Script strategy="beforeInteractive" async type="text/javascript" src={`${basePath}/js/ytvideo_v1.js`} />
         <Script strategy="beforeInteractive" async type="text/javascript" src={`${basePath}/js/logger.js`} />
         <Script strategy="beforeInteractive" async type="text/javascript" src={`${basePath}/js/jquery-3.5.1.min.js`} />
         <Script strategy="beforeInteractive" async type="text/javascript" src={`${basePath}/js/jwt-decode.js`} />
@@ -246,11 +246,11 @@ useEffect(() => {
         <Script strategy="beforeInteractive" async type="text/javascript" src={`${basePath}/js/tracker-util.js`} />
         <Script strategy="beforeInteractive" async type="text/javascript" src={`${basePath}/js/tracker.js`} />
         <Script strategy="beforeInteractive" async type="text/javascript" src={`${basePath}/js/showdown-1.9.1.min.js`} />
+        <Script strategy="beforeInteractive" async type="text/javascript" src={`${basePath}/js/ytvideo_v1.js`} />
         <Script strategy="beforeInteractive" async type="text/javascript" src={`${basePath}/js/inline-script.js`} />
-        <Script strategy="beforeInteractive" async type="text/javascript" src={`${basePath}/js/chatbot.js`} />
-        <Script strategy="beforeInteractive" async type="text/javascript" src={`${basePath}/js/index.js`} />
-        <Script strategy="beforeInteractive" async src="https://kit.fontawesome.com/c3c47df7d6.js"
-        />
+        {/* <Script strategy="beforeInteractive" async type="text/javascript" src={`${basePath}/js/chatbot.js`} /> */}
+        {/* <Script strategy="beforeInteractive" async type="text/javascript" src={`${basePath}/js/index.js`} /> */}
+        {/* <Script strategy="beforeInteractive" async src="https://kit.fontawesome.com/c3c47df7d6.js"/> */}
       <Navbar navbar={menuValues} forwardedRef={navbarRef} />
       {orderedComponents}
       {showModal && (
