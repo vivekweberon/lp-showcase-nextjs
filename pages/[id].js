@@ -1,8 +1,11 @@
-// PropertyPage.jsx
-
 import React, { useState, useRef, useEffect } from "react";
+import { basePath } from "@/next.config";
+import Head from "next/head";
 import fs from "fs/promises";
 import path from "path";
+import yaml from "js-yaml";
+import PropTypes from "prop-types";
+import { getPropertyOutputDirectoryName } from "../utils/renameUtils.mjs";
 import Navbar from "../components/Navbar";
 import Home from "../components/Home";
 import Footer from "../components/Footer";
@@ -16,43 +19,13 @@ import Description from "../components/Description";
 import PopupForm from "../components/PopupForm";
 import Modal from "../components/Modal";
 import ChatBot from "../components/ChatBot";
-import yaml from "js-yaml";
-import PropTypes from "prop-types";
-import { getPropertyOutputDirectoryName } from "../utils/renameUtils.mjs";
-
-
 
 const PropertyPage = ({ propertyData, images }) => {
   const [modalUrl, setModalUrl] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const navbarRef = useRef(null);
-  
-  // Flag for loading the YouTube API
-let ytAPIRequired = false;
-
-useEffect(() => {
-  if (
-    propertyData?.home?.youtubeVideoID ||
-    propertyData?.video?.youtubeVideoID
-  ) {
-    ytAPIRequired = true;
-    console.log("YouTube API required:", ytAPIRequired);
-  }
-
-  if (ytAPIRequired) {
-    loadYoutubeIframeAPI();
-    console.log("YouTube API loaded");
-  }
-
-  // if (propertyData?.chatbot?.enable) {
-  //   addChatBot(propertyData);
-  //   console.log("Chatbot enabled");
-  // }
-
-}, [propertyData]);
 
   const handleLinkClick = (url) => {
-    console.log("Link clicked:", url); // Debugging line
     setModalUrl(url);
     setShowModal(true);
   };
@@ -77,14 +50,13 @@ useEffect(() => {
   } = propertyData;
 
   let menuValues = [];
-
   const propertyPageSectionsOrder = propertyData.propertyPageSectionsOrder;
 
   const orderedComponents = propertyPageSectionsOrder
     ? propertyPageSectionsOrder.map((section, index) => {
         switch (section) {
           case "home":
-              return renderHome(propertyData.home, index);
+            return renderHome(propertyData.home, index);
           case "virtualTour":
             return renderVirtualTour(virtualTour, index);
           case "priceAndFeatures":
@@ -130,10 +102,9 @@ useEffect(() => {
   }
 
   function renderChatBot(chatbot, index) {
-    // if (!chatbot || !chatbot.enable) return null;
     return <ChatBot key={`chatbot_${index}`} />;
   }
-  
+
   function renderHome(homeData, index) {
     if (!homeData || !homeData.youtubeVideoID) return null;
     menuValues.push(homeData.menu);
@@ -166,7 +137,7 @@ useEffect(() => {
     return (
       <Photos
         key={`photos_${index}`}
-        imageUrls={{ urls: images }} // Pass images as an object with 'urls' property
+        imageUrls={{ urls: images }}
         navbarRef={navbarRef}
       />
     );
@@ -207,13 +178,49 @@ useEffect(() => {
       <Description
         key={`description_${index}`}
         content={description.content}
-        onLinkClick={handleLinkClick} // Ensure this function is passed correctly
+        onLinkClick={handleLinkClick}
       />
     );
   }
 
   return (
     <div>
+      <Head>
+        <title>{propertyData.title}</title>
+        <meta charSet="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link
+          rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+        />
+        <link
+          rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+        />
+        <script
+          async
+          src="https://accounts.google.com/gsi/client"
+        />
+        <script async src={`${basePath}/js/tracker-util.js`} />
+        <script async src={`${basePath}/js/tracker.js`} />
+        <script async src={`${basePath}/js/logger.js`} />
+        <script async src={`${basePath}/js/rb-config.js`} />
+        <script async src={`${basePath}/js/generateUI_v1.js`} />
+        <script async src={`${basePath}/js/ytvideo_v1.js`} />
+        <script async src={`${basePath}/js/jquery-3.5.1.min.js`} />
+        <script async src={`${basePath}/js/jwt-decode.js`} />
+        <script async src={`${basePath}/js/tracker-config.js`} />
+        <script async src={`${basePath}/js/showcase.js`} />
+        <script async src={`${basePath}/js/showdown-1.9.1.min.js`} />
+        <script async src={`${basePath}/js/inline-script.js`} />
+        <link rel="stylesheet" href={`${basePath}/css/chatbot.css`} />
+        <script async src={`${basePath}/js/chatbot.js`} />
+        <script async src={`${basePath}/js/index.js`} />
+        <script
+          async
+          src="https://kit.fontawesome.com/c3c47df7d6.js"
+        />
+      </Head>
       <Navbar navbar={menuValues} forwardedRef={navbarRef} />
       {orderedComponents}
       {showModal && (
@@ -235,7 +242,7 @@ export async function getStaticPaths() {
     const files = await fs.readdir(dataFolderPath);
 
     const paths = files.map((file) => ({
-      params: { id: getPropertyOutputDirectoryName(file) }, // Convert the ID using getPropertyOutputDirectoryName
+      params: { id: getPropertyOutputDirectoryName(file) },
     }));
     return {
       paths,
@@ -252,23 +259,18 @@ export async function getStaticPaths() {
 
 export async function getStaticProps(context) {
   const { id } = context.params;
-
-  // Convert back to the original input directory ID
-  const originalId = getPropertyOutputDirectoryName(id); // Reverse the conversion
-
+  const originalId = getPropertyOutputDirectoryName(id);
   const filePath = path.join(process.cwd(), "data", originalId, "data.yaml");
 
   try {
     const propertyData = await fs.readFile(filePath, "utf-8");
     const parsedData = yaml.load(propertyData);
 
-    // Merge property-specific data with global data
     const globalFilePath = path.join(process.cwd(), "global", "data.yaml");
     const globalData = await fs.readFile(globalFilePath, "utf-8");
     const parsedGlobalData = yaml.load(globalData);
     const mergedData = { ...parsedGlobalData, ...parsedData };
 
-    // Read images from the images folder
     const imagesFolderPath = path.join(
       process.cwd(),
       "data",
@@ -279,7 +281,7 @@ export async function getStaticProps(context) {
     const imageUrls = imageFiles.map(
       (fileName) => `/data/${id}/images/${fileName}`
     );
-    
+
     return {
       props: {
         propertyData: mergedData,
