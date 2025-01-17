@@ -234,7 +234,23 @@ useEffect(() => {
         />
         
         <link rel="stylesheet" href={`${basePath}/css/chatbot.css`} />
-        
+        <style jsx>{`
+    .bg-dark {
+      background-color: black !important;
+    }
+    @media (orientation: landscape) {
+      #video1 {
+        width: 133vh;
+        height: 75vh;
+      }
+    }
+    @media (orientation: portrait) {
+      #video1 {
+        width: 100vw;
+        height: 57vw;
+      }
+    }
+  `}</style>
       </Head>
         <Script strategy="beforeInteractive" type="application/json" src={`${basePath}/js/areacodes.json`} />
         <Script strategy="beforeInteractive" type="text/javascript" src={`${basePath}/js/rb-config.js`} />
