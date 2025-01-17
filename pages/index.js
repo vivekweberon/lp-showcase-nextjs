@@ -1,6 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
 import path from "path";
+import Head from "next/head";
+import Script from "next/script";
+import { basePath } from "@/next.config";
 import fs from "fs";
 import yaml from "js-yaml";
 import Showcase from "@/components/Showcase";
@@ -95,6 +98,38 @@ function Home({ parsedHomeData, parsedGlobalData }) {
 
   return (
     <div>
+      <Head>
+        <meta charSet="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link
+          rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+        />
+        <link
+          rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+        />
+        
+        <script
+          async
+          src="https://accounts.google.com/gsi/client"
+        />
+        
+        <link rel="stylesheet" href={`${basePath}/css/chatbot.css`} />
+        
+      </Head>
+      <Script strategy="beforeInteractive" src={`${basePath}/js/areacode.json`} type="application/json"/>
+        <Script strategy="beforeInteractive" type="text/javascript" src={`${basePath}/js/rb-config.js`} />
+        <Script strategy="beforeInteractive" type="text/javascript" src={`${basePath}/js/generateUI_v1.js`} />
+        <Script strategy="beforeInteractive" type="text/javascript" src={`${basePath}/js/logger.js`} />
+        <Script strategy="beforeInteractive" type="text/javascript" src={`${basePath}/js/jquery-3.5.1.min.js`} />
+        <Script strategy="beforeInteractive" type="text/javascript" src={`${basePath}/js/jwt-decode.js`} />
+        <Script strategy="beforeInteractive" type="text/javascript" src={`${basePath}/js/tracker-config.js`} />
+        <Script strategy="beforeInteractive" type="text/javascript" src={`${basePath}/js/showcase.js`} />
+        <Script strategy="beforeInteractive" type="text/javascript" src={`${basePath}/js/tracker-util.js`} />
+        <Script strategy="beforeInteractive" type="text/javascript" src={`${basePath}/js/tracker.js`} />
+        <Script strategy="beforeInteractive" type="text/javascript" src={`${basePath}/js/showdown-1.9.1.min.js`} />
+        <Script strategy="beforeInteractive" type="text/javascript" src={`${basePath}/js/inline-script.js`} />
       <Navbar navbar={menuValues} />
       {orderedComponents}
       <Footer

@@ -248,9 +248,9 @@ useEffect(() => {
         <Script strategy="beforeInteractive" type="text/javascript" src={`${basePath}/js/showdown-1.9.1.min.js`} />
         {hasYouTubeVideo && <Script strategy="beforeInteractive" type="text/javascript" src={`${basePath}/js/ytvideo_v1.js`} />}
         <Script strategy="beforeInteractive" type="text/javascript" src={`${basePath}/js/inline-script.js`} />
-        {isChatbotEnabled && <> <Script strategy="beforeInteractive" async type="text/javascript" src={`${basePath}/js/chatbot.js`} />
-        <Script strategy="beforeInteractive" async type="text/javascript" src={`${basePath}/js/index.js`} />
-        <Script strategy="beforeInteractive" async src="https://kit.fontawesome.com/c3c47df7d6.js"/></>}
+        {isChatbotEnabled && <> <Script strategy="beforeInteractive" type="text/javascript" src={`${basePath}/js/chatbot.js`} />
+        <Script strategy="beforeInteractive" type="text/javascript" src={`${basePath}/js/index.js`} />
+        <Script strategy="beforeInteractive" src="https://kit.fontawesome.com/c3c47df7d6.js"/></>}
       <Navbar navbar={menuValues} forwardedRef={navbarRef} />
       {orderedComponents}
       {showModal && (
