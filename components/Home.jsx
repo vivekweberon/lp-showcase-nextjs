@@ -2,27 +2,42 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 
 const Home = ({ youtubeVideoID, videoStart, videoEnd, sectionTitle }) => {
-  // const [isVisible, setIsVisible] = useState(false);
-console.log("youtubeVideoID",youtubeVideoID)
-console.log("sectionTitle",sectionTitle)
+  const [videoHeight, setVideoHeight] = useState();
+  const [videoWidth, setVideoWidth] = useState();
 
-// useEffect(()=>{
-//   console.log("useEffect",youtubeVideoID)
-//   loadYoutubeIframeAPI()
-// if(youtubeVideoID){
-//   setIsVisible(true)
-//   console.log("isVisible",isVisible)
+  useEffect(() => {
+    function getVideoDimensions() {
+      const windowHeight = window.innerHeight;
+      const windowWidth = window.innerWidth;
+      let height = windowHeight * 0.5; // Default to 50% of window height
+      let width = height * 1.777; // Aspect ratio 16:9
 
-// }
-// },[isVisible])
+      if (width > windowWidth) {
+        width = windowWidth;
+        height = width / 1.777;
+      }
 
-// const videoUrl = `https://www.youtube.com/embed/xjpQRTNhbwk?start=5&end=10&autoplay=1`;
+      return { width: width + 'px', height: height + 'px' };
+    }
+
+    function setVideoDimensions() {
+      const { width, height } = getVideoDimensions();
+      setVideoWidth(width);
+      setVideoHeight(height);
+    }
+
+    setVideoDimensions();
+    window.addEventListener('resize', setVideoDimensions);
+
+    return () => {
+      window.removeEventListener('resize', setVideoDimensions);
+    };
+  }, []);
 
   return (
- <div
+    <div
       id="home"
       style={{
-        
         backgroundColor: '#fafafa',
         textAlign: 'center',
         paddingTop: '50px',
@@ -33,9 +48,15 @@ console.log("sectionTitle",sectionTitle)
       <iframe
         id="video1"
         frameBorder="0"
-        style={{ pointerEvents: 'none', width: '133vh', height: '75vh' }}
+        style={{
+          pointerEvents: 'none',
+          width: videoWidth,
+          height: videoHeight,
+          margin: 'auto',
+          maxWidth: '100%',
+        }}
         allow="autoplay; fullscreen"
-        src={`https://www.youtube.com/embed/xjpQRTNhbwk?start=5&end=10&autoplay=1&controls=0&showinfo=0&disablekb=1&modestbranding=1&rel=0&mute=1&playsinline=1&enablejsapi=1&origin=https://ns-blue-weberealty.thrivebrokers.com`}
+        src={`https://www.youtube.com/embed/${youtubeVideoID}?start=${videoStart}&end=${videoEnd}&autoplay=1&controls=0&showinfo=0&disablekb=1&modestbranding=1&rel=0&mute=1&playsinline=1&enablejsapi=1&origin=https://ns-blue-weberealty.thrivebrokers.com`}
       />
       <div
         style={{
@@ -45,8 +66,13 @@ console.log("sectionTitle",sectionTitle)
           textDecoration: 'underline',
         }}
       >
-        <a id="playSound" onClick={(e)=>{handlePlaySoundButtonClick(e)}}>
-         Play Sound
+        <a
+          id="playSound"
+          onClick={(e) => {
+            handlePlaySoundButtonClick(e);
+          }}
+        >
+          Play Sound
         </a>
       </div>
     </div>
@@ -57,7 +83,6 @@ Home.propTypes = {
   youtubeVideoID: PropTypes.string.isRequired,
   videoStart: PropTypes.number.isRequired,
   videoEnd: PropTypes.number.isRequired,
-  menu: PropTypes.string.isRequired,
   sectionTitle: PropTypes.string.isRequired,
 };
 
