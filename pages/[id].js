@@ -235,7 +235,7 @@ useEffect(() => {
         <link rel="stylesheet" href={`${basePath}/css/chatbot.css`} />
         
       </Head>
-      <Script strategy="beforeInteractive" src={`${basePath}/js/areacode.json`} type="application/json"/>
+        <Script strategy="beforeInteractive" type="application/json" src={`${basePath}/js/areacodes.json`} />
         <Script strategy="beforeInteractive" type="text/javascript" src={`${basePath}/js/rb-config.js`} />
         <Script strategy="beforeInteractive" type="text/javascript" src={`${basePath}/js/generateUI_v1.js`} />
         <Script strategy="beforeInteractive" type="text/javascript" src={`${basePath}/js/logger.js`} />
