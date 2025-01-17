@@ -2,13 +2,13 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 
 const Home = ({ youtubeVideoID, videoStart, videoEnd, sectionTitle, navbarRef }) => {
-  const [homeVideoHeight, setHomeVideoHeight] = useState('75vh');
-  const [homeVideoWidth, setHomeVideoWidth] = useState('133vh');
+  const [homeVideoHeight, setHomeVideoHeight] = useState('35vw');
+  const [homeVideoWidth, setHomeVideoWidth] = useState('63%');
 
   useEffect(() => {
     function setVideoDimensions() {
-      setHomeVideoWidth('133vh');
-      setHomeVideoHeight('75vh');
+      setHomeVideoWidth('63%');
+      setHomeVideoHeight('35vw');
     }
 
     setVideoDimensions();
