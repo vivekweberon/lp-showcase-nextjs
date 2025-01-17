@@ -145,6 +145,7 @@ useEffect(() => {
         videoEnd={homeData.videoEnd}
         menu={homeData.menu}
         sectionTitle={homeData.sectionTitle}
+        navbarRef={navbarRef}
       />
     );
   }

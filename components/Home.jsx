@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 
-const Home = ({ youtubeVideoID, videoStart, videoEnd, sectionTitle }) => {
+const Home = ({ youtubeVideoID, videoStart, videoEnd, sectionTitle, navbarRef }) => {
   const [homeVideoHeight, setHomeVideoHeight] = useState();
   const [homeVideoWidth, setHomeVideoWidth] = useState();
 
@@ -9,9 +9,10 @@ const Home = ({ youtubeVideoID, videoStart, videoEnd, sectionTitle }) => {
     function getVideoDimensions() {
       const windowHeight = window.innerHeight;
       const windowWidth = window.innerWidth;
-      let height = windowHeight * 0.5; // Default to 50% of window height
-      let width = height * 1.777; // Aspect ratio 16:9
-
+      const navHeight = navbarRef.current.clientHeight;
+      const availHeight = windowHeight - navHeight - 20;
+      let height = availHeight;
+      let width = height * 1.777;
       if (width > windowWidth) {
         width = windowWidth;
         height = width / 1.777;
