@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 
 const Home = ({ youtubeVideoID, videoStart, videoEnd, sectionTitle }) => {
-  const [videoHeight, setVideoHeight] = useState();
-  const [videoWidth, setVideoWidth] = useState();
+  const [homeVideoHeight, setHomeVideoHeight] = useState();
+  const [homeVideoWidth, setHomeVideoWidth] = useState();
 
   useEffect(() => {
     function getVideoDimensions() {
@@ -22,8 +22,8 @@ const Home = ({ youtubeVideoID, videoStart, videoEnd, sectionTitle }) => {
 
     function setVideoDimensions() {
       const { width, height } = getVideoDimensions();
-      setVideoWidth(width);
-      setVideoHeight(height);
+      setHomeVideoWidth(width);
+      setHomeVideoHeight(height);
     }
 
     setVideoDimensions();
@@ -50,8 +50,8 @@ const Home = ({ youtubeVideoID, videoStart, videoEnd, sectionTitle }) => {
         frameBorder="0"
         style={{
           pointerEvents: 'none',
-          width: videoWidth,
-          height: videoHeight,
+          width: homeVideoWidth,
+          height: homeVideoHeight,
           margin: 'auto',
           maxWidth: '100%',
         }}
