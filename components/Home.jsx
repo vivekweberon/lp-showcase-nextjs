@@ -2,29 +2,13 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 
 const Home = ({ youtubeVideoID, videoStart, videoEnd, sectionTitle, navbarRef }) => {
-  const [homeVideoHeight, setHomeVideoHeight] = useState();
-  const [homeVideoWidth, setHomeVideoWidth] = useState();
+  const [homeVideoHeight, setHomeVideoHeight] = useState('75vh');
+  const [homeVideoWidth, setHomeVideoWidth] = useState('133vh');
 
   useEffect(() => {
-    function getVideoDimensions() {
-      const windowHeight = window.innerHeight;
-      const windowWidth = window.innerWidth;
-      const navHeight = navbarRef.current.clientHeight;
-      const availHeight = windowHeight - navHeight - 20;
-      let height = availHeight;
-      let width = height * 1.777;
-      if (width > windowWidth) {
-        width = windowWidth;
-        height = width / 1.777;
-      }
-
-      return { width: width + 'px', height: height + 'px' };
-    }
-
     function setVideoDimensions() {
-      const { width, height } = getVideoDimensions();
-      setHomeVideoWidth(width);
-      setHomeVideoHeight(height);
+      setHomeVideoWidth('133vh');
+      setHomeVideoHeight('75vh');
     }
 
     setVideoDimensions();
@@ -33,18 +17,17 @@ const Home = ({ youtubeVideoID, videoStart, videoEnd, sectionTitle, navbarRef })
     return () => {
       window.removeEventListener('resize', setVideoDimensions);
     };
-  }, []);
+  }, [navbarRef]);
 
   return (
     <div
-      id="home"
+    id="home"
       style={{
         backgroundColor: '#fafafa',
         textAlign: 'center',
         paddingTop: '50px',
         paddingBottom: '50px',
-      }}
-    >
+      }}>
       <h1>{sectionTitle}</h1>
       <iframe
         id="video1"
@@ -82,9 +65,10 @@ const Home = ({ youtubeVideoID, videoStart, videoEnd, sectionTitle, navbarRef })
 
 Home.propTypes = {
   youtubeVideoID: PropTypes.string.isRequired,
-  videoStart: PropTypes.number.isRequired,
-  videoEnd: PropTypes.number.isRequired,
-  sectionTitle: PropTypes.string.isRequired,
+  videoStart: PropTypes.number,
+  videoEnd: PropTypes.number,
+  sectionTitle: PropTypes.string,
+  navbarRef: PropTypes.object.isRequired,
 };
 
 export default Home;
