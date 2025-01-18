@@ -29,21 +29,44 @@ const readPropertyFiles = async (dataFolderPath) => {
     const folderPath = path.join(dataFolderPath, folder);
     const dataYamlPath = path.join(folderPath, "data.yaml");
 
-    if (fs.existsSync(dataYamlPath)) {
+    // Check if the folder and the data.yaml file exist
+    if (!fs.existsSync(folderPath)) {
+      console.warn(`Folder does not exist: ${folderPath}`);
+      continue;
+    }
+
+    if (!fs.existsSync(dataYamlPath)) {
+      console.warn(`Data file does not exist: ${dataYamlPath}`);
+      continue;
+    }
+
+    try {
       const propertyData = await fs.promises.readFile(dataYamlPath, "utf-8");
       const parsedData = yaml.load(propertyData);
+      if (!parsedData?.homePageData) {
+        console.warn(`Invalid format in file: ${dataYamlPath}`);
+        continue;
+      }
+
       const listingPageURL = getPropertyOutputDirectoryName(folder);
       parsedData.homePageData.listingPageURL = listingPageURL;
       propertiesData.push(parsedData.homePageData);
+    } catch (error) {
+      console.error(`Error processing file: ${dataYamlPath}`, error);
     }
   }
+
   return propertiesData;
 };
 
 // Home component
 function Home({ parsedHomeData, parsedGlobalData }) {
-  const title = parsedHomeData.showcase.sectionTitle;
-  const menus = parsedHomeData.showcase.menu;
+  console.log("parsedHomeData", parsedHomeData);
+  console.log("parsedGlobalData", parsedGlobalData);
+
+  // Safe fallback to avoid errors if data is missing
+  const title = parsedHomeData?.showcase?.sectionTitle || "Default Title";
+  const menus = parsedHomeData?.showcase?.menu || [];
   const homePageSectionsOrder = parsedHomeData.homePageSectionsOrder ||
     parsedGlobalData.homePageSectionsOrder || [
       "description",
@@ -61,8 +84,8 @@ function Home({ parsedHomeData, parsedGlobalData }) {
         return (
           <Showcase
             key={`showcase_${index}`}
-            properties={parsedHomeData.showcase.properties}
-            sectionTitle={parsedHomeData.showcase.sectionTitle}
+            properties={parsedHomeData.showcase?.properties || []}
+            sectionTitle={parsedHomeData.showcase?.sectionTitle || title}
             navbarMenu={menus}
           />
         );
@@ -71,23 +94,23 @@ function Home({ parsedHomeData, parsedGlobalData }) {
         return (
           <Realtor
             key={`realtor_${index}`}
-            realtorData={parsedGlobalData.realtor}
+            realtorData={parsedGlobalData.realtor || {}}
           />
         );
       case "contact":
-        if (parsedGlobalData.contact.mauticForm.popupForm.enable === false) {
+        if (parsedGlobalData.contact?.mauticForm?.popupForm?.enable === false) {
           menuValues.push("Contact");
           return (
             <Contact
               key={`contact_${index}`}
-              contact={parsedGlobalData.contact}
+              contact={parsedGlobalData.contact || {}}
             />
           );
         } else {
           return (
             <PopupForm
               key={`popupForm_${index}`}
-              contact={parsedGlobalData.contact}
+              contact={parsedGlobalData.contact || {}}
             />
           );
         }
@@ -119,22 +142,23 @@ function Home({ parsedHomeData, parsedGlobalData }) {
         
       </Head>
       <Script strategy="beforeInteractive" src={`${basePath}/js/areacode.json`} type="application/json"/>
-        <Script strategy="beforeInteractive" type="text/javascript" src={`${basePath}/js/rb-config.js`} />
-        <Script strategy="beforeInteractive" type="text/javascript" src={`${basePath}/js/generateUI_v1.js`} />
-        <Script strategy="beforeInteractive" type="text/javascript" src={`${basePath}/js/logger.js`} />
-        <Script strategy="beforeInteractive" type="text/javascript" src={`${basePath}/js/jquery-3.5.1.min.js`} />
-        <Script strategy="beforeInteractive" type="text/javascript" src={`${basePath}/js/jwt-decode.js`} />
-        <Script strategy="beforeInteractive" type="text/javascript" src={`${basePath}/js/tracker-config.js`} />
-        <Script strategy="beforeInteractive" type="text/javascript" src={`${basePath}/js/showcase.js`} />
-        <Script strategy="beforeInteractive" type="text/javascript" src={`${basePath}/js/tracker-util.js`} />
-        <Script strategy="beforeInteractive" type="text/javascript" src={`${basePath}/js/tracker.js`} />
-        <Script strategy="beforeInteractive" type="text/javascript" src={`${basePath}/js/showdown-1.9.1.min.js`} />
-        <Script strategy="beforeInteractive" type="text/javascript" src={`${basePath}/js/inline-script.js`} />
+      <Script strategy="beforeInteractive" type="text/javascript" src={`${basePath}/js/rb-config.js`} />
+      <Script strategy="beforeInteractive" type="text/javascript" src={`${basePath}/js/generateUI_v1.js`} />
+      <Script strategy="beforeInteractive" type="text/javascript" src={`${basePath}/js/logger.js`} />
+      <Script strategy="beforeInteractive" type="text/javascript" src={`${basePath}/js/jquery-3.5.1.min.js`} />
+      <Script strategy="beforeInteractive" type="text/javascript" src={`${basePath}/js/jwt-decode.js`} />
+      <Script strategy="beforeInteractive" type="text/javascript" src={`${basePath}/js/tracker-config.js`} />
+      <Script strategy="beforeInteractive" type="text/javascript" src={`${basePath}/js/showcase.js`} />
+      <Script strategy="beforeInteractive" type="text/javascript" src={`${basePath}/js/tracker-util.js`} />
+      <Script strategy="beforeInteractive" type="text/javascript" src={`${basePath}/js/tracker.js`} />
+      <Script strategy="beforeInteractive" type="text/javascript" src={`${basePath}/js/showdown-1.9.1.min.js`} />
+      <Script strategy="beforeInteractive" type="text/javascript" src={`${basePath}/js/inline-script.js`} />
+      
       <Navbar navbar={menuValues} />
       {orderedComponents}
       <Footer
         footerMenu={menuValues}
-        footertext={parsedGlobalData.footertext}
+        footertext={parsedGlobalData.footertext || ""}
       />
     </div>
   );
@@ -144,10 +168,7 @@ Home.propTypes = {
   parsedHomeData: PropTypes.shape({
     showcase: PropTypes.shape({
       sectionTitle: PropTypes.string.isRequired,
-      menu: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.arrayOf(PropTypes.string),
-      ]).isRequired,
+      menu: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]).isRequired,
       properties: PropTypes.arrayOf(
         PropTypes.shape({
           url: PropTypes.string.isRequired,
@@ -187,8 +208,8 @@ export default Home;
 // getStaticProps function
 export async function getStaticProps() {
   try {
-    const homeDataFilePath = path.join(process.cwd(), "home", "data.yaml");
-    const globalDataFilePath = path.join(process.cwd(), "global", "data.yaml");
+    const homeDataFilePath = path.join(process.cwd(), "data", "home", "data.yaml");
+    const globalDataFilePath = path.join(process.cwd(), "data", "global", "data.yaml");
     const dataFolderPath = path.join(process.cwd(), "data");
 
     const [parsedHomeData, parsedGlobalData] = await Promise.all([
@@ -200,14 +221,17 @@ export async function getStaticProps() {
     parsedHomeData.showcase.properties = propertiesData;
 
     return {
-      props: { parsedHomeData, parsedGlobalData },
+      props: {
+        parsedHomeData: parsedHomeData || { showcase: { sectionTitle: "", menu: [], properties: [] } },
+        parsedGlobalData: parsedGlobalData || { homePageSectionsOrder: [], contact: {}, realtor: {}, footertext: "" },
+      },
     };
   } catch (error) {
     console.error("Error fetching home data:", error);
     return {
       props: {
-        parsedHomeData: {},
-        parsedGlobalData: {},
+        parsedHomeData: { showcase: { sectionTitle: "", menu: [], properties: [] } },
+        parsedGlobalData: { homePageSectionsOrder: [], contact: {}, realtor: {}, footertext: "" },
       },
     };
   }

@@ -21,6 +21,7 @@ import PopupForm from "../components/PopupForm";
 import Modal from "../components/Modal";
 import ChatBot from "../components/ChatBot";
 import Script from "next/script";
+import { validateInputData } from "@/utils/inCodeValidation";
 
 const PropertyPage = ({ propertyData, images }) => {
   const [modalUrl, setModalUrl] = useState(null);
@@ -284,19 +285,48 @@ PropertyPage.propTypes = {
 };
 
 export async function getStaticPaths() {
+  const dataFolderPath = path.join(process.cwd(), "data");
   try {
-    const dataFolderPath = path.join(process.cwd(), "data");
-    const files = await fs.readdir(dataFolderPath);
+    console.log("Data folder path:", dataFolderPath);
 
-    const paths = files.map((file) => ({
+    // Ensure directory exists
+    const isDirectory = await fs.stat(dataFolderPath).then(stat => stat.isDirectory()).catch(() => false);
+    if (!isDirectory) {
+      console.error("Data directory does not exist:", dataFolderPath);
+      return { paths: [], fallback: false };
+    }
+
+    // Run validation
+    try {
+      validateInputData(dataFolderPath);
+      console.log("Validation completed successfully.");
+    } catch (validationError) {
+      console.error("Validation failed:", validationError.message);
+      throw validationError;
+    }
+
+    // Read and filter files
+    const files = await fs.readdir(dataFolderPath);
+    console.log("Files in data folder:", files);
+
+    // Exclude home and global directories
+    const filteredFiles = files.filter(
+      (file) => file !== "global" && file !== "home"
+    );
+    console.log("Filtered files:", filteredFiles);
+
+    // Generate paths
+    const paths = filteredFiles.map((file) => ({
       params: { id: getPropertyOutputDirectoryName(file) },
     }));
+    console.log("Paths:", paths);
+
     return {
       paths,
       fallback: false,
     };
   } catch (error) {
-    console.error("Error fetching static paths:", error);
+    console.error("Error in getStaticPaths:", error);
     return {
       paths: [],
       fallback: false,
@@ -313,7 +343,7 @@ export async function getStaticProps(context) {
     const propertyData = await fs.readFile(filePath, "utf-8");
     const parsedData = yaml.load(propertyData);
 
-    const globalFilePath = path.join(process.cwd(), "global", "data.yaml");
+    const globalFilePath = path.join(process.cwd(), "data", "global", "data.yaml");
     const globalData = await fs.readFile(globalFilePath, "utf-8");
     const parsedGlobalData = yaml.load(globalData);
     const mergedData = { ...parsedGlobalData, ...parsedData };
