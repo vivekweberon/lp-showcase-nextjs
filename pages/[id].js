@@ -286,6 +286,7 @@ PropertyPage.propTypes = {
 
 export async function getStaticPaths() {
   const dataFolderPath = path.join(process.cwd(), "data");
+  const errorMessagePath = path.join(process.cwd(), "messages", "errorMessage.json");
   try {
     console.log("Data folder path:", dataFolderPath);
 
@@ -303,6 +304,17 @@ export async function getStaticPaths() {
     } catch (validationError) {
       console.error("Validation failed:", validationError.message);
       throw validationError;
+    }
+
+    // Check for errorMessage.json after validation
+    const isErrorMessagePresent = await fs
+      .stat(errorMessagePath)
+      .then(stat => stat.isFile())
+      .catch(() => false);
+
+    if (isErrorMessagePresent) {
+      console.error("errorMessage.json detected. Aborting page generation.");
+      return { paths: [], fallback: false };
     }
 
     // Read and filter files
