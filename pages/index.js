@@ -2,25 +2,30 @@ import React from "react";
 import PropTypes from "prop-types";
 import path from "path";
 import Head from "next/head";
-import Script from "next/script";
 import { basePath } from "@/next.config";
-import fs from "fs";
-import yaml from "js-yaml";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+import NextScript from "@/components/NextScript";
 import Showcase from "@/components/Showcase";
 import Realtor from "@/components/Realtor";
 import Contact from "@/components/Contact";
 import PopupForm from "@/components/PopupForm";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
+import scriptSources from "@/modules/scriptConfig";
 import { getPropertyOutputDirectoryName } from "../utils/renameUtils.mjs";
+import { validateInputData } from "@/utils/inCodeValidation";
+import fs from "fs";
+import yaml from "js-yaml";
 
-// Utility function to load YAML files
+// Filter for scripts that should always load
+const alwaysLoadScripts = scriptSources.alwaysLoad || [];
+
+// function to load YAML files
 const loadYamlFile = async (filePath) => {
   const fileData = await fs.promises.readFile(filePath, "utf-8");
   return yaml.load(fileData);
 };
 
-// Utility function to read property files
+// function to read property files
 const readPropertyFiles = async (dataFolderPath) => {
   const propertyFolders = await fs.promises.readdir(dataFolderPath);
   const propertiesData = [];
@@ -29,24 +34,12 @@ const readPropertyFiles = async (dataFolderPath) => {
     const folderPath = path.join(dataFolderPath, folder);
     const dataYamlPath = path.join(folderPath, "data.yaml");
 
-    // Check if the folder and the data.yaml file exist
-    if (!fs.existsSync(folderPath)) {
-      console.warn(`Folder does not exist: ${folderPath}`);
-      continue;
-    }
-
-    if (!fs.existsSync(dataYamlPath)) {
-      console.warn(`Data file does not exist: ${dataYamlPath}`);
-      continue;
-    }
+    if (!fs.existsSync(folderPath) || !fs.existsSync(dataYamlPath)) continue;
 
     try {
       const propertyData = await fs.promises.readFile(dataYamlPath, "utf-8");
       const parsedData = yaml.load(propertyData);
-      if (!parsedData?.homePageData) {
-        console.warn(`Invalid format in file: ${dataYamlPath}`);
-        continue;
-      }
+      if (!parsedData?.homePageData) continue;
 
       const listingPageURL = getPropertyOutputDirectoryName(folder);
       parsedData.homePageData.listingPageURL = listingPageURL;
@@ -59,12 +52,7 @@ const readPropertyFiles = async (dataFolderPath) => {
   return propertiesData;
 };
 
-// Home component
 function Home({ parsedHomeData, parsedGlobalData }) {
-  console.log("parsedHomeData", parsedHomeData);
-  console.log("parsedGlobalData", parsedGlobalData);
-
-  // Safe fallback to avoid errors if data is missing
   const title = parsedHomeData?.showcase?.sectionTitle || "Default Title";
   const menus = parsedHomeData?.showcase?.menu || [];
   const homePageSectionsOrder = parsedHomeData.homePageSectionsOrder ||
@@ -132,28 +120,11 @@ function Home({ parsedHomeData, parsedGlobalData }) {
           rel="stylesheet"
           href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
         />
-        
-        <script
-          async
-          src="https://accounts.google.com/gsi/client"
-        />
-        
         <link rel="stylesheet" href={`${basePath}/css/chatbot.css`} />
-        
       </Head>
-      <Script strategy="beforeInteractive" src={`${basePath}/js/areacode.json`} type="application/json"/>
-      <Script strategy="beforeInteractive" type="text/javascript" src={`${basePath}/js/rb-config.js`} />
-      <Script strategy="beforeInteractive" type="text/javascript" src={`${basePath}/js/generateUI_v1.js`} />
-      <Script strategy="beforeInteractive" type="text/javascript" src={`${basePath}/js/logger.js`} />
-      <Script strategy="beforeInteractive" type="text/javascript" src={`${basePath}/js/jquery-3.5.1.min.js`} />
-      <Script strategy="beforeInteractive" type="text/javascript" src={`${basePath}/js/jwt-decode.js`} />
-      <Script strategy="beforeInteractive" type="text/javascript" src={`${basePath}/js/tracker-config.js`} />
-      <Script strategy="beforeInteractive" type="text/javascript" src={`${basePath}/js/showcase.js`} />
-      <Script strategy="beforeInteractive" type="text/javascript" src={`${basePath}/js/tracker-util.js`} />
-      <Script strategy="beforeInteractive" type="text/javascript" src={`${basePath}/js/tracker.js`} />
-      <Script strategy="beforeInteractive" type="text/javascript" src={`${basePath}/js/showdown-1.9.1.min.js`} />
-      <Script strategy="beforeInteractive" type="text/javascript" src={`${basePath}/js/inline-script.js`} />
-      
+      {alwaysLoadScripts.map((src, index) => (
+        <NextScript key={`script_${index}`} src={basePath + src} />
+      ))}
       <Navbar navbar={menuValues} />
       {orderedComponents}
       <Footer
@@ -203,14 +174,18 @@ Home.propTypes = {
   }).isRequired,
 };
 
-export default Home;
-
-// getStaticProps function
 export async function getStaticProps() {
   try {
     const homeDataFilePath = path.join(process.cwd(), "data", "home", "data.yaml");
     const globalDataFilePath = path.join(process.cwd(), "data", "global", "data.yaml");
     const dataFolderPath = path.join(process.cwd(), "data");
+
+    try {
+      validateInputData(dataFolderPath);
+    } catch (validationError) {
+      console.error("Validation failed:", validationError.message);
+      throw validationError;
+    }
 
     const [parsedHomeData, parsedGlobalData] = await Promise.all([
       loadYamlFile(homeDataFilePath),
@@ -236,3 +211,5 @@ export async function getStaticProps() {
     };
   }
 }
+
+export default Home;

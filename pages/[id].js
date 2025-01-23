@@ -21,7 +21,7 @@ import PopupForm from "../components/PopupForm";
 import Modal from "../components/Modal";
 import ChatBot from "../components/ChatBot";
 import Script from "next/script";
-import { validateInputData } from "@/utils/inCodeValidation";
+import scriptSources from "@/modules/scriptConfig";
 
 const PropertyPage = ({ propertyData, images }) => {
   const [modalUrl, setModalUrl] = useState(null);
@@ -37,18 +37,13 @@ useEffect(() => {
     propertyData?.video?.youtubeVideoID
   ) {
     ytAPIRequired = true;
-    console.log("YouTube API required:", ytAPIRequired);
+    // console.log("YouTube API required:", ytAPIRequired);
   }
 
   if (ytAPIRequired) {
     loadYoutubeIframeAPI();
-    console.log("YouTube API loaded");
+    // console.log("YouTube API loaded");
   }
-
-  // if (propertyData?.chatbot?.enable) {
-  //   addChatBot(propertyData);
-  //   console.log("Chatbot enabled");
-  // }
 
 }, [propertyData]);
 
@@ -253,22 +248,43 @@ useEffect(() => {
     }
   `}</style>
       </Head>
-        <Script strategy="beforeInteractive" type="application/json" src={`${basePath}/js/areacodes.json`} />
-        <Script strategy="beforeInteractive" type="text/javascript" src={`${basePath}/js/rb-config.js`} />
-        <Script strategy="beforeInteractive" type="text/javascript" src={`${basePath}/js/generateUI_v1.js`} />
-        <Script strategy="beforeInteractive" type="text/javascript" src={`${basePath}/js/logger.js`} />
-        <Script strategy="beforeInteractive" type="text/javascript" src={`${basePath}/js/jquery-3.5.1.min.js`} />
-        <Script strategy="beforeInteractive" type="text/javascript" src={`${basePath}/js/jwt-decode.js`} />
-        <Script strategy="beforeInteractive" type="text/javascript" src={`${basePath}/js/tracker-config.js`} />
-        <Script strategy="beforeInteractive" type="text/javascript" src={`${basePath}/js/showcase.js`} />
-        <Script strategy="beforeInteractive" type="text/javascript" src={`${basePath}/js/tracker-util.js`} />
-        <Script strategy="beforeInteractive" type="text/javascript" src={`${basePath}/js/tracker.js`} />
-        <Script strategy="beforeInteractive" type="text/javascript" src={`${basePath}/js/showdown-1.9.1.min.js`} />
-        {hasYouTubeVideo && <Script strategy="beforeInteractive" type="text/javascript" src={`${basePath}/js/ytvideo_v1.js`} />}
-        <Script strategy="beforeInteractive" type="text/javascript" src={`${basePath}/js/inline-script.js`} />
-        {isChatbotEnabled && <> <Script strategy="beforeInteractive" type="text/javascript" src={`${basePath}/js/chatbot.js`} />
-        <Script strategy="beforeInteractive" type="text/javascript" src={`${basePath}/js/index.js`} />
-        <Script strategy="beforeInteractive" src="https://kit.fontawesome.com/c3c47df7d6.js"/></>}
+
+      <script
+          async
+          src="https://accounts.google.com/gsi/client"
+        />
+
+        {/* Dynamically load alwaysLoad scripts from scriptSources */}
+      {scriptSources.alwaysLoad.map((src, index) => (
+        <Script
+          key={`script_${index}`}
+          strategy="beforeInteractive"
+          type="text/javascript"
+          src={basePath + src}
+        />
+      ))}
+
+      {hasYouTubeVideo && (
+        <Script
+          strategy="beforeInteractive"
+          type="text/javascript"
+          src={basePath + scriptSources.ytVideo}
+        />
+      )}
+
+      {isChatbotEnabled && scriptSources.chatbot.map((src, index) => (
+        <>
+          <Script
+          key={`script_${index}`}
+            strategy="beforeInteractive"
+            type="text/javascript"
+            src={basePath + src}
+          />
+          
+        </>
+      ))}
+      <Script strategy="beforeInteractive" src="https://kit.fontawesome.com/c3c47df7d6.js"/>
+
       <Navbar navbar={menuValues} forwardedRef={navbarRef} />
       {orderedComponents}
       {showModal && (
@@ -285,25 +301,17 @@ PropertyPage.propTypes = {
 };
 
 export async function getStaticPaths() {
+  console.log("Property page getStaticPaths called");
   const dataFolderPath = path.join(process.cwd(), "data");
   const errorMessagePath = path.join(process.cwd(), "messages", "errorMessage.json");
   try {
-    console.log("Data folder path:", dataFolderPath);
+    // console.log("Data folder path:", dataFolderPath);
 
     // Ensure directory exists
     const isDirectory = await fs.stat(dataFolderPath).then(stat => stat.isDirectory()).catch(() => false);
     if (!isDirectory) {
-      console.error("Data directory does not exist:", dataFolderPath);
+      // console.error("Data directory does not exist:", dataFolderPath);
       return { paths: [], fallback: false };
-    }
-
-    // Run validation
-    try {
-      validateInputData(dataFolderPath);
-      console.log("Validation completed successfully.");
-    } catch (validationError) {
-      console.error("Validation failed:", validationError.message);
-      throw validationError;
     }
 
     // Check for errorMessage.json after validation
@@ -319,19 +327,19 @@ export async function getStaticPaths() {
 
     // Read and filter files
     const files = await fs.readdir(dataFolderPath);
-    console.log("Files in data folder:", files);
+    // console.log("Files in data folder:", files);
 
     // Exclude home and global directories
     const filteredFiles = files.filter(
       (file) => file !== "global" && file !== "home"
     );
-    console.log("Filtered files:", filteredFiles);
+    // console.log("Filtered files:", filteredFiles);
 
     // Generate paths
     const paths = filteredFiles.map((file) => ({
       params: { id: getPropertyOutputDirectoryName(file) },
     }));
-    console.log("Paths:", paths);
+    // console.log("Paths:", paths);
 
     return {
       paths,
@@ -347,6 +355,7 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps(context) {
+  console.log("Property page getStaticProps called");
   const { id } = context.params;
   const originalId = getPropertyOutputDirectoryName(id);
   const filePath = path.join(process.cwd(), "data", originalId, "data.yaml");
@@ -388,5 +397,6 @@ export async function getStaticProps(context) {
     };
   }
 }
+
 
 export default PropertyPage;
