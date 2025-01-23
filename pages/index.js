@@ -175,6 +175,7 @@ Home.propTypes = {
 };
 
 export async function getStaticProps() {
+  console.log("Home getStaticProps");
   try {
     const homeDataFilePath = path.join(process.cwd(), "data", "home", "data.yaml");
     const globalDataFilePath = path.join(process.cwd(), "data", "global", "data.yaml");

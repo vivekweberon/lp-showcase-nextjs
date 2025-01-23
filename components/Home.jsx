@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+// import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 
 const Home = ({ youtubeVideoID, videoStart, videoEnd, sectionTitle }) => {
@@ -15,7 +15,7 @@ console.log("youtubeVideoID",youtubeVideoID)
 // }
 // },[isVisible])
 
-const videoUrl = `https://www.youtube.com/embed/xjpQRTNhbwk?start=5&end=10&autoplay=1`;
+// const videoUrl = `https://www.youtube.com/embed/xjpQRTNhbwk?start=5&end=10&autoplay=1`;
 
   return (
  <div
@@ -34,7 +34,7 @@ const videoUrl = `https://www.youtube.com/embed/xjpQRTNhbwk?start=5&end=10&autop
         frameBorder="0"
         style={{ pointerEvents: 'none' }}
         allow="autoplay; fullscreen"
-        src="https://www.youtube.com/embed/xjpQRTNhbwk?start=5&end=10&autoplay=1&controls=0&showinfo=0&disablekb=1&modestbranding=1&rel=0&mute=1&playsinline=1&enablejsapi=1&origin=https://ns-blue-weberealty.thrivebrokers.com"
+        src={`https://www.youtube.com/embed/${youtubeVideoID}?start=${videoStart}&end=${videoEnd}&autoplay=1&controls=0&showinfo=0&disablekb=1&modestbranding=1&rel=0&mute=1&playsinline=1&enablejsapi=1&origin=https://ns-blue-weberealty.thrivebrokers.com`}
       />
       <div
         style={{
