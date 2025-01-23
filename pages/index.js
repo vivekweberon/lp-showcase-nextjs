@@ -12,7 +12,6 @@ import Contact from "@/components/Contact";
 import PopupForm from "@/components/PopupForm";
 import scriptSources from "@/modules/scriptConfig";
 import { getPropertyOutputDirectoryName } from "../utils/renameUtils.mjs";
-import { validateInputData } from "@/utils/inCodeValidation";
 import fs from "fs";
 import yaml from "js-yaml";
 
@@ -53,6 +52,8 @@ const readPropertyFiles = async (dataFolderPath) => {
 };
 
 function Home({ parsedHomeData, parsedGlobalData }) {
+  console.log("Parsed Home Data", parsedHomeData);
+  console.log("Parsed Global Data", parsedGlobalData);
   const title = parsedHomeData?.showcase?.sectionTitle || "Default Title";
   const menus = parsedHomeData?.showcase?.menu || [];
   const homePageSectionsOrder = parsedHomeData.homePageSectionsOrder ||
@@ -181,12 +182,7 @@ export async function getStaticProps() {
     const globalDataFilePath = path.join(process.cwd(), "data", "global", "data.yaml");
     const dataFolderPath = path.join(process.cwd(), "data");
 
-    try {
-      validateInputData(dataFolderPath);
-    } catch (validationError) {
-      console.error("Validation failed:", validationError.message);
-      throw validationError;
-    }
+    
 
     const [parsedHomeData, parsedGlobalData] = await Promise.all([
       loadYamlFile(homeDataFilePath),

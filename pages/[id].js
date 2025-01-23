@@ -22,6 +22,7 @@ import Modal from "../components/Modal";
 import ChatBot from "../components/ChatBot";
 import Script from "next/script";
 import scriptSources from "@/modules/scriptConfig";
+import { validateInputData } from "@/utils/inCodeValidation";
 
 const PropertyPage = ({ propertyData, images }) => {
   const [modalUrl, setModalUrl] = useState(null);
@@ -312,6 +313,13 @@ export async function getStaticPaths() {
     if (!isDirectory) {
       // console.error("Data directory does not exist:", dataFolderPath);
       return { paths: [], fallback: false };
+    }
+
+    try {
+      validateInputData(dataFolderPath);
+    } catch (validationError) {
+      console.error("Validation failed:", validationError.message);
+      throw validationError;
     }
 
     // Check for errorMessage.json after validation

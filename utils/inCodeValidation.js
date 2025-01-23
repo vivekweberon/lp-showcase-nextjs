@@ -19,7 +19,7 @@ export function validateInputData(inputDir) {
   let schemaKeys;
 
   console.log("Starting validation process...");
-  console.log("Input data directory path: ", inputDir);
+  // console.log("Input data directory path: ", inputDir);
 
   if (!fs.existsSync(inputDir)) {
     msg += `${++count} Input data directory path provided does not exist \n`;
@@ -68,7 +68,7 @@ export function validateInputData(inputDir) {
 
     // Validate property directories
     fs.readdirSync(inputDir).forEach((propertyDir) => {
-      console.log(`Validating property directory '${propertyDir}'...`);
+      // console.log(`Validating property directory '${propertyDir}'...`);
       if (
         propertyDir.startsWith(".") ||
         propertyDir === LP_GLOBAL_DIR ||
@@ -79,7 +79,7 @@ export function validateInputData(inputDir) {
       if (!/^[0-9][0-9-]*[0-9]$/.test(propertyDir)) {
         msg += `${++count} '${inputDir}/${propertyDir}' Invalid property name\n`;
       } else {
-        console.log(`Property directory '${propertyDir}' is valid.`);
+        // console.log(`Property directory '${propertyDir}' is valid.`);
         if (!fs.lstatSync(`${inputDir}/${propertyDir}`).isDirectory()) {
           msg += `${++count} '${inputDir}/${propertyDir}' is not a directory\n`;
         } else {
@@ -220,13 +220,13 @@ export function validateSpecialDirectory(
 }
 
 export function getKeyValueMapFromYAML(filePath) {
-  console.log("Reading YAML file: ", filePath);
+  // console.log("Reading YAML file: ", filePath);
   let ret = undefined;
   let uiSchema = fs.readFileSync(filePath, "utf8");
-  console.log("uiSchema", uiSchema);
+  // console.log("uiSchema", uiSchema);
   if (uiSchema) {
     let uiData = yaml.load(uiSchema);
-    console.log("uiData", uiData);
+    // console.log("uiData", uiData);
     if (uiData) {
       ret = getAllKeysAndValues(uiData);
     }
@@ -235,12 +235,12 @@ export function getKeyValueMapFromYAML(filePath) {
 }
 
 export function getAllKeysAndValues(inputData, keys = new Map(), ref = "") {
-  console.log(`Processing inputData:`, inputData); // Log the current inputData
-  console.log(`Current ref: "${ref}"`); // Log the current ref
+  // console.log(`Processing inputData:`, inputData); // Log the current inputData
+  // console.log(`Current ref: "${ref}"`); // Log the current ref
 
   // Ensure inputData is an object before processing
   if (!inputData || typeof inputData !== "object") {
-    console.warn(`Skipping invalid inputData:`, inputData); // Warn about invalid input
+    // console.warn(`Skipping invalid inputData:`, inputData); // Warn about invalid input
     return keys;
   }
 
@@ -255,7 +255,7 @@ export function getAllKeysAndValues(inputData, keys = new Map(), ref = "") {
       newKey = key;
     }
 
-    console.log(`Adding key-value pair: "${newKey}" =>`, inputData[key]); // Log key-value being added
+    // console.log(`Adding key-value pair: "${newKey}" =>`, inputData[key]); // Log key-value being added
     allKeys.set(newKey, inputData[key]);
 
     // Recursively process nested objects
@@ -264,11 +264,11 @@ export function getAllKeysAndValues(inputData, keys = new Map(), ref = "") {
       typeof inputData[key] === "object" &&
       inputData[key] !== null
     ) {
-      console.log(`Recursing into nested object at key: "${newKey}"`); // Log recursion
+      // console.log(`Recursing into nested object at key: "${newKey}"`); // Log recursion
       getAllKeysAndValues(inputData[key], allKeys, newKey);
     }
   });
 
-  console.log(`Returning keys so far:`, [...allKeys.entries()]); // Log all keys and values before returning
+  // console.log(`Returning keys so far:`, [...allKeys.entries()]); // Log all keys and values before returning
   return allKeys;
 }
