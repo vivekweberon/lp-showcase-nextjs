@@ -1,5 +1,7 @@
-const fs = require("fs");
-const yaml = require("js-yaml");
+// const fs = require("fs");
+import fs from "fs";
+import yaml from "js-yaml";
+// const yaml = require("js-yaml");
 
 const LP_GLOBAL_DIR = "global";
 const LP_HOME_DIR = "home";
@@ -11,6 +13,7 @@ const PROPERTY_SCHEMA = "schema/property_schema.yaml";
 const ERROR_MESSAGES_FILE = "messages/errorMessage.json";
 
 export function validateInputData(inputDir) {
+  console.log('Calling validateInputData');
   let msg = "";
   let count = 0;
   let globalKeys;
@@ -272,3 +275,4 @@ export function getAllKeysAndValues(inputData, keys = new Map(), ref = "") {
   // console.log(`Returning keys so far:`, [...allKeys.entries()]); // Log all keys and values before returning
   return allKeys;
 }
+

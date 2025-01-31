@@ -190,6 +190,8 @@ export async function getStaticProps() {
     ]);
 
     const propertiesData = await readPropertyFiles(dataFolderPath);
+    console.log("Parsed Home Data", parsedHomeData);
+    console.log("Parsed Home Data", parsedHomeData.showcase.properties);
     parsedHomeData.showcase.properties = propertiesData;
 
     return {

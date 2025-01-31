@@ -22,7 +22,10 @@ import Modal from "../components/Modal";
 import ChatBot from "../components/ChatBot";
 import Script from "next/script";
 import scriptSources from "@/modules/scriptConfig";
-import { validateInputData } from "@/utils/inCodeValidation";
+// import { validateInputData } from "@/utils/inCodeValidation";
+// import dotenv from "dotenv";
+
+// dotenv.config();
 
 const PropertyPage = ({ propertyData, images }) => {
   const [modalUrl, setModalUrl] = useState(null);
@@ -303,74 +306,86 @@ PropertyPage.propTypes = {
 
 export async function getStaticPaths() {
   console.log("Property page getStaticPaths called");
+  console.log("Dummy Environment Value:", process.env.customKey);
   const dataFolderPath = path.join(process.cwd(), "data");
   const errorMessagePath = path.join(process.cwd(), "messages", "errorMessage.json");
-  try {
-    // console.log("Data folder path:", dataFolderPath);
+  const siteToBuild = process.env.siteToBuild; // Get site name from environment
+  console.log("Building site for:", siteToBuild);
 
-    // Ensure directory exists
+  try {
     const isDirectory = await fs.stat(dataFolderPath).then(stat => stat.isDirectory()).catch(() => false);
     if (!isDirectory) {
-      // console.error("Data directory does not exist:", dataFolderPath);
       return { paths: [], fallback: false };
     }
 
-    try {
-      validateInputData(dataFolderPath);
-    } catch (validationError) {
-      console.error("Validation failed:", validationError.message);
-      throw validationError;
-    }
+    // try {
+    //   validateInputData(dataFolderPath);
+    // } catch (validationError) {
+    //   console.error("Validation failed:", validationError.message);
+    //   throw validationError;
+    // }
 
-    // Check for errorMessage.json after validation
-    const isErrorMessagePresent = await fs
-      .stat(errorMessagePath)
-      .then(stat => stat.isFile())
-      .catch(() => false);
+    // // Check for errorMessage.json after validation
+    // const isErrorMessagePresent = await fs
+    //   .stat(errorMessagePath)
+    //   .then(stat => stat.isFile())
+    //   .catch(() => false);
 
-    if (isErrorMessagePresent) {
-      console.error("errorMessage.json detected. Aborting page generation.");
-      return { paths: [], fallback: false };
-    }
+    // if (isErrorMessagePresent) {
+    //   console.error("errorMessage.json detected. Aborting page generation.");
+    //   return { paths: [], fallback: false };
+    // }
 
-    // Read and filter files
     const files = await fs.readdir(dataFolderPath);
-    // console.log("Files in data folder:", files);
-
-    // Exclude home and global directories
     const filteredFiles = files.filter(
       (file) => file !== "global" && file !== "home"
     );
-    // console.log("Filtered files:", filteredFiles);
 
-    // Generate paths
-    const paths = filteredFiles.map((file) => ({
-      params: { id: getPropertyOutputDirectoryName(file) },
-    }));
-    // console.log("Paths:", paths);
+    const paths = [];
 
-    return {
-      paths,
-      fallback: false,
-    };
+    for (const file of filteredFiles) {
+      const filePath = path.join(dataFolderPath, file, "data.yaml");
+      try {
+        const propertyData = await fs.readFile(filePath, "utf-8");
+        const parsedData = yaml.load(propertyData);
+
+        if (parsedData.siteName && parsedData.siteName.includes(siteToBuild)) {
+          paths.push({
+            params: {
+              directory: siteToBuild,
+              subDirectory: getPropertyOutputDirectoryName(file),
+              pageName: "index",
+            },
+          });
+        }
+      } catch (error) {
+        console.warn(`Skipping ${file}: Unable to read data.yaml`, error);
+      }
+    }
+
+    console.log("Paths:", paths);
+    return { paths, fallback: false };
   } catch (error) {
     console.error("Error in getStaticPaths:", error);
-    return {
-      paths: [],
-      fallback: false,
-    };
+    return { paths: [], fallback: false };
   }
 }
 
 export async function getStaticProps(context) {
   console.log("Property page getStaticProps called");
-  const { id } = context.params;
-  const originalId = getPropertyOutputDirectoryName(id);
+  const { subDirectory } = context.params;
+  const originalId = getPropertyOutputDirectoryName(subDirectory);
   const filePath = path.join(process.cwd(), "data", originalId, "data.yaml");
+  const siteToBuild = process.env.siteToBuild; // Get the env value
 
   try {
     const propertyData = await fs.readFile(filePath, "utf-8");
     const parsedData = yaml.load(propertyData);
+
+    // Ensure only pages matching siteToBuild are generated
+    if (!parsedData.siteName || !parsedData.siteName.includes(siteToBuild)) {
+      return { notFound: true };
+    }
 
     const globalFilePath = path.join(process.cwd(), "data", "global", "data.yaml");
     const globalData = await fs.readFile(globalFilePath, "utf-8");
@@ -385,14 +400,14 @@ export async function getStaticProps(context) {
     );
     const imageFiles = await fs.readdir(imagesFolderPath);
     const imageUrls = imageFiles.map(
-      (fileName) => `/data/${id}/images/${fileName}`
+      (fileName) => `/data/${subDirectory}/images/${fileName}`
     );
 
     return {
       props: {
         propertyData: mergedData,
         images: imageUrls,
-        listingPageURL: id,
+        listingPageURL: subDirectory,
       },
     };
   } catch (error) {
