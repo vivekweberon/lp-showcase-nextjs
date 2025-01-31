@@ -1,8 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: false,
-  // trailingSlash: true,
-  basePath: "/lp-bestbuys",
+  trailingSlash: true,
+  basePath: "/lp-showcase",
   output: "export",
 
   eslint: {
@@ -14,7 +14,7 @@ const nextConfig = {
     domains: ["images.pexels.com"],
   },
   env: {
-    siteToBuild: 'lp-bestbuys',
+    siteToBuild: 'lp-showcase',
   },
 };
 

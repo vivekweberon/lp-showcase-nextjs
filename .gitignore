@@ -13,6 +13,7 @@
 /.next/
 /out/
 /lp-showcase/
+/lp-bestbuys/
 
 # production
 /build
