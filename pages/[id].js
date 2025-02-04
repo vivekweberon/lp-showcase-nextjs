@@ -22,7 +22,6 @@ import Modal from "../components/Modal";
 import ChatBot from "../components/ChatBot";
 import Script from "next/script";
 import scriptSources from "@/modules/scriptConfig";
-// import { validateInputData } from "@/utils/inCodeValidation";
 
 const PropertyPage = ({ propertyData, images }) => {
   const [modalUrl, setModalUrl] = useState(null);
@@ -30,23 +29,20 @@ const PropertyPage = ({ propertyData, images }) => {
   const navbarRef = useRef(null);
 
   // Flag for loading the YouTube API
-let ytAPIRequired = false;
+  let ytAPIRequired = false;
 
-useEffect(() => {
-  if (
-    propertyData?.home?.youtubeVideoID ||
-    propertyData?.video?.youtubeVideoID
-  ) {
-    ytAPIRequired = true;
-    // console.log("YouTube API required:", ytAPIRequired);
-  }
+  useEffect(() => {
+    if (
+      propertyData?.home?.youtubeVideoID ||
+      propertyData?.video?.youtubeVideoID
+    ) {
+      ytAPIRequired = true;
+    }
 
-  if (ytAPIRequired) {
-    loadYoutubeIframeAPI();
-    // console.log("YouTube API loaded");
-  }
-
-}, [propertyData]);
+    if (ytAPIRequired) {
+      loadYoutubeIframeAPI();
+    }
+  }, [propertyData]);
 
   const handleLinkClick = (url) => {
     setModalUrl(url);
@@ -184,8 +180,8 @@ useEffect(() => {
 
   function renderContact(contact, index) {
     if (!contact) return null;
+    menuValues.push("Contact");
     if (contact.mauticForm.popupForm.enable === false) {
-      menuValues.push("Contact");
       return <Contact contact={contact} key={`contact_${index}`} />;
     } else {
       return <PopupForm contact={contact} key={`popupForm_${index}`} />;
@@ -224,38 +220,30 @@ useEffect(() => {
           rel="stylesheet"
           href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
         />
-        
-        <script
-          async
-          src="https://accounts.google.com/gsi/client"
-        />
-        
+        <script async src="https://accounts.google.com/gsi/client" />
         <link rel="stylesheet" href={`${basePath}/css/chatbot.css`} />
         <style jsx>{`
-    .bg-dark {
-      background-color: black !important;
-    }
-    @media (orientation: landscape) {
-      #video1 {
-        width: 133vh;
-        height: 75vh;
-      }
-    }
-    @media (orientation: portrait) {
-      #video1 {
-        width: 100vw;
-        height: 57vw;
-      }
-    }
-  `}</style>
+          .bg-dark {
+            background-color: black !important;
+          }
+          @media (orientation: landscape) {
+            #video1 {
+              width: 133vh;
+              height: 75vh;
+            }
+          }
+          @media (orientation: portrait) {
+            #video1 {
+              width: 100vw;
+              height: 57vw;
+            }
+          }
+        `}</style>
       </Head>
 
-      <script
-          async
-          src="https://accounts.google.com/gsi/client"
-        />
+      <script async src="https://accounts.google.com/gsi/client" />
 
-        {/* Dynamically load alwaysLoad scripts from scriptSources */}
+      {/* Dynamically load alwaysLoad scripts from scriptSources */}
       {scriptSources.alwaysLoad.map((src, index) => (
         <Script
           key={`script_${index}`}
@@ -273,18 +261,19 @@ useEffect(() => {
         />
       )}
 
-      {isChatbotEnabled && scriptSources.chatbot.map((src, index) => (
-        <>
+      {isChatbotEnabled &&
+        scriptSources.chatbot.map((src, index) => (
           <Script
-          key={`script_${index}`}
+            key={`script_chatbot_${index}`}
             strategy="beforeInteractive"
             type="text/javascript"
             src={basePath + src}
           />
-          
-        </>
-      ))}
-      <Script strategy="beforeInteractive" src="https://kit.fontawesome.com/c3c47df7d6.js"/>
+        ))}
+      <Script
+        strategy="beforeInteractive"
+        src="https://kit.fontawesome.com/c3c47df7d6.js"
+      />
 
       <Navbar navbar={menuValues} forwardedRef={navbarRef} />
       {orderedComponents}
@@ -308,7 +297,9 @@ export async function getStaticPaths() {
 
   try {
     const files = await fs.readdir(dataFolderPath);
-    const filteredFiles = files.filter((file) => file !== "global" && file !== "home");
+    const filteredFiles = files.filter(
+      (file) => file !== "global" && file !== "home"
+    );
 
     let paths = [];
 
@@ -350,23 +341,41 @@ export async function getStaticProps(context) {
   const filePath = path.join(process.cwd(), "data", originalId, "data.yaml");
 
   try {
-    const propertyData = await fs.readFile(filePath, "utf-8");
-    const parsedData = yaml.load(propertyData);
+    const propertyDataContent = await fs.readFile(filePath, "utf-8");
+    const parsedData = yaml.load(propertyDataContent);
 
-    // Check if siteName matches siteToBuild
+    // Check if the property's siteName includes siteToBuild.
     if (!parsedData.siteName || !parsedData.siteName.includes(siteToBuild)) {
-      console.warn(`Skipping page for ${id}, siteName does not match ${siteToBuild}`);
+      console.warn(
+        `Skipping page for ${id}, siteName does not match ${siteToBuild}`
+      );
       return { notFound: true };
     }
 
+    // Read and check global data. Merge only if the global siteName exactly matches siteToBuild.
     const globalFilePath = path.join(process.cwd(), "data", "global", "data.yaml");
-    const globalData = await fs.readFile(globalFilePath, "utf-8");
-    const parsedGlobalData = yaml.load(globalData);
-    const mergedData = { ...parsedGlobalData, ...parsedData };
+    const globalDataContent = await fs.readFile(globalFilePath, "utf-8");
+    const parsedGlobalData = yaml.load(globalDataContent);
+
+    const effectiveGlobalData =
+      parsedGlobalData?.siteName &&
+      String(parsedGlobalData.siteName).trim() === String(siteToBuild).trim()
+        ? parsedGlobalData
+        : {};
+
+    // Merge property-specific data over effective global data.
+    const mergedData = { ...effectiveGlobalData, ...parsedData };
+
+    // Ensure that footertext exists to avoid runtime errors.
+    if (!mergedData.footertext) {
+      mergedData.footertext = { line1: "", line2: "", line3: "" };
+    }
 
     const imagesFolderPath = path.join(process.cwd(), "data", originalId, "images");
     const imageFiles = await fs.readdir(imagesFolderPath);
-    const imageUrls = imageFiles.map((fileName) => `/data/${id}/images/${fileName}`);
+    const imageUrls = imageFiles.map(
+      (fileName) => `/data/${id}/images/${fileName}`
+    );
 
     return {
       props: {
@@ -385,7 +394,5 @@ export async function getStaticProps(context) {
     };
   }
 }
-
-
 
 export default PropertyPage;
