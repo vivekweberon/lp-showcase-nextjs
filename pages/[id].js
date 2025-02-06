@@ -290,6 +290,24 @@ PropertyPage.propTypes = {
   images: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
+
+function deepMerge(target, source) {
+  if (typeof target !== "object" || target === null) return source;
+  for (const key of Object.keys(source)) {
+    if (
+      source[key] &&
+      typeof source[key] === "object" &&
+      !Array.isArray(source[key])
+    ) {
+      if (!target[key]) target[key] = {};
+      target[key] = deepMerge(target[key], source[key]);
+    } else {
+      target[key] = source[key];
+    }
+  }
+  return target;
+}
+
 export async function getStaticPaths() {
   console.log("Property page getStaticPaths called");
   const dataFolderPath = path.join(process.cwd(), "data");
@@ -310,6 +328,7 @@ export async function getStaticPaths() {
         const fileContent = await fs.readFile(filePath, "utf-8");
         const parsedData = yaml.load(fileContent);
 
+        // Check if the property's siteName includes the current site.
         if (parsedData.siteName && parsedData.siteName.includes(siteToBuild)) {
           paths.push({
             params: { id: getPropertyOutputDirectoryName(file) },
@@ -341,10 +360,11 @@ export async function getStaticProps(context) {
   const filePath = path.join(process.cwd(), "data", originalId, "data.yaml");
 
   try {
+    // Read property-specific YAML data.
     const propertyDataContent = await fs.readFile(filePath, "utf-8");
     const parsedData = yaml.load(propertyDataContent);
 
-    // Check if the property's siteName includes siteToBuild.
+    // If the property data does not apply to the current site, mark as not found.
     if (!parsedData.siteName || !parsedData.siteName.includes(siteToBuild)) {
       console.warn(
         `Skipping page for ${id}, siteName does not match ${siteToBuild}`
@@ -352,26 +372,62 @@ export async function getStaticProps(context) {
       return { notFound: true };
     }
 
-    // Read and check global data. Merge only if the global siteName exactly matches siteToBuild.
-    const globalFilePath = path.join(process.cwd(), "data", "global", "data.yaml");
+    // Read global YAML data.
+    const globalFilePath = path.join(
+      process.cwd(),
+      "data",
+      "global",
+      "data.yaml"
+    );
     const globalDataContent = await fs.readFile(globalFilePath, "utf-8");
     const parsedGlobalData = yaml.load(globalDataContent);
 
+    function getEffectiveData(parsedYaml) {
+      let effective = {};
+      if (parsedYaml.default) {
+        effective = parsedYaml.default;
+        if (
+          parsedYaml.siteOverrides &&
+          parsedYaml.siteOverrides[siteToBuild]
+        ) {
+          effective = deepMerge(
+            JSON.parse(JSON.stringify(effective)),
+            parsedYaml.siteOverrides[siteToBuild]
+          );
+        }
+      } else {
+        effective = parsedYaml;
+      }
+      return effective;
+    }
+
+    // Get effective global and property data.
     const effectiveGlobalData =
-      parsedGlobalData?.siteName &&
-      String(parsedGlobalData.siteName).trim() === String(siteToBuild).trim()
-        ? parsedGlobalData
+      parsedGlobalData.siteName &&
+      Array.isArray(parsedGlobalData.siteName) &&
+      parsedGlobalData.siteName.map(String).map(s => s.trim()).includes(String(siteToBuild).trim())
+        ? getEffectiveData(parsedGlobalData)
         : {};
+    const effectivePropertyData = getEffectiveData(parsedData);
 
-    // Merge property-specific data over effective global data.
-    const mergedData = { ...effectiveGlobalData, ...parsedData };
+    // Merge the two with property data taking precedence.
+    const mergedData = deepMerge(
+      JSON.parse(JSON.stringify(effectiveGlobalData)),
+      effectivePropertyData
+    );
 
-    // Ensure that footertext exists to avoid runtime errors.
+    // Ensure footertext exists to avoid runtime errors.
     if (!mergedData.footertext) {
       mergedData.footertext = { line1: "", line2: "", line3: "" };
     }
 
-    const imagesFolderPath = path.join(process.cwd(), "data", originalId, "images");
+    // Read images.
+    const imagesFolderPath = path.join(
+      process.cwd(),
+      "data",
+      originalId,
+      "images"
+    );
     const imageFiles = await fs.readdir(imagesFolderPath);
     const imageUrls = imageFiles.map(
       (fileName) => `/data/${id}/images/${fileName}`

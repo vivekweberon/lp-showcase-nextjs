@@ -2,7 +2,7 @@
 const nextConfig = {
   reactStrictMode: false,
   trailingSlash: true,
-  basePath: "/lp-bayrentals",
+  basePath: "/lp-showcase",
   output: "export",
 
   eslint: {
@@ -14,7 +14,7 @@ const nextConfig = {
     domains: ["images.pexels.com"],
   },
   env: {
-    siteToBuild: 'lp-bayrentals',
+    siteToBuild: 'lp-showcase',
   },
 };
 

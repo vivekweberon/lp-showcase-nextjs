@@ -24,6 +24,55 @@ const loadYamlFile = async (filePath) => {
   return yaml.load(fileData);
 };
 
+/**
+ * Deep merge two objects recursively.
+ * Properties from source will override those in target.
+ */
+function deepMerge(target, source) {
+  if (typeof target !== "object" || target === null) return source;
+  for (const key of Object.keys(source)) {
+    if (
+      source[key] &&
+      typeof source[key] === "object" &&
+      !Array.isArray(source[key])
+    ) {
+      if (!target[key]) target[key] = {};
+      target[key] = deepMerge(target[key], source[key]);
+    } else {
+      target[key] = source[key];
+    }
+  }
+  return target;
+}
+
+/**
+ * Returns the effective data for a YAML file.
+ * If the YAML has a "default" key then that is used as a base,
+ * otherwise the entire file (minus siteOverrides/siteName) is used.
+ * Then, if there is a matching site override, that is merged on top.
+ */
+function getEffectiveData(parsedYaml, currentSiteName) {
+  let effective = {};
+  if (parsedYaml.default) {
+    effective = parsedYaml.default;
+  } else {
+    // Clone the parsedYaml and remove keys that are not part of the actual content.
+    effective = { ...parsedYaml };
+    delete effective.siteOverrides;
+    delete effective.siteName;
+  }
+  if (
+    parsedYaml.siteOverrides &&
+    parsedYaml.siteOverrides[currentSiteName]
+  ) {
+    effective = deepMerge(
+      JSON.parse(JSON.stringify(effective)),
+      parsedYaml.siteOverrides[currentSiteName]
+    );
+  }
+  return effective;
+}
+
 // Helper: Read property files (only those matching the current site)
 const readPropertyFiles = async (dataFolderPath) => {
   const currentSiteName = process.env.siteToBuild;
@@ -48,7 +97,9 @@ const readPropertyFiles = async (dataFolderPath) => {
       const propertyData = await fs.promises.readFile(dataYamlPath, "utf-8");
       const parsedData = yaml.load(propertyData);
 
-      console.log(`Checking Property: ${folder}, siteName: ${parsedData?.siteName}`);
+      console.log(
+        `Checking Property: ${folder}, siteName: ${parsedData?.siteName}`
+      );
 
       // Ensure property has valid homePageData and that its siteName matches the current site.
       if (!parsedData?.homePageData) {
@@ -56,7 +107,16 @@ const readPropertyFiles = async (dataFolderPath) => {
         continue;
       }
 
-      if (String(parsedData?.siteName).trim() !== String(currentSiteName).trim()) {
+      // For property YAML files, we assume the siteName value is an array or string.
+      // Here we check if the current site is included.
+      if (Array.isArray(parsedData.siteName)) {
+        if (!parsedData.siteName.map(String).map(s => s.trim()).includes(String(currentSiteName).trim())) {
+          console.log(`Skipping: ${folder} (siteName does not match)`);
+          continue;
+        }
+      } else if (
+        String(parsedData?.siteName).trim() !== String(currentSiteName).trim()
+      ) {
         console.log(`Skipping: ${folder} (siteName does not match)`);
         continue;
       }
@@ -66,7 +126,9 @@ const readPropertyFiles = async (dataFolderPath) => {
       parsedData.homePageData.listingPageURL = listingPageURL;
       propertiesData.push(parsedData.homePageData);
 
-      console.log(`✔ Added Property: ${folder} (Matches siteName: ${parsedData?.siteName})`);
+      console.log(
+        `✔ Added Property: ${folder} (Matches siteName: ${parsedData?.siteName})`
+      );
     } catch (error) {
       console.error(`Error processing file: ${dataYamlPath}`, error);
     }
@@ -76,24 +138,27 @@ const readPropertyFiles = async (dataFolderPath) => {
   return propertiesData;
 };
 
-function Home({ parsedHomeData, parsedGlobalData }) {
-  console.log("Parsed Home Data", parsedHomeData);
-  console.log("Parsed Global Data", parsedGlobalData);
+function HomePage({ parsedHomeData, parsedGlobalData }) {
+  console.log("Effective Home Data", parsedHomeData);
+  console.log("Effective Global Data", parsedGlobalData);
 
   // Use the showcase from the home data for title and menu.
-  const title = parsedHomeData?.showcase?.sectionTitle || "Default Title";
+  const title =
+    parsedHomeData?.showcase?.sectionTitle || "Default Title";
   const menus = parsedHomeData?.showcase?.menu || [];
 
   // Determine the home page sections order.
-  // Use home YAML order first; if not provided, fallback to the global YAML order (if global data was accepted)
+  // Use home YAML order first; if not provided, fallback to the global YAML order (if available)
   const homePageSectionsOrder =
     parsedHomeData.homePageSectionsOrder ||
     (parsedGlobalData && parsedGlobalData.homePageSectionsOrder) ||
     ["showcase", "contact", "realtor"];
 
   // Combine data for Realtor and Contact using home YAML first and falling back to global data if available.
-  const realtorData = parsedHomeData.realtor || (parsedGlobalData && parsedGlobalData.realtor);
-  const contactData = parsedHomeData.contact || (parsedGlobalData && parsedGlobalData.contact);
+  const realtorData =
+    parsedHomeData.realtor || (parsedGlobalData && parsedGlobalData.realtor);
+  const contactData =
+    parsedHomeData.contact || (parsedGlobalData && parsedGlobalData.contact);
 
   const menuValues = [];
   const orderedComponents = homePageSectionsOrder.map((section, index) => {
@@ -105,7 +170,9 @@ function Home({ parsedHomeData, parsedGlobalData }) {
         <Showcase
           key={`showcase_${index}`}
           properties={parsedHomeData.showcase.properties || []}
-          sectionTitle={parsedHomeData.showcase.sectionTitle || title}
+          sectionTitle={
+            parsedHomeData.showcase.sectionTitle || title
+          }
           navbarMenu={menus}
         />
       );
@@ -121,7 +188,6 @@ function Home({ parsedHomeData, parsedGlobalData }) {
     // Render Contact (or PopupForm) only if data is provided
     if (section === "contact") {
       if (!contactData) return null;
-      // Decide which component to render based on the popupForm flag.
       menuValues.push("Contact");
       if (contactData.mauticForm?.popupForm?.enable === false) {
         return (
@@ -133,7 +199,7 @@ function Home({ parsedHomeData, parsedGlobalData }) {
         );
       }
     }
-    // For any other section, you can add additional components or return null.
+    // For any other section, add additional components as needed.
     return null;
   });
 
@@ -141,7 +207,10 @@ function Home({ parsedHomeData, parsedGlobalData }) {
     <div>
       <Head>
         <meta charSet="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1.0"
+        />
         {/* Favicon to prevent 404 errors */}
         <link rel="icon" href="/favicon.ico" />
         <link
@@ -152,7 +221,10 @@ function Home({ parsedHomeData, parsedGlobalData }) {
           rel="stylesheet"
           href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
         />
-        <link rel="stylesheet" href={`${basePath}/css/chatbot.css`} />
+        <link
+          rel="stylesheet"
+          href={`${basePath}/css/chatbot.css`}
+        />
       </Head>
       {alwaysLoadScripts.map((src, index) => (
         <NextScript key={`script_${index}`} src={basePath + src} />
@@ -171,92 +243,116 @@ function Home({ parsedHomeData, parsedGlobalData }) {
   );
 }
 
-Home.propTypes = {
+HomePage.propTypes = {
   parsedHomeData: PropTypes.shape({
     showcase: PropTypes.shape({
-      sectionTitle: PropTypes.string.isRequired,
+      sectionTitle: PropTypes.string,
       menu: PropTypes.oneOfType([
         PropTypes.string,
         PropTypes.arrayOf(PropTypes.string)
-      ]).isRequired,
+      ]),
       properties: PropTypes.arrayOf(
         PropTypes.shape({
-          url: PropTypes.string.isRequired,
-          addressLine1: PropTypes.string.isRequired,
-          addressLine2: PropTypes.string.isRequired,
-          bedsAndBaths: PropTypes.string.isRequired,
-          price: PropTypes.string.isRequired,
-          listingPageURL: PropTypes.string.isRequired,
+          url: PropTypes.string,
+          addressLine1: PropTypes.string,
+          addressLine2: PropTypes.string,
+          bedsAndBaths: PropTypes.string,
+          price: PropTypes.string,
+          listingPageURL: PropTypes.string
         })
-      ).isRequired,
-    }).isRequired,
-    // Optionally provided sections order and component-specific data
+      )
+    }),
     homePageSectionsOrder: PropTypes.arrayOf(PropTypes.string),
     contact: PropTypes.object,
     realtor: PropTypes.object,
-    footertext: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+    footertext: PropTypes.oneOfType([PropTypes.string, PropTypes.object])
   }).isRequired,
   parsedGlobalData: PropTypes.shape({
-    siteName: PropTypes.string,
+    siteName: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.arrayOf(PropTypes.string)
+    ]),
     homePageSectionsOrder: PropTypes.arrayOf(PropTypes.string),
     realtor: PropTypes.object,
     contact: PropTypes.object,
-    footertext: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-  }),
+    footertext: PropTypes.oneOfType([PropTypes.string, PropTypes.object])
+  })
 };
 
 export async function getStaticProps() {
   console.log("Home getStaticProps");
   try {
-    const homeDataFilePath = path.join(process.cwd(), "data", "home", "data.yaml");
-    const globalDataFilePath = path.join(process.cwd(), "data", "global", "data.yaml");
+    const homeDataFilePath = path.join(
+      process.cwd(),
+      "data",
+      "home",
+      "data.yaml"
+    );
+    const globalDataFilePath = path.join(
+      process.cwd(),
+      "data",
+      "global",
+      "data.yaml"
+    );
     const dataFolderPath = path.join(process.cwd(), "data");
 
     // Load home and global YAML files concurrently.
-    const [parsedHomeData, parsedGlobalDataRaw] = await Promise.all([
+    const [rawHomeData, rawGlobalData] = await Promise.all([
       loadYamlFile(homeDataFilePath),
-      loadYamlFile(globalDataFilePath),
+      loadYamlFile(globalDataFilePath)
     ]);
 
-    // Get the current site name from environment and verify that home/data.yaml includes it.
-    const siteNames = parsedHomeData?.siteName || [];
+    // Get the current site name from environment.
     const currentSiteName = process.env.siteToBuild;
-    if (!Array.isArray(siteNames) || !siteNames.includes(currentSiteName)) {
+    // Check that the home data includes the current site.
+    const homeSiteNames = rawHomeData?.siteName || [];
+    if (
+      !Array.isArray(homeSiteNames) ||
+      !homeSiteNames.map(String).map(s => s.trim()).includes(String(currentSiteName).trim())
+    ) {
       console.warn(
         `⚠ Skipping Home Page Generation: siteName "${currentSiteName}" not listed in home/data.yaml`
       );
       return { notFound: true };
     }
 
-    // Only use global data if its siteName matches the current site.
+    // Get effective home data by merging any site-specific overrides.
+    const effectiveHomeData = getEffectiveData(rawHomeData, currentSiteName);
+
+    // Only use global data if its siteName array includes the current site.
     const effectiveGlobalData =
-      parsedGlobalDataRaw?.siteName &&
-      String(parsedGlobalDataRaw.siteName).trim() === String(currentSiteName).trim()
-        ? parsedGlobalDataRaw
+      Array.isArray(rawGlobalData?.siteName) &&
+      rawGlobalData.siteName
+        .map(String)
+        .map(s => s.trim())
+        .includes(String(currentSiteName).trim())
+        ? getEffectiveData(rawGlobalData, currentSiteName)
         : null;
 
     // Read and filter property files (only those matching the current site)
     const propertiesData = await readPropertyFiles(dataFolderPath);
-    parsedHomeData.showcase.properties = propertiesData;
+    // Attach the property list to the showcase data.
+    effectiveHomeData.showcase = effectiveHomeData.showcase || {};
+    effectiveHomeData.showcase.properties = propertiesData;
 
     console.log("✔ Home Page Generated for Site:", currentSiteName);
     return {
       props: {
-        parsedHomeData: parsedHomeData || {
+        parsedHomeData: effectiveHomeData || {
           showcase: { sectionTitle: "", menu: [], properties: [] }
         },
-        parsedGlobalData: effectiveGlobalData,
-      },
+        parsedGlobalData: effectiveGlobalData
+      }
     };
   } catch (error) {
     console.error("❌ Error fetching home data:", error);
     return {
       props: {
         parsedHomeData: { showcase: { sectionTitle: "", menu: [], properties: [] } },
-        parsedGlobalData: null,
-      },
+        parsedGlobalData: null
+      }
     };
   }
 }
 
-export default Home;
+export default HomePage;
