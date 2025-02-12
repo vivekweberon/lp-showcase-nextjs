@@ -24,6 +24,7 @@ import Script from "next/script";
 import scriptSources from "@/modules/scriptConfig";
 
 const PropertyPage = ({ propertyData, images }) => {
+  console.log("Property page propertyData", propertyData.home);  
   const [modalUrl, setModalUrl] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const navbarRef = useRef(null);

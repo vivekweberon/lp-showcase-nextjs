@@ -139,7 +139,7 @@ const readPropertyFiles = async (dataFolderPath) => {
 };
 
 function HomePage({ parsedHomeData, parsedGlobalData }) {
-  console.log("Effective Home Data", parsedHomeData);
+  console.log("Effective Home Data", parsedHomeData.showcase.properties);
   console.log("Effective Global Data", parsedGlobalData);
 
   // Use the showcase from the home data for title and menu.
