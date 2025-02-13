@@ -94,40 +94,29 @@ const readPropertyFiles = async (dataFolderPath) => {
 
     try {
       // Read and parse the YAML file
-      const propertyData = await fs.promises.readFile(dataYamlPath, "utf-8");
-      const parsedData = yaml.load(propertyData);
+      const fileData = await fs.promises.readFile(dataYamlPath, "utf-8");
+      const parsedData = yaml.load(fileData);
+
+      // Use getEffectiveData to extract the actual property data from nested keys
+      const effectivePropertyData = getEffectiveData(parsedData, currentSiteName);
 
       console.log(
-        `Checking Property: ${folder}, siteName: ${parsedData?.siteName}`
+        `Checking Property: ${folder}, siteName: ${effectivePropertyData?.siteName}`
       );
 
-      // Ensure property has valid homePageData and that its siteName matches the current site.
-      if (!parsedData?.homePageData) {
+      // Ensure property has valid homePageData after merging overrides.
+      if (!effectivePropertyData?.homePageData) {
         console.log(`Skipping: ${folder} (Missing homePageData)`);
-        continue;
-      }
-
-      // For property YAML files, we assume the siteName value is an array or string.
-      // Here we check if the current site is included.
-      if (Array.isArray(parsedData.siteName)) {
-        if (!parsedData.siteName.map(String).map(s => s.trim()).includes(String(currentSiteName).trim())) {
-          console.log(`Skipping: ${folder} (siteName does not match)`);
-          continue;
-        }
-      } else if (
-        String(parsedData?.siteName).trim() !== String(currentSiteName).trim()
-      ) {
-        console.log(`Skipping: ${folder} (siteName does not match)`);
         continue;
       }
 
       // Generate listing page URL and add property to the list
       const listingPageURL = getPropertyOutputDirectoryName(folder);
-      parsedData.homePageData.listingPageURL = listingPageURL;
-      propertiesData.push(parsedData.homePageData);
+      effectivePropertyData.homePageData.listingPageURL = listingPageURL;
+      propertiesData.push(effectivePropertyData.homePageData);
 
       console.log(
-        `✔ Added Property: ${folder} (Matches siteName: ${parsedData?.siteName})`
+        `✔ Added Property: ${folder} (Matches siteName: ${effectivePropertyData?.siteName})`
       );
     } catch (error) {
       console.error(`Error processing file: ${dataYamlPath}`, error);
@@ -137,6 +126,7 @@ const readPropertyFiles = async (dataFolderPath) => {
   console.log("Final Filtered Properties:", propertiesData);
   return propertiesData;
 };
+
 
 function HomePage({ parsedHomeData, parsedGlobalData }) {
   console.log("Effective Home Data", parsedHomeData.showcase.properties);
