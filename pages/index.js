@@ -78,7 +78,7 @@ const readPropertyFiles = async (dataFolderPath) => {
   const currentSiteName = process.env.siteToBuild;
   console.log("Current Environment Site Name:", currentSiteName);
 
-  // Read all property folders inside the data directory
+  // Read all folders inside the data directory
   const propertyFolders = await fs.promises.readdir(dataFolderPath);
   const propertiesData = [];
 
@@ -97,11 +97,34 @@ const readPropertyFiles = async (dataFolderPath) => {
       const fileData = await fs.promises.readFile(dataYamlPath, "utf-8");
       const parsedData = yaml.load(fileData);
 
-      // Use getEffectiveData to extract the actual property data from nested keys
+      // Ensure the property file's siteName includes the current site.
+      if (parsedData.siteName) {
+        if (Array.isArray(parsedData.siteName)) {
+          if (
+            !parsedData.siteName
+              .map(String)
+              .map(s => s.trim())
+              .includes(String(currentSiteName).trim())
+          ) {
+            console.log(`Skipping: ${folder} (siteName does not match)`);
+            continue;
+          }
+        } else if (
+          String(parsedData.siteName).trim() !== String(currentSiteName).trim()
+        ) {
+          console.log(`Skipping: ${folder} (siteName does not match)`);
+          continue;
+        }
+      } else {
+        console.log(`Skipping: ${folder} (Missing siteName)`);
+        continue;
+      }
+
+      // Use getEffectiveData to extract the actual property data from nested keys.
       const effectivePropertyData = getEffectiveData(parsedData, currentSiteName);
 
       console.log(
-        `Checking Property: ${folder}, siteName: ${effectivePropertyData?.siteName}`
+        `Checking Property: ${folder}, siteName: ${parsedData.siteName}`
       );
 
       // Ensure property has valid homePageData after merging overrides.
@@ -110,13 +133,13 @@ const readPropertyFiles = async (dataFolderPath) => {
         continue;
       }
 
-      // Generate listing page URL and add property to the list
+      // Generate listing page URL and add property to the list.
       const listingPageURL = getPropertyOutputDirectoryName(folder);
       effectivePropertyData.homePageData.listingPageURL = listingPageURL;
       propertiesData.push(effectivePropertyData.homePageData);
 
       console.log(
-        `✔ Added Property: ${folder} (Matches siteName: ${effectivePropertyData?.siteName})`
+        `✔ Added Property: ${folder} (Matches siteName: ${parsedData.siteName})`
       );
     } catch (error) {
       console.error(`Error processing file: ${dataYamlPath}`, error);
@@ -126,7 +149,6 @@ const readPropertyFiles = async (dataFolderPath) => {
   console.log("Final Filtered Properties:", propertiesData);
   return propertiesData;
 };
-
 
 function HomePage({ parsedHomeData, parsedGlobalData }) {
   console.log("Effective Home Data", parsedHomeData.showcase.properties);
@@ -152,7 +174,7 @@ function HomePage({ parsedHomeData, parsedGlobalData }) {
 
   const menuValues = [];
   const orderedComponents = homePageSectionsOrder.map((section, index) => {
-    // Render Showcase if data exists
+    // Render Showcase if data exists.
     if (section === "showcase" || section === title) {
       if (!parsedHomeData.showcase) return null;
       menuValues.push(menus);
@@ -167,7 +189,7 @@ function HomePage({ parsedHomeData, parsedGlobalData }) {
         />
       );
     }
-    // Render Realtor only if data is provided
+    // Render Realtor only if data is provided.
     if (section === "realtor") {
       if (!realtorData) return null;
       menuValues.push("Realtor");
@@ -175,7 +197,7 @@ function HomePage({ parsedHomeData, parsedGlobalData }) {
         <Realtor key={`realtor_${index}`} realtorData={realtorData} />
       );
     }
-    // Render Contact (or PopupForm) only if data is provided
+    // Render Contact (or PopupForm) only if data is provided.
     if (section === "contact") {
       if (!contactData) return null;
       menuValues.push("Contact");
@@ -298,7 +320,10 @@ export async function getStaticProps() {
     const homeSiteNames = rawHomeData?.siteName || [];
     if (
       !Array.isArray(homeSiteNames) ||
-      !homeSiteNames.map(String).map(s => s.trim()).includes(String(currentSiteName).trim())
+      !homeSiteNames
+        .map(String)
+        .map(s => s.trim())
+        .includes(String(currentSiteName).trim())
     ) {
       console.warn(
         `⚠ Skipping Home Page Generation: siteName "${currentSiteName}" not listed in home/data.yaml`
