@@ -1,7 +1,5 @@
-// const fs = require("fs");
-import fs from "fs";
-import yaml from "js-yaml";
-// const yaml = require("js-yaml");
+const fs = require("fs");
+const yaml = require("js-yaml");
 
 const LP_GLOBAL_DIR = "global";
 const LP_HOME_DIR = "home";
@@ -13,7 +11,6 @@ const PROPERTY_SCHEMA = "schema/property_schema.yaml";
 const ERROR_MESSAGES_FILE = "messages/errorMessage.json";
 
 export function validateInputData(inputDir) {
-  console.log('Calling validateInputData');
   let msg = "";
   let count = 0;
   let globalKeys;
@@ -22,7 +19,6 @@ export function validateInputData(inputDir) {
   let schemaKeys;
 
   console.log("Starting validation process...");
-  // console.log("Input data directory path: ", inputDir);
 
   if (!fs.existsSync(inputDir)) {
     msg += `${++count} Input data directory path provided does not exist \n`;
@@ -41,7 +37,7 @@ export function validateInputData(inputDir) {
       console.log("Global directory exists.");
     }
 
-    // Validate global directory
+    // Validate global directory (using a getCount function that increments count)
     if (fs.existsSync(`${inputDir}/${LP_GLOBAL_DIR}`)) {
       console.log("Validating Global directory...");
       validateSpecialDirectory(
@@ -50,8 +46,8 @@ export function validateInputData(inputDir) {
         "Global",
         globalKeys,
         (keys) => (globalKeys = keys),
-        msg,
-        count
+        (errorMsg) => { msg += errorMsg; },
+        () => ++count
       );
     }
 
@@ -64,14 +60,13 @@ export function validateInputData(inputDir) {
         "Home",
         homeKeys,
         (keys) => (homeKeys = keys),
-        msg,
-        count
+        (errorMsg) => { msg += errorMsg; },
+        () => ++count
       );
     }
 
     // Validate property directories
     fs.readdirSync(inputDir).forEach((propertyDir) => {
-      // console.log(`Validating property directory '${propertyDir}'...`);
       if (
         propertyDir.startsWith(".") ||
         propertyDir === LP_GLOBAL_DIR ||
@@ -82,7 +77,6 @@ export function validateInputData(inputDir) {
       if (!/^[0-9][0-9-]*[0-9]$/.test(propertyDir)) {
         msg += `${++count} '${inputDir}/${propertyDir}' Invalid property name\n`;
       } else {
-        // console.log(`Property directory '${propertyDir}' is valid.`);
         if (!fs.lstatSync(`${inputDir}/${propertyDir}`).isDirectory()) {
           msg += `${++count} '${inputDir}/${propertyDir}' is not a directory\n`;
         } else {
@@ -97,15 +91,13 @@ export function validateInputData(inputDir) {
           fs.readdirSync(`${inputDir}/${propertyDir}`).forEach((subFile) => {
             if (subFile === PHOTOS_FOLDER_NAME) {
               if (
-                !fs
-                  .lstatSync(`${inputDir}/${propertyDir}/${subFile}`)
-                  .isDirectory()
+                !fs.lstatSync(`${inputDir}/${propertyDir}/${subFile}`).isDirectory()
               ) {
                 msg += `${++count} '${inputDir}/${propertyDir}/${subFile}' is not a directory\n`;
               } else {
                 fs.readdirSync(`${inputDir}/${propertyDir}/${subFile}`).forEach(
                   (image) => {
-                    if (!/[.jpg|.JPG|.JPEG|.jpeg|.png|.PNG]$/.test(image)) {
+                    if (!/[.](jpg|JPG|JPEG|jpeg|png|PNG)$/.test(image)) {
                       msg += `${++count} '${inputDir}/${propertyDir}/${subFile}/${image}' is an invalid image file\n`;
                     }
                   }
@@ -117,32 +109,38 @@ export function validateInputData(inputDir) {
               }
               schemaKeys = propertyKeys;
 
-              let inputKeys = getKeyValueMapFromYAML(
-                `${inputDir}/${propertyDir}/${subFile}`
-              );
+              let inputKeys = getKeyValueMapFromYAML(`${inputDir}/${propertyDir}/${subFile}`);
               if (inputKeys) {
-                let schemaType;
-                let inputType;
-                let entries = inputKeys.entries();
-                let result = entries.next();
-                while (!result.done) {
+                for (let [key, value] of inputKeys.entries()) {
+                  // Skip keys that are known to be non-schema (if any)
                   if (
-                    !result.value[0].includes("propertyPageSectionsOrder.") &&
-                    !result.value[0].includes("homePageSectionsOrder.")
+                    key.includes("propertyPageSectionsOrder.") ||
+                    key.includes("homePageSectionsOrder.")
                   ) {
-                    if (!schemaKeys.has(result.value[0])) {
-                      msg += `${++count} '${result.value[0]}' is not a valid property name in the file '${inputDir}/${propertyDir}/${subFile}'\n\n`;
-                    } else {
-                      schemaType = schemaKeys.get(result.value[0]).type;
-                      schemaType =
-                        schemaType === undefined ? "object" : schemaType;
-                      inputType = typeof result.value[1];
-                      if (result.value[1] != null && inputType !== schemaType) {
-                        msg += `${++count} Data type of the property '${result.value[0]}' is not correct in the file '${inputDir}/${propertyDir}/${subFile}'\n`;
-                      }
+                    continue;
+                  }
+
+                  let validateKey = key;
+                  if (key.startsWith("siteOverrides.")) {
+                    const parts = key.split(".");
+                    // If this is just a container (siteOverrides.<siteId>), skip validation.
+                    if (parts.length === 2) {
+                      continue;
+                    } else if (parts.length >= 3) {
+                      validateKey = "default." + parts.slice(2).join(".");
                     }
                   }
-                  result = entries.next();
+
+                  let schemaDef = schemaKeys.get(validateKey);
+                  if (!schemaDef) {
+                    msg += `${++count} '${key}' is not a valid property name in the file '${inputDir}/${propertyDir}/${subFile}'\n\n`;
+                  } else {
+                    let inputType = Array.isArray(value) ? "array" : typeof value;
+                    let expectedType = schemaDef.type || "object";
+                    if (value != null && inputType !== expectedType) {
+                      msg += `${++count} Data type of the property '${key}' is not correct in the file '${inputDir}/${propertyDir}/${subFile}' (expected ${expectedType} but got ${inputType})\n`;
+                    }
+                  }
                 }
               } else {
                 msg += `${++count} YAML data file '${inputDir}/${propertyDir}/${subFile}' is empty \n`;
@@ -158,19 +156,17 @@ export function validateInputData(inputDir) {
 
   if (msg) {
     console.log("Validation errors detected. Writing to errorMessage.json...");
-    
-    // Convert the errors to a structured format with each error on a separate line
-    const formattedErrors = msg.split("\n").filter(line => line.trim() !== "").map((error, index) => ({
-      ErrorNumber: index + 1,
-      ErrorMessage: error.trim()
-    }));
-    
-    // Write the structured errors to the file with proper indentation
+    const formattedErrors = msg
+      .split("\n")
+      .filter(line => line.trim() !== "")
+      .map((error, index) => ({
+        ErrorNumber: index + 1,
+        ErrorMessage: error.trim()
+      }));
     fs.writeFileSync(ERROR_MESSAGES_FILE, JSON.stringify({ errors: formattedErrors }, null, 2));
   } else {
     console.log("Validation process completed successfully. No errors detected.");
   }
-  
 }
 
 export function validateSpecialDirectory(
@@ -179,8 +175,8 @@ export function validateSpecialDirectory(
   dirType,
   schemaKeys,
   setSchemaKeys,
-  msg,
-  count
+  appendMsg,
+  getCount
 ) {
   if (schemaKeys === undefined) {
     schemaKeys = getKeyValueMapFromYAML(schemaPath);
@@ -191,45 +187,51 @@ export function validateSpecialDirectory(
     if (file === YAML_FILE_NAME) {
       let inputKeys = getKeyValueMapFromYAML(`${dirPath}/${file}`);
       if (inputKeys) {
-        let schemaType;
-        let inputType;
-        let entries = inputKeys.entries();
-        let result = entries.next();
-        while (!result.done) {
+        for (let [key, value] of inputKeys.entries()) {
+          // Skip keys that are known to be non-schema (if any)
           if (
-            !result.value[0].includes("propertyPageSectionsOrder.") &&
-            !result.value[0].includes("homePageSectionsOrder.")
+            key.includes("propertyPageSectionsOrder.") ||
+            key.includes("homePageSectionsOrder.")
           ) {
-            if (!schemaKeys.has(result.value[0])) {
-              msg += `${++count} '${result.value[0]}' is not a valid property name in the ${dirType} directory\n\n`;
-            } else {
-              schemaType = schemaKeys.get(result.value[0]).type;
-              schemaType = schemaType === undefined ? "object" : schemaType;
-              inputType = typeof result.value[1];
-              if (result.value[1] != null && inputType !== schemaType) {
-                msg += `${++count} Data type of the property '${result.value[0]}' is not correct in the ${dirType} directory \n`;
-              }
+            continue;
+          }
+
+          let validateKey = key;
+          if (key.startsWith("siteOverrides.")) {
+            const parts = key.split(".");
+            // Skip the container key (siteOverrides.<siteId>)
+            if (parts.length === 2) {
+              continue;
+            } else if (parts.length >= 3) {
+              validateKey = "default." + parts.slice(2).join(".");
             }
           }
-          result = entries.next();
+
+          let schemaDef = schemaKeys.get(validateKey);
+          if (!schemaDef) {
+            appendMsg(`${getCount()} '${key}' is not a valid property name in the ${dirType} directory\n\n`);
+          } else {
+            let inputType = Array.isArray(value) ? "array" : typeof value;
+            let expectedType = schemaDef.type || "object";
+            if (value != null && inputType !== expectedType) {
+              appendMsg(`${getCount()} Data type of the property '${key}' is not correct in the ${dirType} directory (expected ${expectedType} but got ${inputType})\n`);
+            }
+          }
         }
       } else {
-        msg += `${++count} YAML data file '${dirPath}/${file}' is empty \n`;
+        appendMsg(`${getCount()} YAML data file '${dirPath}/${file}' is empty \n`);
       }
     } else if (file !== PHOTOS_FOLDER_NAME) {
-      msg += `${++count} '${file}' is not allowed in the ${dirType} directory \n`;
+      appendMsg(`${getCount()} '${file}' is not allowed in the ${dirType} directory \n`);
     }
   });
 }
 
 export function getKeyValueMapFromYAML(filePath) {
-  // console.log("Reading YAML file: ", filePath);
   let ret = undefined;
   let uiSchema = fs.readFileSync(filePath, "utf8");
-  // console.log("uiSchema", uiSchema);
   if (uiSchema) {
     let uiData = yaml.load(uiSchema);
-    // console.log("uiData", uiData);
     if (uiData) {
       ret = getAllKeysAndValues(uiData);
     }
@@ -238,41 +240,30 @@ export function getKeyValueMapFromYAML(filePath) {
 }
 
 export function getAllKeysAndValues(inputData, keys = new Map(), ref = "") {
-  // console.log(`Processing inputData:`, inputData); // Log the current inputData
-  // console.log(`Current ref: "${ref}"`); // Log the current ref
-
-  // Ensure inputData is an object before processing
-  if (!inputData || typeof inputData !== "object") {
-    // console.warn(`Skipping invalid inputData:`, inputData); // Warn about invalid input
+  if (inputData === undefined || inputData === null) {
     return keys;
   }
 
-  let allKeys = keys;
-  let newKey;
+  // If the input data is an array, treat it as a whole.
+  if (Array.isArray(inputData)) {
+    keys.set(ref, inputData);
+    return keys;
+  }
 
-  // Safely iterate over inputData keys
+  // If the input is not an object, set the value and return.
+  if (typeof inputData !== "object") {
+    keys.set(ref, inputData);
+    return keys;
+  }
+
   Object.keys(inputData).forEach((key) => {
-    if (ref !== "") {
-      newKey = `${ref}.${key}`;
-    } else {
-      newKey = key;
-    }
-
-    // console.log(`Adding key-value pair: "${newKey}" =>`, inputData[key]); // Log key-value being added
-    allKeys.set(newKey, inputData[key]);
-
-    // Recursively process nested objects
-    if (
-      inputData[key] !== undefined &&
-      typeof inputData[key] === "object" &&
-      inputData[key] !== null
-    ) {
-      // console.log(`Recursing into nested object at key: "${newKey}"`); // Log recursion
-      getAllKeysAndValues(inputData[key], allKeys, newKey);
+    const newKey = ref ? `${ref}.${key}` : key;
+    keys.set(newKey, inputData[key]);
+    // Only recurse if the value is a plain object (not an array)
+    if (inputData[key] && typeof inputData[key] === "object" && !Array.isArray(inputData[key])) {
+      getAllKeysAndValues(inputData[key], keys, newKey);
     }
   });
 
-  // console.log(`Returning keys so far:`, [...allKeys.entries()]); // Log all keys and values before returning
-  return allKeys;
+  return keys;
 }
-

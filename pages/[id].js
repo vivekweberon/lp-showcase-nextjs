@@ -22,6 +22,7 @@ import Modal from "../components/Modal";
 import ChatBot from "../components/ChatBot";
 import Script from "next/script";
 import scriptSources from "@/modules/scriptConfig";
+import { validateInputData } from "@/utils/inCodeValidation";
 
 const PropertyPage = ({ propertyData, images }) => {
   console.log("Property page propertyData", propertyData.home);  
@@ -312,9 +313,40 @@ function deepMerge(target, source) {
 export async function getStaticPaths() {
   console.log("Property page getStaticPaths called");
   const dataFolderPath = path.join(process.cwd(), "data");
+  const errorMessagePath = path.join(process.cwd(), "messages", "errorMessage.json");
   const siteToBuild = process.env.siteToBuild;
 
   try {
+    // Ensure the data directory exists
+    const isDirectory = await fs
+      .stat(dataFolderPath)
+      .then((stat) => stat.isDirectory())
+      .catch(() => false);
+    if (!isDirectory) {
+      console.error("Data directory does not exist:", dataFolderPath);
+      return { paths: [], fallback: false };
+    }
+
+    // Run the validation logic
+    try {
+      validateInputData(dataFolderPath);
+    } catch (validationError) {
+      console.error("Validation failed:", validationError.message);
+      throw validationError;
+    }
+
+    // Check if errorMessage.json exists after validation
+    const isErrorMessagePresent = await fs
+      .stat(errorMessagePath)
+      .then((stat) => stat.isFile())
+      .catch(() => false);
+
+    if (isErrorMessagePresent) {
+      console.error("errorMessage.json detected. Aborting page generation.");
+      return { paths: [], fallback: false };
+    }
+
+    // Read and filter files in the data directory
     const files = await fs.readdir(dataFolderPath);
     const filteredFiles = files.filter(
       (file) => file !== "global" && file !== "home"

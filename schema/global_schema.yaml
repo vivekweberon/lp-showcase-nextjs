@@ -1,62 +1,58 @@
----
-realtor:
-  photo:
-    type: string
-  name:
-    type: string
-  company:
-    type: string
-  id:
-    type: string
-  phone: 
-    type: string
-  logo:
-    type: string
-  menu:
-    type: string
-  sectionTitle:
-    type: string
-  footerText:
-    type: string
-  footerLinkText:
-    type: string
-  footerLink:
-    type: string
-footertext:
-  line1:
-    type: string
-  line2:
-    type: string
-  line3:
-    type: string
-page:
-  title:
-    type: string  
-contact:
-  menu:
-    type: string
-  sectionTitle:
-    type: string
-  mauticForm:
-    formSetName:
+default:
+  realtor:
+    photo:
       type: string
-    emailFormHeader: 
+    name:
       type: string
-    phoneFormHeader: 
+    company:
       type: string
-    popupForm:
-      enable:
-        type: boolean
-      x:
-        type: number
-      y:
-        type: number
-      z:
-        type: number
-    pageType:
+    id:
       type: string
-chatbot:
-  enable:
-    type: boolean
-homePageSectionsOrder: []      
-propertyPageSectionsOrder: []
+    phone:
+      type: string
+    logo:
+      type: string
+    menu:
+      type: string
+    sectionTitle:
+      type: string
+  footertext:
+    line1:
+      type: string
+    line2:
+      type: string
+    line3:
+      type: string
+  page:
+    title:
+      type: string
+  contact:
+    menu:
+      type: string
+    mauticForm:
+      formSetName:
+        type: string
+      emailFormHeader:
+        type: string
+      phoneFormHeader:
+        type: string
+      popupForm:
+        enable:
+          type: boolean
+        x:
+          type: number
+        y:
+          type: number
+        z:
+          type: number
+      pageType:
+        type: string
+
+siteOverrides:
+  type: object
+  additionalProperties:
+    type: object
+    # Overrides can change any of the "default" settings (for example, realtor details)
+    
+siteName:
+  type: array
