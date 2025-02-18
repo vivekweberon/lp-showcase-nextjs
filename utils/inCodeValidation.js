@@ -37,7 +37,7 @@ export function validateInputData(inputDir) {
       console.log("Global directory exists.");
     }
 
-    // Validate global directory (using a getCount function that increments count)
+    // Validate global directory
     if (fs.existsSync(`${inputDir}/${LP_GLOBAL_DIR}`)) {
       console.log("Validating Global directory...");
       validateSpecialDirectory(
@@ -142,6 +142,13 @@ export function validateInputData(inputDir) {
                     }
                   }
                 }
+                // New validation: check siteName and siteOverrides consistency
+                validateSiteOverrides(
+                  inputKeys,
+                  `${inputDir}/${propertyDir}/${subFile}`,
+                  (errorMsg) => { msg += errorMsg; },
+                  () => ++count
+                );
               } else {
                 msg += `${++count} YAML data file '${inputDir}/${propertyDir}/${subFile}' is empty \n`;
               }
@@ -158,12 +165,15 @@ export function validateInputData(inputDir) {
     console.log("Validation errors detected. Writing to errorMessage.json...");
     const formattedErrors = msg
       .split("\n")
-      .filter(line => line.trim() !== "")
+      .filter((line) => line.trim() !== "")
       .map((error, index) => ({
         ErrorNumber: index + 1,
-        ErrorMessage: error.trim()
+        ErrorMessage: error.trim(),
       }));
-    fs.writeFileSync(ERROR_MESSAGES_FILE, JSON.stringify({ errors: formattedErrors }, null, 2));
+    fs.writeFileSync(
+      ERROR_MESSAGES_FILE,
+      JSON.stringify({ errors: formattedErrors }, null, 2)
+    );
   } else {
     console.log("Validation process completed successfully. No errors detected.");
   }
@@ -218,6 +228,13 @@ export function validateSpecialDirectory(
             }
           }
         }
+        // New validation: check siteName and siteOverrides consistency
+        validateSiteOverrides(
+          inputKeys,
+          `${dirPath}/${file}`,
+          appendMsg,
+          getCount
+        );
       } else {
         appendMsg(`${getCount()} YAML data file '${dirPath}/${file}' is empty \n`);
       }
@@ -266,4 +283,46 @@ export function getAllKeysAndValues(inputData, keys = new Map(), ref = "") {
   });
 
   return keys;
+}
+
+// Updated helper function to validate siteName and siteOverrides consistency
+export function validateSiteOverrides(inputKeys, filePath, appendMsg, getCount) {
+  const siteNameRaw = inputKeys.get("siteName");
+  if (siteNameRaw) {
+    // Determine allowed site names based on the type of siteNameRaw
+    let allowedSiteNames;
+    if (typeof siteNameRaw === "string") {
+      allowedSiteNames = new Set(
+        siteNameRaw.split(",").map(s => s.trim()).filter(Boolean)
+      );
+    } else if (Array.isArray(siteNameRaw)) {
+      allowedSiteNames = new Set(
+        siteNameRaw.map(s => String(s).trim()).filter(Boolean)
+      );
+    } else {
+      allowedSiteNames = new Set([String(siteNameRaw).trim()]);
+    }
+    
+    let overrideSiteNames = new Set();
+    for (let key of inputKeys.keys()) {
+      if (key.startsWith("siteOverrides.")) {
+        const parts = key.split(".");
+        if (parts.length >= 2 && parts[1]) {
+          overrideSiteNames.add(parts[1].trim());
+        }
+      }
+    }
+    // Only validate if there is siteOverrides data present.
+    if (overrideSiteNames.size > 0) {
+      // Check if the override set exactly matches the allowed set.
+      if (
+        overrideSiteNames.size !== allowedSiteNames.size ||
+        [...overrideSiteNames].some(x => !allowedSiteNames.has(x))
+      ) {
+        appendMsg(
+          `${getCount()} 'siteOverrides' should only contain overrides for the site name '${[...allowedSiteNames].join(",")}', but found overrides for: ${[...overrideSiteNames].join(", ")} in file '${filePath}'\n`
+        );
+      }
+    }
+  }
 }
