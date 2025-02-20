@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { basePath } from "@/next.config.js";
+import Link from "next/link";
 
 const Showcase = ({ properties, sectionTitle, navbarMenu }) => {
   return (
@@ -52,12 +53,10 @@ const Showcase = ({ properties, sectionTitle, navbarMenu }) => {
                     {property.bedsAndBaths}
                   </div>
                   <div style={{ fontWeight: "lighter" }}>{property.price}</div>
-                  <a
-                    href={basePath + "/" + property.listingPageURL}
-                    style={{ textDecoration: "underline" }}
-                  >
+                  <Link href={property.listingPageURL} style={{ textDecoration: "underline" }}>
                     Learn More
-                  </a>
+                  </Link>
+
                 </div>
               </div>
             </div>

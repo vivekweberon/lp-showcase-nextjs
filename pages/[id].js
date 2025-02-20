@@ -6,7 +6,7 @@ import fs from "fs/promises";
 import path from "path";
 import yaml from "js-yaml";
 import PropTypes from "prop-types";
-import { getPropertyOutputDirectoryName } from "../utils/renameUtils.mjs";
+// import { getPropertyOutputDirectoryName } from "../utils/renameUtils.mjs";
 import Navbar from "../components/Navbar";
 import Home from "../components/Home";
 import Footer from "../components/Footer";

@@ -11,7 +11,7 @@ import Realtor from "@/components/Realtor";
 import Contact from "@/components/Contact";
 import PopupForm from "@/components/PopupForm";
 import scriptSources from "@/modules/scriptConfig";
-import { getPropertyOutputDirectoryName } from "../utils/renameUtils.mjs";
+// import { getPropertyOutputDirectoryName } from "../utils/renameUtils.mjs";
 import fs from "fs";
 import yaml from "js-yaml";
 
