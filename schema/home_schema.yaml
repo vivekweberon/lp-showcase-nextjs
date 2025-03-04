@@ -1,13 +1,12 @@
-default:
-  showcase:
-    menu:
-      type: string
-    properties:
-      type: object
-    sectionTitle:
-      type: string
-  homePageSectionsOrder:
-    type: array
+showcase:
+  menu:
+    type: string
+  properties:
+    type: object
+  sectionTitle:
+    type: string
+homePageSectionsOrder:
+  type: array
 
 siteOverrides:
   type: object

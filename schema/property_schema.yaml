@@ -1,77 +1,74 @@
-default:
-  home:
-    youtubeVideoID:
-      type: string
-    menu:
-      type: string
-  priceAndFeatures:
-    title1:
-      type: string
-    title2:
-      type: string
-    beds:
-      type: string
-    baths:
-      type: string
-    homeType:
-      type: string
-    sqft:
-      type: string
-    yearBuilt:
-      type: string
-    price:
-      type: string
-    menu:
-      type: string
-  photos:
-    menu:
-      type: string
-  video:
-    youtubeVideoID:
-      type: string
-    menu:
-      type: string
-  virtualTour:
-    title:
-      type: string
-    matterportID:
-      type: string
-    menu:
-      type: string
-  showcase:
-    url:
-      type: string
-    menu:
-      type: string
-  homePageData:
-    url:
-      type: string
-    addressLine1:
-      type: string
-    addressLine2:
-      type: string
-    bedsAndBaths:
-      type: string
-    price:
-      type: string
-    listingPageURL:
-      type: string
-  chatbot:
-    enable:
-      type: boolean
-  footertext:
-    line1:
-      type: string
-    line2:
-      type: string
-    line3:
-      type: string
-
+home:
+  youtubeVideoID:
+    type: string
+  menu:
+    type: string
+priceAndFeatures:
+  title1:
+    type: string
+  title2:
+    type: string
+  beds:
+    type: string
+  baths:
+    type: string
+  homeType:
+    type: string
+  sqft:
+    type: string
+  yearBuilt:
+    type: string
+  price:
+    type: string
+  menu:
+    type: string
+photos:
+  menu:
+    type: string
+video:
+  youtubeVideoID:
+    type: string
+  menu:
+    type: string
+virtualTour:
+  title:
+    type: string
+  matterportID:
+    type: string
+  menu:
+    type: string
+showcase:
+  url:
+    type: string
+  menu:
+    type: string
+homePageData:
+  url:
+    type: string
+  addressLine1:
+    type: string
+  addressLine2:
+    type: string
+  bedsAndBaths:
+    type: string
+  price:
+    type: string
+  listingPageURL:
+    type: string
+chatbot:
+  enable:
+    type: boolean
+footertext:
+  line1:
+    type: string
+  line2:
+    type: string
+  line3:
+    type: string
 siteOverrides:
   type: object
   additionalProperties:
     type: object
     # Any keys here should mirror the structure in "default"
-    
 siteName:
   type: array

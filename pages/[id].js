@@ -23,7 +23,7 @@ import ChatBot from "../components/ChatBot";
 import Script from "next/script";
 import scriptSources from "@/modules/scriptConfig";
 import { validateInputData } from "@/utils/inCodeValidation";
-import { loadYamlFile, getEffectiveData } from "../utils/dataUtils";
+import { loadYamlFile, getEffectiveData, deepMerge } from "../utils/dataUtils";
 
 const PropertyPage = ({ propertyData, images }) => {
   console.log("Property page propertyData", propertyData.home);  
@@ -294,22 +294,22 @@ PropertyPage.propTypes = {
 };
 
 
-function deepMerge(target, source) {
-  if (typeof target !== "object" || target === null) return source;
-  for (const key of Object.keys(source)) {
-    if (
-      source[key] &&
-      typeof source[key] === "object" &&
-      !Array.isArray(source[key])
-    ) {
-      if (!target[key]) target[key] = {};
-      target[key] = deepMerge(target[key], source[key]);
-    } else {
-      target[key] = source[key];
-    }
-  }
-  return target;
-}
+// function deepMerge(target, source) {
+//   if (typeof target !== "object" || target === null) return source;
+//   for (const key of Object.keys(source)) {
+//     if (
+//       source[key] &&
+//       typeof source[key] === "object" &&
+//       !Array.isArray(source[key])
+//     ) {
+//       if (!target[key]) target[key] = {};
+//       target[key] = deepMerge(target[key], source[key]);
+//     } else {
+//       target[key] = source[key];
+//     }
+//   }
+//   return target;
+// }
 
 export async function getStaticPaths() {
   console.log("Property page getStaticPaths called");
