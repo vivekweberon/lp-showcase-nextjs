@@ -272,7 +272,7 @@ copyWebsiteToGithubRepo() {
     fi
 
     # Copy contents of the out directory to the final repo inside the WEBSITE_DIRECTORY_NAME folder
-    cp -r "$WORKSPACE/code_repo/out/." "$WORKSPACE/final-repo/$WEBSITE_DIRECTORY_NAME/"
+    cp -r "$WORKSPACE/out/." "$WORKSPACE/final-repo/$WEBSITE_DIRECTORY_NAME/"
     echo "Files copied into the $WORKSPACE/final-repo/$WEBSITE_DIRECTORY_NAME folder"
 
     # Navigate to the final-repo directory
