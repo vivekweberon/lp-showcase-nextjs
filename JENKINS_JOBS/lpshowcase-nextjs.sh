@@ -99,7 +99,7 @@ createFolders() {
 # Function to copy numbered, global, and home folders from input_data_repo to the data directory in code_repo
 copyDataFolders() {
     echo "Copying numbered, global, and home folders from input_data_repo to data directory in code_repo"
-    for folder in /input_data_repo/*; do
+    for folder in input_data_repo/*; do
         if [[ -d "$folder" ]]; then
             folder_name=$(basename "$folder")
             cp -r "$folder" data/ || { echo "Error: Failed to copy $folder_name to data directory"; exit 1; }
