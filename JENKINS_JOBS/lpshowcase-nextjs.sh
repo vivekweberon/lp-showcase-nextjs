@@ -22,7 +22,7 @@ git clone "https://$GITHUB_USERNAME:$GITHUB_TOKEN@$MAUTIC_TRACKER"
 echo "Repositories cloned successfully."
 
 # Change directory to the code_repo
-cd code_repo || { echo "Error: Couldn't change directory to code_repo"; exit 1; }
+# cd code_repo || { echo "Error: Couldn't change directory to code_repo"; exit 1; }
 
 # Print out the contents of the code repository
 echo "Listing contents of the code repository:"
