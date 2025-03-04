@@ -111,7 +111,7 @@ copyDataFolders() {
 copyMauticTrackerJSFiles() {
     echo "Copying Mautic tracker JS files to public/js folder..."
     mkdir -p public/js || { echo "Error: Couldn't create public/js directory"; exit 1; }
-    cp -r ../mautic_tracker/js/*.js public/js/ || { echo "Error: Failed to copy Mautic tracker JS files"; exit 1; }
+    cp -r mautic_tracker/js/*.js public/js/ || { echo "Error: Failed to copy Mautic tracker JS files"; exit 1; }
 }
 
 # Function to print out the contents of the data folder
