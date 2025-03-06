@@ -2,15 +2,10 @@
 
 # Print the repository URLs to verify they are passed correctly
 echo "Cloning repositories..."
-# echo "Code repository: $WEBSITE_CODE_REPO"
 echo "Input data repository: $WEBSITE_DATA_REPO"
 
 # Change to the Jenkins workspace directory
 cd "$WORKSPACE" || { echo "Error: Couldn't access workspace directory"; exit 1; }
-
-# Clone the code repository
-# echo "Cloning code repository..."
-# git clone "$WEBSITE_CODE_REPO" code_repo || { echo "Error: Cloning code repository failed"; exit 1; }
 
 # Clone the input data repository using credentials
 echo "Cloning input data repository..."
@@ -21,19 +16,12 @@ git clone "https://$GITHUB_USERNAME:$GITHUB_TOKEN@$MAUTIC_TRACKER"
 
 echo "Repositories cloned successfully."
 
-# Change directory to the code_repo
-# cd code_repo || { echo "Error: Couldn't change directory to code_repo"; exit 1; }
-
 # Print out the contents of the code repository
 echo "Listing contents of the code repository:"
 ls -l
 
-# Update basePath value in next.config.js based on Jenkins parameter
-# sed -i "s|basePath: \"/lp-showcase\"|basePath: \"/$WEBSITE_DIRECTORY_NAME\"|g" next.config.js
-
 # Update basePath value and siteToBuild value in next.config.js based on Jenkins parameter
 sed -i "s|basePath: \"/lp-showcase\"|basePath: \"/$WEBSITE_DIRECTORY_NAME\"|g; s|siteToBuild: 'lp-showcase'|siteToBuild: '$WEBSITE_DIRECTORY_NAME'|g" next.config.js
-
 
 # Print out the contents of next.config.js to verify the changes
 echo "Updated next.config.js:"
