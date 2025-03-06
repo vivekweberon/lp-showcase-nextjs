@@ -113,7 +113,7 @@ copyFoldersToPublic() {
     processInfo="Copying images directories (if present) to public"
     echoStart "$processInfo"
 
-    mkdir -p public || { echo "Error: Failed to create public directory"; exit 1; }
+    mkdir -p public/data || { echo "Error: Failed to create public directory"; exit 1; }
 
     for dir in data/*; do
         if [ -d "$dir" ]; then
@@ -124,7 +124,7 @@ copyFoldersToPublic() {
             fi
         fi
     done
-    cd ../ || { echo "Error: Failed to navigate back to the previous directory"; exit 1; }
+    
     echoEnd "$processInfo"
 }
 
