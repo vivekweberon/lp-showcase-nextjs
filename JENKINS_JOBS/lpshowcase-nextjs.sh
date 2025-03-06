@@ -110,28 +110,21 @@ listDataFolderContents() {
 
 # Function to copy data and global directories to public and remove data.yaml files
 copyFoldersToPublic() {
-    processInfo="Copying data and global directories to public, then removing data.yaml files"
+    processInfo="Copying images directories (if present) to public"
     echoStart "$processInfo"
-    
-    # Create the data directory inside public if it doesn't exist
-    mkdir -p public/data || { echo "Error: Failed to create data directory inside public"; exit 1; }
 
-    # Copy everything from data to public/data directory
-    cp -r data/* public/data/ || { echo "Error: Failed to copy data to public/data directory"; exit 1; }
+    mkdir -p public || { echo "Error: Failed to create public directory"; exit 1; }
 
-    # Navigate to the public/data directory
-    cd public/data || { echo "Error: Failed to navigate to the public/data directory"; exit 1; }
-
-    # Remove data.yaml files from public/data directory and its subdirectories
-    find . -name "data.yaml" -type f -delete || { echo "Error: Failed to remove data.yaml files"; exit 1; }
-
-    # Navigate back to the previous directory
+    for dir in data/*; do
+        if [ -d "$dir" ]; then
+            if [ -d "$dir/images" ]; then
+                folderName=$(basename "$dir")
+                mkdir -p "public/$folderName" || { echo "Error: Failed to create public/$folderName"; exit 1; }
+                cp -r "$dir/images" "public/$folderName/" || { echo "Error: Failed to copy images to public/$folderName"; exit 1; }
+            fi
+        fi
+    done
     cd ../../ || { echo "Error: Failed to navigate back to the previous directory"; exit 1; }
-
-    # Copy images from global/images to public/images directory
-    mkdir -p public/images || { echo "Error: Failed to create images directory inside public"; exit 1; }
-    cp -r data/global/images/* public/images/ || { echo "Error: Failed to copy images to public/images directory"; exit 1; }
-
     echoEnd "$processInfo"
 }
 
