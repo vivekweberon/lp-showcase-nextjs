@@ -191,7 +191,7 @@ buildProject() {
     processInfo="Building lp-showcase-nextjs"
 
     echoStart "$processInfo"
-    if [ -f "messages/errorMessage.json" ]; then
+    if [ -f "$WORKSPACE/messages/errorMessage.json" ]; then
         echo "errorMessage.json found in messages directory. Exiting job."
         cat messages/errorMessage.json  # Optional: Print the error message for visibility in Jenkins logs
         exit 1
