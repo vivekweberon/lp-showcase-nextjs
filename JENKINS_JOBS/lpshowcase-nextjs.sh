@@ -189,6 +189,13 @@ renamingPublicDataDirectories() {
 # Function to build the project
 buildProject() {
     processInfo="Building lp-showcase-nextjs"
+
+    if [ -f "messages/errorMessage.json" ]; then
+        echo "errorMessage.json found in messages directory. Exiting job."
+        cat messages/errorMessage.json  # Optional: Print the error message for visibility in Jenkins logs
+        exit 1
+    fi
+
     echoStart "$processInfo"
     npm run build
     if [ $? -ne 0 ]; then
