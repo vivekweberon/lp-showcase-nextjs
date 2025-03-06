@@ -1,361 +1,376 @@
 const fs = require("fs");
+const path = require("path");
 const yaml = require("js-yaml");
 
-// Define constants for various folder and file names
+// Constants for folder names and file names
 const LP_GLOBAL_DIR = "global";
 const LP_HOME_DIR = "home";
 const YAML_FILE_NAME = "data.yaml";
 const PHOTOS_FOLDER_NAME = "images";
-const GLOBAL_SCHEMA = "schema/global_schema.yaml";
-const HOME_SCHEMA = "schema/home_schema.yaml";
-const PROPERTY_SCHEMA = "schema/property_schema.yaml";
-const ERROR_MESSAGES_FILE = "messages/errorMessage.json";
+const SCHEMA_DIR = "schema";
+const GLOBAL_SCHEMA_FILE = "global_schema.yaml";
+const HOME_SCHEMA_FILE = "home_schema.yaml";
+const PROPERTY_SCHEMA_FILE = "property_schema.yaml";
+const ERROR_MESSAGES_FILE = path.join("messages", "errorMessage.json");
 
-export function validateInputData(inputDir) {
-  let msg = "";    // Stores error messages
-  let count = 0;   // Error counter for numbering messages
-  let globalKeys;  // To hold keys from the global schema
-  let homeKeys;    // To hold keys from the home schema
-  let propertyKeys;// To hold keys from the property schema
-  let schemaKeys;  // Temporary variable to hold schema keys for property files
+function loadSchemas() {
+  const globalSchema = loadYAMLSchema(path.join(SCHEMA_DIR, GLOBAL_SCHEMA_FILE));
+  // console.log('Loaded global schema:', globalSchema);
 
-  console.log("Starting validation process...");
+  const homeSchema = loadYAMLSchema(path.join(SCHEMA_DIR, HOME_SCHEMA_FILE));
+  // console.log('Loaded home schema:', homeSchema);
 
-  // Check if the provided input directory exists
-  if (!fs.existsSync(inputDir)) {
-    msg += `${++count} Input data directory path provided does not exist \n`;
-  } else {
-    console.log("Input data directory exists.");
+  const propertySchema = loadYAMLSchema(path.join(SCHEMA_DIR, PROPERTY_SCHEMA_FILE));
+  // console.log('Loaded property schema:', propertySchema);
 
-    // Check existence of the Home directory within the input directory
-    if (!fs.existsSync(`${inputDir}/${LP_HOME_DIR}`)) {
-      msg += `${++count} Home directory does not exist\n`;
-    } else {
-      console.log("Home directory exists.");
-    }
-
-    // Check existence of the Global directory within the input directory
-    if (!fs.existsSync(`${inputDir}/${LP_GLOBAL_DIR}`)) {
-      msg += `${++count} Global directory does not exist\n`;
-    } else {
-      console.log("Global directory exists.");
-    }
-
-    // Validate files inside the Global directory using the global schema
-    if (fs.existsSync(`${inputDir}/${LP_GLOBAL_DIR}`)) {
-      console.log("Validating Global directory...");
-      validateSpecialDirectory(
-        `${inputDir}/${LP_GLOBAL_DIR}`,
-        GLOBAL_SCHEMA,
-        "Global",
-        globalKeys,
-        (keys) => (globalKeys = keys),
-        (errorMsg) => { msg += errorMsg; },
-        () => ++count
-      );
-    }
-
-    // Validate files inside the Home directory using the home schema
-    if (fs.existsSync(`${inputDir}/${LP_HOME_DIR}`)) {
-      console.log("Validating Home directory...");
-      validateSpecialDirectory(
-        `${inputDir}/${LP_HOME_DIR}`,
-        HOME_SCHEMA,
-        "Home",
-        homeKeys,
-        (keys) => (homeKeys = keys),
-        (errorMsg) => { msg += errorMsg; },
-        () => ++count
-      );
-    }
-
-    // Loop through directories at the root of inputDir to find property directories.
-    fs.readdirSync(inputDir).forEach((propertyDir) => {
-      // Skip hidden files/folders and the global/home directories
-      if (
-        propertyDir.startsWith(".") ||
-        propertyDir === LP_GLOBAL_DIR ||
-        propertyDir === LP_HOME_DIR
-      ) {
-        return;
-      }
-
-      // Validate the naming pattern of property directories
-      if (!/^[0-9][0-9-]*[0-9]$/.test(propertyDir)) {
-        msg += `${++count} '${inputDir}/${propertyDir}' Invalid property name\n`;
-      } else {
-        // Check if the property directory is indeed a directory
-        if (!fs.lstatSync(`${inputDir}/${propertyDir}`).isDirectory()) {
-          msg += `${++count} '${inputDir}/${propertyDir}' is not a directory\n`;
-        } else {
-          // Check if the YAML file exists in the property directory
-          if (!fs.existsSync(`${inputDir}/${propertyDir}/${YAML_FILE_NAME}`)) {
-            msg += `${++count} '${inputDir}/${propertyDir}/${YAML_FILE_NAME}' does not exist\n`;
-          } else {
-            console.log(
-              `YAML file '${YAML_FILE_NAME}' exists in '${propertyDir}' directory.`
-            );
-          }
-
-          // Validate files within the property directory
-          fs.readdirSync(`${inputDir}/${propertyDir}`).forEach((subFile) => {
-            // If the subFile is the photos folder, validate its contents
-            if (subFile === PHOTOS_FOLDER_NAME) {
-              if (
-                !fs.lstatSync(`${inputDir}/${propertyDir}/${subFile}`).isDirectory()
-              ) {
-                msg += `${++count} '${inputDir}/${propertyDir}/${subFile}' is not a directory\n`;
-              } else {
-                // Check each file in the photos folder to ensure valid image file extensions
-                fs.readdirSync(`${inputDir}/${propertyDir}/${subFile}`).forEach(
-                  (image) => {
-                    if (!/[.](jpg|JPG|JPEG|jpeg|png|PNG)$/.test(image)) {
-                      msg += `${++count} '${inputDir}/${propertyDir}/${subFile}/${image}' is an invalid image file\n`;
-                    }
-                  }
-                );
-              }
-            } else if (subFile === YAML_FILE_NAME) {
-              // If propertyKeys is not already set, load the property schema keys from the PROPERTY_SCHEMA file
-              if (propertyKeys === undefined) {
-                propertyKeys = getKeyValueMapFromYAML(PROPERTY_SCHEMA);
-              }
-              schemaKeys = propertyKeys;
-
-              // Get keys and values from the YAML file in the property directory
-              let inputKeys = getKeyValueMapFromYAML(`${inputDir}/${propertyDir}/${subFile}`);
-              if (inputKeys) {
-                // Loop through each key in the YAML data for validation
-                for (let [key, value] of inputKeys.entries()) {
-                  // Skip keys that are not meant for schema validation
-                  if (
-                    key.includes("propertyPageSectionsOrder.") ||
-                    key.includes("homePageSectionsOrder.")
-                  ) {
-                    continue;
-                  }
-
-                  let validateKey = key;
-                  // For keys starting with siteOverrides, strip out the siteOverrides prefix and the site identifier.
-                  if (key.startsWith("siteOverrides.")) {
-                    const parts = key.split(".");
-                    // If it’s just a container (siteOverrides.<siteId>), skip validation.
-                    if (parts.length === 2) {
-                      continue;
-                    } else if (parts.length >= 3) {
-                      // Remove both the 'siteOverrides' and the site identifier.
-                      validateKey = parts.slice(2).join(".");
-                    }
-                  }
-
-                  // Get the corresponding schema definition for the key
-                  let schemaDef = schemaKeys.get(validateKey);
-                  if (!schemaDef) {
-                    msg += `${++count} '${key}' is not a valid property name in the file '${inputDir}/${propertyDir}/${subFile}'\n\n`;
-                  } else {
-                    // Check that the data type of the input value matches the expected type in the schema
-                    let inputType = Array.isArray(value) ? "array" : typeof value;
-                    let expectedType = schemaDef.type || "object";
-                    if (value != null && inputType !== expectedType) {
-                      msg += `${++count} Data type of the property '${key}' is not correct in the file '${inputDir}/${propertyDir}/${subFile}' (expected ${expectedType} but got ${inputType})\n`;
-                    }
-                  }
-                }
-                // Validate that siteOverrides keys match the siteName value(s)
-                validateSiteOverrides(
-                  inputKeys,
-                  `${inputDir}/${propertyDir}/${subFile}`,
-                  (errorMsg) => { msg += errorMsg; },
-                  () => ++count
-                );
-              } else {
-                msg += `${++count} YAML data file '${inputDir}/${propertyDir}/${subFile}' is empty \n`;
-              }
-            } else {
-              // Any other files in the property directory are not allowed
-              msg += `${++count} '${subFile}' is not allowed in the directory '${inputDir}/${propertyDir}' \n`;
-            }
-          });
-        }
-      }
-    });
-  }
-
-  // If errors were found, write them to the error message JSON file
-  if (msg) {
-    console.log("Validation errors detected. Writing to errorMessage.json...");
-    const formattedErrors = msg
-      .split("\n")
-      .filter((line) => line.trim() !== "")
-      .map((error, index) => ({
-        ErrorNumber: index + 1,
-        ErrorMessage: error.trim(),
-      }));
-    fs.writeFileSync(
-      ERROR_MESSAGES_FILE,
-      JSON.stringify({ errors: formattedErrors }, null, 2)
-    );
-  } else {
-    console.log("Validation process completed successfully. No errors detected.");
-  }
+  return {
+    globalSchema,
+    homeSchema,
+    propertySchema
+  };
 }
 
-export function validateSpecialDirectory(
-  dirPath,
-  schemaPath,
-  dirType,
-  schemaKeys,
-  setSchemaKeys,
-  appendMsg,
-  getCount
-) {
-  // Load schema keys if not already provided
-  if (schemaKeys === undefined) {
-    schemaKeys = getKeyValueMapFromYAML(schemaPath);
-    setSchemaKeys(schemaKeys);
-  }
 
-  // Loop through files in the directory
-  fs.readdirSync(dirPath).forEach((file) => {
-    if (file === YAML_FILE_NAME) {
-      // Load the keys from the YAML file
-      let inputKeys = getKeyValueMapFromYAML(`${dirPath}/${file}`);
-      if (inputKeys) {
-        // Loop through each key in the YAML file
-        for (let [key, value] of inputKeys.entries()) {
-          // Skip keys not subject to schema validation
-          if (
-            key.includes("propertyPageSectionsOrder.") ||
-            key.includes("homePageSectionsOrder.")
-          ) {
-            continue;
-          }
-
-          let validateKey = key;
-          // Process keys starting with "siteOverrides."
-          if (key.startsWith("siteOverrides.")) {
-            const parts = key.split(".");
-            // Skip if it is just the container key
-            if (parts.length === 2) {
-              continue;
-            } else if (parts.length >= 3) {
-              // Remove the 'siteOverrides' and the site identifier.
-              validateKey = parts.slice(2).join(".");
-            }
-          }
-
-          // Retrieve schema definition for the key
-          let schemaDef = schemaKeys.get(validateKey);
-          if (!schemaDef) {
-            appendMsg(`${getCount()} '${key}' is not a valid property name in the ${dirType} directory\n\n`);
-          } else {
-            // Compare data types between input and expected schema type
-            let inputType = Array.isArray(value) ? "array" : typeof value;
-            let expectedType = schemaDef.type || "object";
-            if (value != null && inputType !== expectedType) {
-              appendMsg(`${getCount()} Data type of the property '${key}' is not correct in the ${dirType} directory (expected ${expectedType} but got ${inputType})\n`);
-            }
-          }
-        }
-        // Validate consistency of siteName and siteOverrides entries
-        validateSiteOverrides(
-          inputKeys,
-          `${dirPath}/${file}`,
-          appendMsg,
-          getCount
-        );
-      } else {
-        appendMsg(`${getCount()} YAML data file '${dirPath}/${file}' is empty \n`);
-      }
-    } else if (file !== PHOTOS_FOLDER_NAME) {
-      // Any files other than the YAML file or photos folder are not permitted
-      appendMsg(`${getCount()} '${file}' is not allowed in the ${dirType} directory \n`);
-    }
-  });
+function loadYAMLSchema(filePath) {
+  const fileContent = fs.readFileSync(filePath, "utf8");
+  return fileContent ? yaml.load(fileContent) : {};  // Parse the file content as YAML if it exists; otherwise, return an empty object.
 }
 
-export function getKeyValueMapFromYAML(filePath) {
-  let ret = undefined;
-  let uiSchema = fs.readFileSync(filePath, "utf8");
-  if (uiSchema) {
-    let uiData = yaml.load(uiSchema);
-    if (uiData) {
-      // Recursively extract keys and values from the YAML data
-      ret = getAllKeysAndValues(uiData);
-    }
-  }
-  return ret;
-}
+// Recursively extract keys from YAML data into a Map.
+// This function flattens a nested object into a Map where each key is a dot-separated path.
+function getAllKeysAndValues(inputData, keys = new Map(), ref = "") {
+  // If the input data is undefined or null, return the current keys Map.
+  if (inputData === undefined || inputData === null) return keys;
 
-export function getAllKeysAndValues(inputData, keys = new Map(), ref = "") {
-  if (inputData === undefined || inputData === null) {
-    return keys;
-  }
-
-  // If input is an array, store it as a whole.
+  // If the input data is an array, store it as-is under the current reference key.
   if (Array.isArray(inputData)) {
     keys.set(ref, inputData);
     return keys;
   }
 
-  // If input is a primitive value, store it directly.
+  // If the input data is a primitive (not an object), store it with the current key and return.
   if (typeof inputData !== "object") {
     keys.set(ref, inputData);
     return keys;
   }
 
-  // Loop through object keys and recursively extract nested keys.
+  // For each key in the input object:
   Object.keys(inputData).forEach((key) => {
+    // Create a new key path by appending the current key.
+    // If ref is empty, use the key directly; otherwise, join ref and key with a dot.
     const newKey = ref ? `${ref}.${key}` : key;
+    
+    // Set the new key and its corresponding value in the Map.
     keys.set(newKey, inputData[key]);
-    // Only recurse for plain objects (skip arrays)
+    
+    // If the value is an object (and not an array) then recursively process it.
+    // This allows us to flatten nested objects.
     if (inputData[key] && typeof inputData[key] === "object" && !Array.isArray(inputData[key])) {
       getAllKeysAndValues(inputData[key], keys, newKey);
     }
   });
 
+  // Return the fully populated Map of keys and values.
   return keys;
 }
 
-export function validateSiteOverrides(inputKeys, filePath, appendMsg, getCount) {
-  // Get the 'siteName' value from the YAML data
-  const siteNameRaw = inputKeys.get("siteName");
-  if (siteNameRaw) {
-    // Determine allowed site names based on whether siteName is a string or array
-    let allowedSiteNames;
-    if (typeof siteNameRaw === "string") {
-      allowedSiteNames = new Set(
-        siteNameRaw.split(",").map(s => s.trim()).filter(Boolean)
-      );
-    } else if (Array.isArray(siteNameRaw)) {
-      allowedSiteNames = new Set(
-        siteNameRaw.map(s => String(s).trim()).filter(Boolean)
-      );
-    } else {
-      allowedSiteNames = new Set([String(siteNameRaw).trim()]);
-    }
-    
-    // Collect site names found in keys that start with 'siteOverrides.'
-    let overrideSiteNames = new Set();
-    for (let key of inputKeys.keys()) {
-      if (key.startsWith("siteOverrides.")) {
+
+function getKeyValueMapFromYAML(filePath) {
+  // Read the file content at the provided file path as a UTF-8 encoded string.
+  const fileContent = fs.readFileSync(filePath, "utf8");
+
+  // If the file is empty or not found, return an empty Map.
+  if (!fileContent) return new Map();
+
+  // Parse the YAML content into a JavaScript object.
+  const data = yaml.load(fileContent);
+
+  // Use the helper function to recursively flatten the object into a Map of key paths to values.
+  return getAllKeysAndValues(data);
+}
+
+
+function validateFileAgainstSchema(inputKeys, schemaMap, filePath, getCount) {
+  let errors = "";
+
+  // Validate siteSpecific structure first.
+  const siteOverridesErrors = validateSiteOverrides(inputKeys, filePath, getCount);
+  if (siteOverridesErrors) {
+    // If siteSpecific are invalid, no need to proceed with property validation.
+    errors += siteOverridesErrors;
+    return errors; 
+  }
+
+  // Now proceed with normal schema validation for other properties.
+    inputKeys.forEach((value, key) => {
+    let validateKey = key;
+
+    if (key.startsWith("siteSpecific.")) {
         const parts = key.split(".");
-        if (parts.length >= 2 && parts[1]) {
-          overrideSiteNames.add(parts[1].trim());
+        if (parts.length >= 3) {
+            validateKey = parts.slice(2).join(".");
+        } else {
+            return;
         }
-      }
+
+        const nestedKey = parts.slice(2).join(".");
+
+        if (nestedKey === "siteSpecific" || nestedKey === "siteName") {
+            errors += `${getCount()} '${key}' is not allowed inside 'siteSpecific' in file '${filePath}'\n`;
+            return;
+        }
     }
-    // Only validate if any overrides are present
-    if (overrideSiteNames.size > 0) {
-      // Validate that the overrides exactly match the allowed site names
-      if (
-        overrideSiteNames.size !== allowedSiteNames.size ||
-        [...overrideSiteNames].some(x => !allowedSiteNames.has(x))
-      ) {
-        appendMsg(
-          `${getCount()} 'siteOverrides' should only contain overrides for the site name '${[...allowedSiteNames].join(",")}', but found overrides for: ${[...overrideSiteNames].join(", ")} in file '${filePath}'\n`
-        );
-      }
+
+    let schemaDef = schemaMap.get(validateKey) || getValueFromNestedSchema(Object.fromEntries(schemaMap), validateKey);
+
+    if (!schemaDef) {
+        errors += `${getCount()} '${key}' is not a valid property name in the file '${filePath}'\n\n`;
+    } else {
+        const inputType = Array.isArray(value) ? "array" : typeof value;
+        const expectedType = schemaDef.type || "object";
+
+        if (value != null && inputType !== expectedType) {
+            errors += `${getCount()} Data type of the property '${key}' is not correct in the file '${filePath}' (expected ${expectedType} but got ${inputType})\n`;
+        }
+    }
+});
+
+
+  return errors;
+}
+
+function getValueFromNestedSchema(schema, keyPath) {
+  // Split the keyPath into its individual parts (e.g., "priceAndFeatures.title1" -> ["priceAndFeatures", "title1"]).
+  const parts = keyPath.split(".");
+
+  // Start with the root of the schema.
+  let current = schema;
+
+  // Iterate over each part of the key path.
+  for (let part of parts) {
+    // Check if the current value exists, is an object, and has the property corresponding to the current part.
+    if (current && typeof current === "object" && current[part]) {
+      // Move deeper into the schema by setting current to the value of the current part.
+      current = current[part];
+    } else {
+      // If any part is missing, return undefined to indicate the key path doesn't exist in the schema.
+      return undefined;
     }
   }
+  // After traversing all parts, return the resolved value from the schema.
+  return current;
 }
+
+function validateSiteOverrides(inputKeys, filePath, getCount) {
+  let errorMsg = "";
+
+  const allowedSiteNames = inputKeys.get("siteName").map(s => s.trim());
+
+  // Collect all actual site names found in siteSpecific
+  let overrideSiteNames = [];
+
+  inputKeys.forEach((_, key) => {
+      if (key.startsWith("siteSpecific.")) {
+          const parts = key.split(".");
+          if (parts.length >= 2 && parts[1]) {
+              const siteName = parts[1].trim();
+              if (!overrideSiteNames.includes(siteName)) {
+                  overrideSiteNames.push(siteName);
+              }
+          }
+      }
+  });
+
+  if (overrideSiteNames.length === 0) {
+      return "";
+  }
+
+  // Compare allowed vs actual override site names
+  if (overrideSiteNames.length !== allowedSiteNames.length ||
+      overrideSiteNames.some(site => !allowedSiteNames.includes(site))) {
+      errorMsg += `${getCount()} 'siteSpecific' should only contain overrides for the site name '${allowedSiteNames.join(",")}', but found overrides for: ${overrideSiteNames.join(", ")} in file '${filePath}'\n`;
+  }
+
+  return errorMsg;
+}
+
+// Validate directory structure and file contents.
+function validateDirectory(dataFolderPath) {
+  // Initialize an empty string to accumulate error messages.
+  let errors = "";
+  // Counter to number error messages.
+  let count = 0;
+  // Helper function that increments and returns the count.
+  const getCount = () => ++count;
+  
+  // Load all schema files (global, home, property) as JavaScript objects.
+  const schemas = loadSchemas();
+  
+  // Flatten the global schema into a key-value Map for easier lookup.
+  const globalSchemaMap = getAllKeysAndValues(schemas.globalSchema);
+  console.log('Global schema map:', globalSchemaMap);
+  
+  // Flatten the home schema into a key-value Map.
+  const homeSchemaMap = getAllKeysAndValues(schemas.homeSchema);
+  console.log('Home schema map:', homeSchemaMap);
+  
+  // Flatten the property schema into a key-value Map.
+  const propertySchemaMap = getAllKeysAndValues(schemas.propertySchema);
+  console.log('Property schema map:', propertySchemaMap);
+
+  // Check if the provided data folder path exists.
+  if (!fs.existsSync(dataFolderPath)) {
+    errors += `${getCount()} Input data directory path provided does not exist\n`;
+  } else {
+    // Validate that the required Home directory exists inside the data folder.
+    if (!fs.existsSync(path.join(dataFolderPath, LP_HOME_DIR))) {
+      errors += `${getCount()} Home directory does not exist\n`;
+    }
+    // Validate that the required Global directory exists inside the data folder.
+    if (!fs.existsSync(path.join(dataFolderPath, LP_GLOBAL_DIR))) {
+      errors += `${getCount()} Global directory does not exist\n`;
+    }
+    
+    // If the Global directory exists, validate its contents using the global schema.
+    if (fs.existsSync(path.join(dataFolderPath, LP_GLOBAL_DIR))) {
+      errors += validateSpecialDirectory(path.join(dataFolderPath, LP_GLOBAL_DIR), globalSchemaMap, "Global", getCount);
+    }
+    // If the Home directory exists, validate its contents using the home schema.
+    if (fs.existsSync(path.join(dataFolderPath, LP_HOME_DIR))) {
+      errors += validateSpecialDirectory(path.join(dataFolderPath, LP_HOME_DIR), homeSchemaMap, "Home", getCount);
+    }
+    
+    // Iterate over all entries in the data folder to validate property directories.
+    fs.readdirSync(dataFolderPath).forEach((propertyDir) => {
+      // Skip directories that are not property folders (e.g., Global, Home, or hidden folders).
+      if ([LP_GLOBAL_DIR, LP_HOME_DIR].includes(propertyDir) || propertyDir.startsWith(".")) return;
+      
+      // Construct the full path for the property directory.
+      const propertyPath = path.join(dataFolderPath, propertyDir);
+      
+      // Ensure the current entry is a directory.
+      if (!fs.lstatSync(propertyPath).isDirectory()) {
+        errors += `${getCount()} '${propertyPath}' is not a directory\n`;
+        return;
+      }
+      
+      // Validate naming convention for property directories (must match regex pattern).
+      if (!/^[0-9][0-9-]*[0-9]$/.test(propertyDir)) {
+        errors += `${getCount()} '${propertyPath}' Invalid property name\n`;
+      }
+      
+      // Check that the main YAML file exists within the property directory.
+      const yamlFilePath = path.join(propertyPath, YAML_FILE_NAME);
+      if (!fs.existsSync(yamlFilePath)) {
+        errors += `${getCount()} '${yamlFilePath}' does not exist\n`;
+      } else {
+        // If the YAML file exists, validate additional files within the property directory.
+        fs.readdirSync(propertyPath).forEach((subFile) => {
+          // Construct the full path for the sub-file.
+          const subFilePath = path.join(propertyPath, subFile);
+          
+          // If the sub-file is the photos folder:
+          if (subFile === PHOTOS_FOLDER_NAME) {
+            // Check that it is indeed a directory.
+            if (!fs.lstatSync(subFilePath).isDirectory()) {
+              errors += `${getCount()} '${subFilePath}' is not a directory\n`;
+            } else {
+              // Validate each file within the photos directory to ensure they are valid image files.
+              fs.readdirSync(subFilePath).forEach((image) => {
+                if (!/[.](jpg|JPG|JPEG|jpeg|png|PNG)$/.test(image)) {
+                  errors += `${getCount()} '${path.join(subFilePath, image)}' is an invalid image file\n`;
+                }
+              });
+            }
+          } else if (subFile === YAML_FILE_NAME) {
+            // For the YAML file in the property directory, get a flattened key-value map of its contents.
+            const inputKeys = getKeyValueMapFromYAML(yamlFilePath);
+            // Validate the YAML file's keys and values against the property schema.
+            errors += validateFileAgainstSchema(inputKeys, propertySchemaMap, yamlFilePath, getCount);
+          } else {
+            // If the sub-file is neither the photos folder nor the YAML file, it's not allowed.
+            errors += `${getCount()} '${subFile}' is not allowed in the directory '${propertyPath}'\n`;
+          }
+        });
+      }
+    });
+  }
+  
+  // Return the accumulated error messages.
+  return errors;
+}
+
+
+function validateSpecialDirectory(dirPath, schemaMap, dirType, getCount) {
+  // Initialize an empty string to accumulate error messages.
+  let errors = "";
+
+  // Read all files/directories inside the specified directory.
+  fs.readdirSync(dirPath).forEach((file) => {
+    // Construct the full path to the current file.
+    const filePath = path.join(dirPath, file);
+
+    // Check if the current file is the YAML file.
+    if (file === YAML_FILE_NAME) {
+      // Get a flattened key-value map of the YAML file's contents.
+      const inputKeys = getKeyValueMapFromYAML(filePath);
+      console.log('Input keys:', inputKeys);
+
+      // Validate the YAML file against the provided schema map.
+      errors += validateFileAgainstSchema(inputKeys, schemaMap, filePath, getCount);
+    } 
+    // If the file is not the photos folder (PHOTOS_FOLDER_NAME),
+    // then it is not allowed in this special directory.
+    else if (file !== PHOTOS_FOLDER_NAME) {
+      errors += `${getCount()} '${file}' is not allowed in the ${dirType} directory\n`;
+    }
+    // If file is the photos folder, it's allowed, so no error is added.
+  });
+
+  // Return any accumulated error messages.
+  return errors;
+}
+
+
+function runValidation() {
+  // Build the full path to the "data" folder based on the current working directory.
+  const dataFolderPath = path.join(process.cwd(), "data");
+
+  // Run the directory validation and collect any error messages returned as a string.
+  const errors = validateDirectory(dataFolderPath);
+
+  // If there are any errors from validation:
+  if (errors) {
+    // Log that errors were detected and will be logged to a file.
+    console.log("Validation errors detected. Logging errors to file...");
+
+    // Process the error string:
+    // 1. Split the error messages by newline.
+    // 2. Remove any empty lines.
+    // 3. Map each error to an object with an ErrorNumber and ErrorMessage.
+    const formattedErrors = errors
+      .split("\n")
+      .filter((line) => line.trim() !== "")
+      .map((error, index) => ({
+        ErrorNumber: index + 1, // Sequential error numbering
+        ErrorMessage: error.trim(), // Trimmed error message
+      }));
+
+    // Write the formatted error objects to the specified error messages JSON file.
+    fs.writeFileSync(
+      ERROR_MESSAGES_FILE,
+      JSON.stringify({ errors: formattedErrors }, null, 2)
+    );
+  } else {
+    // If no errors were found, log a success message.
+    console.log("Validation completed successfully. No errors detected.");
+  }
+}
+
+module.exports = {
+  runValidation,
+  loadSchemas,
+  validateDirectory,
+  getKeyValueMapFromYAML,
+  getAllKeysAndValues,
+};

@@ -22,7 +22,7 @@ import Modal from "../components/Modal";
 import ChatBot from "../components/ChatBot";
 import Script from "next/script";
 import scriptSources from "@/modules/scriptConfig";
-import { validateInputData } from "@/utils/inCodeValidation";
+import { runValidation } from "@/utils/inCodeValidation";
 import { loadYamlFile, getEffectiveData, deepMerge } from "../utils/dataUtils";
 
 const PropertyPage = ({ propertyData, images }) => {
@@ -330,7 +330,7 @@ export async function getStaticPaths() {
 
     // Run the validation logic
     try {
-      validateInputData(dataFolderPath);
+      runValidation();
     } catch (validationError) {
       console.error("Validation failed:", validationError.message);
       throw validationError;

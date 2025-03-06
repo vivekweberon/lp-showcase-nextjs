@@ -65,10 +65,9 @@ footertext:
     type: string
   line3:
     type: string
-siteOverrides:
+siteSpecific:
   type: object
   additionalProperties:
     type: object
-    # Any keys here should mirror the structure in "default"
 siteName:
   type: array

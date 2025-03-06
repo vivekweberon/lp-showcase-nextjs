@@ -7,12 +7,9 @@ showcase:
     type: string
 homePageSectionsOrder:
   type: array
-
-siteOverrides:
+siteSpecific:
   type: object
   additionalProperties:
     type: object
-    # Each override object should match the structure under "default"
-    
 siteName:
   type: array

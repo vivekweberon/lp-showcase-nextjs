@@ -46,7 +46,7 @@ contact:
         type: number
     pageType:
       type: string
-siteOverrides:
+siteSpecific:
   type: object
   additionalProperties:
     type: object
