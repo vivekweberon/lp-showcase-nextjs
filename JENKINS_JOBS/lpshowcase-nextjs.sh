@@ -124,7 +124,7 @@ copyFoldersToPublic() {
             fi
         fi
     done
-    cd ../../ || { echo "Error: Failed to navigate back to the previous directory"; exit 1; }
+    cd ../ || { echo "Error: Failed to navigate back to the previous directory"; exit 1; }
     echoEnd "$processInfo"
 }
 
