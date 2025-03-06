@@ -9,7 +9,7 @@ cd "$WORKSPACE" || { echo "Error: Couldn't access workspace directory"; exit 1; 
 
 # Clone the input data repository using credentials
 echo "Cloning input data repository..."
-git clone "https://$GITHUB_USERNAME:$GITHUB_TOKEN@github.com/vivekweberon/$WEBSITE_DATA_REPO.git" input_data_repo || { echo "Failed to clone input data repository"; exit 1; }
+git clone "https://$GITHUB_USERNAME:$GITHUB_TOKEN@github.com/vivekweberon/$WEBSITE_DATA_REPO.git" data || { echo "Failed to clone input data repository"; exit 1; }
 
 echo "Cloning Mautic tracker repository..."
 git clone "https://$GITHUB_USERNAME:$GITHUB_TOKEN@$MAUTIC_TRACKER"
@@ -80,9 +80,9 @@ installDependencies() {
 }
 
 # Function to create the data and public folders if they don't exist
-createFolders() {
-    mkdir -p data public
-}
+# createFolders() {
+#     mkdir -p data public
+# }
 
 # Function to copy numbered, global, and home folders from input_data_repo to the data directory in code_repo
 copyDataFolders() {
@@ -119,8 +119,8 @@ copyFoldersToPublic() {
         if [ -d "$dir" ]; then
             if [ -d "$dir/images" ]; then
                 folderName=$(basename "$dir")
-                mkdir -p "public/$folderName" || { echo "Error: Failed to create public/$folderName"; exit 1; }
-                cp -r "$dir/images" "public/$folderName/" || { echo "Error: Failed to copy images to public/$folderName"; exit 1; }
+                mkdir -p "public/data/$folderName" || { echo "Error: Failed to create public/$folderName"; exit 1; }
+                cp -r "$dir/images" "public/data/$folderName/" || { echo "Error: Failed to copy images to public/$folderName"; exit 1; }
             fi
         fi
     done
@@ -297,7 +297,7 @@ copyWebsiteToGithubRepo() {
 # Call functions in the correct order
 setUPNodeJS
 installDependencies
-createFolders
+# createFolders
 copyDataFolders
 copyMauticTrackerJSFiles
 listDataFolderContents
