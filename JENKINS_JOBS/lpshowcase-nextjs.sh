@@ -20,8 +20,8 @@ echo "Repositories cloned successfully."
 echo "Listing contents of the code repository:"
 ls -l
 
-# Update basePath value and siteToBuild value in next.config.js based on Jenkins parameter
-sed -i "s|basePath: \"/lp-showcase\"|basePath: \"/$WEBSITE_DIRECTORY_NAME\"|g; s|siteToBuild: 'lp-showcase'|siteToBuild: '$WEBSITE_DIRECTORY_NAME'|g" next.config.js
+# Update basePath value and siteName value in next.config.js based on Jenkins parameter
+sed -i "s|basePath: \"/lp-showcase\"|basePath: \"/$WEBSITE_DIRECTORY_NAME\"|g; s|siteName: 'lp-showcase'|siteName: '$WEBSITE_DIRECTORY_NAME'|g" next.config.js
 
 # Print out the contents of next.config.js to verify the changes
 echo "Updated next.config.js:"
@@ -85,15 +85,15 @@ installDependencies() {
 # }
 
 # Function to copy numbered, global, and home folders from input_data_repo to the data directory in code_repo
-copyDataFolders() {
-    echo "Copying numbered, global, and home folders from input_data_repo to data directory in code_repo"
-    for folder in input_data_repo/*; do
-        if [[ -d "$folder" ]]; then
-            folder_name=$(basename "$folder")
-            cp -r "$folder" data/ || { echo "Error: Failed to copy $folder_name to data directory"; exit 1; }
-        fi
-    done
-}
+# copyDataFolders() {
+#     echo "Copying numbered, global, and home folders"
+#     for folder in input_data_repo/*; do
+#         if [[ -d "$folder" ]]; then
+#             folder_name=$(basename "$folder")
+#             cp -r "$folder" data/ || { echo "Error: Failed to copy $folder_name to data directory"; exit 1; }
+#         fi
+#     done
+# }
 
 # Function to copy the Mautic tracker JS files
 copyMauticTrackerJSFiles() {
@@ -124,7 +124,8 @@ copyFoldersToPublic() {
             fi
         fi
     done
-    
+    mkdir -p public/images || { echo "Error: Failed to create images directory inside public"; exit 1; }
+    cp -r data/global/images/* public/images/ || { echo "Error: Failed to copy images to public/images directory"; exit 1; }
     echoEnd "$processInfo"
 }
 
