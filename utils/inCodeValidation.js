@@ -98,7 +98,7 @@ function validateFileAgainstSchema(inputKeys, schemaMap, filePath, getCount) {
   if (siteOverridesErrors) {
     // If siteSpecific are invalid, no need to proceed with property validation.
     errors += siteOverridesErrors;
-    return errors; 
+    // return errors; 
   }
 
   // Now proceed with normal schema validation for other properties.
@@ -220,15 +220,15 @@ function validateDirectory(dataFolderPath) {
 
   // Check if the provided data folder path exists.
   if (!fs.existsSync(dataFolderPath)) {
-    errors += `${getCount()} Input data directory path provided does not exist\n`;
+    errors += `${getCount()} Input data directory path provided does not exists \nSolution: Provide right input data directory path\n\n`;
   } else {
     // Validate that the required Home directory exists inside the data folder.
     if (!fs.existsSync(path.join(dataFolderPath, LP_HOME_DIR))) {
-      errors += `${getCount()} Home directory does not exist\n`;
+      errors += `${getCount()} Home directory does not exists \nSolution: Input data directory should contain 'home' directory\n\n`;
     }
     // Validate that the required Global directory exists inside the data folder.
     if (!fs.existsSync(path.join(dataFolderPath, LP_GLOBAL_DIR))) {
-      errors += `${getCount()} Global directory does not exist\n`;
+      errors += `${getCount()} Global directory does not exists \nSolution: Input data directory should contain 'global' directory\n\n`;
     }
     
     // If the Global directory exists, validate its contents using the global schema.
@@ -278,7 +278,7 @@ function validateDirectory(dataFolderPath) {
               // Validate each file within the photos directory to ensure they are valid image files.
               fs.readdirSync(subFilePath).forEach((image) => {
                 if (!/[.](jpg|JPG|JPEG|jpeg|png|PNG)$/.test(image)) {
-                  errors += `${getCount()} '${path.join(subFilePath, image)}' is an invalid image file\n`;
+                  errors += `${getCount()} '${inputDir}/${propertyDir}/${subFile}/${image}' is an invalid image file \nSolution: Allowed image formats are JPG and PNG\n\n`;
                 }
               });
             }

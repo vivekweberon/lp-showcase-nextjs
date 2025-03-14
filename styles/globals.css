@@ -155,10 +155,6 @@ button[type="submit"]:hover {
   font-weight: bold;
 }
 
-.card-img-container {
-  width: 100%;
-}
-
 .card-img-top {
   width: 100%;
   height: auto;
@@ -167,4 +163,17 @@ button[type="submit"]:hover {
 
 #nav {
   background-color: black !important;
+}
+
+@media (orientation: landscape) {
+  #video1 {
+    width: 133vh;
+    height: 75vh;
+  }
+}
+@media (orientation: portrait) {
+  #video1 {
+    width: 100vw;
+    height: 57vw;
+  }
 }

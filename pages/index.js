@@ -1,6 +1,3 @@
-// ============================
-// ✅ Imports
-// ============================
 import React from "react";
 import PropTypes from "prop-types";
 import path from "path";
@@ -9,80 +6,68 @@ import Head from "next/head";
 import { basePath } from "@/next.config";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import NextScript from "@/components/NextScript";
 import Showcase from "@/components/Showcase";
 import Realtor from "@/components/Realtor";
 import Contact from "@/components/Contact";
 import PopupForm from "@/components/PopupForm";
 
-import scriptSources from "@/modules/scriptConfig";
-import { loadYamlFile, getEffectiveData, readPropertyFiles } from "../utils/dataUtils";
+import { loadYamlFile, getEffectiveData, getpropertiesHomePageData } from "../utils/dataUtils";
+import { exit } from "process";
+import { notFound } from "next/navigation";
 
-// ============================
-// ✅ Constants
-// ============================
-const alwaysLoadScripts = scriptSources.alwaysLoad || [];
-const currentSiteName = process.env.siteToBuild;
+const siteToBeBuilt = process.env.siteName;
 
-// ============================
-// ✅ getStaticProps - Fetch Data
-// ============================
 export async function getStaticProps() {
   try {
     const homeDataFilePath = path.join(process.cwd(), "data", "home", "data.yaml");
     const globalDataFilePath = path.join(process.cwd(), "data", "global", "data.yaml");
     const dataFolderPath = path.join(process.cwd(), "data");
 
-    const [rawHomeData, rawGlobalData] = await Promise.all([
+    const [homeData, globalData] = await Promise.all([
       loadYamlFile(homeDataFilePath),
       loadYamlFile(globalDataFilePath),
     ]);
 
-    const homeSiteNames = [].concat(rawHomeData.siteName || []);
-    if (!homeSiteNames.map(String).map(s => s.trim()).includes(String(currentSiteName).trim())) {
-      console.warn(`⚠ Skipping Home Page Generation: Site "${currentSiteName}" not found in home/data.yaml`);
-      return { notFound: true };
+    // const homeSiteNames = [].concat(homeData.siteName || []);
+    if (!homeData.siteName.includes(String(siteToBeBuilt).trim())) {
+      console.error(`Skipping Home Page Generation: Site "${siteToBeBuilt}" not found in home/data.yaml`);
+      exit
     }
 
-    const effectiveHomeData = getEffectiveData(rawHomeData, currentSiteName);
-    const effectiveGlobalData = (rawGlobalData?.siteName || [])
-      .map(String)
-      .map(s => s.trim())
-      .includes(String(currentSiteName).trim())
-      ? getEffectiveData(rawGlobalData, currentSiteName)
-      : null;
+    const effectiveHomeData = getEffectiveData(homeData, siteToBeBuilt);
 
-    const propertiesData = await readPropertyFiles(dataFolderPath);
+    if (!globalData.siteName.includes(String(siteToBeBuilt).trim())) {
+      console.error(`Skipping global data "${siteToBeBuilt}" not found in global/data.yaml`);
+      return ({notFound: true});
+    }
+
+    const effectiveGlobalData = getEffectiveData(globalData, siteToBeBuilt);
+
+    const propertiesHomePageData = await getpropertiesHomePageData(dataFolderPath);
     effectiveHomeData.showcase = effectiveHomeData.showcase || {};
-    effectiveHomeData.showcase.properties = propertiesData;
+    effectiveHomeData.showcase.properties = propertiesHomePageData;
 
     return {
       props: {
-        parsedHomeData: effectiveHomeData,
-        parsedGlobalData: effectiveGlobalData,
+        homeData: effectiveHomeData,
+        globalData: effectiveGlobalData,
       },
     };
   } catch (error) {
-    console.error("❌ Error loading data:", error);
-    return {
-      props: { parsedHomeData: { showcase: { properties: [] } }, parsedGlobalData: null },
-    };
+    console.error("Error loading data:", error);
   }
 }
 
-// ============================
-// ✅ Component - HomePage
-// ============================
-function HomePage({ parsedHomeData, parsedGlobalData }) {
-  const { showcase = {}, homePageSectionsOrder = [] } = parsedHomeData;
+function HomePage({ homeData, globalData }) {
+  const { showcase = {}, homePageSectionsOrder = [] } = homeData;
   const { properties = [], sectionTitle = "Default Title", menu = [] } = showcase;
 
   const sectionsOrder = homePageSectionsOrder.length
     ? homePageSectionsOrder
-    : parsedGlobalData?.homePageSectionsOrder || ["showcase", "contact", "realtor"];
+    : globalData?.homePageSectionsOrder || ["showcase", "contact", "realtor"];
 
-  const realtorData = parsedHomeData.realtor || parsedGlobalData?.realtor;
-  const contactData = parsedHomeData.contact || parsedGlobalData?.contact;
+  const realtorData = homeData.realtor || globalData?.realtor;
+  const contactData = homeData.contact || globalData?.contact;
 
   const menuValues = [];
   const components = sectionsOrder.map((section, index) => {
@@ -107,19 +92,33 @@ function HomePage({ parsedHomeData, parsedGlobalData }) {
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link rel="icon" href="/favicon.ico" />
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" />
-        <link rel="stylesheet" href={`${basePath}/css/chatbot.css`} />
+        <link rel="script" href={`${basePath}/js/areacodes.json`} />
+        <link rel="script" href={`${basePath}/js/rb-config.js`} />
+        <link rel="script" href={`${basePath}/js/logger.js`} />
+        <link rel="script" href={`${basePath}/js/jquery-3.5.1.min.js`} />
+        <link rel="script" href={`${basePath}/js/jwt-decode.js`} />
+        <link rel="script" href="https://accounts.google.com/gsi/client" />
+        <link rel="script" href={`${basePath}/js/tracker-config.js`} />
+        <link rel="script" href={`${basePath}/js/tracker-util.js`} />
+        <link rel="script" href={`${basePath}/js/showcase.js`} />
+        <link rel="script" href={`${basePath}/js/tracker.js`} />
+        <link rel="script" href={`${basePath}/js/showdown-1.9.1.min.js`} />
+        <link rel="script" href={`${basePath}/js/bootstrap.min.js`} />
+        <link rel="script" href={`${basePath}/js/ytvideo_v1.js`} />
+        {chatbot.enable && <link rel="script" href={`${basePath}/js/chatbot.js`} />}
+        {chatbot.enable && <link rel="script" href={`${basePath}/js/index.js`} />}
+        {chatbot.enable && <link rel="script" href="https://kit.fontawesome.com/c3c47df7d6.js" />}
+        {chatbot.enable && <link rel="stylesheet" href={`${basePath}/css/chatbot.css`} />}
       </Head>
-      {alwaysLoadScripts.map((src, index) => <NextScript key={index} src={basePath + src} />)}
       <Navbar navbar={menuValues} />
       {components}
-      <Footer footerMenu={menuValues} footertext={parsedHomeData.footertext || parsedGlobalData?.footertext || ""} />
+      <Footer footerMenu={menuValues} footertext={homeData.footertext || globalData?.footertext || ""} />
+      <link rel="script" href={`${basePath}/js/mauticTracking.js`} />
     </div>
   );
 }
 HomePage.propTypes = {
-  parsedHomeData: PropTypes.shape({
+  homeData: PropTypes.shape({
     showcase: PropTypes.shape({
       sectionTitle: PropTypes.string,
       menu: PropTypes.oneOfType([
@@ -142,7 +141,7 @@ HomePage.propTypes = {
     realtor: PropTypes.object,
     footertext: PropTypes.oneOfType([PropTypes.string, PropTypes.object])
   }).isRequired,
-  parsedGlobalData: PropTypes.shape({
+  globalData: PropTypes.shape({
     siteName: PropTypes.oneOfType([
       PropTypes.string,
       PropTypes.arrayOf(PropTypes.string)
@@ -154,83 +153,5 @@ HomePage.propTypes = {
   })
 };
 
-// export async function getStaticProps() {
-//   console.log("Home getStaticProps");
-//   try {
-//     const homeDataFilePath = path.join(
-//       process.cwd(),
-//       "data",
-//       "home",
-//       "data.yaml"
-//     );
-//     const globalDataFilePath = path.join(
-//       process.cwd(),
-//       "data",
-//       "global",
-//       "data.yaml"
-//     );
-//     const dataFolderPath = path.join(process.cwd(), "data");
-
-//     // Load home and global YAML files concurrently.
-//     const [rawHomeData, rawGlobalData] = await Promise.all([
-//       loadYamlFile(homeDataFilePath),
-//       loadYamlFile(globalDataFilePath)
-//     ]);
-
-//     // Get the current site name from environment.
-//     const currentSiteName = process.env.siteToBuild;
-//     // Check that the home data includes the current site.
-//     const homeSiteNames = rawHomeData?.siteName || [];
-//     if (
-//       !Array.isArray(homeSiteNames) ||
-//       !homeSiteNames
-//         .map(String)
-//         .map(s => s.trim())
-//         .includes(String(currentSiteName).trim())
-//     ) {
-//       console.warn(
-//         `⚠ Skipping Home Page Generation: siteName "${currentSiteName}" not listed in home/data.yaml`
-//       );
-//       return { notFound: true };
-//     }
-
-//     // Get effective home data by merging any site-specific overrides.
-//     const effectiveHomeData = getEffectiveData(rawHomeData, currentSiteName);
-
-//     // Only use global data if its siteName array includes the current site.
-//     const effectiveGlobalData =
-//       Array.isArray(rawGlobalData?.siteName) &&
-//       rawGlobalData.siteName
-//         .map(String)
-//         .map(s => s.trim())
-//         .includes(String(currentSiteName).trim())
-//         ? getEffectiveData(rawGlobalData, currentSiteName)
-//         : null;
-
-//     // Read and filter property files (only those matching the current site)
-//     const propertiesData = await readPropertyFiles(dataFolderPath);
-//     // Attach the property list to the showcase data.
-//     effectiveHomeData.showcase = effectiveHomeData.showcase || {};
-//     effectiveHomeData.showcase.properties = propertiesData;
-
-//     console.log("✔ Home Page Generated for Site:", currentSiteName);
-//     return {
-//       props: {
-//         parsedHomeData: effectiveHomeData || {
-//           showcase: { sectionTitle: "", menu: [], properties: [] }
-//         },
-//         parsedGlobalData: effectiveGlobalData
-//       }
-//     };
-//   } catch (error) {
-//     console.error("❌ Error fetching home data:", error);
-//     return {
-//       props: {
-//         parsedHomeData: { showcase: { sectionTitle: "", menu: [], properties: [] } },
-//         parsedGlobalData: null
-//       }
-//     };
-//   }
-// }
 
 export default HomePage;

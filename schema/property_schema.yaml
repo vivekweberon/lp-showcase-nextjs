@@ -65,9 +65,9 @@ footertext:
     type: string
   line3:
     type: string
+propertyPageSectionsOrder:
+  type: array
 siteSpecific:
   type: object
-  additionalProperties:
-    type: object
 siteName:
   type: array

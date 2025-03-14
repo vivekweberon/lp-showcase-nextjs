@@ -7,9 +7,55 @@ showcase:
     type: string
 homePageSectionsOrder:
   type: array
+realtor:
+  photo:
+    type: string
+  name:
+    type: string
+  company:
+    type: string
+  id:
+    type: string
+  phone:
+    type: string
+  logo:
+    type: string
+  menu:
+    type: string
+  sectionTitle:
+    type: string
+footertext:
+  line1:
+    type: string
+  line2:
+    type: string
+  line3:
+    type: string
+page:
+  title:
+    type: string
+contact:
+  menu:
+    type: string
+  mauticForm:
+    formSetName:
+      type: string
+    emailFormHeader:
+      type: string
+    phoneFormHeader:
+      type: string
+    popupForm:
+      enable:
+        type: boolean
+      x:
+        type: number
+      y:
+        type: number
+      z:
+        type: number
+    pageType:
+      type: string
 siteSpecific:
   type: object
-  additionalProperties:
-    type: object
 siteName:
   type: array

@@ -56,8 +56,8 @@ export function getEffectiveData(parsedYaml, currentSiteName) {
   return effective;
 }
 
-export const readPropertyFiles = async (dataFolderPath) => {
-  const currentSiteName = process.env.siteToBuild;
+export const getpropertiesHomePageData = async (dataFolderPath) => {
+  const currentSiteName = process.env.siteName;
   console.log("Current Environment Site Name:", currentSiteName);
 
   const propertyFolders = await fs.promises.readdir(dataFolderPath);

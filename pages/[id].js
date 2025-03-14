@@ -225,23 +225,6 @@ const PropertyPage = ({ propertyData, images }) => {
         />
         <script async src="https://accounts.google.com/gsi/client" />
         <link rel="stylesheet" href={`${basePath}/css/chatbot.css`} />
-        <style jsx>{`
-          .bg-dark {
-            background-color: black !important;
-          }
-          @media (orientation: landscape) {
-            #video1 {
-              width: 133vh;
-              height: 75vh;
-            }
-          }
-          @media (orientation: portrait) {
-            #video1 {
-              width: 100vw;
-              height: 57vw;
-            }
-          }
-        `}</style>
       </Head>
 
       <script async src="https://accounts.google.com/gsi/client" />
@@ -293,29 +276,11 @@ PropertyPage.propTypes = {
   images: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
-
-// function deepMerge(target, source) {
-//   if (typeof target !== "object" || target === null) return source;
-//   for (const key of Object.keys(source)) {
-//     if (
-//       source[key] &&
-//       typeof source[key] === "object" &&
-//       !Array.isArray(source[key])
-//     ) {
-//       if (!target[key]) target[key] = {};
-//       target[key] = deepMerge(target[key], source[key]);
-//     } else {
-//       target[key] = source[key];
-//     }
-//   }
-//   return target;
-// }
-
 export async function getStaticPaths() {
   console.log("Property page getStaticPaths called");
   const dataFolderPath = path.join(process.cwd(), "data");
   const errorMessagePath = path.join(process.cwd(), "messages", "errorMessage.json");
-  const siteToBuild = process.env.siteToBuild;
+  const siteName = process.env.siteName;
 
   try {
     // Ensure the data directory exists
@@ -363,7 +328,7 @@ export async function getStaticPaths() {
         const parsedData = yaml.load(fileContent);
 
         // Check if the property's siteName includes the current site.
-        if (parsedData.siteName && parsedData.siteName.includes(siteToBuild)) {
+        if (parsedData.siteName && parsedData.siteName.includes(siteName)) {
           paths.push({
             params: { id: getPropertyOutputDirectoryName(file) },
           });
@@ -389,7 +354,7 @@ export async function getStaticPaths() {
 export async function getStaticProps(context) {
   console.log("Property page getStaticProps called");
   const { id } = context.params;
-  const siteToBuild = process.env.siteToBuild;
+  const siteName = process.env.siteName;
   const originalId = getPropertyOutputDirectoryName(id);
 
   const propertyDataPath = path.join(process.cwd(), "data", originalId, "data.yaml");
@@ -401,17 +366,17 @@ export async function getStaticProps(context) {
     const globalData = await loadYamlFile(globalDataPath);
 
     // Ensure property applies to the current site.
-    if (!propertyData.siteName || !propertyData.siteName.includes(siteToBuild)) {
-      console.warn(`Skipping page for ${id}, siteName does not match ${siteToBuild}`);
+    if (!propertyData.siteName || !propertyData.siteName.includes(siteName)) {
+      console.warn(`Skipping page for ${id}, siteName does not match ${siteName}`);
       return { notFound: true };
     }
 
     // Derive effective global and property data.
-    const effectiveGlobalData = (globalData.siteName || []).map(String).includes(String(siteToBuild).trim())
-      ? getEffectiveData(globalData, siteToBuild)
+    const effectiveGlobalData = (globalData.siteName || []).map(String).includes(String(siteName).trim())
+      ? getEffectiveData(globalData, siteName)
       : {};
 
-    const effectivePropertyData = getEffectiveData(propertyData, siteToBuild);
+    const effectivePropertyData = getEffectiveData(propertyData, siteName);
 
     // Merge global and property data (property data takes precedence).
     const mergedData = deepMerge(effectiveGlobalData, effectivePropertyData);
