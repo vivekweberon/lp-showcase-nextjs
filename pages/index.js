@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import path from "path";
 import Head from "next/head";
+import Script from "next/script";
 
 import { basePath } from "@/next.config";
 import Navbar from "@/components/Navbar";
@@ -10,10 +11,9 @@ import Showcase from "@/components/Showcase";
 import Realtor from "@/components/Realtor";
 import Contact from "@/components/Contact";
 import PopupForm from "@/components/PopupForm";
+import ChatBot from "@/components/ChatBot";
 
-import { loadYamlFile, getEffectiveData, getpropertiesHomePageData } from "../utils/dataUtils";
-import { exit } from "process";
-import { notFound } from "next/navigation";
+import { loadYamlFile, getEffectiveData, getpropertiesHomePageData, deepMerge } from "../utils/dataUtils";
 
 const siteToBeBuilt = process.env.siteName;
 
@@ -28,17 +28,16 @@ export async function getStaticProps() {
       loadYamlFile(globalDataFilePath),
     ]);
 
-    // const homeSiteNames = [].concat(homeData.siteName || []);
     if (!homeData.siteName.includes(String(siteToBeBuilt).trim())) {
       console.error(`Skipping Home Page Generation: Site "${siteToBeBuilt}" not found in home/data.yaml`);
-      exit
+      return { notFound: true };
     }
 
     const effectiveHomeData = getEffectiveData(homeData, siteToBeBuilt);
 
     if (!globalData.siteName.includes(String(siteToBeBuilt).trim())) {
       console.error(`Skipping global data "${siteToBeBuilt}" not found in global/data.yaml`);
-      return ({notFound: true});
+      return { notFound: true };
     }
 
     const effectiveGlobalData = getEffectiveData(globalData, siteToBeBuilt);
@@ -47,43 +46,54 @@ export async function getStaticProps() {
     effectiveHomeData.showcase = effectiveHomeData.showcase || {};
     effectiveHomeData.showcase.properties = propertiesHomePageData;
 
+    const mergedData = deepMerge(effectiveGlobalData, effectiveHomeData);
+
     return {
       props: {
-        homeData: effectiveHomeData,
-        globalData: effectiveGlobalData,
+        homeData: mergedData,
       },
     };
   } catch (error) {
     console.error("Error loading data:", error);
+    return { props: { homeData: {} } };
   }
 }
 
-function HomePage({ homeData, globalData }) {
-  const { showcase = {}, homePageSectionsOrder = [] } = homeData;
-  const { properties = [], sectionTitle = "Default Title", menu = [] } = showcase;
+function HomePage({ homeData }) {
+  const { showcase, homePageSectionsOrder } = homeData;
+  const { properties, sectionTitle, menu } = showcase;
 
-  const sectionsOrder = homePageSectionsOrder.length
-    ? homePageSectionsOrder
-    : globalData?.homePageSectionsOrder || ["showcase", "contact", "realtor"];
-
-  const realtorData = homeData.realtor || globalData?.realtor;
-  const contactData = homeData.contact || globalData?.contact;
-
+  const { realtor: realtorData, contact: contactData, chatbot: chatbotData } = homeData;
+  console.log("ContactData", contactData)
   const menuValues = [];
-  const components = sectionsOrder.map((section, index) => {
-    if (section === "showcase") {
-      menuValues.push(menu);
-      return <Showcase key={index} properties={properties} sectionTitle={sectionTitle} navbarMenu={menu} />;
-    } else if (section === "realtor" && realtorData) {
-      menuValues.push("Realtor");
-      return <Realtor key={index} realtorData={realtorData} />;
-    } else if (section === "contact" && contactData) {
-      menuValues.push("Contact");
-      return contactData.mauticForm?.popupForm?.enable === false
-        ? <Contact key={index} contact={contactData} />
-        : <PopupForm key={index} contact={contactData} />;
+
+  const orderedComponents = homePageSectionsOrder.map((section, index) => {
+    switch (section) {
+      case "showcase":
+        menuValues.push(menu);
+        return <Showcase key={index} properties={properties} sectionTitle={sectionTitle} navbarMenu={menu} />;
+      case "realtor":
+        if (realtorData) {
+          menuValues.push("Realtor");
+          return <Realtor key={index} realtorData={realtorData} />;
+        }
+        break;
+      case "contact":
+        if (contactData) {
+          menuValues.push("Contact");
+          return contactData.mauticForm?.popupForm?.enable === false
+            ? <Contact key={index} contact={contactData} />
+            : <PopupForm key={index} contact={contactData} />;
+        }
+        break;
+      case "chatbot":
+        if (chatbotData?.enable) {
+          return <ChatBot key={index} />;
+        }
+        break;
+      default:
+        return null;
     }
-    return null;
   });
 
   return (
@@ -92,31 +102,40 @@ function HomePage({ homeData, globalData }) {
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link rel="icon" href="/favicon.ico" />
-        <link rel="script" href={`${basePath}/js/areacodes.json`} />
-        <link rel="script" href={`${basePath}/js/rb-config.js`} />
-        <link rel="script" href={`${basePath}/js/logger.js`} />
-        <link rel="script" href={`${basePath}/js/jquery-3.5.1.min.js`} />
-        <link rel="script" href={`${basePath}/js/jwt-decode.js`} />
-        <link rel="script" href="https://accounts.google.com/gsi/client" />
-        <link rel="script" href={`${basePath}/js/tracker-config.js`} />
-        <link rel="script" href={`${basePath}/js/tracker-util.js`} />
-        <link rel="script" href={`${basePath}/js/showcase.js`} />
-        <link rel="script" href={`${basePath}/js/tracker.js`} />
-        <link rel="script" href={`${basePath}/js/showdown-1.9.1.min.js`} />
-        <link rel="script" href={`${basePath}/js/bootstrap.min.js`} />
-        <link rel="script" href={`${basePath}/js/ytvideo_v1.js`} />
-        {chatbot.enable && <link rel="script" href={`${basePath}/js/chatbot.js`} />}
-        {chatbot.enable && <link rel="script" href={`${basePath}/js/index.js`} />}
-        {chatbot.enable && <link rel="script" href="https://kit.fontawesome.com/c3c47df7d6.js" />}
-        {chatbot.enable && <link rel="stylesheet" href={`${basePath}/css/chatbot.css`} />}
+        <link rel="stylesheet" href={`${basePath}/css/chatbot.css`} />
+        <link
+          rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+        />
+        <link
+          rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+        />
       </Head>
+      <Script src={`${basePath}/js/areacodes.json`} strategy="beforeInteractive" />
+      <Script src={`${basePath}/js/rb-config.js`} strategy="beforeInteractive" />
+      <Script src={`${basePath}/js/logger.js`} strategy="beforeInteractive" />
+      <Script src={`${basePath}/js/jquery-3.5.1.min.js`} strategy="beforeInteractive" />
+      <Script src={`${basePath}/js/jwt-decode.js`} strategy="beforeInteractive" />
+      {/* <Script src="https://accounts.google.com/gsi/client" strategy="beforeInteractive" /> */}
+      <Script src={`${basePath}/js/tracker-config.js`} strategy="beforeInteractive" />
+      <Script src={`${basePath}/js/showcase.js`} strategy="beforeInteractive" />
+      <Script src={`${basePath}/js/tracker-util.js`} strategy="beforeInteractive" />
+      <Script src={`${basePath}/js/tracker.js`} strategy="beforeInteractive" />
+      <Script src={`${basePath}/js/showdown-1.9.1.min.js`} strategy="beforeInteractive" />
+      <Script src={`${basePath}/js/mauticTracking.js`} strategy="beforeInteractive" />
+      <Script src={`${basePath}/js/bootstrap.min.js`} strategy="beforeInteractive" />
+      <Script src={`${basePath}/js/ytvideo_v1.js`} strategy="beforeInteractive" />
+      <Script src={`${basePath}/js/chatbot.js`} strategy="beforeInteractive" />
+      <Script src={`${basePath}/js/index.js`} strategy="beforeInteractive" />
+      <Script src="https://kit.fontawesome.com/c3c47df7d6.js" strategy="beforeInteractive" />
       <Navbar navbar={menuValues} />
-      {components}
-      <Footer footerMenu={menuValues} footertext={homeData.footertext || globalData?.footertext || ""} />
-      <link rel="script" href={`${basePath}/js/mauticTracking.js`} />
+      {orderedComponents}
+      <Footer footerMenu={menuValues} footertext={homeData.footertext || ""} />
     </div>
   );
 }
+
 HomePage.propTypes = {
   homeData: PropTypes.shape({
     showcase: PropTypes.shape({
@@ -140,18 +159,7 @@ HomePage.propTypes = {
     contact: PropTypes.object,
     realtor: PropTypes.object,
     footertext: PropTypes.oneOfType([PropTypes.string, PropTypes.object])
-  }).isRequired,
-  globalData: PropTypes.shape({
-    siteName: PropTypes.oneOfType([
-      PropTypes.string,
-      PropTypes.arrayOf(PropTypes.string)
-    ]),
-    homePageSectionsOrder: PropTypes.arrayOf(PropTypes.string),
-    realtor: PropTypes.object,
-    contact: PropTypes.object,
-    footertext: PropTypes.oneOfType([PropTypes.string, PropTypes.object])
-  })
+  }).isRequired
 };
-
 
 export default HomePage;

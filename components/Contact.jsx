@@ -3,6 +3,7 @@ import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 
 const Contact = ({ contact }) => {
+  console.log("Contact component:", contact); 
   useEffect(() => {
     console.log("useEffect contact");
     const { mauticForm } = contact;
@@ -61,7 +62,7 @@ const Contact = ({ contact }) => {
         </div>
       </div>
       {/* End of added markup */}
-      {/* <Script>{`let page = "lp"`}</Script> */}
+      <Script>{`let page = "lp"`}</Script>
     </>
   );
 };

@@ -4,6 +4,7 @@ import { basePath } from "@/next.config.js";
 import Link from "next/link";
 
 const Showcase = ({ properties, sectionTitle, navbarMenu }) => {
+  console.log("Showcase properties:", properties);
   return (
     <div
       id={`${navbarMenu.toLowerCase()}`}

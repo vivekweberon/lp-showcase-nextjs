@@ -5,8 +5,13 @@ showcase:
     type: object
   sectionTitle:
     type: string
-homePageSectionsOrder:
-  type: array
+description:
+  content:
+    type: string
+  menu:
+    type: string
+  sectionTitle:
+    type: string  
 realtor:
   photo:
     type: string
@@ -16,13 +21,19 @@ realtor:
     type: string
   id:
     type: string
-  phone:
+  phone: 
     type: string
   logo:
     type: string
   menu:
     type: string
   sectionTitle:
+    type: string
+  footerText:
+    type: string
+  footerLinkText:
+    type: string
+  footerLink:
     type: string
 footertext:
   line1:
@@ -33,16 +44,18 @@ footertext:
     type: string
 page:
   title:
-    type: string
+    type: string  
 contact:
   menu:
+    type: string
+  sectionTitle:
     type: string
   mauticForm:
     formSetName:
       type: string
-    emailFormHeader:
+    emailFormHeader: 
       type: string
-    phoneFormHeader:
+    phoneFormHeader: 
       type: string
     popupForm:
       enable:
@@ -55,6 +68,11 @@ contact:
         type: number
     pageType:
       type: string
+chatbot:
+  enable:
+    type: boolean
+homePageSectionsOrder:
+  type: array
 siteSpecific:
   type: object
 siteName:

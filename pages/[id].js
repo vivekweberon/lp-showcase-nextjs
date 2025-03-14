@@ -20,10 +20,9 @@ import Description from "../components/Description";
 import PopupForm from "../components/PopupForm";
 import Modal from "../components/Modal";
 import ChatBot from "../components/ChatBot";
-import Script from "next/script";
-import scriptSources from "@/modules/scriptConfig";
 import { runValidation } from "@/utils/inCodeValidation";
 import { loadYamlFile, getEffectiveData, deepMerge } from "../utils/dataUtils";
+import Script from "next/script";
 
 const PropertyPage = ({ propertyData, images }) => {
   console.log("Property page propertyData", propertyData.home);  
@@ -70,9 +69,6 @@ const PropertyPage = ({ propertyData, images }) => {
     contact,
     description,
   } = propertyData;
-
-  const hasYouTubeVideo = propertyData.home?.youtubeVideoID;
-  const isChatbotEnabled = propertyData.chatbot?.enable;
 
   let menuValues = [];
   const propertyPageSectionsOrder = propertyData.propertyPageSectionsOrder;
@@ -212,9 +208,10 @@ const PropertyPage = ({ propertyData, images }) => {
   return (
     <div>
       <Head>
-        <title>{propertyData.title}</title>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="icon" href="/favicon.ico" />
+        <link rel="stylesheet" href={`${basePath}/css/chatbot.css`} />
         <link
           rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
@@ -223,44 +220,24 @@ const PropertyPage = ({ propertyData, images }) => {
           rel="stylesheet"
           href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
         />
-        <script async src="https://accounts.google.com/gsi/client" />
-        <link rel="stylesheet" href={`${basePath}/css/chatbot.css`} />
       </Head>
-
-      <script async src="https://accounts.google.com/gsi/client" />
-
-      {/* Dynamically load alwaysLoad scripts from scriptSources */}
-      {scriptSources.alwaysLoad.map((src, index) => (
-        <Script
-          key={`script_${index}`}
-          strategy="beforeInteractive"
-          type="text/javascript"
-          src={basePath + src}
-        />
-      ))}
-
-      {hasYouTubeVideo && (
-        <Script
-          strategy="beforeInteractive"
-          type="text/javascript"
-          src={basePath + scriptSources.ytVideo}
-        />
-      )}
-
-      {isChatbotEnabled &&
-        scriptSources.chatbot.map((src, index) => (
-          <Script
-            key={`script_chatbot_${index}`}
-            strategy="beforeInteractive"
-            type="text/javascript"
-            src={basePath + src}
-          />
-        ))}
-      <Script
-        strategy="beforeInteractive"
-        src="https://kit.fontawesome.com/c3c47df7d6.js"
-      />
-
+      <Script src={`${basePath}/js/areacodes.json`} strategy="beforeInteractive" />
+      <Script src={`${basePath}/js/rb-config.js`} strategy="beforeInteractive" />
+      <Script src={`${basePath}/js/logger.js`} strategy="beforeInteractive" />
+      <Script src={`${basePath}/js/jquery-3.5.1.min.js`} strategy="beforeInteractive" />
+      <Script src={`${basePath}/js/jwt-decode.js`} strategy="beforeInteractive" />
+      {/* <Script src="https://accounts.google.com/gsi/client" strategy="beforeInteractive" /> */}
+      <Script src={`${basePath}/js/tracker-config.js`} strategy="beforeInteractive" />
+      <Script src={`${basePath}/js/tracker-util.js`} strategy="beforeInteractive" />
+      <Script src={`${basePath}/js/showcase.js`} strategy="beforeInteractive" />
+      <Script src={`${basePath}/js/tracker.js`} strategy="beforeInteractive" />
+      <Script src={`${basePath}/js/showdown-1.9.1.min.js`} strategy="beforeInteractive" />
+      <Script src={`${basePath}/js/mauticTracking.js`} strategy="beforeInteractive" />
+      <Script src={`${basePath}/js/bootstrap.min.js`} strategy="beforeInteractive" />
+      <Script src={`${basePath}/js/ytvideo_v1.js`} strategy="beforeInteractive" />
+      <Script src={`${basePath}/js/chatbot.js`} strategy="beforeInteractive" />
+      <Script src={`${basePath}/js/index.js`} strategy="beforeInteractive" />
+      <Script src="https://kit.fontawesome.com/c3c47df7d6.js" strategy="beforeInteractive" />
       <Navbar navbar={menuValues} forwardedRef={navbarRef} />
       {orderedComponents}
       {showModal && (
@@ -280,19 +257,9 @@ export async function getStaticPaths() {
   console.log("Property page getStaticPaths called");
   const dataFolderPath = path.join(process.cwd(), "data");
   const errorMessagePath = path.join(process.cwd(), "messages", "errorMessage.json");
-  const siteName = process.env.siteName;
-
+  const siteToBeBuilt = process.env.siteName;
+  console.log("siteToBeBuilt: Property page", siteToBeBuilt);
   try {
-    // Ensure the data directory exists
-    const isDirectory = await fs
-      .stat(dataFolderPath)
-      .then((stat) => stat.isDirectory())
-      .catch(() => false);
-    if (!isDirectory) {
-      console.error("Data directory does not exist:", dataFolderPath);
-      return { paths: [], fallback: false };
-    }
-
     // Run the validation logic
     try {
       runValidation();
@@ -328,7 +295,7 @@ export async function getStaticPaths() {
         const parsedData = yaml.load(fileContent);
 
         // Check if the property's siteName includes the current site.
-        if (parsedData.siteName && parsedData.siteName.includes(siteName)) {
+        if (parsedData.siteName && parsedData.siteName.includes(siteToBeBuilt)) {
           paths.push({
             params: { id: getPropertyOutputDirectoryName(file) },
           });
@@ -354,7 +321,8 @@ export async function getStaticPaths() {
 export async function getStaticProps(context) {
   console.log("Property page getStaticProps called");
   const { id } = context.params;
-  const siteName = process.env.siteName;
+  console.log("Property page id:", id);
+  const siteToBeBuilt = process.env.siteName;
   const originalId = getPropertyOutputDirectoryName(id);
 
   const propertyDataPath = path.join(process.cwd(), "data", originalId, "data.yaml");
@@ -366,17 +334,17 @@ export async function getStaticProps(context) {
     const globalData = await loadYamlFile(globalDataPath);
 
     // Ensure property applies to the current site.
-    if (!propertyData.siteName || !propertyData.siteName.includes(siteName)) {
-      console.warn(`Skipping page for ${id}, siteName does not match ${siteName}`);
+    if (!propertyData.siteName || !propertyData.siteName.includes(siteToBeBuilt)) {
+      console.warn(`Skipping page for ${id}, siteName does not match ${siteToBeBuilt}`);
       return { notFound: true };
     }
 
     // Derive effective global and property data.
-    const effectiveGlobalData = (globalData.siteName || []).map(String).includes(String(siteName).trim())
-      ? getEffectiveData(globalData, siteName)
+    const effectiveGlobalData = (globalData.siteName || []).map(String).includes(String(siteToBeBuilt).trim())
+      ? getEffectiveData(globalData, siteToBeBuilt)
       : {};
 
-    const effectivePropertyData = getEffectiveData(propertyData, siteName);
+    const effectivePropertyData = getEffectiveData(propertyData, siteToBeBuilt);
 
     // Merge global and property data (property data takes precedence).
     const mergedData = deepMerge(effectiveGlobalData, effectivePropertyData);
