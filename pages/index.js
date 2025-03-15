@@ -142,7 +142,8 @@ function renderChatBot(chatbotData, index) {
       <Script src={`${basePath}/js/logger.js`} strategy="beforeInteractive" />
       <Script src={`${basePath}/js/jquery-3.5.1.min.js`} strategy="beforeInteractive" />
       <Script src={`${basePath}/js/jwt-decode.js`} strategy="beforeInteractive" />
-      <Script src="https://accounts.google.com/gsi/client" />
+      {/* <Script src="https://accounts.google.com/gsi/client" /> */}
+      <script type="text/javascript" src="https://accounts.google.com/gsi/client" defer></script>
       <Script src={`${basePath}/js/tracker-config.js`} strategy="beforeInteractive" />
       <Script src={`${basePath}/js/showcase.js`} strategy="beforeInteractive" />
       <Script src={`${basePath}/js/tracker-util.js`} strategy="beforeInteractive" />
