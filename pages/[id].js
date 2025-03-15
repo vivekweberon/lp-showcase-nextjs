@@ -225,13 +225,12 @@ const PropertyPage = ({ propertyData, images }) => {
       <Script src={`${basePath}/js/logger.js`} strategy="beforeInteractive" />
       <Script src={`${basePath}/js/jquery-3.5.1.min.js`} strategy="beforeInteractive" />
       <Script src={`${basePath}/js/jwt-decode.js`} strategy="beforeInteractive" />
-      <Script src="https://accounts.google.com/gsi/client" strategy="beforeInteractive" />
+      <Script src="https://accounts.google.com/gsi/client" />
       <Script src={`${basePath}/js/tracker-config.js`} strategy="beforeInteractive" />
       <Script src={`${basePath}/js/tracker-util.js`} strategy="beforeInteractive" />
       <Script src={`${basePath}/js/showcase.js`} strategy="beforeInteractive" />
       <Script src={`${basePath}/js/tracker.js`} strategy="beforeInteractive" />
       <Script src={`${basePath}/js/showdown-1.9.1.min.js`} strategy="beforeInteractive" />
-      <Script src={`${basePath}/js/mauticTracking.js`} strategy="beforeInteractive" />
       <Script src={`${basePath}/js/bootstrap.min.js`} strategy="beforeInteractive" />
       {hasYouTubeVideo && <Script src={`${basePath}/js/ytvideo_v1.js`} strategy="beforeInteractive" />}
       {isChatbotEnabled && <Script src={`${basePath}/js/chatbot.js`} strategy="beforeInteractive" />}
@@ -243,6 +242,7 @@ const PropertyPage = ({ propertyData, images }) => {
         <Modal clickedUrl={modalUrl} onCloseModal={handleCloseModal} />
       )}
       <Footer footerMenu={menuValues} footertext={footertext} />
+      <Script src={`${basePath}/js/mauticTracking.js`} />
     </div>
   );
 };
