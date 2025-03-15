@@ -65,36 +65,61 @@ function HomePage({ homeData }) {
 
   const { realtor: realtorData, contact: contactData, chatbot: chatbotData } = homeData;
   console.log("ContactData", contactData)
-  const menuValues = [];
+  let menuValues = [];
 
-  const orderedComponents = homePageSectionsOrder.map((section, index) => {
-    switch (section) {
-      case "showcase":
-        menuValues.push(menu);
-        return <Showcase key={index} properties={properties} sectionTitle={sectionTitle} navbarMenu={menu} />;
-      case "realtor":
-        if (realtorData) {
-          menuValues.push("Realtor");
-          return <Realtor key={index} realtorData={realtorData} />;
+  const orderedComponents = homePageSectionsOrder
+    ? homePageSectionsOrder.map((section, index) => {
+        switch (section) {
+          case "showcase":
+            return renderShowcase(properties, sectionTitle, menu, index);
+          case "realtor":
+            return renderRealtor(realtorData, index);
+          case "contact":
+            return renderContact(contactData, index);
+          case "chatbot":
+            return renderChatBot(chatbotData, index);
+          default:
+            return null;
         }
-        break;
-      case "contact":
-        if (contactData) {
-          menuValues.push("Contact");
-          return contactData.mauticForm?.popupForm?.enable === false
-            ? <Contact key={index} contact={contactData} />
-            : <PopupForm key={index} contact={contactData} />;
-        }
-        break;
-      case "chatbot":
-        if (chatbotData?.enable) {
-          return <ChatBot key={index} />;
-        }
-        break;
-      default:
-        return null;
-    }
-  });
+      })
+    : [
+        renderShowcase(properties, sectionTitle, menu, 0),
+        renderRealtor(realtorData, 1),
+        renderContact(contactData, 2),
+        renderChatBot(chatbotData, 3),
+      ];
+
+function renderShowcase(properties, sectionTitle, menu, index) {
+  if (!properties) return null;
+  menuValues.push(menu);
+  return (
+    <Showcase
+      key={`showcase_${index}`}
+      properties={properties}
+      sectionTitle={sectionTitle}
+      navbarMenu={menu}
+    />
+  );
+}
+
+function renderRealtor(realtorData, index) {
+  if (!realtorData) return null;
+  menuValues.push("Realtor");
+  return <Realtor key={`realtor_${index}`} realtorData={realtorData} />;
+}
+
+function renderContact(contactData, index) {
+  if (!contactData) return null;
+  menuValues.push("Contact");
+  return contactData.mauticForm?.popupForm?.enable === false
+    ? <Contact key={`contact_${index}`} contact={contactData} />
+    : <PopupForm key={`popupForm_${index}`} contact={contactData} />;
+}
+
+function renderChatBot(chatbotData, index) {
+  if (!chatbotData?.enable) return null;
+  return <ChatBot key={`chatbot_${index}`} />;
+}
 
   return (
     <div>
@@ -117,7 +142,7 @@ function HomePage({ homeData }) {
       <Script src={`${basePath}/js/logger.js`} strategy="beforeInteractive" />
       <Script src={`${basePath}/js/jquery-3.5.1.min.js`} strategy="beforeInteractive" />
       <Script src={`${basePath}/js/jwt-decode.js`} strategy="beforeInteractive" />
-      {/* <Script src="https://accounts.google.com/gsi/client" strategy="beforeInteractive" /> */}
+      <Script src="https://accounts.google.com/gsi/client" strategy="beforeInteractive" />
       <Script src={`${basePath}/js/tracker-config.js`} strategy="beforeInteractive" />
       <Script src={`${basePath}/js/showcase.js`} strategy="beforeInteractive" />
       <Script src={`${basePath}/js/tracker-util.js`} strategy="beforeInteractive" />
