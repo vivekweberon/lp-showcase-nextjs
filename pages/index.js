@@ -153,7 +153,6 @@ function renderChatBot(chatbotData, index) {
       <Script src={`${basePath}/js/tracker.js`} strategy="beforeInteractive" />
       <Script src={`${basePath}/js/showdown-1.9.1.min.js`} strategy="beforeInteractive" />
       <Script src={`${basePath}/js/bootstrap.min.js`} strategy="beforeInteractive" />
-      <Script src={`${basePath}/js/ytvideo_v1.js`} strategy="beforeInteractive" />
       <Script src={`${basePath}/js/chatbot.js`} strategy="beforeInteractive" />
       <Script src={`${basePath}/js/index.js`} strategy="beforeInteractive" />
       <Script src="https://kit.fontawesome.com/c3c47df7d6.js" strategy="beforeInteractive" />
@@ -161,6 +160,7 @@ function renderChatBot(chatbotData, index) {
       {orderedComponents}
       <Footer footerMenu={menuValues} footertext={homeData.footertext || ""} />
       <Script src={`${basePath}/js/mauticTracking.js`} />
+      <Script src={`${basePath}/js/ytvideo_v1.js`} strategy="beforeInteractive" />
     </div>
   );
 }
