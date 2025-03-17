@@ -13,7 +13,7 @@ import Contact from "@/components/Contact";
 import PopupForm from "@/components/PopupForm";
 import ChatBot from "@/components/ChatBot";
 
-import { loadYamlFile, getEffectiveData, getpropertiesHomePageData, deepMerge } from "../utils/dataUtils";
+import { loadYamlFile, getEffectiveData, getpropertiesHomePageData, deepMergeData } from "../utils/dataUtils";
 
 const siteToBeBuilt = process.env.siteName;
 
@@ -34,6 +34,7 @@ export async function getStaticProps() {
     }
 
     const effectiveHomeData = getEffectiveData(homeData, siteToBeBuilt);
+    // console.log("Effective Home Data:", effectiveHomeData);
 
     if (!globalData.siteName.includes(String(siteToBeBuilt).trim())) {
       console.error(`Skipping global data "${siteToBeBuilt}" not found in global/data.yaml`);
@@ -41,12 +42,14 @@ export async function getStaticProps() {
     }
 
     const effectiveGlobalData = getEffectiveData(globalData, siteToBeBuilt);
+    // console.log("Effective Global Data:", effectiveGlobalData);
 
-    const propertiesHomePageData = await getpropertiesHomePageData(dataFolderPath);
+    const propertiesHomePageData = await getpropertiesHomePageData(dataFolderPath, siteToBeBuilt);
     effectiveHomeData.showcase = effectiveHomeData.showcase || {};
     effectiveHomeData.showcase.properties = propertiesHomePageData;
 
-    const mergedData = deepMerge(effectiveGlobalData, effectiveHomeData);
+    const mergedData = deepMergeData(effectiveGlobalData, effectiveHomeData);
+    console.log("Merged Data:", mergedData);
 
     return {
       props: {
@@ -64,7 +67,7 @@ function HomePage({ homeData }) {
   const { properties, sectionTitle, menu } = showcase;
 
   const { realtor: realtorData, contact: contactData, chatbot: chatbotData } = homeData;
-  console.log("ContactData", contactData)
+  // console.log("ContactData", contactData)
   let menuValues = [];
 
   const orderedComponents = homePageSectionsOrder

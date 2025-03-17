@@ -3,61 +3,32 @@ import path from "path";
 import yaml from "js-yaml";
 import { getPropertyOutputDirectoryName } from "../utils/renameUtils.mjs";
 
-export function deepMerge(target, source) {
-  // If target is not an object (or is null), just return the source directly.
-  // This acts as a base case for invalid or unexpected inputs.
-  if (typeof target !== "object" || target === null) return source;
-
-  // Loop over all the keys in the source object
-  for (const key of Object.keys(source)) {
-
-    // Check if the current value in source is an object (but not an array)
-    if (
-      source[key] &&
-      typeof source[key] === "object" &&
-      !Array.isArray(source[key])
-    ) {
-      // If the corresponding key in target doesn't exist, initialize it as an empty object.
-      if (!target[key]) target[key] = {};
-
-      // Recursively merge nested objects, meaning this is a "deep" merge.
-      target[key] = deepMerge(target[key], source[key]);
-
-    } else {
-      //directly overwrite target[key] with source[key]
-      target[key] = source[key];
-    }
-  }
-  
-  // After processing all keys in source, return the fully merged target object.
-  return target;
-}
-
 export const loadYamlFile = async (filePath) => {
   const fileData = await fs.promises.readFile(filePath, "utf-8");
   return yaml.load(fileData);
 };
 
+export function deepMergeData(global, home) {
+  if (typeof global !== "object" || global === null) return home;
+  for (const key of Object.keys(global)) {
+    if (home[key] == null) {
+      home[key] = global[key] 
+    } 
+  }
+  return home;
+}
+
 export function getEffectiveData(parsedYaml, currentSiteName) {
-  let effective = parsedYaml.default || { ...parsedYaml };
-
-  delete effective.siteOverrides;
+  const effective = { ...parsedYaml };
+  delete effective.siteSpecific;
   delete effective.siteName;
-
-  if (
-    parsedYaml.siteOverrides &&
-    parsedYaml.siteOverrides[currentSiteName]
-  ) {
-    effective = deepMerge(
-      JSON.parse(JSON.stringify(effective)),
-      parsedYaml.siteOverrides[currentSiteName]
-    );
+  if (parsedYaml.siteSpecific && parsedYaml.siteSpecific[currentSiteName]) {
+    deepMergeData(effective, parsedYaml.siteSpecific[currentSiteName]);
   }
   return effective;
 }
 
-export const getpropertiesHomePageData = async (dataFolderPath) => {
-  const currentSiteName = process.env.siteName;
+export const getpropertiesHomePageData = async (dataFolderPath, currentSiteName) => {
   console.log("Current Environment Site Name:", currentSiteName);
 
   const propertyFolders = await fs.promises.readdir(dataFolderPath);
@@ -76,17 +47,13 @@ export const getpropertiesHomePageData = async (dataFolderPath) => {
       const parsedData = await loadYamlFile(dataYamlPath);
 
       if (parsedData.siteName) {
-        const siteNames = Array.isArray(parsedData.siteName)
-          ? parsedData.siteName.map(s => s.trim())
-          : [String(parsedData.siteName).trim()];
-
-        if (!siteNames.includes(String(currentSiteName).trim())) {
-          console.log(`Skipping: ${folder} (siteName does not match)`);
-          continue;
+        if (!parsedData.siteName.map(s => s.trim()).includes(currentSiteName.trim())) {
+            console.log(`Skipping: ${folder} (siteName does not match)`);
+            continue;
         }
       } else {
-        console.log(`Skipping: ${folder} (Missing siteName)`);
-        continue;
+          console.log(`Skipping: ${folder} (Missing siteName)`);
+          continue;
       }
 
       const effectivePropertyData = getEffectiveData(parsedData, currentSiteName);

@@ -21,11 +21,10 @@ import PopupForm from "../components/PopupForm";
 import Modal from "../components/Modal";
 import ChatBot from "../components/ChatBot";
 import { runValidation } from "@/utils/inCodeValidation";
-import { loadYamlFile, getEffectiveData, deepMerge } from "../utils/dataUtils";
+import { loadYamlFile, getEffectiveData, deepMergeData } from "../utils/dataUtils";
 import Script from "next/script";
 
 const PropertyPage = ({ propertyData, images }) => {
-  console.log("Property page propertyData", propertyData.home);  
   const [modalUrl, setModalUrl] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const navbarRef = useRef(null);
@@ -64,6 +63,7 @@ const PropertyPage = ({ propertyData, images }) => {
     footertext,
     contact,
     description,
+    home,
   } = propertyData;
 
   const hasYouTubeVideo = propertyData.home?.youtubeVideoID;
@@ -125,21 +125,22 @@ const PropertyPage = ({ propertyData, images }) => {
     return <ChatBot key={`chatbot_${index}`} />;
   }
 
-  function renderHome(homeData, index) {
-    if (!homeData || !homeData.youtubeVideoID) return null;
-    menuValues.push(homeData.menu);
+  function renderHome(index) {
+    if (!home.youtubeVideoID) return null;
+    menuValues.push(home.menu);
     return (
       <Home
         key={`home_${index}`}
-        youtubeVideoID={homeData.youtubeVideoID}
-        videoStart={homeData.videoStart}
-        videoEnd={homeData.videoEnd}
-        menu={homeData.menu}
-        sectionTitle={homeData.sectionTitle}
+        youtubeVideoID={home.youtubeVideoID}
+        videoStart={home.videoStart}
+        videoEnd={home.videoEnd}
+        menu={home.menu}
+        sectionTitle={home.sectionTitle}
         navbarRef={navbarRef}
       />
     );
-  }
+}
+
 
   function renderPriceAndFeatures(priceAndFeatures, index) {
     if (!priceAndFeatures) return null;
@@ -347,7 +348,7 @@ export async function getStaticProps(context) {
     const effectivePropertyData = getEffectiveData(propertyData, siteToBeBuilt);
 
     // Merge global and property data (property data takes precedence).
-    const mergedData = deepMerge(effectiveGlobalData, effectivePropertyData);
+    const mergedData = deepMergeData(effectiveGlobalData, effectivePropertyData);
 
     // Ensure footertext exists.
     if (!mergedData.footertext) {
