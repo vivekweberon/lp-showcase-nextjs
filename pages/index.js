@@ -13,7 +13,8 @@ import Contact from "@/components/Contact";
 import PopupForm from "@/components/PopupForm";
 import ChatBot from "@/components/ChatBot";
 
-import { loadYamlFile, getEffectiveData, getpropertiesHomePageData, deepMergeData } from "../utils/dataUtils";
+import { loadYamlFile, getEffectiveData, getpropertiesHomePageData, addGlobalData } from "../utils/dataUtils";
+import { notFound } from "next/navigation";
 
 const siteToBeBuilt = process.env.siteName;
 
@@ -34,7 +35,6 @@ export async function getStaticProps() {
     }
 
     const effectiveHomeData = getEffectiveData(homeData, siteToBeBuilt);
-    // console.log("Effective Home Data:", effectiveHomeData);
 
     if (!globalData.siteName.includes(String(siteToBeBuilt).trim())) {
       console.error(`Skipping global data "${siteToBeBuilt}" not found in global/data.yaml`);
@@ -42,18 +42,15 @@ export async function getStaticProps() {
     }
 
     const effectiveGlobalData = getEffectiveData(globalData, siteToBeBuilt);
-    // console.log("Effective Global Data:", effectiveGlobalData);
 
     const propertiesHomePageData = await getpropertiesHomePageData(dataFolderPath, siteToBeBuilt);
     effectiveHomeData.showcase = effectiveHomeData.showcase || {};
     effectiveHomeData.showcase.properties = propertiesHomePageData;
 
-    const mergedData = deepMergeData(effectiveGlobalData, effectiveHomeData);
-    console.log("Merged Data:", mergedData);
-
+    const homeDataFinal = addGlobalData(effectiveGlobalData, effectiveHomeData);
     return {
       props: {
-        homeData: mergedData,
+        homeData: homeDataFinal,
       },
     };
   } catch (error) {
@@ -63,105 +60,111 @@ export async function getStaticProps() {
 }
 
 function HomePage({ homeData }) {
-  const { showcase, homePageSectionsOrder } = homeData;
-  const { properties, sectionTitle, menu } = showcase;
+  const { showcase, contact, realtor, footertext, chatbot, homePageSectionsOrder } = homeData;
 
-  const { realtor: realtorData, contact: contactData, chatbot: chatbotData } = homeData;
-  // console.log("ContactData", contactData)
-  let menuValues = [];
+  let menuItems = [];
 
-  const orderedComponents = homePageSectionsOrder
-    ? homePageSectionsOrder.map((section, index) => {
+  let orderedComponents;
+  if(homePageSectionsOrder){
+    orderedComponents = homePageSectionsOrder.map((section) => {
         switch (section) {
           case "showcase":
-            return renderShowcase(properties, sectionTitle, menu, index);
+            return addShowcase(showcase);
           case "realtor":
-            return renderRealtor(realtorData, index);
+            return addRealtor(realtor);
           case "contact":
-            return renderContact(contactData, index);
-          case "chatbot":
-            return renderChatBot(chatbotData, index);
+            return addContact(contact);
           default:
-            return null;
+            console.log(`Unknown section: ${section}`);
+            return {notFound: true};
         }
-      })
-    : [
-        renderShowcase(properties, sectionTitle, menu, 0),
-        renderRealtor(realtorData, 1),
-        renderContact(contactData, 2),
-        renderChatBot(chatbotData, 3),
+      });
+  } else {
+      orderedComponents = [
+        addShowcase(showcase),
+        addRealtor(realtor),
+        addContact(contact) 
       ];
+  }
 
-function renderShowcase(properties, sectionTitle, menu, index) {
-  if (!properties) return null;
-  menuValues.push(menu);
+  function addMenuItem(menu) {
+    if (menu) {
+        menuItems.push(menu);
+    }
+  }
+
+
+function addShowcase(showcase) {
+  if (!showcase) return null;
+  addMenuItem(showcase.menu);
   return (
     <Showcase
-      key={`showcase_${index}`}
-      properties={properties}
-      sectionTitle={sectionTitle}
-      navbarMenu={menu}
+      key='showcase'
+      showcase={showcase}
     />
   );
 }
 
-function renderRealtor(realtorData, index) {
-  if (!realtorData) return null;
-  menuValues.push("Realtor");
-  return <Realtor key={`realtor_${index}`} realtorData={realtorData} />;
+function addRealtor(realtor) {
+  if (!realtor) return null;
+  addMenuItem(realtor.menu);
+  return (
+    <Realtor 
+      key='realtor'
+      realtor={realtor}
+    />
+  );
 }
 
-function renderContact(contactData, index) {
-  if (!contactData) return null;
-  menuValues.push("Contact");
-  return contactData.mauticForm?.popupForm?.enable === false
-    ? <Contact key={`contact_${index}`} contact={contactData} />
-    : <PopupForm key={`popupForm_${index}`} contact={contactData} />;
-}
-
-function renderChatBot(chatbotData, index) {
-  if (!chatbotData?.enable) return null;
-  return <ChatBot key={`chatbot_${index}`} />;
+function addContact(contact) {
+  if (!contact) return null;
+  addMenuItem(contact.menu);
+  return contact.mauticForm?.popupForm?.enable === false
+    ? <Contact key='contact' contact={contact} />
+    : <PopupForm key='popupForm' contact={contact} />;
 }
 
   return (
-    <div>
+    <>
       <Head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link rel="icon" href="/favicon.ico" />
+        <link
+          rel="stylesheet"
+          href={`${basePath}/css/bootstrap.min.css`}
+        />
+        <link
+          rel="stylesheet"
+          href={`${basePath}/css/fa.min.css`}
+        />
+        <Script src={`${basePath}/js/areacodes.json`} strategy="beforeInteractive" />
+        <Script src={`${basePath}/js/rb-config.js`} strategy="beforeInteractive" />
+        <Script src={`${basePath}/js/logger.js`} strategy="beforeInteractive" />
+        <Script src={`${basePath}/js/jquery-3.5.1.min.js`} strategy="beforeInteractive" />
+        <Script src={`${basePath}/js/jwt-decode.js`} strategy="beforeInteractive" />
+        {/* <Script src="https://accounts.google.com/gsi/client" /> */}
+        <script type="text/javascript" src="https://accounts.google.com/gsi/client"></script>
+        <Script src={`${basePath}/js/tracker-config.js`} strategy="beforeInteractive" />
+        <Script src={`${basePath}/js/showcase.js`} strategy="beforeInteractive" />
+        <Script src={`${basePath}/js/tracker-util.js`} strategy="beforeInteractive" />
+        <Script src={`${basePath}/js/tracker.js`} strategy="beforeInteractive" />
+        <Script src={`${basePath}/js/showdown-1.9.1.min.js`} strategy="beforeInteractive" />
+        <Script src={`${basePath}/js/bootstrap.min.js`} strategy="beforeInteractive" />
+        <Script src={`${basePath}/js/ytvideo_v1.js`} strategy="beforeInteractive" />
         <link rel="stylesheet" href={`${basePath}/css/chatbot.css`} />
-        <link
-          rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
-        />
-        <link
-          rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
-        />
+        <Script src={`${basePath}/js/chatbot.js`} strategy="beforeInteractive" />
+        <Script src={`${basePath}/js/index.js`} strategy="beforeInteractive" />
+        <Script src="https://kit.fontawesome.com/c3c47df7d6.js" strategy="beforeInteractive" />
       </Head>
-      <Script src={`${basePath}/js/areacodes.json`} strategy="beforeInteractive" />
-      <Script src={`${basePath}/js/rb-config.js`} strategy="beforeInteractive" />
-      <Script src={`${basePath}/js/logger.js`} strategy="beforeInteractive" />
-      <Script src={`${basePath}/js/jquery-3.5.1.min.js`} strategy="beforeInteractive" />
-      <Script src={`${basePath}/js/jwt-decode.js`} strategy="beforeInteractive" />
-      {/* <Script src="https://accounts.google.com/gsi/client" /> */}
-      <script type="text/javascript" src="https://accounts.google.com/gsi/client" defer></script>
-      <Script src={`${basePath}/js/tracker-config.js`} strategy="beforeInteractive" />
-      <Script src={`${basePath}/js/showcase.js`} strategy="beforeInteractive" />
-      <Script src={`${basePath}/js/tracker-util.js`} strategy="beforeInteractive" />
-      <Script src={`${basePath}/js/tracker.js`} strategy="beforeInteractive" />
-      <Script src={`${basePath}/js/showdown-1.9.1.min.js`} strategy="beforeInteractive" />
-      <Script src={`${basePath}/js/bootstrap.min.js`} strategy="beforeInteractive" />
-      <Script src={`${basePath}/js/ytvideo_v1.js`} strategy="beforeInteractive" />
-      <Script src={`${basePath}/js/chatbot.js`} strategy="beforeInteractive" />
-      <Script src={`${basePath}/js/index.js`} strategy="beforeInteractive" />
-      <Script src="https://kit.fontawesome.com/c3c47df7d6.js" strategy="beforeInteractive" />
-      <Navbar navbar={menuValues} />
+      
+
+      <Navbar navbar={menuItems} />
       {orderedComponents}
-      <Footer footerMenu={menuValues} footertext={homeData.footertext || ""} />
+      {chatbot.enable && <ChatBot />}
+      <Footer footerMenu={menuItems} footertext={footertext} />
       <Script src={`${basePath}/js/mauticTracking.js`} />
-    </div>
+    </>
   );
 }
 

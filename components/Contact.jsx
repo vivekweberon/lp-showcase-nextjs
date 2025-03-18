@@ -2,11 +2,10 @@ import Script from "next/script";
 import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 
-const Contact = ({ contact }) => {
-  console.log("Contact component:", contact); 
+const Contact = ({ contact}) => {
+  const {menu, mauticForm} = contact;
   useEffect(() => {
     console.log("useEffect contact");
-    const { mauticForm } = contact;
 
     // Configure Mautic form
     if (mauticForm) {
@@ -30,7 +29,7 @@ const Contact = ({ contact }) => {
   return (
     <>
       <div
-        id="contact"
+        id={menu ? menu.replace(/\s/g, '').toLowerCase() : 'contact'}
         className="container-fluid"
         style={{
           paddingTop: "50px",

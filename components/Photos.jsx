@@ -3,7 +3,8 @@ import Carousel from "react-bootstrap/Carousel";
 import { basePath } from "@/next.config.js";
 import PropTypes from "prop-types";
 
-const Photos = ({ navbarRef, imageUrls }) => {
+const Photos = ({ navbarRef, imageUrls, photos }) => {
+  const { menu } = photos;
   // console.log("IMAGEURLS", imageUrls);
   const [carouselHeight, setCarouselHeight] = useState();
   const [imageWidth, setImageWidth] = useState();
@@ -35,7 +36,7 @@ const Photos = ({ navbarRef, imageUrls }) => {
 
   return (
     <div
-      id="photos"
+      id={menu ? menu.replace(/\s/g, '').toLowerCase() : 'photos'}
       className="container-fluid"
       style={{ paddingTop: "50px", paddingBottom: "50px" }}
     >

@@ -3,6 +3,7 @@ import { Nav, Navbar } from "react-bootstrap";
 import PropTypes from "prop-types";
 
 function MyNavbar({ navbar, forwardedRef }) {
+  console.log("MyNavbar", navbar);
   return (
     <Navbar
       bg="dark"
@@ -18,7 +19,7 @@ function MyNavbar({ navbar, forwardedRef }) {
       <Navbar.Collapse id="navbar-nav" className="justify-content-center">
         <Nav>
           {navbar.map((item, index) => (
-            <Nav.Link key={index} href={`#${item.toLowerCase()}`}>
+            <Nav.Link key={index} href={`#${item.replace(/\s/g, '').toLowerCase()}`}>
               {item}
             </Nav.Link>
           ))}

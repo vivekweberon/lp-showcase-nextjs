@@ -8,7 +8,7 @@ export const loadYamlFile = async (filePath) => {
   return yaml.load(fileData);
 };
 
-export function deepMergeData(global, home) {
+export function addGlobalData(global, home) {
   if (typeof global !== "object" || global === null) return home;
   for (const key of Object.keys(global)) {
     if (home[key] == null) {
@@ -23,7 +23,7 @@ export function getEffectiveData(parsedYaml, currentSiteName) {
   delete effective.siteSpecific;
   delete effective.siteName;
   if (parsedYaml.siteSpecific && parsedYaml.siteSpecific[currentSiteName]) {
-    deepMergeData(effective, parsedYaml.siteSpecific[currentSiteName]);
+    addGlobalData(effective, parsedYaml.siteSpecific[currentSiteName]);
   }
   return effective;
 }

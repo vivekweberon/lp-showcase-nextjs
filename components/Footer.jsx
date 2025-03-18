@@ -25,7 +25,7 @@ const Footer = ({ footerMenu, footertext }) => {
               style={{ textDecoration: "underline" }}
             >
               <a
-                href={`#${menuItem.toLowerCase()}`}
+                href={`#${menuItem.replace(/\s/g, '').toLowerCase()}`}
                 style={{ color: "#212529" }}
               >
                 {menuItem}

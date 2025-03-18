@@ -2,7 +2,6 @@ const fs = require("fs");
 const path = require("path");
 const yaml = require("js-yaml");
 
-// Constants for folder names and file names
 const LP_GLOBAL_DIR = "global";
 const LP_HOME_DIR = "home";
 const YAML_FILE_NAME = "data.yaml";
@@ -15,14 +14,8 @@ const ERROR_MESSAGES_FILE = path.join("messages", "errorMessage.json");
 
 function loadSchemas() {
   const globalSchema = loadYAMLSchema(path.join(SCHEMA_DIR, GLOBAL_SCHEMA_FILE));
-  // console.log('Loaded global schema:', globalSchema);
-
   const homeSchema = loadYAMLSchema(path.join(SCHEMA_DIR, HOME_SCHEMA_FILE));
-  // console.log('Loaded home schema:', homeSchema);
-
   const propertySchema = loadYAMLSchema(path.join(SCHEMA_DIR, PROPERTY_SCHEMA_FILE));
-  // console.log('Loaded property schema:', propertySchema);
-
   return {
     globalSchema,
     homeSchema,
@@ -30,81 +23,47 @@ function loadSchemas() {
   };
 }
 
-
 function loadYAMLSchema(filePath) {
   const fileContent = fs.readFileSync(filePath, "utf8");
   return fileContent ? yaml.load(fileContent) : {};  // Parse the file content as YAML if it exists; otherwise, return an empty object.
 }
 
-// Recursively extract keys from YAML data into a Map.
-// This function flattens a nested object into a Map where each key is a dot-separated path.
 function getAllKeysAndValues(inputData, keys = new Map(), ref = "") {
-  // If the input data is undefined or null, return the current keys Map.
   if (inputData === undefined || inputData === null) return keys;
-
-  // If the input data is an array, store it as-is under the current reference key.
   if (Array.isArray(inputData)) {
     keys.set(ref, inputData);
     return keys;
   }
-
-  // If the input data is a primitive (not an object), store it with the current key and return.
   if (typeof inputData !== "object") {
     keys.set(ref, inputData);
     return keys;
   }
-
-  // For each key in the input object:
   Object.keys(inputData).forEach((key) => {
-    // Create a new key path by appending the current key.
-    // If ref is empty, use the key directly; otherwise, join ref and key with a dot.
     const newKey = ref ? `${ref}.${key}` : key;
-    
-    // Set the new key and its corresponding value in the Map.
     keys.set(newKey, inputData[key]);
-    
-    // If the value is an object (and not an array) then recursively process it.
-    // This allows us to flatten nested objects.
     if (inputData[key] && typeof inputData[key] === "object" && !Array.isArray(inputData[key])) {
       getAllKeysAndValues(inputData[key], keys, newKey);
     }
   });
-
-  // Return the fully populated Map of keys and values.
   return keys;
 }
 
-
 function getKeyValueMapFromYAML(filePath) {
-  // Read the file content at the provided file path as a UTF-8 encoded string.
   const fileContent = fs.readFileSync(filePath, "utf8");
-
-  // If the file is empty or not found, return an empty Map.
   if (!fileContent) return new Map();
-
-  // Parse the YAML content into a JavaScript object.
   const data = yaml.load(fileContent);
-
-  // Use the helper function to recursively flatten the object into a Map of key paths to values.
   return getAllKeysAndValues(data);
 }
 
 
 function validateFileAgainstSchema(inputKeys, schemaMap, filePath, getCount) {
   let errors = "";
-
-  // Validate siteSpecific structure first.
   const siteOverridesErrors = validateSiteOverrides(inputKeys, filePath, getCount);
   if (siteOverridesErrors) {
-    // If siteSpecific are invalid, no need to proceed with property validation.
     errors += siteOverridesErrors;
-    // return errors; 
   }
-
-  // Now proceed with normal schema validation for other properties.
     inputKeys.forEach((value, key) => {
     let validateKey = key;
-
     if (key.startsWith("siteSpecific.")) {
         const parts = key.split(".");
         if (parts.length >= 3) {
@@ -140,35 +99,22 @@ function validateFileAgainstSchema(inputKeys, schemaMap, filePath, getCount) {
 }
 
 function getValueFromNestedSchema(schema, keyPath) {
-  // Split the keyPath into its individual parts (e.g., "priceAndFeatures.title1" -> ["priceAndFeatures", "title1"]).
   const parts = keyPath.split(".");
-
-  // Start with the root of the schema.
   let current = schema;
-
-  // Iterate over each part of the key path.
   for (let part of parts) {
-    // Check if the current value exists, is an object, and has the property corresponding to the current part.
     if (current && typeof current === "object" && current[part]) {
-      // Move deeper into the schema by setting current to the value of the current part.
       current = current[part];
     } else {
-      // If any part is missing, return undefined to indicate the key path doesn't exist in the schema.
       return undefined;
     }
   }
-  // After traversing all parts, return the resolved value from the schema.
   return current;
 }
 
 function validateSiteOverrides(inputKeys, filePath, getCount) {
   let errorMsg = "";
-
   const allowedSiteNames = inputKeys.get("siteName").map(s => s.trim());
-
-  // Collect all actual site names found in siteSpecific
   let overrideSiteNames = [];
-
   inputKeys.forEach((_, key) => {
       if (key.startsWith("siteSpecific.")) {
           const parts = key.split(".");
@@ -184,41 +130,27 @@ function validateSiteOverrides(inputKeys, filePath, getCount) {
   if (overrideSiteNames.length === 0) {
       return "";
   }
-
-  // Compare allowed vs actual override site names
   if (overrideSiteNames.length !== allowedSiteNames.length ||
       overrideSiteNames.some(site => !allowedSiteNames.includes(site))) {
       errorMsg += `${getCount()} 'siteSpecific' should only contain overrides for the site name '${allowedSiteNames.join(",")}', but found overrides for: ${overrideSiteNames.join(", ")} in file '${filePath}'\n`;
   }
-
   return errorMsg;
 }
 
-// Validate directory structure and file contents.
 function validateDirectory(dataFolderPath) {
-  // Initialize an empty string to accumulate error messages.
+
   let errors = "";
-  // Counter to number error messages.
   let count = 0;
-  // Helper function that increments and returns the count.
   const getCount = () => ++count;
-  
-  // Load all schema files (global, home, property) as JavaScript objects.
   const schemas = loadSchemas();
-  
-  // Flatten the global schema into a key-value Map for easier lookup.
+
   const globalSchemaMap = getAllKeysAndValues(schemas.globalSchema);
   console.log('Global schema map:', globalSchemaMap);
-  
-  // Flatten the home schema into a key-value Map.
   const homeSchemaMap = getAllKeysAndValues(schemas.homeSchema);
   console.log('Home schema map:', homeSchemaMap);
-  
-  // Flatten the property schema into a key-value Map.
   const propertySchemaMap = getAllKeysAndValues(schemas.propertySchema);
   console.log('Property schema map:', propertySchemaMap);
-
-  // Check if the provided data folder path exists.
+  
   if (!fs.existsSync(dataFolderPath)) {
     errors += `${getCount()} Input data directory path provided does not exists \nSolution: Provide right input data directory path\n\n`;
   } else {
@@ -302,52 +234,27 @@ function validateDirectory(dataFolderPath) {
 
 
 function validateSpecialDirectory(dirPath, schemaMap, dirType, getCount) {
-  // Initialize an empty string to accumulate error messages.
   let errors = "";
-
-  // Read all files/directories inside the specified directory.
   fs.readdirSync(dirPath).forEach((file) => {
-    // Construct the full path to the current file.
     const filePath = path.join(dirPath, file);
-
-    // Check if the current file is the YAML file.
     if (file === YAML_FILE_NAME) {
-      // Get a flattened key-value map of the YAML file's contents.
       const inputKeys = getKeyValueMapFromYAML(filePath);
       console.log('Input keys:', inputKeys);
-
-      // Validate the YAML file against the provided schema map.
       errors += validateFileAgainstSchema(inputKeys, schemaMap, filePath, getCount);
     } 
-    // If the file is not the photos folder (PHOTOS_FOLDER_NAME),
-    // then it is not allowed in this special directory.
     else if (file !== PHOTOS_FOLDER_NAME) {
       errors += `${getCount()} '${file}' is not allowed in the ${dirType} directory\n`;
     }
-    // If file is the photos folder, it's allowed, so no error is added.
   });
-
-  // Return any accumulated error messages.
   return errors;
 }
 
 
 function runValidation() {
-  // Build the full path to the "data" folder based on the current working directory.
   const dataFolderPath = path.join(process.cwd(), "data");
-
-  // Run the directory validation and collect any error messages returned as a string.
   const errors = validateDirectory(dataFolderPath);
-
-  // If there are any errors from validation:
   if (errors) {
-    // Log that errors were detected and will be logged to a file.
     console.log("Validation errors detected. Logging errors to file...");
-
-    // Process the error string:
-    // 1. Split the error messages by newline.
-    // 2. Remove any empty lines.
-    // 3. Map each error to an object with an ErrorNumber and ErrorMessage.
     const formattedErrors = errors
       .split("\n")
       .filter((line) => line.trim() !== "")
@@ -355,14 +262,11 @@ function runValidation() {
         ErrorNumber: index + 1, // Sequential error numbering
         ErrorMessage: error.trim(), // Trimmed error message
       }));
-
-    // Write the formatted error objects to the specified error messages JSON file.
     fs.writeFileSync(
       ERROR_MESSAGES_FILE,
       JSON.stringify({ errors: formattedErrors }, null, 2)
     );
   } else {
-    // If no errors were found, log a success message.
     console.log("Validation completed successfully. No errors detected.");
   }
 }

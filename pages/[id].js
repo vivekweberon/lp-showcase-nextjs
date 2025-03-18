@@ -6,25 +6,26 @@ import fs from "fs/promises";
 import path from "path";
 import yaml from "js-yaml";
 import PropTypes from "prop-types";
-import { getPropertyOutputDirectoryName } from "../utils/renameUtils.mjs";
-import Navbar from "../components/Navbar";
-import Home from "../components/Home";
-import Footer from "../components/Footer";
-import PriceAndFeatures from "../components/PriceAndFeatures";
-import Photos from "../components/Photos";
-import Video from "../components/Video";
-import VirtualTour from "../components/VirtualTour";
-import Contact from "../components/Contact";
-import Realtor from "../components/Realtor";
-import Description from "../components/Description";
-import PopupForm from "../components/PopupForm";
-import Modal from "../components/Modal";
-import ChatBot from "../components/ChatBot";
+import { getPropertyOutputDirectoryName } from "@/utils/renameUtils.mjs";
+import Navbar from "@/components/Navbar";
+import Home from "@/components/Home";
+import Footer from "@/components/Footer";
+import PriceAndFeatures from "@/components/PriceAndFeatures";
+import Photos from "@/components/Photos";
+import Video from "@/components/Video";
+import VirtualTour from "@/components/VirtualTour";
+import Contact from "@/components/Contact";
+import Realtor from "@/components/Realtor";
+import Description from "@/components/Description";
+import PopupForm from "@/components/PopupForm";
+import Modal from "@/components/Modal";
+import ChatBot from "@/components/ChatBot";
 import { runValidation } from "@/utils/inCodeValidation";
-import { loadYamlFile, getEffectiveData, deepMergeData } from "../utils/dataUtils";
+import { loadYamlFile, getEffectiveData, addGlobalData } from "../utils/dataUtils";
 import Script from "next/script";
 
 const PropertyPage = ({ propertyData, images }) => {
+  console.log("Property page data:", propertyData); 
   const [modalUrl, setModalUrl] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const navbarRef = useRef(null);
@@ -65,142 +66,149 @@ const PropertyPage = ({ propertyData, images }) => {
     contact,
     description,
     home,
+    chatbot
   } = propertyData;
 
   const hasYouTubeVideo = propertyData.home?.youtubeVideoID;
   const isChatbotEnabled = propertyData.chatbot?.enable;
 
-  let menuValues = [];
+  let menuItems = [];
   const propertyPageSectionsOrder = propertyData.propertyPageSectionsOrder;
 
-  const orderedComponents = propertyPageSectionsOrder
-    ? propertyPageSectionsOrder.map((section, index) => {
+  let orderedComponents; 
+  if (propertyPageSectionsOrder) {
+    orderedComponents = propertyPageSectionsOrder.map((section) => {
         switch (section) {
           case "home":
-            return renderHome(propertyData.home, index);
+            return addHome(home);
           case "virtualTour":
-            return renderVirtualTour(virtualTour, index);
+            return addVirtualTour(virtualTour);
           case "priceAndFeatures":
-            return renderPriceAndFeatures(priceAndFeatures, index);
+            return addPriceAndFeatures(priceAndFeatures);
           case "photos":
-            return renderPhotos(photos, index);
+            return addPhotos(photos);
           case "video":
-            return renderVideo(video, index);
+            return addVideo(video);
           case "contact":
-            return renderContact(contact, index);
+            return addContact(contact);
           case "realtor":
-            return renderRealtor(realtor, index);
+            return addRealtor(realtor);
           case "description":
-            return renderDescription(description, index);
+            return addDescription(description);
           case "chatbot":
-            return renderChatBot(propertyData.chatbot, index);
+            return addChatBot(chatbot);
           default:
             return null;
         }
       })
-    : [
-        renderHome(propertyData.home, 0),
-        renderVirtualTour(virtualTour, 1),
-        renderPriceAndFeatures(priceAndFeatures, 2),
-        renderPhotos(photos, 3),
-        renderVideo(video, 4),
-        renderContact(contact, 5),
-        renderRealtor(realtor, 6),
-        renderDescription(description, 7),
-        renderChatBot(propertyData.chatbot, 8),
-      ];
+  }else{
+    orderedComponents = [
+        addHome(home),
+        addVirtualTour(virtualTour),
+        addPriceAndFeatures(priceAndFeatures),
+        addPhotos(photos),
+        addVideo(video),
+        addContact(contact),
+        addRealtor(realtor),
+        addDescription(description),
+        addChatBot(chatbot),
+      ];}
 
-  function renderVirtualTour(virtualTour, index) {
+  function addMenuItem(menu) {
+    if (menu) {
+        menuItems.push(menu);
+    }
+  }
+
+  function addVirtualTour(virtualTour) {
     if (!virtualTour) return null;
-    menuValues.push("Virtual Tour");
+    console.log("Virtual Tour:", virtualTour.menu);
+    addMenuItem(virtualTour.menu);
     return (
       <VirtualTour
-        key={`virtualTour_${index}`}
+        key='virtualTour'
         virtualTour={virtualTour}
         navbarRef={navbarRef}
       />
     );
   }
 
-  function renderChatBot(chatbot, index) {
-    return <ChatBot key={`chatbot_${index}`} />;
+  function addChatBot(chatbot) {
+    return <ChatBot key='chatbot' />;
   }
 
-  function renderHome(index) {
+  function addHome(home) {
     if (!home.youtubeVideoID) return null;
-    menuValues.push(home.menu);
+    addMenuItem(home.menu);
     return (
       <Home
-        key={`home_${index}`}
-        youtubeVideoID={home.youtubeVideoID}
-        videoStart={home.videoStart}
-        videoEnd={home.videoEnd}
-        menu={home.menu}
-        sectionTitle={home.sectionTitle}
+        key='home'
+        home={home}
         navbarRef={navbarRef}
       />
     );
 }
 
 
-  function renderPriceAndFeatures(priceAndFeatures, index) {
+  function addPriceAndFeatures(priceAndFeatures) {
     if (!priceAndFeatures) return null;
-    menuValues.push("Price & Features");
+    addMenuItem(priceAndFeatures.menu);
     return (
       <PriceAndFeatures
-        key={`priceAndFeatures_${index}`}
+        key='priceAndFeatures'
         priceAndFeatures={priceAndFeatures}
       />
     );
   }
 
-  function renderPhotos(photos, index) {
+  function addPhotos(photos) {
     if (!photos) return null;
-    menuValues.push("Photos");
+    addMenuItem(photos.menu);
     return (
       <Photos
-        key={`photos_${index}`}
+        key='photos'
         imageUrls={{ urls: images }}
         navbarRef={navbarRef}
+        photos={photos}
       />
     );
   }
 
-  function renderVideo(video, index) {
+  function addVideo(video) {
     if (!video?.youtubeVideoID) return null;
-    menuValues.push("Video");
+    addMenuItem(video.menu);
     return (
       <Video
-        key={`video_${index}`}
-        youtubeVideoID={video.youtubeVideoID}
+        key='video'
+        video={video}
         navbarRef={navbarRef}
       />
     );
   }
 
-  function renderContact(contact, index) {
+  function addContact(contact) {
     if (!contact) return null;
-    menuValues.push("Contact");
+    addMenuItem(contact.menu);
     if (contact.mauticForm.popupForm.enable === false) {
-      return <Contact contact={contact} key={`contact_${index}`} />;
+      return <Contact contact={contact} key='contact' />;
     } else {
-      return <PopupForm contact={contact} key={`popupForm_${index}`} />;
+      return <PopupForm contact={contact} key='popupForm'  />;
     }
   }
 
-  function renderRealtor(realtor, index) {
+  function addRealtor(realtor) {
     if (!realtor) return null;
-    menuValues.push("Realtor");
-    return <Realtor key={`realtor_${index}`} realtorData={realtor} />;
+    addMenuItem(realtor.menu);
+    return <Realtor key='realtor' realtor={realtor} />;
   }
 
-  function renderDescription(description, index) {
+  function addDescription(description) {
     if (!description || !description.content) return null;
-    menuValues.push("Description");
+    addMenuItem(description.menu);
     return (
       <Description
-        key={`description_${index}`}
-        content={description.content}
+        key='description'
+        description={description}
         onLinkClick={handleLinkClick}
       />
     );
@@ -215,36 +223,38 @@ const PropertyPage = ({ propertyData, images }) => {
         <link rel="stylesheet" href={`${basePath}/css/chatbot.css`} />
         <link
           rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+          href={`${basePath}/css/bootstrap.min.css`}
         />
         <link
           rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+          href={`${basePath}/css/fa.min.css`}
         />
+        <Script src={`${basePath}/js/areacodes.json`} strategy="beforeInteractive" />
+        <Script src={`${basePath}/js/rb-config.js`} strategy="beforeInteractive" />
+        <Script src={`${basePath}/js/logger.js`} strategy="beforeInteractive" />
+        <Script src={`${basePath}/js/jquery-3.5.1.min.js`} strategy="beforeInteractive" />
+        <Script src={`${basePath}/js/jwt-decode.js`} strategy="beforeInteractive" />
+        {/* <Script src="https://accounts.google.com/gsi/client" /> */}
+        <script type="text/javascript" src="https://accounts.google.com/gsi/client" defer></script>
+        <Script src={`${basePath}/js/tracker-config.js`} strategy="beforeInteractive" />
+        <Script src={`${basePath}/js/tracker-util.js`} strategy="beforeInteractive" />
+        <Script src={`${basePath}/js/showcase.js`} strategy="beforeInteractive" />
+        <Script src={`${basePath}/js/tracker.js`} strategy="beforeInteractive" />
+        <Script src={`${basePath}/js/showdown-1.9.1.min.js`} strategy="beforeInteractive" />
+        <Script src={`${basePath}/js/bootstrap.min.js`} strategy="beforeInteractive" />
+        <Script src={`${basePath}/js/ytvideo_v1.js`} strategy="beforeInteractive" />
+        {isChatbotEnabled && <Script src={`${basePath}/js/chatbot.js`} strategy="beforeInteractive" />}
+        {isChatbotEnabled && <Script src={`${basePath}/js/index.js`} strategy="beforeInteractive" />}
+        {isChatbotEnabled && <Script src="https://kit.fontawesome.com/c3c47df7d6.js" strategy="beforeInteractive" />}
       </Head>
-      <Script src={`${basePath}/js/areacodes.json`} strategy="beforeInteractive" />
-      <Script src={`${basePath}/js/rb-config.js`} strategy="beforeInteractive" />
-      <Script src={`${basePath}/js/logger.js`} strategy="beforeInteractive" />
-      <Script src={`${basePath}/js/jquery-3.5.1.min.js`} strategy="beforeInteractive" />
-      <Script src={`${basePath}/js/jwt-decode.js`} strategy="beforeInteractive" />
-      {/* <Script src="https://accounts.google.com/gsi/client" /> */}
-      <script type="text/javascript" src="https://accounts.google.com/gsi/client" defer></script>
-      <Script src={`${basePath}/js/tracker-config.js`} strategy="beforeInteractive" />
-      <Script src={`${basePath}/js/tracker-util.js`} strategy="beforeInteractive" />
-      <Script src={`${basePath}/js/showcase.js`} strategy="beforeInteractive" />
-      <Script src={`${basePath}/js/tracker.js`} strategy="beforeInteractive" />
-      <Script src={`${basePath}/js/showdown-1.9.1.min.js`} strategy="beforeInteractive" />
-      <Script src={`${basePath}/js/bootstrap.min.js`} strategy="beforeInteractive" />
-      <Script src={`${basePath}/js/ytvideo_v1.js`} strategy="beforeInteractive" />
-      {isChatbotEnabled && <Script src={`${basePath}/js/chatbot.js`} strategy="beforeInteractive" />}
-      {isChatbotEnabled && <Script src={`${basePath}/js/index.js`} strategy="beforeInteractive" />}
-      {isChatbotEnabled && <Script src="https://kit.fontawesome.com/c3c47df7d6.js" strategy="beforeInteractive" />}
-      <Navbar navbar={menuValues} forwardedRef={navbarRef} />
+    
+      <Navbar navbar={menuItems} forwardedRef={navbarRef} />
       {orderedComponents}
       {showModal && (
         <Modal clickedUrl={modalUrl} onCloseModal={handleCloseModal} />
       )}
-      <Footer footerMenu={menuValues} footertext={footertext} />
+      <Footer footerMenu={menuItems} footertext={footertext} />
+
       <Script src={`${basePath}/js/mauticTracking.js`} />
     </div>
   );
@@ -262,41 +272,30 @@ export async function getStaticPaths() {
   const siteToBeBuilt = process.env.siteName;
   console.log("siteToBeBuilt: Property page", siteToBeBuilt);
   try {
-    // Run the validation logic
     try {
       runValidation();
     } catch (validationError) {
       console.error("Validation failed:", validationError.message);
       throw validationError;
     }
-
-    // Check if errorMessage.json exists after validation
     const isErrorMessagePresent = await fs
       .stat(errorMessagePath)
       .then((stat) => stat.isFile())
       .catch(() => false);
-
     if (isErrorMessagePresent) {
       console.error("errorMessage.json detected. Aborting page generation.");
       return { paths: [], fallback: false };
     }
-
-    // Read and filter files in the data directory
     const files = await fs.readdir(dataFolderPath);
     const filteredFiles = files.filter(
       (file) => file !== "global" && file !== "home"
     );
-
     let paths = [];
-
     for (const file of filteredFiles) {
       const filePath = path.join(dataFolderPath, file, "data.yaml");
-
       try {
         const fileContent = await fs.readFile(filePath, "utf-8");
         const parsedData = yaml.load(fileContent);
-
-        // Check if the property's siteName includes the current site.
         if (parsedData.siteName && parsedData.siteName.includes(siteToBeBuilt)) {
           paths.push({
             params: { id: getPropertyOutputDirectoryName(file) },
@@ -331,36 +330,23 @@ export async function getStaticProps(context) {
   const globalDataPath = path.join(process.cwd(), "data", "global", "data.yaml");
 
   try {
-    // Load property and global data.
     const propertyData = await loadYamlFile(propertyDataPath);
     const globalData = await loadYamlFile(globalDataPath);
-
-    // Ensure property applies to the current site.
     if (!propertyData.siteName || !propertyData.siteName.includes(siteToBeBuilt)) {
       console.warn(`Skipping page for ${id}, siteName does not match ${siteToBeBuilt}`);
       return { notFound: true };
     }
-
-    // Derive effective global and property data.
     const effectiveGlobalData = (globalData.siteName || []).map(String).includes(String(siteToBeBuilt).trim())
       ? getEffectiveData(globalData, siteToBeBuilt)
       : {};
-
     const effectivePropertyData = getEffectiveData(propertyData, siteToBeBuilt);
-
-    // Merge global and property data (property data takes precedence).
-    const mergedData = deepMergeData(effectiveGlobalData, effectivePropertyData);
-
-    // Ensure footertext exists.
+    const mergedData = addGlobalData(effectiveGlobalData, effectivePropertyData);
     if (!mergedData.footertext) {
       mergedData.footertext = { line1: "", line2: "", line3: "" };
     }
-
-    // Load images.
     const imagesFolder = path.join(process.cwd(), "data", originalId, "images");
     const imageFiles = await fs.readdir(imagesFolder);
     const imageUrls = imageFiles.map((fileName) => `/data/${id}/images/${fileName}`);
-
     return {
       props: {
         propertyData: mergedData,

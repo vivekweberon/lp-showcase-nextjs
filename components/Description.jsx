@@ -3,7 +3,8 @@ import PropTypes from "prop-types";
 import MarkdownIt from "markdown-it";
 import MarkdownItAnchor from "markdown-it-anchor";
 
-const Description = ({ content, onLinkClick }) => {
+const Description = ({ onLinkClick, description }) => {
+  const { content, menu } = description;
   useEffect(() => {
     const md = new MarkdownIt({
       html: true,
@@ -46,7 +47,7 @@ const Description = ({ content, onLinkClick }) => {
 
   return (
     <div
-      id="description"
+      id={menu ? menu.replace(/\s/g, '').toLowerCase() : 'description'}
       className="container-fluid"
       style={{
         paddingTop: "50px",

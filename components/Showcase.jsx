@@ -3,11 +3,13 @@ import PropTypes from "prop-types";
 import { basePath } from "@/next.config.js";
 import Link from "next/link";
 
-const Showcase = ({ properties, sectionTitle, navbarMenu }) => {
+const Showcase = ({ showcase }) => {
+  const { properties, sectionTitle, menu } = showcase;
+  console.log("Showcase menu", menu);
   console.log("Showcase properties:", properties);
   return (
     <div
-      id={`${navbarMenu.toLowerCase()}`}
+      id={menu ? menu.replace(/\s/g, '').toLowerCase() : 'showcase'}
       className="container-fluid"
       style={{
         paddingTop: "50px",

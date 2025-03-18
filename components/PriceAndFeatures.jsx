@@ -2,11 +2,11 @@ import React from "react";
 import PropTypes from "prop-types";
 
 const PriceAndFeatures = ({ priceAndFeatures }) => {
-  const { title1, title2, beds, baths, homeType, sqft, yearBuilt, price } =
+  const { title1, title2, beds, baths, homeType, sqft, yearBuilt, price, menu } =
     priceAndFeatures;
   return (
     <div
-      id="price & features"
+      id={menu ? menu.replace(/\s/g, '').toLowerCase() : 'price&features'}
       className="container"
       style={{ paddingTop: "50px", paddingBottom: "50px" }}
     >

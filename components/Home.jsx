@@ -1,25 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const Home = ({ youtubeVideoID, videoStart, videoEnd, sectionTitle }) => {
-  // const [isVisible, setIsVisible] = useState(false);
+const Home = ({ home }) => {
+  const {youtubeVideoID, videoStart, videoEnd, sectionTitle, menu } = home;
 console.log("youtubeVideoID",youtubeVideoID)
-
-// useEffect(()=>{
-//   console.log("useEffect",youtubeVideoID)
-//   loadYoutubeIframeAPI()
-// if(youtubeVideoID){
-//   setIsVisible(true)
-//   console.log("isVisible",isVisible)
-
-// }
-// },[isVisible])
-
-// const videoUrl = `https://www.youtube.com/embed/xjpQRTNhbwk?start=5&end=10&autoplay=1`;
 
   return (
  <div
-      id="home"
+       id={menu ? menu.replace(/\s/g, '').toLowerCase() : 'home'}
       style={{
         backgroundColor: '#fafafa',
         textAlign: 'center',

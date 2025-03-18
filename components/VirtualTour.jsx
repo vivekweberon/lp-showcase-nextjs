@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 
 const VirtualTour = ({ virtualTour, navbarRef }) => {
-  const { title, matterportID } = virtualTour;
+  const { title, matterportID, menu } = virtualTour;
   const [virtualTourHeight, setVirtualTourHeight] = useState();
 
   useEffect(() => {
@@ -21,7 +21,7 @@ const VirtualTour = ({ virtualTour, navbarRef }) => {
 
   return (
     <div
-      id="virtual tour"
+      id={menu ? menu.replace(/\s/g, '').toLowerCase() : 'virtualtour'}     
       className="container-fluid"
       style={{ paddingTop: "50px", paddingBottom: "50px" }}
     >

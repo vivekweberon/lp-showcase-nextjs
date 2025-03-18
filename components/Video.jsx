@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 
-const Video = ({ youtubeVideoID, navbarRef }) => {
+const Video = ({ video, navbarRef }) => {
+  const { youtubeVideoID, menu } = video;
   const [videoHeight, setVideoHeight] = useState();
   const [videoWidth, setVideoWidth] = useState();
 
@@ -35,7 +36,7 @@ const Video = ({ youtubeVideoID, navbarRef }) => {
 
   return (
     <div
-      id="video"
+      id={menu ? menu.replace(/\s/g, '').toLowerCase() : 'video'}
       className="container-fluid"
       style={{
         paddingTop: "50px",

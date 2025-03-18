@@ -2,12 +2,12 @@ import React from "react";
 import { basePath } from "@/next.config.js";
 import PropTypes from "prop-types";
 
-const Realtor = ({ realtorData }) => {
-  const { photo, name, company, id, phone, logo, sectionTitle } = realtorData;
+const Realtor = ({ realtor }) => {
+  const { photo, name, company, id, phone, logo, sectionTitle , menu } = realtor;
 
   return (
     <div
-      id="realtor"
+      id={menu ? menu.replace(/\s/g, '').toLowerCase() : 'realtor'}      
       className="container-fluid"
       style={{
         paddingTop: "50px",
