@@ -229,25 +229,25 @@ const PropertyPage = ({ propertyData, images }) => {
           rel="stylesheet"
           href={`${basePath}/css/fa.min.css`}
         />
-        <Script src={`${basePath}/js/areacodes.json`} strategy="beforeInteractive" />
-        <Script src={`${basePath}/js/rb-config.js`} strategy="beforeInteractive" />
-        <Script src={`${basePath}/js/logger.js`} strategy="beforeInteractive" />
-        <Script src={`${basePath}/js/jquery-3.5.1.min.js`} strategy="beforeInteractive" />
-        <Script src={`${basePath}/js/jwt-decode.js`} strategy="beforeInteractive" />
-        {/* <Script src="https://accounts.google.com/gsi/client" /> */}
-        <script type="text/javascript" src="https://accounts.google.com/gsi/client" defer></script>
-        <Script src={`${basePath}/js/tracker-config.js`} strategy="beforeInteractive" />
-        <Script src={`${basePath}/js/tracker-util.js`} strategy="beforeInteractive" />
-        <Script src={`${basePath}/js/showcase.js`} strategy="beforeInteractive" />
-        <Script src={`${basePath}/js/tracker.js`} strategy="beforeInteractive" />
-        <Script src={`${basePath}/js/showdown-1.9.1.min.js`} strategy="beforeInteractive" />
-        <Script src={`${basePath}/js/bootstrap.min.js`} strategy="beforeInteractive" />
-        <Script src={`${basePath}/js/ytvideo_v1.js`} strategy="beforeInteractive" />
-        {isChatbotEnabled && <Script src={`${basePath}/js/chatbot.js`} strategy="beforeInteractive" />}
-        {isChatbotEnabled && <Script src={`${basePath}/js/index.js`} strategy="beforeInteractive" />}
-        {isChatbotEnabled && <Script src="https://kit.fontawesome.com/c3c47df7d6.js" strategy="beforeInteractive" />}
       </Head>
-    
+      <Script src={`${basePath}/js/areacodes.json`} strategy="beforeInteractive" />
+      <Script src={`${basePath}/js/rb-config.js`} strategy="beforeInteractive" />
+      <Script src={`${basePath}/js/logger.js`} strategy="beforeInteractive" />
+      <Script src={`${basePath}/js/jquery-3.5.1.min.js`} strategy="beforeInteractive" />
+      <Script src={`${basePath}/js/jwt-decode.js`} strategy="beforeInteractive" />
+      {/* <Script src="https://accounts.google.com/gsi/client" /> */}
+      <script type="text/javascript" src="https://accounts.google.com/gsi/client" defer></script>
+      <Script src={`${basePath}/js/tracker-config.js`} strategy="beforeInteractive" />
+      <Script src={`${basePath}/js/tracker-util.js`} strategy="beforeInteractive" />
+      <Script src={`${basePath}/js/showcase.js`} strategy="beforeInteractive" />
+      <Script src={`${basePath}/js/tracker.js`} strategy="beforeInteractive" />
+      <Script src={`${basePath}/js/showdown-1.9.1.min.js`} strategy="beforeInteractive" />
+      <Script src={`${basePath}/js/bootstrap.min.js`} strategy="beforeInteractive" />
+      <Script src={`${basePath}/js/ytvideo_v1.js`} strategy="beforeInteractive" />
+      {isChatbotEnabled && <Script src={`${basePath}/js/chatbot.js`} strategy="beforeInteractive" />}
+      {isChatbotEnabled && <Script src={`${basePath}/js/index.js`} strategy="beforeInteractive" />}
+      {isChatbotEnabled && <Script src="https://kit.fontawesome.com/c3c47df7d6.js" strategy="beforeInteractive" />}
+      
       <Navbar navbar={menuItems} forwardedRef={navbarRef} />
       {orderedComponents}
       {showModal && (
