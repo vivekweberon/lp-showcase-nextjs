@@ -74,6 +74,6 @@ export const getpropertiesHomePageData = async (dataFolderPath, currentSiteName)
     }
   }
 
-  console.log("Final Filtered Properties:", propertiesData);
+  // console.log("Final Filtered Properties:", propertiesData);
   return propertiesData;
 };

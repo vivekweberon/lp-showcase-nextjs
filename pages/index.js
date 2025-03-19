@@ -75,7 +75,7 @@ function HomePage({ homeData }) {
           case "contact":
             return addContact(contact);
           default:
-            console.log(`Unknown section: ${section}`);
+            // console.log(`Unknown section: ${section}`);
             return {notFound: true};
         }
       });
@@ -144,7 +144,6 @@ function addContact(contact) {
       <Script src={`${basePath}/js/logger.js`} strategy="beforeInteractive" />
       <Script src={`${basePath}/js/jquery-3.5.1.min.js`} strategy="beforeInteractive" />
       <Script src={`${basePath}/js/jwt-decode.js`} strategy="beforeInteractive" />
-      {/* <Script src="https://accounts.google.com/gsi/client" strategy="beforeInteractive" /> */}
       <script type="text/javascript" src="https://accounts.google.com/gsi/client"></script>
       <Script src={`${basePath}/js/tracker-config.js`} strategy="beforeInteractive" />
       <Script src={`${basePath}/js/showcase.js`} strategy="beforeInteractive" />

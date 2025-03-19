@@ -58,8 +58,6 @@ contact:
 chatbot:
   enable:
     type: boolean
-homePageSectionsOrder: []      
-propertyPageSectionsOrder: []
 siteSpecific:
   type: object
 siteName:

@@ -5,8 +5,8 @@ import Link from "next/link";
 
 const Showcase = ({ showcase }) => {
   const { properties, sectionTitle, menu } = showcase;
-  console.log("Showcase menu", menu);
-  console.log("Showcase properties:", properties);
+  // console.log("Showcase menu", menu);
+  // console.log("Showcase properties:", properties);
   return (
     <div
       id={menu ? menu.replace(/\s/g, '').toLowerCase() : 'showcase'}
