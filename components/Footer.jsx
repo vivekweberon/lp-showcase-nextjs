@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-const Footer = ({ footerMenu, footertext }) => {
+const Footer = ({ menu, text }) => {
   return (
     <div
       id="footer"
@@ -17,7 +17,7 @@ const Footer = ({ footerMenu, footertext }) => {
         className="row justify-content-center"
         style={{ marginBottom: "40px" }}
       >
-        {footerMenu?.map((menuItem) => {
+        {menu?.map((menuItem) => {
           return menuItem ? (
             <div
               key={menuItem}
@@ -36,9 +36,9 @@ const Footer = ({ footerMenu, footertext }) => {
       </div>
       <div className="row">
         <div className="col-12" style={{ textAlign: "center" }}>
-          <div id="ftLine1">{footertext.line1}</div>
-          <div id="ftLine2">{footertext.line2}</div>
-          <div id="ftLine3">{footertext.line3}</div>
+          <div id="ftLine1">{text.line1}</div>
+          <div id="ftLine2">{text.line2}</div>
+          <div id="ftLine3">{text.line3}</div>
         </div>
       </div>
     </div>
@@ -46,8 +46,8 @@ const Footer = ({ footerMenu, footertext }) => {
 };
 
 Footer.propTypes = {
-  footerMenu: PropTypes.arrayOf(PropTypes.string),
-  footertext: PropTypes.shape({
+  menu: PropTypes.arrayOf(PropTypes.string),
+  text: PropTypes.shape({
     line1: PropTypes.string,
     line2: PropTypes.string,
     line3: PropTypes.string,

@@ -42,6 +42,13 @@ showcase:
     type: string
   menu:
     type: string
+description:
+  content:
+    type: string
+  menu:
+    type: string
+  sectionTitle:
+    type: string
 homePageData:
   url:
     type: string

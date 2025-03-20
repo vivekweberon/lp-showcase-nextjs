@@ -63,7 +63,6 @@ const Description = ({ onLinkClick, description }) => {
       <div className="row justify-content-center">
         <div className="col-10">
           <div id="dContent">
-            {/* Rendered markdown content will be inserted here */}
           </div>
         </div>
       </div>

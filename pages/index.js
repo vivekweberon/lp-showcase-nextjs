@@ -64,9 +64,9 @@ function HomePage({ homeData }) {
 
   let menuItems = [];
 
-  let orderedComponents;
+  let sections;
   if(homePageSectionsOrder){
-    orderedComponents = homePageSectionsOrder.map((section) => {
+    sections = homePageSectionsOrder.map((section) => {
         switch (section) {
           case "showcase":
             return addShowcase(showcase);
@@ -80,7 +80,7 @@ function HomePage({ homeData }) {
         }
       });
   } else {
-      orderedComponents = [
+    sections = [
         addShowcase(showcase),
         addRealtor(realtor),
         addContact(contact) 
@@ -151,45 +151,14 @@ function addContact(contact) {
       <Script src={`${basePath}/js/tracker.js`} strategy="beforeInteractive" />
       <Script src={`${basePath}/js/showdown-1.9.1.min.js`} strategy="beforeInteractive" />
       <Script src={`${basePath}/js/bootstrap.min.js`} strategy="beforeInteractive" />
-      <Script src={`${basePath}/js/ytvideo_v1.js`} strategy="beforeInteractive" />
-      {/* <link rel="stylesheet" href={`${basePath}/css/chatbot.css`} />
-      <Script src={`${basePath}/js/chatbot.js`} strategy="beforeInteractive" />
-      <Script src={`${basePath}/js/index.js`} strategy="beforeInteractive" />
-      <Script src="https://kit.fontawesome.com/c3c47df7d6.js" strategy="beforeInteractive" /> */}
 
-      <Navbar navbar={menuItems} />
-      {orderedComponents}
+      <Navbar menu={menuItems} />
+      {sections}
       {chatbot.enable && <ChatBot />}
-      <Footer footerMenu={menuItems} footertext={footertext} />
+      <Footer menu={menuItems} text={footertext} />
       <Script src={`${basePath}/js/mauticTracking.js`} />
     </>
   );
 }
-
-HomePage.propTypes = {
-  homeData: PropTypes.shape({
-    showcase: PropTypes.shape({
-      sectionTitle: PropTypes.string,
-      menu: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.arrayOf(PropTypes.string)
-      ]),
-      properties: PropTypes.arrayOf(
-        PropTypes.shape({
-          url: PropTypes.string,
-          addressLine1: PropTypes.string,
-          addressLine2: PropTypes.string,
-          bedsAndBaths: PropTypes.string,
-          price: PropTypes.string,
-          listingPageURL: PropTypes.string
-        })
-      )
-    }),
-    homePageSectionsOrder: PropTypes.arrayOf(PropTypes.string),
-    contact: PropTypes.object,
-    realtor: PropTypes.object,
-    footertext: PropTypes.oneOfType([PropTypes.string, PropTypes.object])
-  }).isRequired
-};
 
 export default HomePage;

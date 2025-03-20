@@ -69,15 +69,12 @@ const PropertyPage = ({ propertyData, images }) => {
     chatbot
   } = propertyData;
 
-  // const hasYouTubeVideo = propertyData.home?.youtubeVideoID;
-  // const isChatbotEnabled = propertyData.chatbot?.enable;
-
   let menuItems = [];
   const propertyPageSectionsOrder = propertyData.propertyPageSectionsOrder;
 
-  let orderedComponents; 
+  let sections; 
   if (propertyPageSectionsOrder) {
-    orderedComponents = propertyPageSectionsOrder.map((section) => {
+    sections = propertyPageSectionsOrder.map((section) => {
         switch (section) {
           case "home":
             return addHome(home);
@@ -96,11 +93,12 @@ const PropertyPage = ({ propertyData, images }) => {
           case "description":
             return addDescription(description);
           default:
-            return null;
+            console.log(`Unknown section: ${section}`);
+            return {notFound: true};
         }
       })
   }else{
-    orderedComponents = [
+    sections = [
         addHome(home),
         addVirtualTour(virtualTour),
         addPriceAndFeatures(priceAndFeatures),
@@ -213,7 +211,6 @@ const PropertyPage = ({ propertyData, images }) => {
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link rel="icon" href="/favicon.ico" />
-        {/* <link rel="stylesheet" href={`${basePath}/css/chatbot.css`} /> */}
         <link
           rel="stylesheet"
           href={`${basePath}/css/bootstrap.min.css`}
@@ -236,25 +233,17 @@ const PropertyPage = ({ propertyData, images }) => {
       <Script src={`${basePath}/js/showdown-1.9.1.min.js`} strategy="beforeInteractive" />
       <Script src={`${basePath}/js/bootstrap.min.js`} strategy="beforeInteractive" />
       <Script src={`${basePath}/js/ytvideo_v1.js`} strategy="beforeInteractive" />
-      {/* {isChatbotEnabled && <Script src={`${basePath}/js/chatbot.js`} strategy="beforeInteractive" />}
-      {isChatbotEnabled && <Script src={`${basePath}/js/index.js`} strategy="beforeInteractive" />}
-      {isChatbotEnabled && <Script src="https://kit.fontawesome.com/c3c47df7d6.js" strategy="beforeInteractive" />} */}
 
-      <Navbar navbar={menuItems} forwardedRef={navbarRef} />
-      {orderedComponents}
+      <Navbar menu={menuItems} forwardedRef={navbarRef} />
+      {sections}
       {showModal && (
         <Modal clickedUrl={modalUrl} onCloseModal={handleCloseModal} />
       )}
-      <Footer footerMenu={menuItems} footertext={footertext} />
+      <Footer menu={menuItems} text={footertext} />
       {chatbot.enable && <ChatBot />}
       <Script src={`${basePath}/js/mauticTracking.js`} />
     </div>
   );
-};
-
-PropertyPage.propTypes = {
-  propertyData: PropTypes.object.isRequired,
-  images: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 export async function getStaticPaths() {
