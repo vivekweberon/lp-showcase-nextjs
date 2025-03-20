@@ -20,7 +20,7 @@ import Description from "@/components/Description";
 import PopupForm from "@/components/PopupForm";
 import Modal from "@/components/Modal";
 import ChatBot from "@/components/ChatBot";
-// import { runValidation } from "@/utils/inCodeValidation";
+import { runValidation } from "@/utils/inCodeValidation";
 import { loadYamlFile, getEffectiveData, addGlobalData } from "../utils/dataUtils";
 import Script from "next/script";
 
@@ -69,8 +69,8 @@ const PropertyPage = ({ propertyData, images }) => {
     chatbot
   } = propertyData;
 
-  const hasYouTubeVideo = propertyData.home?.youtubeVideoID;
-  const isChatbotEnabled = propertyData.chatbot?.enable;
+  // const hasYouTubeVideo = propertyData.home?.youtubeVideoID;
+  // const isChatbotEnabled = propertyData.chatbot?.enable;
 
   let menuItems = [];
   const propertyPageSectionsOrder = propertyData.propertyPageSectionsOrder;
@@ -95,8 +95,6 @@ const PropertyPage = ({ propertyData, images }) => {
             return addRealtor(realtor);
           case "description":
             return addDescription(description);
-          case "chatbot":
-            return addChatBot(chatbot);
           default:
             return null;
         }
@@ -111,7 +109,6 @@ const PropertyPage = ({ propertyData, images }) => {
         addContact(contact),
         addRealtor(realtor),
         addDescription(description),
-        addChatBot(chatbot),
       ];}
 
   function addMenuItem(menu) {
@@ -131,10 +128,6 @@ const PropertyPage = ({ propertyData, images }) => {
         navbarRef={navbarRef}
       />
     );
-  }
-
-  function addChatBot(chatbot) {
-    return <ChatBot key='chatbot' />;
   }
 
   function addHome(home) {
@@ -220,7 +213,7 @@ const PropertyPage = ({ propertyData, images }) => {
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link rel="icon" href="/favicon.ico" />
-        <link rel="stylesheet" href={`${basePath}/css/chatbot.css`} />
+        {/* <link rel="stylesheet" href={`${basePath}/css/chatbot.css`} /> */}
         <link
           rel="stylesheet"
           href={`${basePath}/css/bootstrap.min.css`}
@@ -243,9 +236,9 @@ const PropertyPage = ({ propertyData, images }) => {
       <Script src={`${basePath}/js/showdown-1.9.1.min.js`} strategy="beforeInteractive" />
       <Script src={`${basePath}/js/bootstrap.min.js`} strategy="beforeInteractive" />
       <Script src={`${basePath}/js/ytvideo_v1.js`} strategy="beforeInteractive" />
-      {isChatbotEnabled && <Script src={`${basePath}/js/chatbot.js`} strategy="beforeInteractive" />}
+      {/* {isChatbotEnabled && <Script src={`${basePath}/js/chatbot.js`} strategy="beforeInteractive" />}
       {isChatbotEnabled && <Script src={`${basePath}/js/index.js`} strategy="beforeInteractive" />}
-      {isChatbotEnabled && <Script src="https://kit.fontawesome.com/c3c47df7d6.js" strategy="beforeInteractive" />}
+      {isChatbotEnabled && <Script src="https://kit.fontawesome.com/c3c47df7d6.js" strategy="beforeInteractive" />} */}
 
       <Navbar navbar={menuItems} forwardedRef={navbarRef} />
       {orderedComponents}
@@ -253,7 +246,7 @@ const PropertyPage = ({ propertyData, images }) => {
         <Modal clickedUrl={modalUrl} onCloseModal={handleCloseModal} />
       )}
       <Footer footerMenu={menuItems} footertext={footertext} />
-
+      {chatbot.enable && <ChatBot />}
       <Script src={`${basePath}/js/mauticTracking.js`} />
     </div>
   );
@@ -267,24 +260,24 @@ PropertyPage.propTypes = {
 export async function getStaticPaths() {
   console.log("Property page getStaticPaths called");
   const dataFolderPath = path.join(process.cwd(), "data");
-  // const errorMessagePath = path.join(process.cwd(), "messages", "errorMessage.json");
+  const errorMessagePath = path.join(process.cwd(), "messages", "errorMessage.json");
   const siteToBeBuilt = process.env.siteName;
   console.log("siteToBeBuilt: Property page", siteToBeBuilt);
   try {
-    // try {
-    //   runValidation();
-    // } catch (validationError) {
-    //   console.error("Validation failed:", validationError.message);
-    //   throw validationError;
-    // }
-    // const isErrorMessagePresent = await fs
-    //   .stat(errorMessagePath)
-    //   .then((stat) => stat.isFile())
-    //   .catch(() => false);
-    // if (isErrorMessagePresent) {
-    //   console.error("errorMessage.json detected. Aborting page generation.");
-    //   return { paths: [], fallback: false };
-    // }
+    try {
+      runValidation();
+    } catch (validationError) {
+      console.error("Validation failed:", validationError.message);
+      throw validationError;
+    }
+    const isErrorMessagePresent = await fs
+      .stat(errorMessagePath)
+      .then((stat) => stat.isFile())
+      .catch(() => false);
+    if (isErrorMessagePresent) {
+      console.error("errorMessage.json detected. Aborting page generation.");
+      return { paths: [], fallback: false };
+    }
     const files = await fs.readdir(dataFolderPath);
     const filteredFiles = files.filter(
       (file) => file !== "global" && file !== "home"
