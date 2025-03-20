@@ -3,6 +3,7 @@ import { basePath } from "@/next.config.js";
 import PropTypes from "prop-types";
 
 const Realtor = ({ realtor }) => {
+  console.log("Realtor1212", realtor);
   const { photo, name, company, id, phone, logo, sectionTitle , menu } = realtor;
 
   return (

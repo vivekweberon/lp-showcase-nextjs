@@ -20,7 +20,7 @@ import Description from "@/components/Description";
 import PopupForm from "@/components/PopupForm";
 import Modal from "@/components/Modal";
 import ChatBot from "@/components/ChatBot";
-import { runValidation } from "@/utils/inCodeValidation";
+// import { runValidation } from "@/utils/inCodeValidation";
 import { loadYamlFile, getEffectiveData, addGlobalData } from "../utils/dataUtils";
 import Script from "next/script";
 
@@ -267,24 +267,24 @@ PropertyPage.propTypes = {
 export async function getStaticPaths() {
   console.log("Property page getStaticPaths called");
   const dataFolderPath = path.join(process.cwd(), "data");
-  const errorMessagePath = path.join(process.cwd(), "messages", "errorMessage.json");
+  // const errorMessagePath = path.join(process.cwd(), "messages", "errorMessage.json");
   const siteToBeBuilt = process.env.siteName;
   console.log("siteToBeBuilt: Property page", siteToBeBuilt);
   try {
-    try {
-      runValidation();
-    } catch (validationError) {
-      console.error("Validation failed:", validationError.message);
-      throw validationError;
-    }
-    const isErrorMessagePresent = await fs
-      .stat(errorMessagePath)
-      .then((stat) => stat.isFile())
-      .catch(() => false);
-    if (isErrorMessagePresent) {
-      console.error("errorMessage.json detected. Aborting page generation.");
-      return { paths: [], fallback: false };
-    }
+    // try {
+    //   runValidation();
+    // } catch (validationError) {
+    //   console.error("Validation failed:", validationError.message);
+    //   throw validationError;
+    // }
+    // const isErrorMessagePresent = await fs
+    //   .stat(errorMessagePath)
+    //   .then((stat) => stat.isFile())
+    //   .catch(() => false);
+    // if (isErrorMessagePresent) {
+    //   console.error("errorMessage.json detected. Aborting page generation.");
+    //   return { paths: [], fallback: false };
+    // }
     const files = await fs.readdir(dataFolderPath);
     const filteredFiles = files.filter(
       (file) => file !== "global" && file !== "home"

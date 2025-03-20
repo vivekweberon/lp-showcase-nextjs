@@ -201,7 +201,7 @@ function validateSectionsOrder(yamlData, filePath, getCount, globalSections = []
       } else {
         orderValue.forEach(item => {
           if (!allowedSections.has(item)) {
-            errors += `${getCount()} '${item}' in '${orderKey}' is not a valid section in file '${filePath}'\n`;
+            errors += `'${item}' in '${orderKey}' is not a valid section in file '${filePath}'\n`;
           }
         });
       }

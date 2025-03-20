@@ -75,7 +75,7 @@ function HomePage({ homeData }) {
           case "contact":
             return addContact(contact);
           default:
-            // console.log(`Unknown section: ${section}`);
+            console.log(`Unknown section: ${section}`);
             return {notFound: true};
         }
       });
@@ -152,10 +152,10 @@ function addContact(contact) {
       <Script src={`${basePath}/js/showdown-1.9.1.min.js`} strategy="beforeInteractive" />
       <Script src={`${basePath}/js/bootstrap.min.js`} strategy="beforeInteractive" />
       <Script src={`${basePath}/js/ytvideo_v1.js`} strategy="beforeInteractive" />
-      <link rel="stylesheet" href={`${basePath}/css/chatbot.css`} />
+      {/* <link rel="stylesheet" href={`${basePath}/css/chatbot.css`} />
       <Script src={`${basePath}/js/chatbot.js`} strategy="beforeInteractive" />
       <Script src={`${basePath}/js/index.js`} strategy="beforeInteractive" />
-      <Script src="https://kit.fontawesome.com/c3c47df7d6.js" strategy="beforeInteractive" />
+      <Script src="https://kit.fontawesome.com/c3c47df7d6.js" strategy="beforeInteractive" /> */}
 
       <Navbar navbar={menuItems} />
       {orderedComponents}
