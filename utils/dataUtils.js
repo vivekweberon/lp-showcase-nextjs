@@ -19,14 +19,22 @@ export function addGlobalData(global, home) {
 }
 
 export function getEffectiveData(parsedYaml, currentSiteName) {
-  const effective = { ...parsedYaml };
+  let effective = { ...parsedYaml };
+  
+  if (parsedYaml.siteSpecific && parsedYaml.siteSpecific[currentSiteName]) {
+    // Merge with site-specific data, allowing overrides
+    effective = {
+      ...effective,
+      ...parsedYaml.siteSpecific[currentSiteName],
+    };
+  }
+
   delete effective.siteSpecific;
   delete effective.siteName;
-  if (parsedYaml.siteSpecific && parsedYaml.siteSpecific[currentSiteName]) {
-    addGlobalData(effective, parsedYaml.siteSpecific[currentSiteName]);
-  }
+
   return effective;
 }
+
 
 export const getpropertiesHomePageData = async (dataFolderPath, currentSiteName) => {
   console.log("Current Environment Site Name:", currentSiteName);

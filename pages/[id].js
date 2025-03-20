@@ -5,7 +5,6 @@ import Head from "next/head";
 import fs from "fs/promises";
 import path from "path";
 import yaml from "js-yaml";
-import PropTypes from "prop-types";
 import { getPropertyOutputDirectoryName } from "@/utils/renameUtils.mjs";
 import Navbar from "@/components/Navbar";
 import Home from "@/components/Home";
@@ -129,7 +128,7 @@ const PropertyPage = ({ propertyData, images }) => {
   }
 
   function addHome(home) {
-    if (!home.youtubeVideoID) return null;
+    if (!home) return null;
     addMenuItem(home.menu);
     return (
       <Home
@@ -166,7 +165,7 @@ const PropertyPage = ({ propertyData, images }) => {
   }
 
   function addVideo(video) {
-    if (!video?.youtubeVideoID) return null;
+    if (!video) return null;
     addMenuItem(video.menu);
     return (
       <Video
@@ -194,7 +193,7 @@ const PropertyPage = ({ propertyData, images }) => {
   }
 
   function addDescription(description) {
-    if (!description || !description.content) return null;
+    if (!description) return null;
     addMenuItem(description.menu);
     return (
       <Description
@@ -253,6 +252,7 @@ export async function getStaticPaths() {
   const siteToBeBuilt = process.env.siteName;
   console.log("siteToBeBuilt: Property page", siteToBeBuilt);
   try {
+
     try {
       runValidation();
     } catch (validationError) {
@@ -267,6 +267,7 @@ export async function getStaticPaths() {
       console.error("errorMessage.json detected. Aborting page generation.");
       return { paths: [], fallback: false };
     }
+
     const files = await fs.readdir(dataFolderPath);
     const filteredFiles = files.filter(
       (file) => file !== "global" && file !== "home"
@@ -301,9 +302,7 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps(context) {
-  console.log("Property page getStaticProps called");
   const { id } = context.params;
-  console.log("Property page id:", id);
   const siteToBeBuilt = process.env.siteName;
   const originalId = getPropertyOutputDirectoryName(id);
 
@@ -322,9 +321,6 @@ export async function getStaticProps(context) {
       : {};
     const effectivePropertyData = getEffectiveData(propertyData, siteToBeBuilt);
     const mergedData = addGlobalData(effectiveGlobalData, effectivePropertyData);
-    if (!mergedData.footertext) {
-      mergedData.footertext = { line1: "", line2: "", line3: "" };
-    }
     const imagesFolder = path.join(process.cwd(), "data", originalId, "images");
     const imageFiles = await fs.readdir(imagesFolder);
     const imageUrls = imageFiles.map((fileName) => `/data/${id}/images/${fileName}`);
