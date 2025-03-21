@@ -2,6 +2,22 @@ const fs = require('fs');
 const path = require('path');
 const yargs = require('yargs');
 
+const { runValidation } = require('./utils/inCodeValidation.js');
+
+function validateAndExit() {
+  // Run validation first
+  runValidation();
+
+  // Check for errorMessage.json
+  const errorMessagePath = path.join(__dirname, 'messages/errorMessage.json');
+  console.log("🔍 Checking for errorMessage.json at:", errorMessagePath);
+
+  if (fs.existsSync(errorMessagePath)) {
+    console.error("🚫 errorMessage.json detected. Aborting execution.");
+    process.exit(1); // Exit script immediately
+  }
+}
+
 const argv = yargs
   .option('name', {
     alias: 'n',
@@ -28,6 +44,29 @@ try {
 } catch (error) {
   console.error('Error updating next.config.js:', error);
   process.exit(1);
+}
+
+function copyMauticTrackerJSFiles() {
+  console.log("📦 Copying Mautic tracker JS files to public/js folder...");
+
+  const sourceDir = path.join(__dirname, 'mautic_tracker/js');
+  const targetDir = path.join(__dirname, 'public/js');
+
+  try {
+    fs.mkdirSync(targetDir, { recursive: true });
+
+    if (!fs.existsSync(sourceDir)) {
+      console.warn("⚠️ Mautic tracker JS source directory does not exist. Skipping...");
+      return;
+    }
+
+    fs.cpSync(sourceDir, targetDir, { recursive: true });
+
+    console.log("✅ Mautic tracker JS files copied successfully.");
+  } catch (error) {
+    console.error("❌ Error copying Mautic tracker JS files:", error);
+    process.exit(1);
+  }
 }
 
 function copyFoldersToPublic() {
@@ -151,9 +190,30 @@ async function renamingPublicDataDirectories() {
   await renameFolders(publicDataPath);
 }
 
+function runBuild() {
+  console.log("🚀 Starting project build...");
+
+  const child = require('child_process').exec('npm run build');
+
+  child.stdout.on('data', (data) => console.log(data.toString()));
+  child.stderr.on('data', (data) => console.error(data.toString()));
+
+  child.on('close', (code) => {
+    if (code === 0) {
+      console.log("✅ Finished project build");
+    } else {
+      console.error(`❌ Build failed with exit code ${code}`);
+      process.exit(1);
+    }
+  });
+}
+
 async function main() {
+  validateAndExit()
+  // copyMauticTrackerJSFiles();
   copyFoldersToPublic();
   await renamingPublicDataDirectories();
+  runBuild();
 }
 
 main();

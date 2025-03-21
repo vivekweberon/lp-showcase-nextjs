@@ -20,9 +20,6 @@ echo "Repositories cloned successfully."
 echo "Listing contents of the code repository:"
 ls -l
 
-# Update basePath value and siteName value in next.config.js based on Jenkins parameter
-sed -i "s|basePath: \"/lp-showcase\"|basePath: \"/$WEBSITE_DIRECTORY_NAME\"|g; s|siteName: 'lp-showcase'|siteName: '$WEBSITE_DIRECTORY_NAME'|g" next.config.js
-
 # Print out the contents of next.config.js to verify the changes
 echo "Updated next.config.js:"
 cat next.config.js
@@ -79,133 +76,10 @@ installDependencies() {
     echoEnd "$processInfo"
 }
 
-# Function to create the data and public folders if they don't exist
-# createFolders() {
-#     mkdir -p data public
-# }
-
-# Function to copy numbered, global, and home folders from input_data_repo to the data directory in code_repo
-# copyDataFolders() {
-#     echo "Copying numbered, global, and home folders"
-#     for folder in input_data_repo/*; do
-#         if [[ -d "$folder" ]]; then
-#             folder_name=$(basename "$folder")
-#             cp -r "$folder" data/ || { echo "Error: Failed to copy $folder_name to data directory"; exit 1; }
-#         fi
-#     done
-# }
-
-# Function to copy the Mautic tracker JS files
-copyMauticTrackerJSFiles() {
-    echo "Copying Mautic tracker JS files to public/js folder..."
-    mkdir -p public/js || { echo "Error: Couldn't create public/js directory"; exit 1; }
-    cp -r mautic_tracker/js/*.js public/js/ || { echo "Error: Failed to copy Mautic tracker JS files"; exit 1; }
-}
-
 # Function to print out the contents of the data folder
 listDataFolderContents() {
     echo "Listing contents of the data folder:"
     ls -l data
-}
-
-# Function to copy data and global directories to public and remove data.yaml files
-copyFoldersToPublic() {
-    processInfo="Copying images directories (if present) to public"
-    echoStart "$processInfo"
-
-    mkdir -p public/data || { echo "Error: Failed to create public directory"; exit 1; }
-
-    for dir in data/*; do
-        if [ -d "$dir" ]; then
-            if [ -d "$dir/images" ]; then
-                folderName=$(basename "$dir")
-                mkdir -p "public/data/$folderName" || { echo "Error: Failed to create public/$folderName"; exit 1; }
-                cp -r "$dir/images" "public/data/$folderName/" || { echo "Error: Failed to copy images to public/$folderName"; exit 1; }
-            fi
-        fi
-    done
-    mkdir -p public/images || { echo "Error: Failed to create images directory inside public"; exit 1; }
-    cp -r data/global/images/* public/images/ || { echo "Error: Failed to copy images to public/images directory"; exit 1; }
-    echoEnd "$processInfo"
-}
-
-# Function to rename folders based on renameUtils.mjs
-renameFolders() {
-    local dir="$1"
-    echo "Renaming folders in $dir"
-    for folder in "$dir"/*; do
-        if [ -d "$folder" ]; then
-            folder_name=$(basename "$folder")
-            # Skip the global directory
-            if [ "$folder_name" == "global" ]; then
-                continue
-            fi
-            # Check if folder_name consists of only digits and dashes
-            if [[ $folder_name =~ ^[0-9-]+$ ]]; then
-                # Get the new folder name using the JavaScript script
-                new_folder_name=$(node -e "
-                    import('/var/jenkins_home/workspace/LANDING_PAGES/LANDING_PAGES-BLUE/lp-showcase-nextjs/utils/renameUtils.mjs')
-                        .then(({ getPropertyOutputDirectoryName }) => {
-                            console.log(getPropertyOutputDirectoryName('$folder_name'));
-                        })
-                        .catch((error) => {
-                            console.error('Error:', error);
-                            process.exit(1);
-                        });
-                ")
-                if [ $? -ne 0 ]; then
-                    echo "Error: JavaScript execution failed for $folder_name"
-                    exit 1
-                fi
-
-                new_folder_name=$(echo "$new_folder_name" | tr -d '\r') # Remove any carriage return characters
-
-                if [ -n "$new_folder_name" ]; then
-                    mv "$folder" "$dir/$new_folder_name"
-                    if [ $? -ne 0 ]; then
-                        echo "Error: Failed to rename $folder_name to $new_folder_name"
-                        exit 1
-                    fi
-                    echo "Renamed $folder_name to $new_folder_name"
-                else
-                    echo "Error: New folder name is empty for $folder_name"
-                fi
-            else
-                echo "Skipping $folder_name as it does not match the pattern"
-            fi
-        fi
-    done
-}
-
-# Function to rename folders in the data directory inside the public directory
-renamingPublicDataDirectories() {
-    # Navigate to the data directory inside public
-    cd public/data
-    # Call the renameFolders function
-    renameFolders .
-    # Navigate back to the original directory
-    cd ../../ || { echo "Error: Failed to navigate back to the previous directory"; exit 1; }
-}
-
-# Function to build the project
-buildProject() {
-    processInfo="Building lp-showcase-nextjs"
-
-    echoStart "$processInfo"
-
-    npm run build
-
-    if [ -f "$WORKSPACE/messages/errorMessage.json" ]; then
-        echo "errorMessage.json found in messages directory. Exiting job."
-        cat messages/errorMessage.json  # Optional: Print the error message for visibility in Jenkins logs
-        exit 1
-    fi
-
-    if [ $? -ne 0 ]; then
-        echo "Error: Build failed"
-        exit 1
-    fi
-    echoEnd "$processInfo"
 }
 
 # Function to check for the website type and set up the final repository
@@ -300,12 +174,6 @@ copyWebsiteToGithubRepo() {
 # Call functions in the correct order
 setUPNodeJS
 installDependencies
-# createFolders
-copyDataFolders
-copyMauticTrackerJSFiles
 listDataFolderContents
-copyFoldersToPublic
-renamingPublicDataDirectories
-buildProject
 checkForWebsiteType
 copyWebsiteToGithubRepo
