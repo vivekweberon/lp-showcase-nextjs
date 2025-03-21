@@ -215,6 +215,15 @@ function validateSectionsOrder(yamlData, filePath, getCount, globalSections = []
  */
 function validateSiteOverrides(inputKeys, filePath, getCount) {
   let errorMsg = "";
+
+  // Check if 'siteName' exists and is not empty.
+  const siteNameValue = inputKeys.get("siteName");
+  if (!siteNameValue || (Array.isArray(siteNameValue) && siteNameValue.length === 0)) {
+    errorMsg += `${getCount()} 'siteName' is missing or empty in file '${filePath}'\n`;
+    // Depending on your needs, you might return immediately or continue to check further.
+    return errorMsg;
+  }
+  
   const allowedSiteNames = inputKeys.get("siteName").map(s => s.trim());
   let overrideSiteNames = [];
   inputKeys.forEach((_, key) => {
