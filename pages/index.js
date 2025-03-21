@@ -1,5 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
 import path from "path";
 import Head from "next/head";
 import Script from "next/script";
@@ -14,7 +13,6 @@ import PopupForm from "@/components/PopupForm";
 import ChatBot from "@/components/ChatBot";
 
 import { loadYamlFile, getEffectiveData, getpropertiesHomePageData, addGlobalData } from "../utils/dataUtils";
-import { notFound } from "next/navigation";
 
 const siteToBeBuilt = process.env.siteName;
 
