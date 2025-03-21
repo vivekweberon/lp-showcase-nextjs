@@ -84,7 +84,7 @@ listDataFolderContents() {
 
 runBuilder() {
     echo "Running builder.js..."
-    node node builder.js --name lp-bayrentals --config next.config.js --messagesDir messages --mauticTrackerDir mautic_tracker/js --dataDir data --publicDir public --buildCmd "npm run build" || { echo "Error: builder.js execution failed"; exit 1; }
+    node node ./builder.js --name lp-bayrentals --config next.config.js --messagesDir messages --mauticTrackerDir mautic_tracker/js --dataDir data --publicDir public --buildCmd "npm run build" || { echo "Error: builder.js execution failed"; exit 1; }
     echo "builder.js executed successfully."
 }
 
