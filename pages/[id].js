@@ -218,10 +218,6 @@ const PropertyPage = ({ propertyData, images }) => {
           rel="stylesheet"
           href={`${basePath}/css/fa.min.css`}
         />
-        {/* <link
-          rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
-        /> */}
       </Head>
       <Script src={`${basePath}/js/areacodes.json`} strategy="beforeInteractive" />
       <Script src={`${basePath}/js/rb-config.js`} strategy="beforeInteractive" />
