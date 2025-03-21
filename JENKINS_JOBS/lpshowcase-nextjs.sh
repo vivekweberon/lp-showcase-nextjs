@@ -82,6 +82,12 @@ listDataFolderContents() {
     ls -l data
 }
 
+runBuilder() {
+    echo "Running builder.js..."
+    node node builder.js --name lp-bayrentals --config next.config.js --messagesDir messages --mauticTrackerDir mautic_tracker/js --dataDir data --publicDir public --buildCmd "npm run build" || { echo "Error: builder.js execution failed"; exit 1; }
+    echo "builder.js executed successfully."
+}
+
 # Function to check for the website type and set up the final repository
 checkForWebsiteType() {
     cd $WORKSPACE
@@ -175,5 +181,6 @@ copyWebsiteToGithubRepo() {
 setUPNodeJS
 installDependencies
 listDataFolderContents
+runBuilder
 checkForWebsiteType
 copyWebsiteToGithubRepo
