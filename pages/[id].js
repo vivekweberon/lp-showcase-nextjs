@@ -65,11 +65,11 @@ const PropertyPage = ({ propertyData, images }) => {
     contact,
     description,
     home,
-    chatbot
+    chatbot,
+    propertyPageSectionsOrder
   } = propertyData;
 
   let menuItems = [];
-  const propertyPageSectionsOrder = propertyData.propertyPageSectionsOrder;
 
   let sections; 
   if (propertyPageSectionsOrder) {
@@ -216,7 +216,7 @@ const PropertyPage = ({ propertyData, images }) => {
         />
         <link
           rel="stylesheet"
-          href={`${basePath}/css/fa.min.css`}
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
         />
       </Head>
       <Script src={`${basePath}/js/areacodes.json`} strategy="beforeInteractive" />
@@ -312,13 +312,14 @@ export async function getStaticProps(context) {
   try {
     const propertyData = await loadYamlFile(propertyDataPath);
     const globalData = await loadYamlFile(globalDataPath);
+
     if (!propertyData.siteName || !propertyData.siteName.includes(siteToBeBuilt)) {
       console.warn(`Skipping page for ${id}, siteName does not match ${siteToBeBuilt}`);
       return { notFound: true };
     }
-    const effectiveGlobalData = (globalData.siteName || []).map(String).includes(String(siteToBeBuilt).trim())
-      ? getEffectiveData(globalData, siteToBeBuilt)
-      : {};
+    
+    const effectiveGlobalData = getEffectiveData(globalData, siteToBeBuilt);
+    
     const effectivePropertyData = getEffectiveData(propertyData, siteToBeBuilt);
     const mergedData = addGlobalData(effectiveGlobalData, effectivePropertyData);
     const imagesFolder = path.join(process.cwd(), "data", originalId, "images");
