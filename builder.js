@@ -3,9 +3,6 @@ const path = require('path');
 const yargs = require('yargs');
 const { exec } = require('child_process');
 
-// ------------------------------
-// Set up command line options using yargs
-// ------------------------------
 const argv = yargs
   .option('name', {
     alias: 'n',
@@ -52,9 +49,6 @@ const argv = yargs
   .help()
   .argv;
 
-// ------------------------------
-// Validation and exit function
-// ------------------------------
 const { runValidation } = require('./utils/inCodeValidation.js');
 
 function validateAndExit() {
@@ -71,9 +65,6 @@ function validateAndExit() {
   }
 }
 
-// ------------------------------
-// Update next.config.js Section
-// ------------------------------
 const configPath = path.join(__dirname, argv.config);
 const websiteDirectoryName = argv.name;
 
@@ -92,9 +83,6 @@ try {
   process.exit(1);
 }
 
-// ------------------------------
-// Function to copy the Mautic tracker JS files
-// ------------------------------
 function copyMauticTrackerJSFiles() {
   console.log("📦 Copying Mautic tracker JS files to public/js folder...");
 
@@ -117,9 +105,6 @@ function copyMauticTrackerJSFiles() {
   }
 }
 
-// ------------------------------
-// Function to copy images folders to public
-// ------------------------------
 function copyFoldersToPublic() {
   const processInfo = "Copying images directories (if present) to public";
   console.log(`Starting: ${processInfo}`);
@@ -181,9 +166,6 @@ function copyFoldersToPublic() {
   console.log(`Finished: ${processInfo}`);
 }
 
-// ------------------------------
-// Function to rename folders in public/data
-// ------------------------------
 const { getPropertyOutputDirectoryName } = require('./utils/renameUtils.js');
 
 async function renameFolders(directory) {
@@ -236,9 +218,6 @@ async function renamingPublicDataDirectories() {
   await renameFolders(publicDataPath);
 }
 
-// ------------------------------
-// Function to run the build command
-// ------------------------------
 function runBuild() {
   console.log("🚀 Starting project build...");
   const child = exec(argv.buildCmd);
@@ -256,12 +235,9 @@ function runBuild() {
   });
 }
 
-// ------------------------------
-// Main Execution
-// ------------------------------
 async function main() {
   validateAndExit();
-  // copyMauticTrackerJSFiles(); // Uncomment if needed
+  copyMauticTrackerJSFiles(); 
   copyFoldersToPublic();
   await renamingPublicDataDirectories();
   runBuild();
