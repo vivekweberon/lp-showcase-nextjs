@@ -4,9 +4,15 @@ const yargs = require('yargs');
 const { exec } = require('child_process');
 
 const argv = yargs
-  .option('name', {
+  .option('websiteName', {
     alias: 'n',
-    describe: 'Directory name to set in basePath and siteName',
+    describe: 'website name where the pages will be deployed',
+    type: 'string',
+    demandOption: true
+  })
+  .option('siteName', {
+    alias: 's',
+    describe: 'sitename that will be used in the data files',
     type: 'string',
     demandOption: true
   })
@@ -66,7 +72,8 @@ function validateAndExit() {
 }
 
 const configPath = path.join(__dirname, argv.config);
-const websiteDirectoryName = argv.name;
+const websiteDirectoryName = argv.websiteName;
+const siteName = argv.siteName;
 
 try {
   let configContent = fs.readFileSync(configPath, 'utf8');
@@ -74,10 +81,10 @@ try {
   // Update basePath and siteName values
   configContent = configContent
     .replace(/basePath:\s*"\/[^"]*"/, `basePath: "/${websiteDirectoryName}"`)
-    .replace(/siteName:\s*'[^']*'/, `siteName: '${websiteDirectoryName}'`);
+    .replace(/siteName:\s*'[^']*'/, `siteName: '${siteName}'`);
 
   fs.writeFileSync(configPath, configContent, 'utf8');
-  console.log(`✅ Updated ${argv.config} with basePath: "/${websiteDirectoryName}" and siteName: '${websiteDirectoryName}'`);
+  console.log(`✅ Updated ${argv.config} with basePath: "/${websiteDirectoryName}" and siteName: '${siteName}'`);
 } catch (error) {
   console.error('❌ Error updating next.config.js:', error);
   process.exit(1);
