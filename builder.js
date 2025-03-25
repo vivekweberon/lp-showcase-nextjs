@@ -8,7 +8,7 @@ const { getPropertyOutputDirectoryName } = require('./utils/renameUtils.js');
 const argv = yargs
   .option('websiteName', {
     alias: 'n',
-    describe: 'Comma separated list of website names where the pages will be deployed (these become the basePath values)',
+    describe: 'website name where the pages will be deployed',
     type: 'string',
     demandOption: true
   })
@@ -57,8 +57,6 @@ const argv = yargs
   .help()
   .argv;
 
-// Path to the configuration file
-const configPath = path.join(__dirname, argv.config);
 
 function validateAndExit() {
   // Run validation first
@@ -66,13 +64,32 @@ function validateAndExit() {
 
   // Check for errorMessage.json in the provided messagesDir
   const errorMessagePath = path.join(__dirname, argv.messagesDir, 'errorMessage.json');
-  console.log("DirName:", __dirname);
+  console.log("DirName",__dirname);
   console.log("🔍 Checking for errorMessage.json at:", errorMessagePath);
 
   if (fs.existsSync(errorMessagePath)) {
     console.error("🚫 errorMessage.json detected. Aborting execution.");
-    process.exit(1);
+    process.exit(1); // Exit script immediately
   }
+}
+
+const configPath = path.join(__dirname, argv.config);
+const websiteDirectoryName = argv.websiteName;
+const siteName = argv.siteName;
+
+try {
+  let configContent = fs.readFileSync(configPath, 'utf8');
+
+  // Update basePath and siteName values
+  configContent = configContent
+    .replace(/basePath:\s*"\/[^"]*"/, `basePath: "/${websiteDirectoryName}"`)
+    .replace(/siteName:\s*'[^']*'/, `siteName: '${siteName}'`);
+
+  fs.writeFileSync(configPath, configContent, 'utf8');
+  console.log(`✅ Updated ${argv.config} with basePath: "/${websiteDirectoryName}" and siteName: '${siteName}'`);
+} catch (error) {
+  console.error('❌ Error updating next.config.js:', error);
+  process.exit(1);
 }
 
 function copyMauticTrackerJSFiles() {
@@ -208,91 +225,29 @@ async function renamingPublicDataDirectories() {
   await renameFolders(publicDataPath);
 }
 
-// Helper function to move (rename) a directory.
-// If fs.renameSync fails due to permission issues, it copies the directory and then removes the original.
-function moveDirectory(source, dest) {
-  try {
-    fs.renameSync(source, dest);
-    console.log(`Renamed directory from ${source} to ${dest}`);
-  } catch (err) {
-    if (err.code === 'EPERM') {
-      console.warn(`⚠️ Rename failed due to permissions. Attempting copy and delete...`);
-      try {
-        fs.cpSync(source, dest, { recursive: true });
-        fs.rmSync(source, { recursive: true, force: true });
-        console.log(`Moved directory by copying from ${source} to ${dest} and deleting ${source}`);
-      } catch (copyErr) {
-        console.error(`❌ Error during copy and delete:`, copyErr);
-        process.exit(1);
-      }
+function runBuild() {
+  console.log("🚀 Starting project build...");
+  const child = exec(argv.buildCmd);
+
+  child.stdout.on('data', (data) => console.log(data.toString()));
+  child.stderr.on('data', (data) => console.error(data.toString()));
+
+  child.on('close', (code) => {
+    if (code === 0) {
+      console.log("✅ Finished project build");
     } else {
-      console.error(`❌ Error renaming directory from ${source} to ${dest}:`, err);
+      console.error(`❌ Build failed with exit code ${code}`);
       process.exit(1);
     }
-  }
-}
-
-// Updated runBuild function to return a Promise
-function runBuild() {
-  return new Promise((resolve, reject) => {
-    console.log("🚀 Starting project build...");
-    const child = exec(argv.buildCmd);
-
-    child.stdout.on('data', (data) => console.log(data.toString()));
-    child.stderr.on('data', (data) => console.error(data.toString()));
-
-    child.on('close', (code) => {
-      if (code === 0) {
-        console.log("✅ Finished project build");
-        resolve();
-      } else {
-        console.error(`❌ Build failed with exit code ${code}`);
-        reject(new Error(`Build failed with exit code ${code}`));
-      }
-    });
   });
 }
 
 async function main() {
-  // Pre-build tasks (run once)
   validateAndExit();
-  copyMauticTrackerJSFiles();
+  copyMauticTrackerJSFiles(); 
   copyFoldersToPublic();
   await renamingPublicDataDirectories();
-
-  // Split comma-separated website names and trim extra spaces
-  const websiteNames = argv.websiteName.split(',').map(name => name.trim());
-  const siteName = argv.siteName;
-
-  // Loop over each website name, update config, build, and rename output folder
-  for (const website of websiteNames) {
-    console.log(`\n🔄 Processing build for website: ${website}`);
-
-    // Update next.config.js for the current website build
-    try {
-      let configContent = fs.readFileSync(configPath, 'utf8');
-      configContent = configContent
-        .replace(/basePath:\s*"\/[^"]*"/, `basePath: "/${website}"`)
-        .replace(/siteName:\s*'[^']*'/, `siteName: '${siteName}'`);
-      fs.writeFileSync(configPath, configContent, 'utf8');
-      console.log(`✅ Updated ${argv.config} with basePath: "/${website}" and siteName: '${siteName}'`);
-    } catch (error) {
-      console.error('❌ Error updating next.config.js:', error);
-      process.exit(1);
-    }
-
-    // Run the build command and wait for it to finish
-    try {
-      await runBuild();
-    } catch (error) {
-      process.exit(1);
-    }
-
-    // Move (rename) the default 'out' directory to the website name (without any prefix)
-    const outDir = path.join(__dirname, 'out');
-    const newDir = path.join(__dirname, website);
-    moveDirectory(outDir, newDir);
-  }
+  runBuild();
 }
 
 main();
