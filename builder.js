@@ -2,6 +2,8 @@ const fs = require('fs');
 const path = require('path');
 const yargs = require('yargs');
 const { exec } = require('child_process');
+const { runValidation } = require('./utils/inCodeValidation.js');
+const { getPropertyOutputDirectoryName } = require('./utils/renameUtils.js');
 
 const argv = yargs
   .option('websiteName', {
@@ -55,7 +57,6 @@ const argv = yargs
   .help()
   .argv;
 
-const { runValidation } = require('./utils/inCodeValidation.js');
 
 function validateAndExit() {
   // Run validation first
@@ -63,6 +64,7 @@ function validateAndExit() {
 
   // Check for errorMessage.json in the provided messagesDir
   const errorMessagePath = path.join(__dirname, argv.messagesDir, 'errorMessage.json');
+  console.log("DirName",__dirname);
   console.log("🔍 Checking for errorMessage.json at:", errorMessagePath);
 
   if (fs.existsSync(errorMessagePath)) {
@@ -172,8 +174,6 @@ function copyFoldersToPublic() {
   }
   console.log(`Finished: ${processInfo}`);
 }
-
-const { getPropertyOutputDirectoryName } = require('./utils/renameUtils.js');
 
 async function renameFolders(directory) {
   console.log(`Renaming folders in ${directory}`);
