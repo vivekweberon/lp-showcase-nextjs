@@ -12,7 +12,7 @@ const nextConfig = {
     domains: ["images.pexels.com"],
   },
   env: {
-    siteName: 'lp-bayrentals',
+    siteName: 'lp-showcase',
   },
 };
 
