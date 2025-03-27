@@ -32,17 +32,32 @@ const PropertyPage = ({ propertyData, images }) => {
   // Flag for loading the YouTube API
   let ytAPIRequired = false;
 
-  useEffect(() => {
-    if (
-      propertyData?.home?.youtubeVideoID ||
-      propertyData?.video?.youtubeVideoID
-    ) {
-      ytAPIRequired = true;
-    }
+  // useEffect(() => {
+  //   if (
+  //     propertyData?.home?.youtubeVideoID ||
+  //     propertyData?.video?.youtubeVideoID
+  //   ) {
+  //     ytAPIRequired = true;
+  //   }
 
+  //   if (ytAPIRequired) {
+  //     console.log("Loading YouTube API", window.onYouTubeIframeAPIReady);
+  //     loadYoutubeIframeAPI();
+  //   }
+  // }, [propertyData]);
+
+  //updated useEffect
+  useEffect(() => {
+    // Check if a YouTube video is needed:
+    const ytAPIRequired = propertyData?.home?.youtubeVideoID || propertyData?.video?.youtubeVideoID;
     if (ytAPIRequired) {
-      console.log("Loading YouTube API", window.onYouTubeIframeAPIReady);
-      loadYoutubeIframeAPI();
+      console.log("YouTube API required.");
+      // Call the loader only if defined
+      if (typeof window.loadYoutubeIframeAPI === "function") {
+        window.loadYoutubeIframeAPI();
+      } else {
+        console.warn("loadYoutubeIframeAPI is not defined. Please ensure ytvideo_v1.js is loaded correctly.");
+      }
     }
   }, [propertyData]);
 
@@ -231,7 +246,7 @@ const PropertyPage = ({ propertyData, images }) => {
       <Script src={`${basePath}/js/tracker.js`} strategy="beforeInteractive" />
       <Script src={`${basePath}/js/showdown-1.9.1.min.js`} strategy="beforeInteractive" />
       <Script src={`${basePath}/js/bootstrap.min.js`} strategy="beforeInteractive" />
-      <Script src={`${basePath}/js/ytvideo_v1.js`} strategy="beforeInteractive" />
+      <Script src={`${basePath}/js/ytvideo_v1.js`} />
 
       <Navbar menu={menuItems} forwardedRef={navbarRef} />
       {sections}
