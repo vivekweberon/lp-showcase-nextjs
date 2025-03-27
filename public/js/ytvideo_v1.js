@@ -44,27 +44,53 @@ function loadYoutubeIframeAPI() {
     window.onscroll = playVisibleVideos;
   }
 
-  const handlePlaySoundButtonClick = (e) => {
-    console.log("Clicked")
-    console.log("player",player)
-        if (player.isMuted()) {
+//   const handlePlaySoundButtonClick = (e) => {
+//     console.log("Clicked")
+//     console.log("player",player)
+//         if (player.isMuted()) {
+//           playBGVideoFromBeginning();
+//         }
+//         else {
+//           let playerAction = document.getElementById("playSound").innerHTML;
+//           if(playerAction == 'Play Video'){
+//             let state = player.getPlayerState();
+//             if(state == 0){
+//               playBGVideoFromBeginning();
+//             }else{
+//               resumeBGVideo();
+//             }
+//           } else if(playerAction == 'Pause Video'){
+//             player.pauseVideo();
+//             document.getElementById("playSound").innerHTML = "Play Video";
+//           } 
+//         }  
+// }
+
+const handlePlaySoundButtonClick = (e) => {
+  console.log("Clicked");
+  console.log("player", player);
+  if (player && typeof player.isMuted === "function") {
+    if (player.isMuted()) {
+      playBGVideoFromBeginning();
+    } else {
+      let playerAction = document.getElementById("playSound").innerHTML;
+      if (playerAction === "Play Video") {
+        let state = player.getPlayerState();
+        if (state === 0) {
           playBGVideoFromBeginning();
+        } else {
+          resumeBGVideo();
         }
-        else {
-          let playerAction = document.getElementById("playSound").innerHTML;
-          if(playerAction == 'Play Video'){
-            let state = player.getPlayerState();
-            if(state == 0){
-              playBGVideoFromBeginning();
-            }else{
-              resumeBGVideo();
-            }
-          } else if(playerAction == 'Pause Video'){
-            player.pauseVideo();
-            document.getElementById("playSound").innerHTML = "Play Video";
-          } 
-        }  
-}
+      } else if (playerAction === "Pause Video") {
+        player.pauseVideo();
+        document.getElementById("playSound").innerHTML = "Play Video";
+      }
+    }
+  } else {
+    console.warn("Player is not ready yet.");
+  }
+};
+
 
 function onPlayerError(event){
   let errMsg = "yt_video_load_error: " + event.data;
