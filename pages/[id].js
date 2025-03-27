@@ -30,22 +30,22 @@ const PropertyPage = ({ propertyData, images }) => {
   const navbarRef = useRef(null);
 
   // Flag for loading the YouTube API
-  let ytAPIRequired = false;
+  // let ytAPIRequired = false;
 
   useEffect(() => {
     console.log("Property page useEffect called");
-    if (
-      propertyData?.home?.youtubeVideoID ||
-      propertyData?.video?.youtubeVideoID
-    ) {
-      ytAPIRequired = true;
-    }
+    // if (
+    //   propertyData?.home?.youtubeVideoID ||
+    //   propertyData?.video?.youtubeVideoID
+    // ) {
+    //   ytAPIRequired = true;
+    // }
 
-    if (ytAPIRequired) {
+    // if (ytAPIRequired) {
       console.log("Loading YouTube API", window.onYouTubeIframeAPIReady);
       loadYoutubeIframeAPI();
       console.log("YouTube API loaded");
-    }
+    // }
   }, [propertyData]);
 
   const handleLinkClick = (url) => {
