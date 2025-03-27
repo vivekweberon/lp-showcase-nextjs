@@ -246,7 +246,7 @@ const PropertyPage = ({ propertyData, images }) => {
       <Script src={`${basePath}/js/tracker.js`} strategy="beforeInteractive" />
       <Script src={`${basePath}/js/showdown-1.9.1.min.js`} strategy="beforeInteractive" />
       <Script src={`${basePath}/js/bootstrap.min.js`} strategy="beforeInteractive" />
-      <Script src={`${basePath}/js/ytvideo_v1.js`} />
+      <Script src={`${basePath}/js/ytvideo_v1.js`} strategy="beforeInteractive" />
 
       <Navbar menu={menuItems} forwardedRef={navbarRef} />
       {sections}
