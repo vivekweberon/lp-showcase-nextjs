@@ -44,6 +44,7 @@ const PropertyPage = ({ propertyData, images }) => {
     if (ytAPIRequired) {
       console.log("Loading YouTube API", window.onYouTubeIframeAPIReady);
       loadYoutubeIframeAPI();
+      console.log("YouTube API loaded");
     }
   }, [propertyData]);
 
