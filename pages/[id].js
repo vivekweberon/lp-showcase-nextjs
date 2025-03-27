@@ -46,20 +46,22 @@ const PropertyPage = ({ propertyData, images }) => {
   //   }
   // }, [propertyData]);
 
-  //updated useEffect
   useEffect(() => {
-    // Check if a YouTube video is needed:
-    const ytAPIRequired = propertyData?.home?.youtubeVideoID || propertyData?.video?.youtubeVideoID;
-    if (ytAPIRequired) {
-      console.log("YouTube API required.");
-      // Call the loader only if defined
-      if (typeof window.loadYoutubeIframeAPI === "function") {
-        window.loadYoutubeIframeAPI();
-      } else {
-        console.warn("loadYoutubeIframeAPI is not defined. Please ensure ytvideo_v1.js is loaded correctly.");
-      }
+    if (propertyData?.home?.youtubeVideoID || propertyData?.video?.youtubeVideoID) {
+      const interval = setInterval(() => {
+        if (window.player && typeof window.player.getPlayerState === "function") {
+          console.log("Player is available:", window.player);
+          clearInterval(interval);
+          // Now you can safely call any functions on the player
+          // For example: player.isMuted() etc.
+        }
+      }, 500); // Check every 500ms
+  
+      // Cleanup the interval when component unmounts
+      return () => clearInterval(interval);
     }
   }, [propertyData]);
+  
 
   const handleLinkClick = (url) => {
     setModalUrl(url);
