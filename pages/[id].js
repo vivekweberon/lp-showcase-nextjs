@@ -32,36 +32,20 @@ const PropertyPage = ({ propertyData, images }) => {
   // Flag for loading the YouTube API
   let ytAPIRequired = false;
 
-  // useEffect(() => {
-  //   if (
-  //     propertyData?.home?.youtubeVideoID ||
-  //     propertyData?.video?.youtubeVideoID
-  //   ) {
-  //     ytAPIRequired = true;
-  //   }
-
-  //   if (ytAPIRequired) {
-  //     console.log("Loading YouTube API", window.onYouTubeIframeAPIReady);
-  //     loadYoutubeIframeAPI();
-  //   }
-  // }, [propertyData]);
-
   useEffect(() => {
-    if (propertyData?.home?.youtubeVideoID || propertyData?.video?.youtubeVideoID) {
-      const interval = setInterval(() => {
-        if (window.player && typeof window.player.getPlayerState === "function") {
-          console.log("Player is available:", window.player);
-          clearInterval(interval);
-          // Now you can safely call any functions on the player
-          // For example: player.isMuted() etc.
-        }
-      }, 500); // Check every 500ms
-  
-      // Cleanup the interval when component unmounts
-      return () => clearInterval(interval);
+    console.log("Property page useEffect called");
+    if (
+      propertyData?.home?.youtubeVideoID ||
+      propertyData?.video?.youtubeVideoID
+    ) {
+      ytAPIRequired = true;
+    }
+
+    if (ytAPIRequired) {
+      console.log("Loading YouTube API", window.onYouTubeIframeAPIReady);
+      loadYoutubeIframeAPI();
     }
   }, [propertyData]);
-  
 
   const handleLinkClick = (url) => {
     setModalUrl(url);
@@ -248,7 +232,7 @@ const PropertyPage = ({ propertyData, images }) => {
       <Script src={`${basePath}/js/tracker.js`} strategy="beforeInteractive" />
       <Script src={`${basePath}/js/showdown-1.9.1.min.js`} strategy="beforeInteractive" />
       <Script src={`${basePath}/js/bootstrap.min.js`} strategy="beforeInteractive" />
-      <Script src={`${basePath}/js/ytvideo_v1.js`} />
+      <Script src={`${basePath}/js/ytvideo_v1.js`} strategy="beforeInteractive" />
 
       <Navbar menu={menuItems} forwardedRef={navbarRef} />
       {sections}
