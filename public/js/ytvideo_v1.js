@@ -8,6 +8,7 @@ let playedByCode = false;
 let playedByUser = false;
 let pausedByForm = false;
 let bgVideoStart = 0;
+let playerReady = false;
 
 function loadYoutubeIframeAPI() {
   console.log("loadYoutubeIframeAPI");
@@ -44,53 +45,32 @@ function loadYoutubeIframeAPI() {
     window.onscroll = playVisibleVideos;
   }
 
-//   const handlePlaySoundButtonClick = (e) => {
-//     console.log("Clicked")
-//     console.log("player",player)
-//         if (player.isMuted()) {
-//           playBGVideoFromBeginning();
-//         }
-//         else {
-//           let playerAction = document.getElementById("playSound").innerHTML;
-//           if(playerAction == 'Play Video'){
-//             let state = player.getPlayerState();
-//             if(state == 0){
-//               playBGVideoFromBeginning();
-//             }else{
-//               resumeBGVideo();
-//             }
-//           } else if(playerAction == 'Pause Video'){
-//             player.pauseVideo();
-//             document.getElementById("playSound").innerHTML = "Play Video";
-//           } 
-//         }  
-// }
-
-const handlePlaySoundButtonClick = (e) => {
-  console.log("Clicked");
-  console.log("player", player);
-  if (player && typeof player.isMuted === "function") {
-    if (player.isMuted()) {
-      playBGVideoFromBeginning();
-    } else {
-      let playerAction = document.getElementById("playSound").innerHTML;
-      if (playerAction === "Play Video") {
-        let state = player.getPlayerState();
-        if (state === 0) {
-          playBGVideoFromBeginning();
-        } else {
-          resumeBGVideo();
+  const handlePlaySoundButtonClick = (e) => {
+    console.log("Clicked")
+    console.log("player",player)
+    // Check if the player is fully initialized
+        if (!playerReady) {
+          console.warn("Player is not ready yet.");
+          return;
         }
-      } else if (playerAction === "Pause Video") {
-        player.pauseVideo();
-        document.getElementById("playSound").innerHTML = "Play Video";
-      }
-    }
-  } else {
-    console.warn("Player is not ready yet.");
-  }
-};
-
+        if (player.isMuted()) {
+          playBGVideoFromBeginning();
+        }
+        else {
+          let playerAction = document.getElementById("playSound").innerHTML;
+          if(playerAction == 'Play Video'){
+            let state = player.getPlayerState();
+            if(state == 0){
+              playBGVideoFromBeginning();
+            }else{
+              resumeBGVideo();
+            }
+          } else if(playerAction == 'Pause Video'){
+            player.pauseVideo();
+            document.getElementById("playSound").innerHTML = "Play Video";
+          } 
+        }  
+}
 
 function onPlayerError(event){
   let errMsg = "yt_video_load_error: " + event.data;
@@ -130,6 +110,7 @@ function checkPlayerStateToRemoveHeaderAndFooter() {
 }
     
 function onPlayerReady(event) {
+  playerReady = true;
   if((!controlVideos)||((controlVideos)&&(isEndOfForm()))){
     player.playVideo();
   }else{
