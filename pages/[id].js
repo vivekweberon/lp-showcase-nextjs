@@ -252,22 +252,6 @@ export async function getStaticPaths() {
   const siteToBeBuilt = process.env.siteName;
   console.log("siteToBeBuilt: Property page", siteToBeBuilt);
   try {
-
-    // try {
-    //   runValidation();
-    // } catch (validationError) {
-    //   console.error("Validation failed:", validationError.message);
-    //   throw validationError;
-    // }
-    // const isErrorMessagePresent = await fs
-    //   .stat(errorMessagePath)
-    //   .then((stat) => stat.isFile())
-    //   .catch(() => false);
-    // if (isErrorMessagePresent) {
-    //   console.error("errorMessage.json detected. Aborting page generation.");
-    //   return { paths: [], fallback: false };
-    // }
-
     const files = await fs.readdir(dataFolderPath);
     const filteredFiles = files.filter(
       (file) => file !== "global" && file !== "home"

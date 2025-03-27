@@ -15,5 +15,5 @@ function getPropertyOutputDirectoryName(inputDirName) {
     return ret.join("");
   }
   
-  module.exports = { getPropertyOutputDirectoryName };
+module.exports = { getPropertyOutputDirectoryName };
   

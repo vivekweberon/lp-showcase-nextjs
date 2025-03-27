@@ -65,7 +65,7 @@ const websiteNames = argv.websiteName.split(',').map(name => name.trim());
 const siteNames = argv.siteName.split(',').map(name => name.trim());
 
 if (websiteNames.length !== siteNames.length) {
-  console.error("❌ Error: The number of website names must match the number of site names.");
+  console.error("Error: The number of website names must match the number of site names.");
   process.exit(1);
 }
 
@@ -76,16 +76,16 @@ function validateAndExit() {
   // Check for errorMessage.json in the provided messagesDir
   const errorMessagePath = path.join(__dirname, argv.messagesDir, 'errorMessage.json');
   console.log("DirName:", __dirname);
-  console.log("🔍 Checking for errorMessage.json at:", errorMessagePath);
+  console.log("Checking for errorMessage.json at:", errorMessagePath);
 
   if (fs.existsSync(errorMessagePath)) {
-    console.error("🚫 errorMessage.json detected. Aborting execution.");
+    console.error("errorMessage.json detected. Aborting execution.");
     process.exit(1);
   }
 }
 
 function copyMauticTrackerJSFiles() {
-  console.log("📦 Copying Mautic tracker JS files to public/js folder...");
+  console.log("Copying Mautic tracker JS files to public/js folder...");
 
   const sourceDir = path.join(__dirname, argv.mauticTrackerDir);
   const targetDir = path.join(__dirname, argv.publicDir, 'js');
@@ -94,14 +94,14 @@ function copyMauticTrackerJSFiles() {
     fs.mkdirSync(targetDir, { recursive: true });
 
     if (!fs.existsSync(sourceDir)) {
-      console.warn("⚠️ Mautic tracker JS source directory does not exist. Skipping...");
+      console.warn("Mautic tracker JS source directory does not exist. Skipping...");
       return;
     }
 
     fs.cpSync(sourceDir, targetDir, { recursive: true });
     console.log("✅ Mautic tracker JS files copied successfully.");
   } catch (error) {
-    console.error("❌ Error copying Mautic tracker JS files:", error);
+    console.error("Error copying Mautic tracker JS files:", error);
     process.exit(1);
   }
 }
@@ -114,7 +114,7 @@ function copyFoldersToPublic() {
   try {
     fs.mkdirSync(path.join(__dirname, argv.publicDir, 'data'), { recursive: true });
   } catch (err) {
-    console.error("❌ Error: Failed to create public/data directory", err);
+    console.error("Error: Failed to create public/data directory", err);
     process.exit(1);
   }
 
@@ -124,7 +124,7 @@ function copyFoldersToPublic() {
   try {
     dirs = fs.readdirSync(dataPath);
   } catch (err) {
-    console.error("❌ Error: Failed to read data directory", err);
+    console.error("Error: Failed to read data directory", err);
     process.exit(1);
   }
 
@@ -138,13 +138,13 @@ function copyFoldersToPublic() {
         try {
           fs.mkdirSync(targetDir, { recursive: true });
         } catch (err) {
-          console.error(`❌ Error: Failed to create ${targetDir}`, err);
+          console.error(`Error: Failed to create ${targetDir}`, err);
           process.exit(1);
         }
         try {
           fs.cpSync(imagesDirPath, path.join(targetDir, 'images'), { recursive: true });
         } catch (err) {
-          console.error(`❌ Error: Failed to copy images to ${targetDir}`, err);
+          console.error(`Error: Failed to copy images to ${targetDir}`, err);
           process.exit(1);
         }
       }
@@ -161,7 +161,7 @@ function copyFoldersToPublic() {
     fs.mkdirSync(publicImagesDir, { recursive: true });
     fs.cpSync(globalImagesDir, publicImagesDir, { recursive: true });
   } catch (err) {
-    console.error(`❌ Error: Failed to copy images from ${globalImagesDir} to ${publicImagesDir}`, err);
+    console.error(`Error: Failed to copy images from ${globalImagesDir} to ${publicImagesDir}`, err);
     process.exit(1);
   }
   console.log(`Finished: ${processInfo}`);
@@ -180,11 +180,8 @@ async function renameFolders(directory) {
         let newFolderName;
         try {
           newFolderName = getPropertyOutputDirectoryName(folder);
-          if (newFolderName instanceof Promise) {
-            newFolderName = await newFolderName;
-          }
         } catch (error) {
-          console.error(`❌ Error generating new name for ${folder}:`, error);
+          console.error(`Error generating new name for ${folder}:`, error);
           process.exit(1);
         }
 
@@ -195,11 +192,11 @@ async function renameFolders(directory) {
             fs.renameSync(folderPath, newFolderPath);
             console.log(`Renamed ${folder} to ${newFolderName}`);
           } catch (error) {
-            console.error(`❌ Error renaming folder ${folder} to ${newFolderName}:`, error);
+            console.error(`Error renaming folder ${folder} to ${newFolderName}:`, error);
             process.exit(1);
           }
         } else {
-          console.error(`❌ Error: New folder name is empty for ${folder}`);
+          console.error(`Error: New folder name is empty for ${folder}`);
         }
       } else {
         console.log(`Skipping ${folder} as it does not match the pattern`);
@@ -211,33 +208,21 @@ async function renameFolders(directory) {
 async function renamingPublicDataDirectories() {
   const publicDataPath = path.join(__dirname, argv.publicDir, 'data');
   if (!fs.existsSync(publicDataPath)) {
-    console.error("❌ Error: public/data directory does not exist");
+    console.error("Error: public/data directory does not exist");
     process.exit(1);
   }
   await renameFolders(publicDataPath);
 }
 
 // Helper function to move (rename) a directory.
-// If fs.renameSync fails due to permission issues, it copies the directory and then removes the original.
 function moveDirectory(source, dest) {
   try {
-    fs.renameSync(source, dest);
-    console.log(`Renamed directory from ${source} to ${dest}`);
+    fs.cpSync(source, dest, { recursive: true });
+    fs.rmSync(source, { recursive: true, force: true });
+    console.log(`✅ Moved directory from ${source} to ${dest}`);
   } catch (err) {
-    if (err.code === 'EPERM') {
-      console.warn(`⚠️ Rename failed due to permissions. Attempting copy and delete...`);
-      try {
-        fs.cpSync(source, dest, { recursive: true });
-        fs.rmSync(source, { recursive: true, force: true });
-        console.log(`Moved directory by copying from ${source} to ${dest} and deleting ${source}`);
-      } catch (copyErr) {
-        console.error(`❌ Error during copy and delete:`, copyErr);
-        process.exit(1);
-      }
-    } else {
-      console.error(`❌ Error renaming directory from ${source} to ${dest}:`, err);
-      process.exit(1);
-    }
+    console.error(`Error moving directory from ${source} to ${dest}:`, err);
+    process.exit(1);
   }
 }
 
@@ -255,7 +240,7 @@ function runBuild() {
         console.log("✅ Finished project build");
         resolve();
       } else {
-        console.error(`❌ Build failed with exit code ${code}`);
+        console.error(`Build failed with exit code ${code}`);
         reject(new Error(`Build failed with exit code ${code}`));
       }
     });
@@ -285,7 +270,7 @@ async function main() {
       fs.writeFileSync(configPath, configContent, 'utf8');
       console.log(`✅ Updated ${argv.config} with basePath: "/${website}" and siteName: '${site}'`);
     } catch (error) {
-      console.error('❌ Error updating next.config.js:', error);
+      console.error('Error updating next.config.js:', error);
       process.exit(1);
     }
 
@@ -296,7 +281,7 @@ async function main() {
       process.exit(1);
     }
 
-    // Move (rename) the default 'out' directory to the website name (without any prefix)
+    // Move (rename) the default 'out' directory to the website name 
     const outDir = path.join(__dirname, 'out');
     const newDir = path.join(__dirname, website);
     moveDirectory(outDir, newDir);
