@@ -27,9 +27,9 @@ const Home = ({ home }) => {
 
       <div className="row">
 			  <div className="col-12">
-				  <iframe id='video1' frameborder="0" style={{pointerEvents:none}} allow="autoplay; fullscreen" src="">
+				  <iframe id='video1' frameborder="0" style={{pointerEvents:"none"}} allow="autoplay; fullscreen" src="">
 				  </iframe>
-          <div style={{textAlign:center, cursor:pointer, fontWeight:bold, textDecoration:underline}}>
+          <div style={{textAlign:'center', cursor:'pointer', fontWeight:'bold', textDecoration:'underline'}}>
             <a id='playSound'>Play Sound</a>
           </div>
 			  </div>
