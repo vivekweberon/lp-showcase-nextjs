@@ -6,7 +6,7 @@ const Home = ({ home }) => {
   useEffect(() => {
     console.log("useEffect home");
     addBGVideo(youtubeVideoID, videoStart, videoEnd);
-  },[])
+  })
 
   return (
     <div
