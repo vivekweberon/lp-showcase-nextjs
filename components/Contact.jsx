@@ -61,7 +61,7 @@ const Contact = ({ contact}) => {
         </div>
       </div>
       {/* End of added markup */}
-      <Script>{`let page = "lp"`}</Script>
+      {/* <Script>{`let page = "lp"`}</Script> */}
     </>
   );
 };
