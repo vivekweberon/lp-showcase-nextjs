@@ -230,6 +230,7 @@ function pauseVideosIfPlaying(){
 }
 
 function addBGVideo(youtubeVideoID, videoStart, videoEnd) {
+    console.log("Add BG Video");
     if (youtubeVideoID) {
       let videoURL = "https://www.youtube.com/embed/"+youtubeVideoID+"?controls=0&showinfo=0&disablekb=1&modestbranding=1&rel=0&autoplay=1&mute=1&playsinline=1&enablejsapi=1";
       if(videoStart){
