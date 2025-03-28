@@ -138,7 +138,6 @@ function addContact(contact) {
           href={`${basePath}/css/fa.min.css`}
         />
       </Head>
-      {/* <Script src={`${basePath}/js/areacodes.json`} strategy="beforeInteractive" /> */}
       <Script src={`${basePath}/js/rb-config.js`} strategy="beforeInteractive" />
       <Script src={`${basePath}/js/logger.js`} strategy="beforeInteractive" />
       <Script src={`${basePath}/js/jquery-3.5.1.min.js`} strategy="beforeInteractive" />
