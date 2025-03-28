@@ -11,6 +11,7 @@ let bgVideoStart = 0;
 function onYouTubeIframeAPIReady() {
     console.log("YouTube API Ready");
   if (isVisible('home')) {
+    console.log("Home is visible");
     player = new YT.Player('video1', {
       events: {
         'onReady': onPlayerReady,
@@ -68,9 +69,12 @@ function checkPlayerStateToRemoveHeaderAndFooter() {
 }
     
 function onPlayerReady(event) {
+    console.log("Control Videos",controlVideos)
   if((!controlVideos)||((controlVideos)&&(isEndOfForm()))){
+    console.log("Player Ready - PLay");
     player.playVideo();
   }else{
+    console.log("Player Ready - Paused");
     player.pauseVideo();
   }
   //checkPlayerStateToRemoveHeaderAndFooter();
