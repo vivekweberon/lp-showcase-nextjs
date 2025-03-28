@@ -32,21 +32,21 @@ const PropertyPage = ({ propertyData, images }) => {
   // Flag for loading the YouTube API
   // let ytAPIRequired = false;
 
-  useEffect(() => {
-    console.log("Property page useEffect called");
-    // if (
-    //   propertyData?.home?.youtubeVideoID ||
-    //   propertyData?.video?.youtubeVideoID
-    // ) {
-    //   ytAPIRequired = true;
-    // }
+  // useEffect(() => {
+  //   console.log("Property page useEffect called");
+  //   // if (
+  //   //   propertyData?.home?.youtubeVideoID ||
+  //   //   propertyData?.video?.youtubeVideoID
+  //   // ) {
+  //   //   ytAPIRequired = true;
+  //   // }
 
-    // if (ytAPIRequired) {
-      console.log("Loading YouTube API", window.onYouTubeIframeAPIReady);
-      loadYoutubeIframeAPI();
-      console.log("YouTube API loaded");
-    // }
-  }, [propertyData]);
+  //   // if (ytAPIRequired) {
+  //     console.log("Loading YouTube API", window.onYouTubeIframeAPIReady);
+  //     loadYoutubeIframeAPI();
+  //     console.log("YouTube API loaded");
+  //   // }
+  // }, [propertyData]);
 
   const handleLinkClick = (url) => {
     setModalUrl(url);
