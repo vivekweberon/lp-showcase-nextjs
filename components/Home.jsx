@@ -1,4 +1,6 @@
 import React, { useEffect } from 'react';
+import { addBGVideo } from '../public/js/ytvideo.js';
+
 const Home = ({ home }) => {
   const {youtubeVideoID, videoStart, videoEnd, sectionTitle, menu } = home;
 
