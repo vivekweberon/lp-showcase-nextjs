@@ -233,6 +233,7 @@ const PropertyPage = ({ propertyData, images }) => {
       <Script src={`${basePath}/js/showdown-1.9.1.min.js`} strategy="beforeInteractive" />
       <Script src={`${basePath}/js/bootstrap.min.js`} strategy="beforeInteractive" />
       <Script src={`${basePath}/js/ytvideo.js`} strategy="beforeInteractive" />
+      <script src="https://www.youtube.com/iframe_api"></script>
 
       <Navbar menu={menuItems} forwardedRef={navbarRef} />
       {sections}
