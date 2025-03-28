@@ -193,14 +193,14 @@ function pauseVideo(iframePlayer) {
 function isVisible(sectionID) {
   let ret = false;
   let element = document.getElementById(sectionID);
-  console.log("element", sectionID, element);
+  // console.log("element", sectionID, element);
   if(element){
     let display = element.style.display;
     if (display != 'none') {
       ret = true;
     }
   }
-  console.log("isVisible", sectionID, ret);
+  // console.log("isVisible", sectionID, ret);
   return ret;
 }
 
