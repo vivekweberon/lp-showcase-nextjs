@@ -9,6 +9,7 @@ let pausedByForm = false;
 let bgVideoStart = 0;
 
 function onYouTubeIframeAPIReady() {
+    console.log("YouTube API Ready");
   if (isVisible('home')) {
     player = new YT.Player('video1', {
       events: {
