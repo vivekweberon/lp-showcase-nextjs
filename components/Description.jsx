@@ -62,17 +62,12 @@ const Description = ({ onLinkClick, description }) => {
       </div>
       <div className="row justify-content-center">
         <div className="col-10">
-          <div id="dContent">
-          </div>
+          <p id="dContent">
+          </p>
         </div>
       </div>
     </div>
   );
-};
-
-Description.propTypes = {
-  content: PropTypes.string.isRequired,
-  onLinkClick: PropTypes.func.isRequired,
 };
 
 export default Description;

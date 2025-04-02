@@ -45,13 +45,4 @@ const Footer = ({ menu, text }) => {
   );
 };
 
-Footer.propTypes = {
-  menu: PropTypes.arrayOf(PropTypes.string),
-  text: PropTypes.shape({
-    line1: PropTypes.string,
-    line2: PropTypes.string,
-    line3: PropTypes.string,
-  }),
-};
-
 export default Footer;

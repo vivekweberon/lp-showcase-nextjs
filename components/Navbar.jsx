@@ -1,6 +1,5 @@
 import React from "react";
 import { Nav, Navbar } from "react-bootstrap";
-import PropTypes from "prop-types";
 
 function MyNavbar({ menu, forwardedRef }) {
   console.log("MyNavbar", menu);
@@ -28,12 +27,5 @@ function MyNavbar({ menu, forwardedRef }) {
     </Navbar>
   );
 }
-
-MyNavbar.propTypes = {
-  navbar: PropTypes.arrayOf(PropTypes.string).isRequired,
-  forwardedRef: PropTypes.oneOfType([
-    PropTypes.shape({ current: PropTypes.any }),
-  ]),
-};
 
 export default MyNavbar;

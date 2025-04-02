@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Carousel from "react-bootstrap/Carousel";
 import { basePath } from "@/next.config.js";
-import PropTypes from "prop-types";
 
 const Photos = ({ navbarRef, imageUrls, photos }) => {
   const { menu } = photos;
@@ -76,17 +75,6 @@ const Photos = ({ navbarRef, imageUrls, photos }) => {
       </div>
     </div>
   );
-};
-
-Photos.propTypes = {
-  navbarRef: PropTypes.shape({
-    current: PropTypes.shape({
-      clientHeight: PropTypes.number.isRequired,
-    }),
-  }).isRequired,
-  imageUrls: PropTypes.shape({
-    urls: PropTypes.arrayOf(PropTypes.string).isRequired,
-  }).isRequired,
 };
 
 export default Photos;

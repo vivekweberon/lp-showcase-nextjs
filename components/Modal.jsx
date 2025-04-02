@@ -65,10 +65,4 @@ const Modal = ({ clickedUrl, onCloseModal }) => {
     );
 };
 
-// Define prop types for Modal component
-Modal.propTypes = {
-    clickedUrl: PropTypes.string.isRequired,
-    onCloseModal: PropTypes.func.isRequired,
-};
-
 export default Modal;
