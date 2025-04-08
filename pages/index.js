@@ -59,7 +59,7 @@ export async function getStaticProps() {
 }
 
 function HomePage({ homeData }) {
-  const { showcase, contact, realtor, footertext, chatbot, homePageSectionsOrder } = homeData;
+  const { page, showcase, contact, realtor, footertext, chatbot, homePageSectionsOrder } = homeData;
 
   let menuItems = [];
 
@@ -128,6 +128,7 @@ function addContact(contact) {
       <Head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        {page.title && <title>{page.title}</title>}
         <link rel="icon" href="/favicon.ico" />
         <link
           rel="stylesheet"

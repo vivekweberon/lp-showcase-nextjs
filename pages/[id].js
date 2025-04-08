@@ -58,6 +58,7 @@ const PropertyPage = ({ propertyData, images }) => {
   };
 
   const {
+    page,
     priceAndFeatures,
     photos,
     video,
@@ -211,6 +212,7 @@ const PropertyPage = ({ propertyData, images }) => {
       <Head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        {page.title && <title>{page.title}</title>}
         <link rel="icon" href="/favicon.ico" />
         <link
           rel="stylesheet"

@@ -1,7 +1,14 @@
+---	
 home:
   youtubeVideoID:
     type: string
+  videoStart:
+    type: number
+  videoEnd:
+    type: number
   menu:
+    type: string
+  sectionTitle:
     type: string
 priceAndFeatures:
   title1:
@@ -22,13 +29,24 @@ priceAndFeatures:
     type: string
   menu:
     type: string
+description:
+  content:
+    type: string
+  menu:
+    type: string
+  sectionTitle:
+    type: string
 photos:
   menu:
+    type: string
+  sectionTitle:
     type: string
 video:
   youtubeVideoID:
     type: string
   menu:
+    type: string
+  sectionTitle:
     type: string
 virtualTour:
   title:
@@ -37,17 +55,12 @@ virtualTour:
     type: string
   menu:
     type: string
+  sectionTitle:
+    type: string
 showcase:
   url:
-    type: string
+    type: string  
   menu:
-    type: string
-description:
-  content:
-    type: string
-  menu:
-    type: string
-  sectionTitle:
     type: string
 homePageData:
   url:
@@ -62,9 +75,29 @@ homePageData:
     type: string
   listingPageURL:
     type: string
-chatbot:
-  enable:
-    type: boolean
+realtor:
+  photo:
+    type: string
+  name:
+    type: string
+  company:
+    type: string
+  id:
+    type: string
+  phone: 
+    type: string
+  logo:
+    type: string
+  menu:
+    type: string
+  sectionTitle:
+    type: string
+  footerText:
+    type: string
+  footerLinkText:
+    type: string
+  footerLink:
+    type: string
 footertext:
   line1:
     type: string
@@ -72,9 +105,33 @@ footertext:
     type: string
   line3:
     type: string
-propertyPageSectionsOrder:
-  type: array
-siteSpecific:
-  type: object
-siteName:
-  type: array
+page:
+  title:
+    type: string  
+contact:
+  menu:
+    type: string
+  sectionTitle:
+    type: string
+  mauticForm:
+    formSetName:
+      type: string
+    emailFormHeader: 
+      type: string
+    phoneFormHeader: 
+      type: string   
+    popupForm:
+      enable:
+        type: boolean
+      x:
+        type: number
+      y:
+        type: number
+      z:
+        type: number
+    pageType:
+      type: string
+chatbot:
+  enable:
+    type: boolean
+propertyPageSectionsOrder: []
