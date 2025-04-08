@@ -9,6 +9,7 @@ function getPageID(){
 }
 
 function reWriteUrlsAndTrackPageView() {
+  console.log("Rewriting URLs and tracking page view");
   reWriteURLS();
   trackParametersOnPageLoad();
 }
