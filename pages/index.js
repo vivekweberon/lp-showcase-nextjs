@@ -145,8 +145,8 @@ function addContact(contact) {
       <Script src={`${basePath}/js/jwt-decode.js`} strategy="beforeInteractive" />
       <script type="text/javascript" src="https://accounts.google.com/gsi/client"></script>
       <Script src={`${basePath}/js/tracker-config.js`} strategy="beforeInteractive" />
-      <Script src={`${basePath}/js/tracker-util.js`} strategy="beforeInteractive" />
       <Script src={`${basePath}/js/showcase.js`} strategy="beforeInteractive" />
+      <Script src={`${basePath}/js/tracker-util.js`} strategy="beforeInteractive" />
       <Script src={`${basePath}/js/tracker.js`} strategy="beforeInteractive" />
       <Script src={`${basePath}/js/showdown-1.9.1.min.js`} strategy="beforeInteractive" />
       <Script src={`${basePath}/js/bootstrap.min.js`} strategy="beforeInteractive" />
