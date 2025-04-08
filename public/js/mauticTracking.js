@@ -12,4 +12,5 @@ console.log("mauticTracking.js loaded");
   a.src = u;
   m.parentNode.insertBefore(a, m);
 })(window, document, "script", mauticSrc + "/mtc.js", "mt");
-console.log("Mautic tracking script loaded", mt);
+reWriteUrlsAndTrackPageView();
+console.log("Mautic tracking script loaded - mt", mt);
