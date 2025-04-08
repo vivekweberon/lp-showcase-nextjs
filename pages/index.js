@@ -35,7 +35,7 @@ export async function getStaticProps() {
     const effectiveHomeData = getEffectiveData(homeData, siteToBeBuilt);
 
     if (!globalData.siteName.includes(String(siteToBeBuilt).trim())) {
-      console.error(`Skipping global data "${siteToBeBuilt}" not found in global/data.yaml`);
+      console.error(`Skipping global data, "${siteToBeBuilt}" not found in global/data.yaml`);
       return { notFound: true };
     }
 
@@ -81,8 +81,8 @@ function HomePage({ homeData }) {
   } else {
     sections = [
         addShowcase(showcase),
-        addRealtor(realtor),
-        addContact(contact) 
+        addContact(contact),
+        addRealtor(realtor)
       ];
   }
 

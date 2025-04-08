@@ -103,11 +103,11 @@ const PropertyPage = ({ propertyData, images }) => {
         addHome(home),
         addVirtualTour(virtualTour),
         addPriceAndFeatures(priceAndFeatures),
+        addDescription(description),
         addPhotos(photos),
         addVideo(video),
         addContact(contact),
-        addRealtor(realtor),
-        addDescription(description),
+        addRealtor(realtor)
       ];}
 
   function addMenuItem(menu) {
