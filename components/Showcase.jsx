@@ -1,5 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
 import { basePath } from "@/next.config.js";
 
 const Showcase = ({ showcase }) => {
@@ -12,8 +11,6 @@ const Showcase = ({ showcase }) => {
       style={{
         paddingTop: "50px",
         paddingBottom: "50px",
-        paddingLeft: "30px", // Add padding here
-        paddingRight: "30px", // Add padding here
       }}
     >
       <div className="row">
@@ -40,7 +37,7 @@ const Showcase = ({ showcase }) => {
                   ${basePath + "/" + "data" + "/" + property.listingPageURL + "/" + property.url}?width=1600 1600w,
                   ${basePath + "/" + "data" + "/" + property.listingPageURL + "/" + property.url}?width=1920 1920w
                 `}
-                sizes="(max-width: 600px) 576px, (max-width: 768px) 768px, (max-width: 992px) 992px, (max-width: 1200px) 1200px, (max-width: 1400px) 1400px, (max-width: 1600px) 1600px, (max-width: 1920px) 1920px, 2000px"
+                sizes="(max-width: 575px) 100vw, (max-width: 767px) 50vw, (max-width: 991px) 33.33vw, 25vw"
                 src={`${basePath + "/" + property.listingPageURL + "/" + property.url}?width=1920`}
                 alt="Property"
                 className="card-img-top"
@@ -70,23 +67,6 @@ const Showcase = ({ showcase }) => {
       </div>
     </div>
   );
-};
-
-Showcase.propTypes = {
-  showcase: PropTypes.shape({
-    properties: PropTypes.arrayOf(
-      PropTypes.shape({
-        url: PropTypes.string.isRequired,
-        addressLine1: PropTypes.string.isRequired,
-        addressLine2: PropTypes.string.isRequired,
-        bedsAndBaths: PropTypes.string.isRequired,
-        price: PropTypes.string.isRequired,
-        listingPageURL: PropTypes.string.isRequired,
-      })
-    ).isRequired,
-    sectionTitle: PropTypes.string.isRequired,
-    menu: PropTypes.string,
-  }).isRequired,
 };
 
 export default Showcase;
