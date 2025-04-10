@@ -182,10 +182,17 @@ const PropertyPage = ({ propertyData, images }) => {
   function addContact(contact) {
     if (!contact) return null;
     addMenuItem(contact.menu);
-    if (contact.mauticForm.popupForm.enable === false) {
-      return <EmbeddedForm contact={contact} key='contact' />;
-    } else {
-      return <PopupForm contact={contact} key='popupForm'  />;
+    let form = contact.mauticForm;
+    if (form){
+      if (form.popupForm){
+        return form.popupForm.enable === false
+          ? <EmbeddedForm key='contact' contact={contact} />
+          : <PopupForm key='contact' contact={contact} />;
+      }else{
+        return <EmbeddedForm key='contact' contact={contact} />
+      }
+    }else{
+      return null;
     }
   }
 
