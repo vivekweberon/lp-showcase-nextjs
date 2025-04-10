@@ -159,12 +159,12 @@ function addContact(contact) {
       <Script src={`${basePath}/js/tracker.js`} strategy="beforeInteractive" />
       <Script src={`${basePath}/js/showdown-1.9.1.min.js`} strategy="beforeInteractive" />
       <Script src={`${basePath}/js/bootstrap.min.js`} strategy="beforeInteractive" />
+      <Script src={`${basePath}/js/mauticTracking.js`} strategy="beforeInteractive" />
 
       <Navbar menu={menuItems} />
       {sections}
       {chatbot.enable && <ChatBot />}
       <Footer menu={menuItems} text={footertext} />
-      <Script src={`${basePath}/js/mauticTracking.js`} />
     </>
   );
 }

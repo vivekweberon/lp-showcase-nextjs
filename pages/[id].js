@@ -244,6 +244,7 @@ const PropertyPage = ({ propertyData, images }) => {
       {/* <Script src={`${basePath}/js/ytvideo.js`} strategy="beforeInteractive" /> */}
       <script src={`${basePath}/js/ytvideo.js`} ></script>
       <script src="https://www.youtube.com/iframe_api" ></script>
+      <Script src={`${basePath}/js/mauticTracking.js`} strategy="beforeInteractive" />
 
       <Navbar menu={menuItems} forwardedRef={navbarRef} />
       {sections}
@@ -252,7 +253,6 @@ const PropertyPage = ({ propertyData, images }) => {
       )}
       <Footer menu={menuItems} text={footertext} />
       {chatbot.enable && <ChatBot />}
-      <Script src={`${basePath}/js/mauticTracking.js`} />
     </div>
   );
 };
