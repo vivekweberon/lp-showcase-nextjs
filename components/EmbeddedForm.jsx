@@ -1,5 +1,5 @@
 import Script from "next/script";
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 
 const EmbeddedForm = ({ contact}) => {
   const {menu, mauticForm, sectionTitle } = contact;
