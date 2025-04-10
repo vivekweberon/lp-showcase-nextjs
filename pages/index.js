@@ -117,7 +117,6 @@ function addRealtor(realtor) {
 
 function addContact(contact) {
   if (!contact) return null;
-  addMenuItem(contact.menu);
   let form = contact.mauticForm;
   if (form){
     if (form.popupForm){
@@ -125,6 +124,7 @@ function addContact(contact) {
         ? <EmbeddedForm key='contact' contact={contact} />
         : <PopupForm key='contact' contact={contact} />;
     }else{
+      addMenuItem(contact.menu);
       return <EmbeddedForm key='contact' contact={contact} />
     }
   }else{

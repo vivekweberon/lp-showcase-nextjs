@@ -3,19 +3,18 @@ import Script from "next/script";
 import React, { useEffect } from "react";
 
 const Contact = ({ contact }) => {
+    const { mauticForm } = contact;
+
     useEffect(() => {
-        const { mauticForm } = contact;
         setMauticForms(mauticForm.formSetName);
         setEmailFormHeader(mauticForm.emailFormHeader);
         setPhoneFormHeader(mauticForm.phoneFormHeader);
-        enablePopupForm(popupForm.x, popupForm.y, popupForm.z);
+        enablePopupForm(mauticForm.popupForm.x, mauticForm.popupForm.y, mauticForm.popupForm.z);
         loadForm("lpContent");
-    }, [contact]);
+    }, []);
 
     return (
         <>
-
-            {/* Added markup here */}
             <div id="lpModal" className="cmodal">
                 <div id="lpContent" className="cmodal-content">
                     <span id="lpClose" className="close">
@@ -23,8 +22,7 @@ const Contact = ({ contact }) => {
                     </span>
                 </div>
             </div>
-            {/* End of added markup */}
-            {/* <Script>{`let page = "lp"`}</Script> */}
+            <Script strategy="beforeInteractive">{`var page = "${mauticForm.pageType}"`}</Script>
         </>
     );
 };
