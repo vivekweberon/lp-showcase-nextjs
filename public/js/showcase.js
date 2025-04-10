@@ -1,11 +1,12 @@
 console.log("showcase.js loaded");
 let controlVideos = false;
 let reports;
+const END_OF_FORM_HEADER = "Thank you for submitting the form. We will be in touch with you shortly."
 
 function updateEndOfFormHeader(){
   let formHeader = document.getElementById("msg");
   if(formHeader){
-    formHeader.innerHTML = "Thank you for submitting the form. We will be in touch with you shortly.";
+    formHeader.innerHTML = END_OF_FORM_HEADER;
   }
 }
 
