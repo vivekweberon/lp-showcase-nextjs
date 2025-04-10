@@ -53,7 +53,7 @@ const EmbeddedForm = ({ contact}) => {
           ></div>
         </div>
       </div>
-      <Script>{`let page = ${contact.mauticForm.pageType}`}</Script>
+      <Script>{`var page = ${contact.mauticForm.pageType}`}</Script>
     </>
   );
 };
