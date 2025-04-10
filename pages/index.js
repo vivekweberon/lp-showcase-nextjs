@@ -8,7 +8,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Showcase from "@/components/Showcase";
 import Realtor from "@/components/Realtor";
-import Contact from "@/components/Contact";
+import EmbeddedForm from "@/components/EmbeddedForm";
 import PopupForm from "@/components/PopupForm";
 import ChatBot from "@/components/ChatBot";
 
@@ -118,9 +118,18 @@ function addRealtor(realtor) {
 function addContact(contact) {
   if (!contact) return null;
   addMenuItem(contact.menu);
-  return contact.mauticForm?.popupForm?.enable === false
-    ? <Contact key='contact' contact={contact} />
-    : <PopupForm key='popupForm' contact={contact} />;
+  let form = contact.mauticForm;
+  if (form){
+    if (form.popupForm){
+      return form.popupForm.enable === false
+        ? <EmbeddedForm key='contact' contact={contact} />
+        : <PopupForm key='contact' contact={contact} />;
+    }else{
+      return <EmbeddedForm key='contact' contact={contact} />
+    }
+  }else{
+    return null;
+  }
 }
 
   return (

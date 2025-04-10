@@ -13,7 +13,7 @@ import PriceAndFeatures from "@/components/PriceAndFeatures";
 import Photos from "@/components/Photos";
 import Video from "@/components/Video";
 import VirtualTour from "@/components/VirtualTour";
-import Contact from "@/components/Contact";
+import EmbeddedForm from "@/components/EmbeddedForm";
 import Realtor from "@/components/Realtor";
 import Description from "@/components/Description";
 import PopupForm from "@/components/PopupForm";
@@ -183,7 +183,7 @@ const PropertyPage = ({ propertyData, images }) => {
     if (!contact) return null;
     addMenuItem(contact.menu);
     if (contact.mauticForm.popupForm.enable === false) {
-      return <Contact contact={contact} key='contact' />;
+      return <EmbeddedForm contact={contact} key='contact' />;
     } else {
       return <PopupForm contact={contact} key='popupForm'  />;
     }
