@@ -58,7 +58,7 @@ const Realtor = ({ realtor }) => {
         className="row no-gutters justify-content-center"
         style={{ marginTop: "20px" }}
       >
-			  <div className="col-12" style={{textAlign: center}}> 
+			  <div className="col-12" style={{textAlign: "center"}}> 
 			    <h3 id="rFooterText"><a id="rFooterLink" href={rFooterLink} style={{color: darkblue, textDecoration: underline}}>{rFooterLinkText}</a></h3>
 		    </div>
 			</div>
