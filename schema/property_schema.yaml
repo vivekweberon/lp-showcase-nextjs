@@ -65,6 +65,29 @@ homePageData:
     type: string
   listingPageURL:
     type: string
+contact:
+  menu:
+    type: string
+  sectionTitle:
+    type: string
+  mauticForm:
+    formSetName:
+      type: string
+    emailFormHeader: 
+      type: string
+    phoneFormHeader: 
+      type: string
+    popupForm:
+      enable:
+        type: boolean
+      x:
+        type: number
+      y:
+        type: number
+      z:
+        type: number
+    pageType:
+      type: string
 chatbot:
   enable:
     type: boolean
