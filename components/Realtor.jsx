@@ -22,9 +22,9 @@ const Realtor = ({ realtor }) => {
         <div className="col-8 col-sm-4 col-lg-3" style={{ marginTop: "20px" }}>
           <img
             id="rImage"
-            srcSet={`${basePath + "/" + photo}?width=360 360w, ${basePath + "/" + photo}?width=576 576w, ${basePath + "/" + photo}?width=768 768w, ${basePath + "/" + photo}?width=992 992w, ${basePath + "/" + photo}?width=1200 1200w, ${basePath + "/" + photo}?width=1400 1400w, ${basePath + "/" + photo}?width=1600 1600w, ${basePath + "/" + photo}?width=1920 1920w`}
+            srcSet={`${basePath + photo}?width=360 360w, ${basePath + photo}?width=576 576w, ${basePath + photo}?width=768 768w, ${basePath + photo}?width=992 992w, ${basePath + photo}?width=1200 1200w, ${basePath + photo}?width=1400 1400w, ${basePath + photo}?width=1600 1600w, ${basePath + photo}?width=1920 1920w`}
             sizes="(max-width: 360px) 360px, (max-width: 575px) 540px, 30vw"
-            src={`${basePath + "/" + photo}?width=1920`}
+            src={`${basePath + photo}?width=1920`}
             style={{ width: "100%" }}
             alt={name}
           />
@@ -47,7 +47,7 @@ const Realtor = ({ realtor }) => {
           </h3>
           <img
             id="rLogo"
-            src={basePath + "/" + logo}
+            src={basePath + logo}
             alt="Logo"
             style={{ width: "50%" }}
           />
