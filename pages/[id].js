@@ -1,4 +1,3 @@
-"use client";
 import React, { useState, useRef, useEffect } from "react";
 import { basePath } from "@/next.config";
 import Head from "next/head";
@@ -19,7 +18,6 @@ import Description from "@/components/Description";
 import PopupForm from "@/components/PopupForm";
 import Modal from "@/components/Modal";
 import ChatBot from "@/components/ChatBot";
-// import { runValidation } from "@/utils/inCodeValidation";
 import { loadYamlFile, getEffectiveData, addGlobalData } from "../utils/dataUtils";
 import Script from "next/script";
 
@@ -181,7 +179,6 @@ const PropertyPage = ({ propertyData, images }) => {
 
   function addContact(contact) {
     if (!contact) return null;
-    addMenuItem(contact.menu);
     let form = contact.mauticForm;
     if (form){
       if (form.popupForm){
@@ -189,6 +186,7 @@ const PropertyPage = ({ propertyData, images }) => {
           ? <EmbeddedForm key='contact' contact={contact} />
           : <PopupForm key='contact' contact={contact} />;
       }else{
+        addMenuItem(contact.menu);
         return <EmbeddedForm key='contact' contact={contact} />
       }
     }else{
@@ -260,7 +258,6 @@ const PropertyPage = ({ propertyData, images }) => {
 export async function getStaticPaths() {
   console.log("Property page getStaticPaths called");
   const dataFolderPath = path.join(process.cwd(), "data");
-  // const errorMessagePath = path.join(process.cwd(), "messages", "errorMessage.json");
   const siteToBeBuilt = process.env.siteName;
   console.log("siteToBeBuilt: Property page", siteToBeBuilt);
   try {

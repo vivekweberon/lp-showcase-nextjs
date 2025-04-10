@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import Script from "next/script";
 import React, { useEffect } from "react";
 
