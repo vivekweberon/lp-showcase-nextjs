@@ -53,12 +53,11 @@ export async function getStaticProps() {
 
     const homeDataFinal = addGlobalData(effectiveGlobalData, effectiveHomeData);
     console.log("Home Data:", homeDataFinal);
-    // return {
-    //   props: {
-    //     homeData: homeDataFinal,
-    //   },
-    // };
-    return { props: { homeData: {} } };
+    return {
+      props: {
+        homeData: homeDataFinal,
+      },
+    };
   } catch (error) {
     console.error("Error loading data:", error);
     return { props: { homeData: {} } };

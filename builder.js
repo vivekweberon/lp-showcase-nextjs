@@ -48,12 +48,6 @@ const argv = yargs
     type: 'string',
     default: 'public'
   })
-  .option('buildCmd', {
-    alias: 'b',
-    describe: 'Command to build the project',
-    type: 'string',
-    default: 'npm run build'
-  })
   .help()
   .argv;
 
@@ -230,10 +224,7 @@ function moveDirectory(source, dest) {
 function runBuild() {
   return new Promise((resolve, reject) => {
     console.log("🚀 Starting project build...");
-    const child = exec(argv.buildCmd);
-
-    child.stdout.on('data', (data) => console.log(data.toString()));
-    child.stderr.on('data', (data) => console.error(data.toString()));
+    const child = exec('npm run build');
 
     child.on('close', (code) => {
       if (code === 0) {
