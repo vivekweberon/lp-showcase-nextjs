@@ -22,7 +22,6 @@ import { loadYamlFile, getEffectiveData, addGlobalData } from "../utils/dataUtil
 import Script from "next/script";
 
 const PropertyPage = ({ propertyData, images }) => {
-  console.log("Property page data:", propertyData); 
   const [modalUrl, setModalUrl] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const navbarRef = useRef(null);
@@ -278,9 +277,12 @@ export async function getStaticPaths() {
         }
       } catch (error) {
         console.error(`Error reading data.yaml for ${file}:`, error);
+        return {
+          paths: [],
+          fallback: false,
+        };
       }
     }
-
     return {
       paths,
       fallback: false,
@@ -312,8 +314,14 @@ export async function getStaticProps(context) {
     }
     
     const effectiveGlobalData = getEffectiveData(globalData, siteToBeBuilt);
-    
+    if (effectiveGlobalData.realtor.photo){
+      effectiveGlobalData.realtor.photo = `/data/global/images/${effectiveGlobalData.realtor.photo}`;
+    }
+    if (effectiveGlobalData.realtor.logo){
+      effectiveGlobalData.realtor.logo = `/data/global/images/${effectiveGlobalData.realtor.logo}`;
+    }
     const effectivePropertyData = getEffectiveData(propertyData, siteToBeBuilt);
+
     const mergedData = addGlobalData(effectiveGlobalData, effectivePropertyData);
     const imagesFolder = path.join(process.cwd(), "data", originalId, "images");
     const imageFiles = await fs.readdir(imagesFolder);

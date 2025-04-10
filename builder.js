@@ -153,7 +153,7 @@ function copyFoldersToPublic() {
 
   // Copy only the images folder from data/global to public/images
   const globalImagesDir = path.join(__dirname, argv.dataDir, 'global', 'images');
-  const publicImagesDir = path.join(__dirname, argv.publicDir, 'images');
+  const publicImagesDir = path.join(__dirname, argv.publicDir, 'data', 'global', 'images');
   try {
     if (fs.existsSync(publicImagesDir)) {
       fs.rmSync(publicImagesDir, { recursive: true, force: true });

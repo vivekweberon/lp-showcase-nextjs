@@ -22,7 +22,6 @@ export function getEffectiveData(parsedYaml, currentSiteName) {
   let effective = { ...parsedYaml };
   
   if (parsedYaml.siteSpecific && parsedYaml.siteSpecific[currentSiteName]) {
-    // Merge with site-specific data, allowing overrides
     effective = {
       ...effective,
       ...parsedYaml.siteSpecific[currentSiteName],

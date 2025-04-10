@@ -40,7 +40,13 @@ export async function getStaticProps() {
     }
 
     const effectiveGlobalData = getEffectiveData(globalData, siteToBeBuilt);
-
+    if (effectiveGlobalData.realtor.photo){
+      effectiveGlobalData.realtor.photo = `/data/global/images/${effectiveGlobalData.realtor.photo}`;
+    }
+    if (effectiveGlobalData.realtor.logo){
+      effectiveGlobalData.realtor.logo = `/data/global/images/${effectiveGlobalData.realtor.logo}`;
+    }
+    
     const propertiesHomePageData = await getpropertiesHomePageData(dataFolderPath, siteToBeBuilt);
     effectiveHomeData.showcase = effectiveHomeData.showcase || {};
     effectiveHomeData.showcase.properties = propertiesHomePageData;

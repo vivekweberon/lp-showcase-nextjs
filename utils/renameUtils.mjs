@@ -1,5 +1,3 @@
-// utils/renameUtils.mjs
-
 export function getPropertyOutputDirectoryName(inputDirName) {
   let ret = [];
   if (inputDirName && inputDirName != "") {
