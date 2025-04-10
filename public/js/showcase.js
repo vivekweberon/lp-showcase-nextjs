@@ -2,6 +2,13 @@ console.log("showcase.js loaded");
 let controlVideos = false;
 let reports;
 
+function updateEndOfFormHeader(){
+  let formHeader = document.getElementById("msg");
+  if(formHeader){
+    formHeader.innerHTML = "Thank you for submitting the form. We will be in touch with you shortly.";
+  }
+}
+
 function getPageID(){
   let pageID = getQueryParameter("id");
   pageID = (pageID) ? pageID : currentPageName;

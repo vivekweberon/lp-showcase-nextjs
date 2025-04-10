@@ -18,7 +18,7 @@ const EmbeddedForm = ({ contact}) => {
         let formLoadCheckInterval = setInterval(function(){
           if(isFormLoaded()){
             if(isEndOfForm()){
-              console.log("End of form reached");
+              updateEndOfFormHeader();
             }
             clearInterval(formLoadCheckInterval);
           }
