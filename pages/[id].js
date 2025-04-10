@@ -330,6 +330,7 @@ export async function getStaticProps(context) {
       props: {
         propertyData: mergedData,
         images: imageUrls,
+        listingPageURL: id,
       },
     };
   } catch (error) {
