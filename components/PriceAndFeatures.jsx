@@ -1,5 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
 
 const PriceAndFeatures = ({ priceAndFeatures }) => {
   const { title1, title2, beds, baths, homeType, sqft, yearBuilt, price, menu } =
@@ -17,70 +16,64 @@ const PriceAndFeatures = ({ priceAndFeatures }) => {
         </div>
       </div>
       <div className="row" style={{ margin: "auto", textAlign: "center" }}>
-        <div
+
+        {beds && <div
           id="pfBeds_c"
           className="col-6 col-sm-6 col-lg-4"
           style={{ marginTop: "50px" }}
         >
           <i className="fa fa-3x fa-bed"></i>
           <div id="pfBeds">{beds}</div>
-        </div>
-        <div
+        </div>}
+
+        {baths && <div
           id="pfBaths_c"
           className="col-6 col-sm-6 col-lg-4"
           style={{ marginTop: "50px" }}
         >
           <i className="fa fa-3x fa-bath"> </i>
           <div id="pfBaths">{baths}</div>
-        </div>
-        <div
+        </div>}
+
+        {homeType && <div
           id="pfHomeType_c"
           className="col-6 col-sm-6 col-lg-4"
           style={{ marginTop: "50px" }}
         >
           <i className="fa fa-3x fa-home"> </i>
           <div id="pfHomeType">{homeType}</div>
-        </div>
-        <div
+        </div>}
+
+        {sqft && <div
           id="pfSqft_c"
           className="col-6 col-sm-6 col-lg-4"
           style={{ marginTop: "50px" }}
         >
           <i className="fa fa-3x fa-building"> </i>
           <div id="pfSqft">{sqft}</div>
-        </div>
-        <div
+        </div>}
+
+        {yearBuilt && <div
           id="pfYearBuilt_c"
           className="col-6 col-sm-6 col-lg-4"
           style={{ marginTop: "50px" }}
         >
           <i className="fa fa-3x fa-calendar-week"> </i>
           <div id="pfYearBuilt">{yearBuilt}</div>
-        </div>
-        <div
+        </div>}
+
+        {price && <div
           id="pfPrice_c"
           className="col-6 col-sm-6 col-lg-4"
           style={{ marginTop: "50px" }}
         >
           <i className="fa fa-3x fa-dollar-sign"> </i>
           <div id="pfPrice">{price}</div>
-        </div>
+        </div>}
+
       </div>
     </div>
   );
-};
-
-PriceAndFeatures.propTypes = {
-  priceAndFeatures: PropTypes.shape({
-    title1: PropTypes.string.isRequired,
-    title2: PropTypes.string.isRequired,
-    beds: PropTypes.string.isRequired,
-    baths: PropTypes.string.isRequired,
-    homeType: PropTypes.string.isRequired,
-    sqft: PropTypes.string.isRequired,
-    yearBuilt: PropTypes.string.isRequired,
-    price: PropTypes.string.isRequired,
-  }).isRequired,
 };
 
 export default PriceAndFeatures;
