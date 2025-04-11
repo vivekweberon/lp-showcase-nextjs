@@ -9,7 +9,7 @@ const VirtualTour = ({ virtualTour }) => {
     setVirtualTourHeight();
     window.addEventListener("resize", setVirtualTourHeight);
 
-    return () => window.removeEventListener("resize", setVirtualTourHeight);
+    return () => window.removeEventListener("resize", setVirtualTourHeight());
   }, []);
 
   return (
