@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useRef } from "react";
 import { basePath } from "@/next.config";
 import Head from "next/head";
 import fs from "fs/promises";
@@ -23,8 +23,6 @@ import Script from "next/script";
 const PropertyPage = ({ propertyData, images }) => {
   
   const navbarRef = useRef(null);
-
-
 
   const {
     page,
@@ -104,7 +102,6 @@ const PropertyPage = ({ propertyData, images }) => {
       <VirtualTour
         key='virtualTour'
         virtualTour={virtualTour}
-        navbarRef={navbarRef}
       />
     );
   }
