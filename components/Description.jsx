@@ -1,10 +1,23 @@
 import React, { useEffect } from "react";
-import PropTypes from "prop-types";
+import Modal from "@/components/Modal";
 import MarkdownIt from "markdown-it";
 import MarkdownItAnchor from "markdown-it-anchor";
 
-const Description = ({ onLinkClick, description }) => {
+const Description = ({ description }) => {
   const { content, menu } = description;
+
+  const [modalUrl, setModalUrl] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+
+  const handleLinkClick = (url) => {
+    setModalUrl(url);
+    setShowModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
+
   useEffect(() => {
     const md = new MarkdownIt({
       html: true,
@@ -22,7 +35,7 @@ const Description = ({ onLinkClick, description }) => {
     const handleAnchorClick = (event) => {
       event.preventDefault();
       const url = event.target.href;
-      onLinkClick(url);
+      handleLinkClick(url);
     };
 
     const descriptionElement = document.getElementById("dContent");
@@ -43,7 +56,7 @@ const Description = ({ onLinkClick, description }) => {
         });
       }
     };
-  }, [content, onLinkClick]);
+  }, [content, handleLinkClick]);
 
   return (
     <div
@@ -66,7 +79,11 @@ const Description = ({ onLinkClick, description }) => {
           </p>
         </div>
       </div>
+      {showModal && (
+        <Modal clickedUrl={modalUrl} onCloseModal={handleCloseModal} />
+      )}
     </div>
+    
   );
 };
 

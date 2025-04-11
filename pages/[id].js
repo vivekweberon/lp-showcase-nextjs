@@ -16,24 +16,15 @@ import EmbeddedForm from "@/components/EmbeddedForm";
 import Realtor from "@/components/Realtor";
 import Description from "@/components/Description";
 import PopupForm from "@/components/PopupForm";
-import Modal from "@/components/Modal";
 import ChatBot from "@/components/ChatBot";
 import { loadYamlFile, getEffectiveData, addGlobalData } from "../utils/dataUtils";
 import Script from "next/script";
 
 const PropertyPage = ({ propertyData, images }) => {
-  const [modalUrl, setModalUrl] = useState(null);
-  const [showModal, setShowModal] = useState(false);
+  
   const navbarRef = useRef(null);
 
-  const handleLinkClick = (url) => {
-    setModalUrl(url);
-    setShowModal(true);
-  };
 
-  const handleCloseModal = () => {
-    setShowModal(false);
-  };
 
   const {
     page,
@@ -136,7 +127,6 @@ const PropertyPage = ({ propertyData, images }) => {
       <Description
         key='description'
         description={description}
-        onLinkClick={handleLinkClick}
       />
     );
   }
@@ -222,9 +212,6 @@ const PropertyPage = ({ propertyData, images }) => {
 
       <Navbar menu={menuItems} forwardedRef={navbarRef} />
       {sections}
-      {showModal && (
-        <Modal clickedUrl={modalUrl} onCloseModal={handleCloseModal} />
-      )}
       <Footer menu={menuItems} text={footertext} />
       {chatbot.enable && <ChatBot />}
     </div>

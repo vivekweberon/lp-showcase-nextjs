@@ -1,6 +1,4 @@
-/* eslint-disable prettier/prettier */
 import React, { useEffect, useRef } from "react";
-import PropTypes from "prop-types"; // Import PropTypes
 
 const Modal = ({ clickedUrl, onCloseModal }) => {
     const bodyRef = useRef(document.body);
