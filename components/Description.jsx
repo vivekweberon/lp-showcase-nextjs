@@ -1,7 +1,7 @@
 import Modal from "@/components/Modal";
 import MarkdownIt from "markdown-it";
 import MarkdownItAnchor from "markdown-it-anchor";
-import React from "react";
+import React, { useEffect } from "react";
 
 const Description = ({ description }) => {
   const { content, menu, sectionTitle } = description;
@@ -12,6 +12,14 @@ const Description = ({ description }) => {
   }).use(MarkdownItAnchor);
 
   const renderedContent = md.render(content);
+
+  useEffect(() => {
+    const descriptionElement = document.getElementById("dContent");
+    if (descriptionElement) {
+      descriptionElement.innerHTML = renderedContent;
+    }
+  },[]);
+
 
   return (
     <div
@@ -31,7 +39,6 @@ const Description = ({ description }) => {
       <div className="row justify-content-center">
         <div className="col-10">
           <p id="dContent">
-              {renderedContent}
           </p>
         </div>
       </div>
