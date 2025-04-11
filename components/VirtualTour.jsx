@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 
 const VirtualTour = ({ virtualTour }) => {
   const { title, sectionTitle, matterportID, menu } = virtualTour;
-  const [virtualTourHeight, setVirtualTourHeight] = useState();
 
   useEffect(() => {
+    console.log("VirtualTour useEffect");
     var virtualTourId = menu ? menu.replace(/\s/g, '').toLowerCase() : 'virtualtour'; 
     setVirtualTourHeight();
     window.addEventListener("resize", setVirtualTourHeight);
 
-    return () => window.removeEventListener("resize", setVirtualTourHeight());
+    return () => window.removeEventListener("resize", setVirtualTourHeight);
   }, []);
 
   return (
@@ -28,7 +28,7 @@ const VirtualTour = ({ virtualTour }) => {
         <div className="col-12">
           <object
             id="vtVideo"
-            style={{ width: "100%", height: virtualTourHeight }}
+            style={{ width: "100%", height:"100vh" }}
             data={`https://my.matterport.com/show/?m=${matterportID}`}
           ></object>
         </div>
