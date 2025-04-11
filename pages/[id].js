@@ -26,25 +26,6 @@ const PropertyPage = ({ propertyData, images }) => {
   const [showModal, setShowModal] = useState(false);
   const navbarRef = useRef(null);
 
-  // Flag for loading the YouTube API
-  // let ytAPIRequired = false;
-
-  // useEffect(() => {
-  //   console.log("Property page useEffect called");
-  //   // if (
-  //   //   propertyData?.home?.youtubeVideoID ||
-  //   //   propertyData?.video?.youtubeVideoID
-  //   // ) {
-  //   //   ytAPIRequired = true;
-  //   // }
-
-  //   // if (ytAPIRequired) {
-  //     console.log("Loading YouTube API", window.onYouTubeIframeAPIReady);
-  //     loadYoutubeIframeAPI();
-  //     console.log("YouTube API loaded");
-  //   // }
-  // }, [propertyData]);
-
   const handleLinkClick = (url) => {
     setModalUrl(url);
     setShowModal(true);
@@ -56,22 +37,22 @@ const PropertyPage = ({ propertyData, images }) => {
 
   const {
     page,
+    home,
+    virtualTour,
     priceAndFeatures,
+    description,
     photos,
     video,
-    virtualTour,
+    contact,
     realtor,
     footertext,
-    contact,
-    description,
-    home,
     chatbot,
     propertyPageSectionsOrder
   } = propertyData;
 
   let menuItems = [];
+  let sections;
 
-  let sections; 
   if (propertyPageSectionsOrder) {
     sections = propertyPageSectionsOrder.map((section) => {
         switch (section) {
@@ -114,6 +95,17 @@ const PropertyPage = ({ propertyData, images }) => {
     }
   }
 
+  function addHome(home) {
+    if (!home) return null;
+    addMenuItem(home.menu);
+    return (
+      <Home
+        key='home'
+        home={home}
+      />
+    );
+  }
+
   function addVirtualTour(virtualTour) {
     if (!virtualTour) return null;
     console.log("Virtual Tour:", virtualTour.menu);
@@ -127,19 +119,6 @@ const PropertyPage = ({ propertyData, images }) => {
     );
   }
 
-  function addHome(home) {
-    if (!home) return null;
-    addMenuItem(home.menu);
-    return (
-      <Home
-        key='home'
-        home={home}
-        navbarRef={navbarRef}
-      />
-    );
-}
-
-
   function addPriceAndFeatures(priceAndFeatures) {
     if (!priceAndFeatures) return null;
     addMenuItem(priceAndFeatures.menu);
@@ -147,6 +126,18 @@ const PropertyPage = ({ propertyData, images }) => {
       <PriceAndFeatures
         key='priceAndFeatures'
         priceAndFeatures={priceAndFeatures}
+      />
+    );
+  }
+
+  function addDescription(description) {
+    if (!description) return null;
+    addMenuItem(description.menu);
+    return (
+      <Description
+        key='description'
+        description={description}
+        onLinkClick={handleLinkClick}
       />
     );
   }
@@ -199,18 +190,6 @@ const PropertyPage = ({ propertyData, images }) => {
     return <Realtor key='realtor' realtor={realtor} />;
   }
 
-  function addDescription(description) {
-    if (!description) return null;
-    addMenuItem(description.menu);
-    return (
-      <Description
-        key='description'
-        description={description}
-        onLinkClick={handleLinkClick}
-      />
-    );
-  }
-
   return (
     <div>
       <Head>
@@ -238,9 +217,8 @@ const PropertyPage = ({ propertyData, images }) => {
       <Script src={`${basePath}/js/tracker.js`} strategy="beforeInteractive" />
       <Script src={`${basePath}/js/showdown-1.9.1.min.js`} strategy="beforeInteractive" />
       <Script src={`${basePath}/js/bootstrap.min.js`} strategy="beforeInteractive" />
-      {/* <Script src={`${basePath}/js/ytvideo.js`} strategy="beforeInteractive" /> */}
-      <script src={`${basePath}/js/ytvideo.js`} ></script>
-      <script src="https://www.youtube.com/iframe_api" ></script>
+      {(home.youtubeVideoID || video.youtubeVideoID) && <Script src={`${basePath}/js/ytvideo.js`} strategy="beforeInteractive" />}
+      {(home.youtubeVideoID || video.youtubeVideoID) && <script src="https://www.youtube.com/iframe_api" ></script>}
       <Script src={`${basePath}/js/mauticTracking.js`} strategy="beforeInteractive" />
 
       <Navbar menu={menuItems} forwardedRef={navbarRef} />
