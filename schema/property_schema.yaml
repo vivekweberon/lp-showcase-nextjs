@@ -40,6 +40,8 @@ virtualTour:
     type: string
   menu:
     type: string
+  sectionTitle:
+    type: string
 showcase:
   url:
     type: string
