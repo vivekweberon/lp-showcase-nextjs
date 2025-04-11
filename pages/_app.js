@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import "../styles/globals.css";
+import "../styles/lpStyle.css";
 
 function MyApp({ Component, pageProps }) {
   return (

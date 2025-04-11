@@ -108,7 +108,6 @@ const PropertyPage = ({ propertyData, images }) => {
 
   function addVirtualTour(virtualTour) {
     if (!virtualTour) return null;
-    console.log("Virtual Tour:", virtualTour.menu);
     addMenuItem(virtualTour.menu);
     return (
       <VirtualTour
