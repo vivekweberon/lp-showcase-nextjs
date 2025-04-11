@@ -5,7 +5,7 @@ const VirtualTour = ({ virtualTour }) => {
 
   useEffect(() => {
     console.log("VirtualTour useEffect");
-    var virtualTourId = menu ? menu.replace(/\s/g, '').toLowerCase() : 'virtualtour'; 
+    var virtualTourID = menu ? menu.replace(/\s/g, '').toLowerCase() : 'virtualtour'; 
     setVirtualTourHeight();
     window.addEventListener("resize", setVirtualTourHeight);
 
