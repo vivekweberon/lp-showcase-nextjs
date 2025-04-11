@@ -87,3 +87,15 @@ function setVirtualTourHeight(virtualTourID) {
     vtVideoHeight = windowHeight - navHeight - vtHeaderHeight;
     $('#vtVideo').height(vtVideoHeight+'px');
 }
+
+function openModal(url){
+  $('#modalIframe').attr('src', url);
+  $('#extLinkModal').modal();
+  $('#extLinkModal').css("padding-right", "0px");
+  
+  $('#extLinkModal').on('hidden.bs.modal', function (e){
+    $('#modalIframe').attr('src', '');
+    $('#modalLabel').text('');
+  })
+  return false;
+}
