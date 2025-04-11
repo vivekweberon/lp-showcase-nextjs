@@ -3,18 +3,21 @@ import React, { useEffect } from "react";
 const VirtualTour = ({ virtualTour }) => {
   const { title, sectionTitle, matterportID, menu } = virtualTour;
 
-  useEffect(() => {
-    console.log("VirtualTour useEffect");
-    var virtualTourID = menu ? menu.replace(/\s/g, '').toLowerCase() : 'virtualtour'; 
-    setVirtualTourHeight();
-    window.addEventListener("resize", setVirtualTourHeight);
+  const virtualTourID = menu ? menu.replace(/\s/g, '').toLowerCase() : 'virtualtour';
 
-    return () => window.removeEventListener("resize", setVirtualTourHeight);
+  useEffect(() => {
+    setVirtualTourHeight(virtualTourID);
+    function setVTHeight (){
+      setVirtualTourHeight(virtualTourID);
+    }
+    window.addEventListener("resize", setVTHeight);
+
+    return () => window.removeEventListener("resize", setVTHeight);
   }, []);
 
   return (
     <div
-      id={menu ? menu.replace(/\s/g, '').toLowerCase() : 'virtualtour'}     
+      id={virtualTourID}     
       className="container-fluid"
       style={{ paddingTop: "50px", paddingBottom: "50px" }}
     >

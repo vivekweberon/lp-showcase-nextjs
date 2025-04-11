@@ -80,14 +80,12 @@ function setAreaCodeRegEx(){
   })
 }
 
-function setVirtualTourHeight() {
-    console.log("Setting Virtual Tour Height");
+function setVirtualTourHeight(virtualTourID) {
     let navHeight = $('#nav').outerHeight();
-    let vtHeight = $(virtualTourID).outerHeight();
+    let vtHeight = $(document.getElementById(virtualTourID)).outerHeight();
     let vtVideoHeight = $('#vtVideo').outerHeight();
     let windowHeight = $(window).height();
     let vtHeaderHeight = vtHeight - vtVideoHeight - 100;
     vtVideoHeight = windowHeight - navHeight - vtHeaderHeight;
-    console.log("vtHeaderHeight", vtHeaderHeight);
     $('#vtVideo').height(vtVideoHeight+'px');
 }
