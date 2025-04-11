@@ -60,10 +60,8 @@ function enablePopupForm(x, y, z, cv){
 function setAreaCodeRegEx(){
   console.log("Setting area code regex");
   let areaCodes = "js/areacodes.json";
-  let path = window.location.pathname;
-  path = decodeURIComponent(path);
-  areaCodes = ((path.endsWith("/"))||(path.endsWith("index.html"))) ? areaCodes : (path + "/" + areaCodes);
-  $.getJSON(areaCodes)
+  let path = (window.location.pathname.split('/').length) == 3 ? areaCodes : "../" + areaCodes;
+  $.getJSON(path)
   .done(function(data){
     if(data){
       data.forEach(function(val){
