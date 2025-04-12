@@ -203,7 +203,7 @@ const PropertyPage = ({ propertyData, images }) => {
       {(home?.youtubeVideoID || video?.youtubeVideoID) && <script src="https://www.youtube.com/iframe_api" ></script>}
       <Script src={`${basePath}/js/mauticTracking.js`} strategy="beforeInteractive" />
 
-      <Navbar menu={menuItems} forwardedRef={navbarRef} />
+      <Navbar menu={menuItems} />
       {sections}
       <Footer menu={menuItems} text={footertext} />
       {chatbot?.enable && <ChatBot />}

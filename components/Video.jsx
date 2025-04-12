@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import PropTypes from "prop-types";
 
 const Video = ({ video }) => {
 
@@ -46,11 +45,6 @@ const Video = ({ video }) => {
       </div>
     </div>
   );
-};
-
-Video.propTypes = {
-  youtubeVideoID: PropTypes.string.isRequired,
-  navbarRef: PropTypes.object.isRequired,
 };
 
 export default Video;

@@ -1,8 +1,7 @@
 import React from "react";
 import { Nav, Navbar } from "react-bootstrap";
 
-function MyNavbar({ menu, forwardedRef }) {
-  console.log("MyNavbar", menu);
+function MyNavbar({ menu }) {
   return (
     <Navbar
       bg="dark"
@@ -11,7 +10,6 @@ function MyNavbar({ menu, forwardedRef }) {
       fixed="top"
       data-testid="navbar"
       id="nav"
-      ref={forwardedRef}
       style={{ padding: "8px 12px" }} // Add padding here
     >
       <Navbar.Toggle aria-controls="navbar-nav" />
