@@ -135,7 +135,6 @@ const PropertyPage = ({ propertyData, images }) => {
       <Photos
         key='photos'
         imageUrls={{ urls: images }}
-        navbarRef={navbarRef}
         photos={photos}
       />
     );

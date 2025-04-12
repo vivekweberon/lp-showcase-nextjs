@@ -99,3 +99,26 @@ function openModal(url){
   })
   return false;
 }
+
+function setCarouselHeight() {
+  let width  = getImageWidth();
+  let height = width/1.777;
+  $('#photosCarousel').height(height + 'px');
+  $('#photosCarousel').width(width + 'px');
+  $('.carousel-item img').width(width + 'px');
+  $('.carousel-item img').height(height + 'px');
+}
+
+function getImageWidth(){
+  //let windowHeight = $(window).height();
+  let windowHeight = window.innerHeight;
+  let windowWidth = $(window).width();
+  let navHeight = $('#nav').outerHeight();
+  let availHeight = windowHeight - navHeight - 20;
+  let width = availHeight * 1.777;
+  
+  if((width + 30) > windowWidth){
+    width = windowWidth - 30;
+  }
+  return width;
+}

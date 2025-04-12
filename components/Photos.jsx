@@ -1,36 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import Carousel from "react-bootstrap/Carousel";
 import { basePath } from "@/next.config.js";
 
-const Photos = ({ navbarRef, imageUrls, photos }) => {
+const Photos = ({ imageUrls, photos }) => {
 
   const { menu, sectionTitle } = photos;
 
-  const [carouselHeight, setCarouselHeight] = useState();
-  const [imageWidth, setImageWidth] = useState();
-
   useEffect(() => {
-    function getImageWidth() {
-      const windowHeight = window.innerHeight;
-      const windowWidth = window.innerWidth;
-      const navHeight = navbarRef.current.clientHeight;
-      const availHeight = windowHeight - navHeight - 20;
-      let width = availHeight * 1.777;
-      if (width + 30 > windowWidth) {
-        width = windowWidth - 30;
-      }
-      return width + "px";
-    }
-    function setCarouselDimensions() {
-      const width = getImageWidth();
-      const height = parseFloat(width) / 1.777 + "px";
-      setCarouselHeight(height);
-      setImageWidth(width);
-    }
-    setCarouselDimensions();
-    window.addEventListener("resize", setCarouselDimensions);
+    setCarouselHeight();
+    window.addEventListener("resize", setCarouselHeight);
     return () => {
-      window.removeEventListener("resize", setCarouselDimensions);
+      window.removeEventListener("resize", setCarouselHeight);
     };
   }, []);
 
@@ -49,12 +29,12 @@ const Photos = ({ navbarRef, imageUrls, photos }) => {
       <div className="row">
         <div className="col-12">
           <Carousel
+            slide={false}
+            interval={null}
             id="photosCarousel"
-            className="carousel slide"
+            className="carousel"
             style={{
               backgroundColor: "black",
-              width: imageWidth,
-              height: carouselHeight,
               margin: "auto",
             }}
           >
