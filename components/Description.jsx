@@ -6,20 +6,36 @@ import React, { useEffect } from "react";
 const Description = ({ description }) => {
   const { content, menu, sectionTitle } = description;
 
+  const processedContent = content.replace(
+    /\[([^\]]+)\]\(javascript:openModal\('([^']+)'\)\)/g,
+    (match, text, url) => `[${text}](${url})`
+  );
+
   const md = new MarkdownIt({
     html: true,
     breaks: true,
   }).use(MarkdownItAnchor);
 
-  const renderedContent = md.render(content);
+  const renderedContent = md.render(processedContent);
 
   useEffect(() => {
     const descriptionElement = document.getElementById("dContent");
     if (descriptionElement) {
-      descriptionElement.innerHTML = renderedContent;
-    }
-  },[]);
 
+      descriptionElement.innerHTML = renderedContent;
+
+      const handleAnchorClick = (event) => {
+        event.preventDefault();
+        const url = event.target.getAttribute("href");
+        openModal(url);
+      };
+
+      const anchors = descriptionElement.getElementsByTagName("a");
+      Array.from(anchors).forEach((anchor) => {
+        anchor.addEventListener("click", handleAnchorClick);
+      });
+    }
+  }, []);
 
   return (
     <div
@@ -33,18 +49,16 @@ const Description = ({ description }) => {
     >
       <div className="row justify-content-center">
         <div className="col-10" style={{ textAlign: "center" }}>
-          <h1 id="descriptionST"> {sectionTitle} </h1>
+          <h1 id="descriptionST">{sectionTitle}</h1>
         </div>
       </div>
       <div className="row justify-content-center">
         <div className="col-10">
-          <p id="dContent">
-          </p>
+          <p id="dContent"></p>
         </div>
       </div>
       <Modal />
     </div>
-    
   );
 };
 
