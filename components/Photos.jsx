@@ -57,7 +57,7 @@ const Photos = ({ imageUrls, photos }) => {
                     src={`${path}1920`}
                     className="d-block"
                     alt="Property"
-                    style={{ width: imageWidth, height: carouselHeight, objectFit: "contain" }}
+                    style={{ margin: "auto", objectFit: "contain" }}
                   />
                 </Carousel.Item>
               );
