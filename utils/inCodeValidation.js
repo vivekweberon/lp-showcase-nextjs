@@ -35,9 +35,6 @@ function runValidation() {
   }
 }
 
-/**
- * Validates the entire directory structure and its YAML files.
- */
 function validateDirectory(dataFolderPath) {
   let errors = "";
   let count = 0;
@@ -123,9 +120,6 @@ function validateDirectory(dataFolderPath) {
   return errors;
 }
 
-/**
- * Validates YAML files in a special directory (e.g., Global or Home).
- */
 function validateSpecialDirectory(dirPath, schemaMap, dirType, getCount, globalSections = []) {
   let errors = "";
   fs.readdirSync(dirPath).forEach((file) => {
@@ -144,9 +138,6 @@ function validateSpecialDirectory(dirPath, schemaMap, dirType, getCount, globalS
   return errors;
 }
 
-/**
- * Validates file keys and values against a provided schema.
- */
 function validateFileAgainstSchema(inputKeys, schemaMap, filePath, getCount) {
   let errors = "";
   const siteOverridesErrors = validateSiteOverrides(inputKeys, filePath, getCount);
@@ -182,9 +173,6 @@ function validateFileAgainstSchema(inputKeys, schemaMap, filePath, getCount) {
   return errors;
 }
 
-/**
- * Validates that the YAML data contains a valid order for sections.
- */
 function validateSectionsOrder(yamlData, filePath, getCount, globalSections = []) {
   let errors = "";
   const sectionsOrderKeys = ["propertyPageSectionsOrder", "homePageSectionsOrder"];
@@ -210,9 +198,6 @@ function validateSectionsOrder(yamlData, filePath, getCount, globalSections = []
   return errors;
 }
 
-/**
- * Validates the site-specific overrides in the YAML data.
- */
 function validateSiteOverrides(inputKeys, filePath, getCount) {
   let errorMsg = "";
 
@@ -220,7 +205,6 @@ function validateSiteOverrides(inputKeys, filePath, getCount) {
   const siteNameValue = inputKeys.get("siteName");
   if (!siteNameValue || (Array.isArray(siteNameValue) && siteNameValue.length === 0)) {
     errorMsg += `${getCount()} 'siteName' is missing or empty in file '${filePath}'\n`;
-    // Depending on your needs, you might return immediately or continue to check further.
     return errorMsg;
   }
   
@@ -247,10 +231,7 @@ function validateSiteOverrides(inputKeys, filePath, getCount) {
   return errorMsg;
 }
 
-// Helper Functions
-/**
- * Loads all schema files.
- */
+
 function loadSchemas() {
   const globalSchema = loadYAMLSchema(path.join(SCHEMA_DIR, GLOBAL_SCHEMA_FILE));
   const homeSchema = loadYAMLSchema(path.join(SCHEMA_DIR, HOME_SCHEMA_FILE));
@@ -262,17 +243,12 @@ function loadSchemas() {
   };
 }
 
-/**
- * Loads a single YAML schema file.
- */
 function loadYAMLSchema(filePath) {
   const fileContent = fs.readFileSync(filePath, "utf8");
   return fileContent ? yaml.load(fileContent) : {};
 }
 
-/**
- * Loads allowed global sections from the global data file.
- */
+
 function loadGlobalRootSections(dataFolderPath) {
   const globalDataPath = path.join(dataFolderPath, LP_GLOBAL_DIR, YAML_FILE_NAME);
   if (fs.existsSync(globalDataPath)) {
@@ -283,9 +259,7 @@ function loadGlobalRootSections(dataFolderPath) {
   return [];
 }
 
-/**
- * Recursively collects all keys and values from an input object.
- */
+
 function getAllKeysAndValues(inputData, keys = new Map(), ref = "") {
   if (inputData === undefined || inputData === null) return keys;
   if (Array.isArray(inputData)) {
@@ -306,9 +280,6 @@ function getAllKeysAndValues(inputData, keys = new Map(), ref = "") {
   return keys;
 }
 
-/**
- * Loads a YAML file and returns a flattened key-value map.
- */
 function getKeyValueMapFromYAML(filePath) {
   const fileContent = fs.readFileSync(filePath, "utf8");
   if (!fileContent) return new Map();
@@ -316,9 +287,6 @@ function getKeyValueMapFromYAML(filePath) {
   return getAllKeysAndValues(data);
 }
 
-/**
- * Retrieves a nested schema definition using a key path.
- */
 function getValueFromNestedSchema(schema, keyPath) {
   const parts = keyPath.split(".");
   let current = schema;

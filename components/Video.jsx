@@ -2,10 +2,12 @@ import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 
 const Video = ({ video, navbarRef }) => {
+
   const { youtubeVideoID, menu } = video;
+  
   const [videoHeight, setVideoHeight] = useState();
   const [videoWidth, setVideoWidth] = useState();
-  console.log("NavbarRef", navbarRef.current);
+  
   useEffect(() => {
     function getVideoDimensions() {
       const windowHeight = window.innerHeight;

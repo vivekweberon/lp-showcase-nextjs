@@ -3,8 +3,9 @@ import Carousel from "react-bootstrap/Carousel";
 import { basePath } from "@/next.config.js";
 
 const Photos = ({ navbarRef, imageUrls, photos }) => {
-  const { menu } = photos;
-  // console.log("IMAGEURLS", imageUrls);
+
+  const { menu, sectionTitle } = photos;
+
   const [carouselHeight, setCarouselHeight] = useState();
   const [imageWidth, setImageWidth] = useState();
 
@@ -31,7 +32,7 @@ const Photos = ({ navbarRef, imageUrls, photos }) => {
     return () => {
       window.removeEventListener("resize", setCarouselDimensions);
     };
-  }, [navbarRef]);
+  }, []);
 
   return (
     <div
@@ -41,9 +42,10 @@ const Photos = ({ navbarRef, imageUrls, photos }) => {
     >
       <div className="row">
         <div className="col-12" style={{ textAlign: "center" }}>
-          <h1 id="photosST">Photos</h1>
+          <h1 id="photosST">{sectionTitle}</h1>
         </div>
       </div>
+
       <div className="row">
         <div className="col-12">
           <Carousel
@@ -51,25 +53,35 @@ const Photos = ({ navbarRef, imageUrls, photos }) => {
             className="carousel slide"
             style={{
               backgroundColor: "black",
-              maxWidth: "100%",
               width: imageWidth,
               height: carouselHeight,
               margin: "auto",
             }}
-            interval={3000}
           >
-            {imageUrls.urls.map((url, index) => (
-              <Carousel.Item key={index}>
-                <img
-                  srcSet={`${basePath + url}?width=360 360w, ${basePath + url}?width=576 576w, ${basePath + url}?width=768 768w, ${basePath + url}?width=992 992w, ${basePath + url}?width=1200 1200w, ${basePath + url}?width=1400 1400w, ${basePath + url}?width=1600 1600w, ${basePath + url}?width=1920 1920w`}
-                  sizes="(max-width: 600px) 576px, (max-width: 768px) 768px, (max-width: 992px) 992px, (max-width: 1200px) 1200px, (max-width: 1400px) 1400px, (max-width: 1600px) 1600px, (max-width: 1920px) 1920px, 2000px"
-                  src={`${basePath + url}?width=1920`}
-                  className="d-block"
-                  alt={"Property"}
-                  style={{ width: imageWidth, height: carouselHeight }}
-                />
-              </Carousel.Item>
-            ))}
+            {imageUrls.urls.map((url, index) => {
+              const path = `${basePath}${url}?width=`;
+              return (
+                <Carousel.Item key={index}>
+                  <img
+                    srcSet={`
+                      ${path}360 360w,
+                      ${path}576 576w,
+                      ${path}768 768w,
+                      ${path}992 992w,
+                      ${path}1200 1200w,
+                      ${path}1400 1400w,
+                      ${path}1600 1600w,
+                      ${path}1920 1920w
+                    `}
+                    sizes="100vw"
+                    src={`${path}1920`}
+                    className="d-block"
+                    alt="Property"
+                    style={{ width: imageWidth, height: carouselHeight, objectFit: "contain" }}
+                  />
+                </Carousel.Item>
+              );
+            })}
           </Carousel>
         </div>
       </div>
