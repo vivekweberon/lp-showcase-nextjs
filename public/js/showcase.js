@@ -122,3 +122,24 @@ function getImageWidth(){
   }
   return width;
 }
+
+function addVideo(youtubeVideoID) {
+  if (youtubeVideoID) {
+    let videoURL = "https://www.youtube.com/embed/"+youtubeVideoID+"?rel=0&controls=1&autoplay=0&cc_load_policy=1&modestbranding=1&showinfo=0&playsinline=1&enablejsapi=1";
+    let origin = '&origin=' + encodeURIComponent('https://'+ window.location.hostname);
+    $('#video2').attr("src", videoURL + origin);
+  } 
+}
+
+function setVideoDimensions() {
+  const windowHeight = window.innerHeight;
+  const windowWidth = window.innerWidth;
+  const navHeight = $('#nav').outerHeight();
+  const availHeight = windowHeight - navHeight - 20;
+  let width = availHeight * 1.777;
+  if (width + 30 > windowWidth) {
+    width = windowWidth - 30;
+  }
+  let height = width / 1.777;
+  return { width: width + "px", height: height + "px" };
+}

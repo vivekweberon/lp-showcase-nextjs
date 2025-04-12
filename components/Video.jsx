@@ -1,40 +1,19 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 
-const Video = ({ video, navbarRef }) => {
+const Video = ({ video }) => {
 
-  const { youtubeVideoID, menu } = video;
-  
-  const [videoHeight, setVideoHeight] = useState();
-  const [videoWidth, setVideoWidth] = useState();
+  const { sectionTitle, youtubeVideoID, menu } = video;
   
   useEffect(() => {
-    function getVideoDimensions() {
-      const windowHeight = window.innerHeight;
-      const windowWidth = window.innerWidth;
-      const navHeight = navbarRef.current.clientHeight;
-      const availHeight = windowHeight - navHeight - 20;
-      let height = availHeight;
-      let width = height * 1.777;
-      if (width > windowWidth) {
-        width = windowWidth;
-        height = width / 1.777;
-      }
-      return { width: width + "px", height: height + "px" };
-    }
-
-    function setVideoDimensions() {
-      const { width, height } = getVideoDimensions();
-      setVideoWidth(width);
-      setVideoHeight(height);
-    }
-
+    addVideo(youtubeVideoID);
     setVideoDimensions();
+
     window.addEventListener("resize", setVideoDimensions);
     return () => {
       window.removeEventListener("resize", setVideoDimensions);
     };
-  }, [navbarRef]);
+  }, []);
 
   return (
     <div
@@ -48,7 +27,7 @@ const Video = ({ video, navbarRef }) => {
     >
       <div className="row">
         <div className="col-12" style={{ textAlign: "center" }}>
-          <h1 id="videoST">Video</h1>
+          <h1 id="videoST">{sectionTitle}</h1>
         </div>
       </div>
       <div className="row">
@@ -56,13 +35,11 @@ const Video = ({ video, navbarRef }) => {
           <iframe
             id="video2"
             style={{
-              width: videoWidth,
-              height: videoHeight,
-              margin: "auto",
-              maxWidth: "100%",
+              width: "80%",
+              height: "40vw",
             }}
-            src={`https://www.youtube.com/embed/${youtubeVideoID}?rel=0&controls=1&autoplay=0&cc_load_policy=1&modestbranding=1&showinfo=0&playsinline=1&enablejsapi=1&origin=https://ns-blue-weberealty.thrivebrokers.com/lp-showcase/`}
-            allowFullScreen
+            src=""
+            allow="fullscreen"
             title="Property Video"
           ></iframe>
         </div>

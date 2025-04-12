@@ -22,8 +22,6 @@ import Script from "next/script";
 
 const PropertyPage = ({ propertyData, images }) => {
   
-  const navbarRef = useRef(null);
-
   const {
     page,
     home,
@@ -147,7 +145,6 @@ const PropertyPage = ({ propertyData, images }) => {
       <Video
         key='video'
         video={video}
-        navbarRef={navbarRef}
       />
     );
   }
