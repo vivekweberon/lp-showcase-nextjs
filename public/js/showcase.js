@@ -1,4 +1,3 @@
-console.log("showcase.js loaded");
 let controlVideos = false;
 let reports;
 const END_OF_FORM_HEADER = "Thank you for submitting the form. We will be in touch with you shortly."
@@ -17,7 +16,6 @@ function getPageID(){
 }
 
 function reWriteUrlsAndTrackPageView() {
-  console.log("Rewriting URLs and tracking page view");
   reWriteURLS();
   trackParametersOnPageLoad();
 }
@@ -58,7 +56,6 @@ function enablePopupForm(x, y, z, cv){
 }
 
 function setAreaCodeRegEx(){
-  console.log("Setting area code regex");
   let areaCodes = "js/areacodes.json";
   let path = (window.location.pathname.split('/').length) == 3 ? areaCodes : "../" + areaCodes;
   $.getJSON(path)

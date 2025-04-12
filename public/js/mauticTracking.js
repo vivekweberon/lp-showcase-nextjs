@@ -1,4 +1,3 @@
-console.log("mauticTracking.js loaded");
 (function (w, d, t, u, n, a, m) {
   w["MauticTrackingObject"] = n;
   (w[n] =
@@ -13,4 +12,3 @@ console.log("mauticTracking.js loaded");
   m.parentNode.insertBefore(a, m);
 })(window, document, "script", mauticSrc + "/mtc.js", "mt");
 reWriteUrlsAndTrackPageView();
-console.log("Mautic tracking script loaded - mt", mt);

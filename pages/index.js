@@ -52,7 +52,6 @@ export async function getStaticProps() {
     effectiveHomeData.showcase.properties = propertiesHomePageData;
 
     const homeDataFinal = addGlobalData(effectiveGlobalData, effectiveHomeData);
-    console.log("Home Data:", homeDataFinal);
     return {
       props: {
         homeData: homeDataFinal,

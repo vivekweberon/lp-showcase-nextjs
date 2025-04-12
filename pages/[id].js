@@ -212,10 +212,8 @@ const PropertyPage = ({ propertyData, images }) => {
 };
 
 export async function getStaticPaths() {
-  console.log("Property page getStaticPaths called");
   const dataFolderPath = path.join(process.cwd(), "data");
   const siteToBeBuilt = process.env.siteName;
-  console.log("siteToBeBuilt: Property page", siteToBeBuilt);
   try {
     const files = await fs.readdir(dataFolderPath);
     const filteredFiles = files.filter(

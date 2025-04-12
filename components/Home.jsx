@@ -4,7 +4,6 @@ const Home = ({ home }) => {
   const {youtubeVideoID, videoStart, videoEnd, sectionTitle, menu } = home;
 
   useEffect(() => {
-    console.log("useEffect home");
     addBGVideo(youtubeVideoID, videoStart, videoEnd);
   })
 
