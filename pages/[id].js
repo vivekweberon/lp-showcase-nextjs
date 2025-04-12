@@ -200,13 +200,13 @@ const PropertyPage = ({ propertyData, images }) => {
       <Script src={`${basePath}/js/showdown-1.9.1.min.js`} strategy="beforeInteractive" />
       <Script src={`${basePath}/js/bootstrap.min.js`} strategy="beforeInteractive" />
       {(home?.youtubeVideoID || video?.youtubeVideoID) && <Script src={`${basePath}/js/ytvideo.js`} strategy="beforeInteractive" />}
-      {(home?.youtubeVideoID || video?.youtubeVideoID) && <script src="https://www.youtube.com/iframe_api" ></script>}
       <Script src={`${basePath}/js/mauticTracking.js`} strategy="beforeInteractive" />
 
       <Navbar menu={menuItems} />
       {sections}
       <Footer menu={menuItems} text={footertext} />
       {chatbot?.enable && <ChatBot />}
+      {(home?.youtubeVideoID || video?.youtubeVideoID) && <script src="https://www.youtube.com/iframe_api" ></script>}
     </div>
   );
 };
