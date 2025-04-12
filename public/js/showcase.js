@@ -141,5 +141,6 @@ function setVideoDimensions() {
     width = windowWidth - 30;
   }
   let height = width / 1.777;
-  return { width: width + "px", height: height + "px" };
+  $('#video2').width(width + 'px');
+  $('#video2').height(height + 'px');
 }
