@@ -125,9 +125,13 @@ function addContact(contact) {
   let form = contact.mauticForm;
   if (form){
     if (form.popupForm){
-      return form.popupForm.enable === false
-        ? <EmbeddedForm key='contact' contact={contact} />
-        : <PopupForm key='contact' contact={contact} />;
+      if (form.popupForm.enable === false)
+      {
+        addMenuItem(contact.menu);
+         return <EmbeddedForm key='contact' contact={contact} />
+      }else{
+        return <PopupForm key='contact' contact={contact} />;
+      }
     }else{
       addMenuItem(contact.menu);
       return <EmbeddedForm key='contact' contact={contact} />
