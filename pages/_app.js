@@ -1,9 +1,15 @@
 import React from "react";
-import "../styles/lpStyle.css";
+import { basePath } from "@/next.config";
 
 function MyApp({ Component, pageProps }) {
   return (
     <>
+      <Head>
+        <link
+          rel="stylesheet"
+          href={`${basePath}/css/lpStyle.css`}
+        />
+      </Head>
       <Component {...pageProps} />
     </>
   );

@@ -1,7 +1,7 @@
 import fs from "fs";
 import path from "path";
 import yaml from "js-yaml";
-import { getPropertyOutputDirectoryName } from "../utils/renameUtils.mjs";
+import { getPropertyOutputDirectoryName } from "./renameUtils.js";
 
 export const loadYamlFile = async (filePath) => {
   const fileData = await fs.promises.readFile(filePath, "utf-8");
