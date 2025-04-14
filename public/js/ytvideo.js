@@ -241,7 +241,7 @@ function addBGVideo(youtubeVideoID, videoStart, videoEnd) {
       if(videoEnd){
         videoURL += "&end="+videoEnd;
       }
-      $('#video1').attr("src", videoURL + origin);
+      $('#video1').attr("src", videoURL + '&origin=' + origin);
       
       $("#playSound").on('click', function(e){
         if (player.isMuted()) {

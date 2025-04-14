@@ -123,8 +123,7 @@ function getImageWidth(){
 function addVideo(youtubeVideoID) {
   if (youtubeVideoID) {
     let videoURL = "https://www.youtube.com/embed/"+youtubeVideoID+"?rel=0&controls=1&autoplay=0&cc_load_policy=1&modestbranding=1&showinfo=0&playsinline=1&enablejsapi=1";
-    let origin = '&origin=' + encodeURIComponent('https://'+ window.location.hostname);
-    $('#video2').attr("src", videoURL + origin);
+    $('#video2').attr("src", videoURL + '&origin=' + origin);
   } 
 }
 
