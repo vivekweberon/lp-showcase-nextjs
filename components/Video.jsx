@@ -5,6 +5,7 @@ const Video = ({ video }) => {
   const { sectionTitle, youtubeVideoID, menu } = video;
   
   useEffect(() => {
+    console.log("Video component mounted");
     addVideo(youtubeVideoID);
     setVideoDimensions();
 

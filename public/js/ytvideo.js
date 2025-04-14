@@ -9,7 +9,7 @@ let pausedByForm = false;
 let bgVideoStart = 0;
 
 function onYouTubeIframeAPIReady() {
-    console.log("YouTube API Ready");
+  console.log("YouTube API Ready");
   if (isVisible('home')) {
     console.log("Home is visible");
     player = new YT.Player('video1', {
@@ -21,6 +21,7 @@ function onYouTubeIframeAPIReady() {
     });
   }
   if (isVisible('video')) { 
+    console.log("Video is visible");
     player2 = new YT.Player('video2', {
       events: {
         'onStateChange': onPlayer2StateChange,
