@@ -185,7 +185,6 @@ copyWebsiteToGithubRepo() {
 # Call functions in the correct order
 setUPNodeJS
 installDependencies
-listDataFolderContents
 runBuilder
 checkForWebsiteType
 copyWebsiteToGithubRepo
