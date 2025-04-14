@@ -1,5 +1,6 @@
 import React from "react";
 import { basePath } from "@/next.config";
+import Head from "next/head";
 
 function MyApp({ Component, pageProps }) {
   return (
