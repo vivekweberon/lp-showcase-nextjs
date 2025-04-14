@@ -1,10 +1,11 @@
-import React, { useRef } from "react";
+import React from "react";
 import { basePath } from "@/next.config";
 import Head from "next/head";
 import fs from "fs/promises";
 import path from "path";
 import yaml from "js-yaml";
-import { getPropertyOutputDirectoryName } from "@/utils/renameUtils.js";
+import Script from "next/script";
+
 import Navbar from "@/components/Navbar";
 import Home from "@/components/Home";
 import Footer from "@/components/Footer";
@@ -17,8 +18,9 @@ import Realtor from "@/components/Realtor";
 import Description from "@/components/Description";
 import PopupForm from "@/components/PopupForm";
 import ChatBot from "@/components/ChatBot";
+
+import { getPropertyOutputDirectoryName } from "@/utils/renameUtils.js";
 import { loadYamlFile, getEffectiveData, addGlobalData } from "../utils/dataUtils";
-import Script from "next/script";
 
 const PropertyPage = ({ propertyData, images }) => {
   

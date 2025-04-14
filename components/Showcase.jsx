@@ -19,7 +19,9 @@ const Showcase = ({ showcase }) => {
         </div>
       </div>
       <div id="scGrid" className="row no-gutters justify-content-center">
-        {properties.map((property, index) => (
+      {properties.map((property, index) => {
+        const path = `${basePath}/data/${property.listingPageURL}/${property.url}?width=`;
+        return (
           <div
             className="col-sm-6 col-md-4 col-lg-3"
             style={{ padding: "2.5px" }}
@@ -28,17 +30,17 @@ const Showcase = ({ showcase }) => {
             <div className="card">
               <img
                 srcSet={`
-                  ${basePath + "/" + "data" + "/" + property.listingPageURL + "/" + property.url}?width=360 360w,
-                  ${basePath + "/" + "data" + "/" + property.listingPageURL + "/" + property.url}?width=576 576w,
-                  ${basePath + "/" + "data" + "/" + property.listingPageURL + "/" + property.url}?width=768 768w,
-                  ${basePath + "/" + "data" + "/" + property.listingPageURL + "/" + property.url}?width=992 992w,
-                  ${basePath + "/" + "data" + "/" + property.listingPageURL + "/" + property.url}?width=1200 1200w,
-                  ${basePath + "/" + "data" + "/" + property.listingPageURL + "/" + property.url}?width=1400 1400w,
-                  ${basePath + "/" + "data" + "/" + property.listingPageURL + "/" + property.url}?width=1600 1600w,
-                  ${basePath + "/" + "data" + "/" + property.listingPageURL + "/" + property.url}?width=1920 1920w
+                  ${path}360 360w,
+                  ${path}576 576w,
+                  ${path}768 768w,
+                  ${path}992 992w,
+                  ${path}1200 1200w,
+                  ${path}1400 1400w,
+                  ${path}1600 1600w,
+                  ${path}1920 1920w
                 `}
                 sizes="(max-width: 575px) 100vw, (max-width: 767px) 50vw, (max-width: 991px) 33.33vw, 25vw"
-                src={`${basePath + "/" + property.listingPageURL + "/" + property.url}?width=1920`}
+                src={`${path}1920`}
                 alt="Property"
                 className="card-img-top"
                 style={{ objectFit: "contain", width: "100%" }}
@@ -63,7 +65,8 @@ const Showcase = ({ showcase }) => {
               </div>
             </div>
           </div>
-        ))}
+        );
+      })}
       </div>
     </div>
   );

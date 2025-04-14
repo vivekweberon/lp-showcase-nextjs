@@ -2,8 +2,9 @@ import React from "react";
 import { basePath } from "@/next.config.js";
 
 const Realtor = ({ realtor }) => {
-  const { photo, name, company, id, phone, logo, sectionTitle, rFooterLink, rFooterLinkText, menu } = realtor;
+  const {  name, company, id, phone, logo, sectionTitle, rFooterLink, rFooterLinkText, menu } = realtor;
 
+  const path = `${basePath}${url}?width=`;
   return (
     <div
       id={menu ? menu.replace(/\s/g, '').toLowerCase() : 'realtor'}      
@@ -22,9 +23,18 @@ const Realtor = ({ realtor }) => {
         <div className="col-8 col-sm-4 col-lg-3" style={{ marginTop: "20px" }}>
           <img
             id="rImage"
-            srcSet={`${basePath + photo}?width=360 360w, ${basePath + photo}?width=576 576w, ${basePath + photo}?width=768 768w, ${basePath + photo}?width=992 992w, ${basePath + photo}?width=1200 1200w, ${basePath + photo}?width=1400 1400w, ${basePath + photo}?width=1600 1600w, ${basePath + photo}?width=1920 1920w`}
+            srcSet={`
+              ${path}360 360w, 
+              ${path}576 576w, 
+              ${path}768 768w, 
+              ${path}992 992w, 
+              ${path}1200 1200w, 
+              ${path}1400 1400w, 
+              ${path}1600 1600w, 
+              ${path}1920 1920w`
+            }
             sizes="(max-width: 360px) 360px, (max-width: 575px) 540px, 30vw"
-            src={`${basePath + photo}?width=1920`}
+            src={`${path}1920`}
             style={{ width: "100%" }}
             alt={name}
           />
