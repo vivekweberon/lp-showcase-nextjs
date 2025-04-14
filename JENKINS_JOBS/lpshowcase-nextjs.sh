@@ -80,16 +80,10 @@ installDependencies() {
     echoEnd "$processInfo"
 }
 
-# Function to print out the contents of the data folder
-listDataFolderContents() {
-    echo "Listing contents of the data folder:"
-    cd $WORKSPACE/data || { echo "Error: data directory does not exist"; exit 1; }
-    ls -l data
-}
-
 runBuilder() {
     echo "Running builder.js..."
-    cd $WORKSPACE/listing-pages-build-tool || { echo "Error: listing-pages-build-tool directory does not exist"; exit 1; }
+    cd $WORKSPACE/listing-pages-build-tool/ || { echo "Error: listing-pages-build-tool directory does not exist"; exit 1; }
+    installDependencies
     node builder.js --websiteName "$WEBSITE_DIRECTORY_NAME" --siteName "$siteName" --config "$config" --messagesDir "$messagesDir" --mauticTrackerDir "$mauticTrackerDir" --dataDir "$dataDir" --publicDir "$publicDir" --buildCmd "npm run build" || { echo "Error: builder.js execution failed"; exit 1; }
     echo "builder.js executed successfully."
 }
