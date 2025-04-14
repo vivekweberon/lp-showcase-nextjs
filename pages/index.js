@@ -18,9 +18,9 @@ const siteToBeBuilt = process.env.siteName;
 
 export async function getStaticProps() {
   try {
-    const homeDataFilePath = path.join(process.cwd(), "data", "home", "data.yaml");
-    const globalDataFilePath = path.join(process.cwd(), "data", "global", "data.yaml");
-    const dataFolderPath = path.join(process.cwd(), "data");
+    const homeDataFilePath = path.join(process.cwd(), "..", "data", "home", "data.yaml");
+    const globalDataFilePath = path.join(process.cwd(), "..", "data", "global", "data.yaml");
+    const dataFolderPath = path.join(process.cwd(), "..", "data");
 
     const [homeData, globalData] = await Promise.all([
       loadYamlFile(homeDataFilePath),
