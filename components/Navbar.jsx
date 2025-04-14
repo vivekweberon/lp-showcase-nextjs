@@ -8,9 +8,7 @@ function MyNavbar({ menu }) {
       variant="dark"
       expand="md"
       fixed="top"
-      data-testid="navbar"
       id="nav"
-      style={{ padding: "8px 12px" }} // Add padding here
     >
       <Navbar.Toggle aria-controls="navbar-nav" />
       <Navbar.Collapse id="navbar-nav" className="justify-content-center">

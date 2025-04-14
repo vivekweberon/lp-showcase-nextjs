@@ -1,5 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
 
 const Footer = ({ menu, text }) => {
   return (
@@ -21,10 +20,11 @@ const Footer = ({ menu, text }) => {
           return menuItem ? (
             <div
               key={menuItem}
-              className="col-6 col-sm-4 col-md-3 text-center"
-              style={{ textDecoration: "underline" }}
+              className="col-6 col-sm-4 col-md-3 "
+              style={{ textAlign: "center", textDecoration: "underline" }}
             >
               <a
+                className="nav-item nav-link"
                 href={`#${menuItem.replace(/\s/g, '').toLowerCase()}`}
                 style={{ color: "#212529" }}
               >
