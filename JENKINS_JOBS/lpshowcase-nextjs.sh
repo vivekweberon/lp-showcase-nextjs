@@ -73,6 +73,7 @@ setUPNodeJS() {
 
 # Function to install dependencies
 installDependencies() {
+    cd code-repo || { echo "Error: code-repo directory does not exist"; exit 1; }
     processInfo="Installing Dependencies"
     echoStart "$processInfo"
     npm install || { echo "Error: Dependency installation failed"; exit 1; }
