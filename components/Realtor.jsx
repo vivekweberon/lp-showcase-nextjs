@@ -2,9 +2,9 @@ import React from "react";
 import { basePath } from "@/next.config.js";
 
 const Realtor = ({ realtor }) => {
-  const {  name, company, id, phone, logo, sectionTitle, rFooterLink, rFooterLinkText, menu } = realtor;
+  const { photo, name, company, id, phone, logo, sectionTitle, rFooterLink, rFooterLinkText, menu } = realtor;
 
-  const path = `${basePath}${url}?width=`;
+  const path = `${basePath}${photo}?width=`;
   return (
     <div
       id={menu ? menu.replace(/\s/g, '').toLowerCase() : 'realtor'}      
