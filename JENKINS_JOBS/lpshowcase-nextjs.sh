@@ -14,6 +14,9 @@ git clone "https://$GITHUB_USERNAME:$GITHUB_TOKEN@github.com/vivekweberon/$WEBSI
 echo "Cloning Mautic tracker repository..."
 git clone "https://$GITHUB_USERNAME:$GITHUB_TOKEN@$MAUTIC_TRACKER"
 
+echo "Cloning build tool repository..."
+git clone "https://$GITHUB_USERNAME:$GITHUB_TOKEN@$BUILD_TOOL_REPO"
+
 echo "Repositories cloned successfully."
 
 # Print out the contents of the code repository

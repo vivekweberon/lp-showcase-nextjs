@@ -80,7 +80,5 @@ export const getpropertiesHomePageData = async (dataFolderPath, currentSiteName)
       console.error(`❌ Error processing ${dataYamlPath}`, error);
     }
   }
-
-  // console.log("Final Filtered Properties:", propertiesData);
   return propertiesData;
 };
