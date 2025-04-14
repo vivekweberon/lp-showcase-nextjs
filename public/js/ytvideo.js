@@ -9,9 +9,7 @@ let pausedByForm = false;
 let bgVideoStart = 0;
 
 function onYouTubeIframeAPIReady() {
-  console.log("YouTube API Ready");
-  if (isVisible('home')) {
-    console.log("Home is visible");
+  if (isAvailable('video1')) {
     player = new YT.Player('video1', {
       events: {
         'onReady': onPlayerReady,
@@ -20,8 +18,7 @@ function onYouTubeIframeAPIReady() {
       }
     });
   }
-  if (isVisible('video')) { 
-    console.log("Video is visible");
+  if (isAvailable('video2')) { 
     player2 = new YT.Player('video2', {
       events: {
         'onStateChange': onPlayer2StateChange,
@@ -70,12 +67,9 @@ function checkPlayerStateToRemoveHeaderAndFooter() {
 }
     
 function onPlayerReady(event) {
-    console.log("Control Videos",controlVideos)
   if((!controlVideos)||((controlVideos)&&(isEndOfForm()))){
-    console.log("Player Ready - PLay");
     player.playVideo();
   }else{
-    console.log("Player Ready - Paused");
     player.pauseVideo();
   }
   //checkPlayerStateToRemoveHeaderAndFooter();
@@ -152,20 +146,17 @@ function pauseVideo(iframePlayer) {
   }
 }
 
-function isVisible(sectionID) {
+function isAvailable(sectionID) {
   let ret = false;
   let element = document.getElementById(sectionID);
   if(element){
-    let display = element.style.display;
-    if (display != 'none') {
-      ret = true;
-    }
+    ret = true;
   }
   return ret;
 }
 
 function playVisibleVideos() {
-  if (isVisible('home')) { 
+  if (isAvailable('home')) { 
     if (isInViewport(document.getElementById("video1"))) {
       let action = document.getElementById("playSound").innerHTML;
       if (action != "Play Video"){
@@ -176,7 +167,7 @@ function playVisibleVideos() {
       pauseVideo(player);
     }
   }
-  if (isVisible('video')) { 
+  if (isAvailable('video')) { 
     if (isInViewport(document.getElementById("video2"))) {
       if (pausedByCode) {
         setVideoStateVariables(false, false, true, false);
@@ -231,7 +222,6 @@ function pauseVideosIfPlaying(){
 }
 
 function addBGVideo(youtubeVideoID, videoStart, videoEnd) {
-    console.log("Add BG Video");
     if (youtubeVideoID) {
       let videoURL = "https://www.youtube.com/embed/"+youtubeVideoID+"?controls=0&showinfo=0&disablekb=1&modestbranding=1&rel=0&autoplay=1&mute=1&playsinline=1&enablejsapi=1";
       if(videoStart){
@@ -264,3 +254,24 @@ function addBGVideo(youtubeVideoID, videoStart, videoEnd) {
       });
     }
   }
+
+function addVideo(youtubeVideoID) {
+  if (youtubeVideoID) {
+    let videoURL = "https://www.youtube.com/embed/"+youtubeVideoID+"?rel=0&controls=1&autoplay=0&cc_load_policy=1&modestbranding=1&showinfo=0&playsinline=1&enablejsapi=1";
+    $('#video2').attr("src", videoURL + '&origin=' + origin);
+  } 
+}
+
+function setVideoDimensions() {
+  const windowHeight = window.innerHeight;
+  const windowWidth = window.innerWidth;
+  const navHeight = $('#nav').outerHeight();
+  const availHeight = windowHeight - navHeight - 20;
+  let width = availHeight * 1.777;
+  if (width + 30 > windowWidth) {
+    width = windowWidth - 30;
+  }
+  let height = width / 1.777;
+  $('#video2').width(width + 'px');
+  $('#video2').height(height + 'px');
+}
