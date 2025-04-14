@@ -206,7 +206,7 @@ const PropertyPage = ({ propertyData, images }) => {
       {sections}
       <Footer menu={menuItems} text={footertext} />
       {chatbot?.enable && <ChatBot />}
-      {(home?.youtubeVideoID || video?.youtubeVideoID) && <script src="https://www.youtube.com/iframe_api" ></script>}
+      {(home?.youtubeVideoID || video?.youtubeVideoID) && <Script src="https://www.youtube.com/iframe_api" />}
     </div>
   );
 };
