@@ -142,14 +142,15 @@ copyWebsiteToGithubRepo() {
     cd final-repo || { echo "Error: Could not access final-repo directory"; exit 1; }
 
     for website in "${websiteArray[@]}"; do
-        website=$(echo $website | xargs)  # trim whitespace
-        if [ -d "$WORKSPACE/$website" ]; then
-            # Remove any existing copy in the final repo, then copy the website build
+        website=$(echo "$website" | xargs)  # Trim whitespace
+        # Now check for the website directory inside code-repo
+        if [ -d "$WORKSPACE/code-repo/$website" ]; then
+            # Remove any existing copy in final-repo, then copy the website build from code-repo
             rm -rf "$website"
-            cp -r "$WORKSPACE/$website" .
-            echo "Copied directory '$website' into final repo."
+            cp -r "$WORKSPACE/code-repo/$website" .
+            echo "Copied directory '$website' from code-repo to final repo."
         else
-            echo "Directory '$website' does not exist, skipping..."
+            echo "Directory '$website' does not exist under code-repo, skipping..."
         fi
     done
 
