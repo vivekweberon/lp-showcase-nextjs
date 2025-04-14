@@ -87,7 +87,8 @@ listDataFolderContents() {
 
 runBuilder() {
     echo "Running builder.js..."
-    node ./builder.js --websiteName "$WEBSITE_DIRECTORY_NAME" --siteName "$siteName" --config "$config" --messagesDir "$messagesDir" --mauticTrackerDir "$mauticTrackerDir" --dataDir "$dataDir" --publicDir "$publicDir" --buildCmd "npm run build" || { echo "Error: builder.js execution failed"; exit 1; }
+    cd listing-pages-build-tool
+    node builder.js --websiteName "$WEBSITE_DIRECTORY_NAME" --siteName "$siteName" --config "$config" --messagesDir "$messagesDir" --mauticTrackerDir "$mauticTrackerDir" --dataDir "$dataDir" --publicDir "$publicDir" --buildCmd "npm run build" || { echo "Error: builder.js execution failed"; exit 1; }
     echo "builder.js executed successfully."
 }
 
