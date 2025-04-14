@@ -156,6 +156,10 @@ function addContact(contact) {
           rel="stylesheet"
           href={`${basePath}/css/fa.min.css`}
         />
+        <link
+          rel="stylesheet"
+          href={`${basePath}/css/lpStyle.css`}
+        />
       </Head>
       <Script src={`${basePath}/js/rb-config.js`} strategy="beforeInteractive" />
       <Script src={`${basePath}/js/logger.js`} strategy="beforeInteractive" />
