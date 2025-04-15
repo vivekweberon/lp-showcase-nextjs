@@ -5,7 +5,7 @@ DATA_REPO_DIR="data-repo"
 MAUTIC_TRACKER_REPO_DIR="mautic-tracker-repo"
 BUILD_TOOL_REPO_DIR="build-tool-repo"
 DEPLOYMENT_REPO_DIR="deployment-repo"
-$OUTPUT_DIR="output"
+OUTPUT_DIR="output"
 
 cd "$WORKSPACE" || { echo "Error: Couldn't access workspace directory"; exit 1; }
 
