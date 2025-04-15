@@ -1,18 +1,18 @@
 #!/bin/bash
 
 echo "Cloning repositories..."
-echo "Input data repository: $WEBSITE_DATA_REPO"
+echo "Input data repository: $DATA_REPO"
 
 cd "$WORKSPACE" || { echo "Error: Couldn't access workspace directory"; exit 1; }
 
 echo "Cloning input data repository..."
-git clone "https://$GITHUB_USERNAME:$GITHUB_TOKEN@github.com/vivekweberon/$WEBSITE_DATA_REPO.git" data || { echo "Failed to clone input data repository"; exit 1; }
+git clone -b $DCS_DATA_REPO "https://$GITHUB_USERNAME:$GITHUB_TOKEN@github.com/vivekweberon/$DATA_REPO.git" data || { echo "Failed to clone input data repository"; exit 1; }
 
 echo "Cloning Mautic tracker repository..."
-git clone "https://$GITHUB_USERNAME:$GITHUB_TOKEN@$MAUTIC_TRACKER"
+git clone -b $DCS_MAUTIC_TRACKER_REPO "https://$GITHUB_USERNAME:$GITHUB_TOKEN@$MAUTIC_TRACKER_REPO"
 
 echo "Cloning build tool repository..."
-git clone "https://$GITHUB_USERNAME:$GITHUB_TOKEN@$BUILD_TOOL_REPO"
+git clone -b $DCS_BUILD_TOOL_REPO "https://$GITHUB_USERNAME:$GITHUB_TOKEN@$BUILD_TOOL_REPO"
 
 echo "Repositories cloned successfully."
 
@@ -21,7 +21,7 @@ ls -l
 
 echo "Updated next.config.js:"
 cat next.config.js
-
+    
 echoStart() {
     echo "Starting $1"
 }
@@ -74,7 +74,7 @@ runBuilder() {
     echo "Running builder.js..."
     cd $WORKSPACE/listing-pages-build-tool/ || { echo "Error: listing-pages-build-tool directory does not exist"; exit 1; }
     npm install || { echo "Error: Dependency installation failed"; exit 1; }
-    node builder.js --websiteName "$WEBSITE_DIRECTORY_NAME" --siteName "$siteName" || { echo "Error: builder.js execution failed"; exit 1; }
+    node builder.js --websiteName "$WEBSITE_DIRECTORY_NAME" --siteName "$SITE_NAME" || { echo "Error: builder.js execution failed"; exit 1; }
     echo "builder.js executed successfully."
 }
 
@@ -85,28 +85,18 @@ checkForWebsiteType() {
     git init
     git config user.name "vivekWeberon"
     git config user.email "vivek@weberon.net"
-    git remote add origin https://$GITHUB_TOKEN@$FINAL_REPO
-    git checkout -B $DCS_FINAL_REPO || { echo "Error: $DCS_FINAL_REPO branch does not exist"; exit 1; }
+    git remote add origin https://$GITHUB_TOKEN@$DEPLOYMENT_REPO
+    git checkout -B $DCS_DEPLOYMENT_REPO || { echo "Error: $DCS_DEPLOYMENT_REPO branch does not exist"; exit 1; }
 
-    if git ls-remote origin | grep -sw $DCS_FINAL_REPO 2>&1>/dev/null; then
-        echo "$DCS_FINAL_REPO BRANCH EXISTS ON REMOTE REPO"
-        git pull origin $DCS_FINAL_REPO
+    if git ls-remote origin | grep -sw $DCS_DEPLOYMENT_REPO 2>&1>/dev/null; then
+        echo "$DCS_DEPLOYMENT_REPO BRANCH EXISTS ON REMOTE REPO"
+        git pull origin $DCS_DEPLOYMENT_REPO
 
-        if [ "$WEBSITE_TYPE" = "UNBRANDED" ]; then
-            echo "Website is Unbranded"
-            git rm -r *
-        elif [ "$WEBSITE_TYPE" = "BRANDED" ]; then
-            echo "Website is Branded"
-            rm -rf -- components configs modules pages public .gitignore next.config.js package.json package-lock.json README.md
-        else
-            echo "Website is a sub-directory"
-            # Remove the directory if it already exists in the final repo
-            rm -rf "$WEBSITE_DIRECTORY_NAME"
-        fi
-
+        # Remove the directory if it already exists in the final repo
+        rm -rf "$WEBSITE_DIRECTORY_NAME"
         echo "Removed the existing files"
     else
-        echo "$DCS_FINAL_REPO BRANCH NOT FOUND ON REMOTE REPO"
+        echo "$DCS_DEPLOYMENT_REPO BRANCH NOT FOUND ON REMOTE REPO"
     fi
 
     commit_hash=$(awk '{print $2}' "$WORKSPACE/lp-showcase-nextjs/.git/logs/HEAD")
@@ -154,13 +144,13 @@ copyWebsiteToGithubRepo() {
         echo "Commit to github.com/vivekweberon/lp-showcase-final-repo.git repo is done"
     fi
 
-    echo "Attempting to push to branch $DCS_FINAL_REPO on https://github.com/vivekweberon/lp-showcase-final-repo.git repo"
+    echo "Attempting to push to branch $DCS_DEPLOYMENT_REPO on https://github.com/vivekweberon/lp-showcase-final-repo.git repo"
 
-    if git ls-remote --heads origin "$DCS_FINAL_REPO" | grep "$DCS_FINAL_REPO" >/dev/null 2>&1; then
-        git push -u origin "$DCS_FINAL_REPO" -v || { echo "Error: Push failed"; exit 1; }
-        echo "Code pushed to github.com/vivekweberon/lp-showcase-final-repo.git repo on branch $DCS_FINAL_REPO"
+    if git ls-remote --heads origin "$DCS_DEPLOYMENT_REPO" | grep "$DCS_DEPLOYMENT_REPO" >/dev/null 2>&1; then
+        git push -u origin "$DCS_DEPLOYMENT_REPO" -v || { echo "Error: Push failed"; exit 1; }
+        echo "Code pushed to github.com/vivekweberon/lp-showcase-final-repo.git repo on branch $DCS_DEPLOYMENT_REPO"
     else
-        echo "Error: Branch $DCS_FINAL_REPO does not exist on the remote repository."
+        echo "Error: Branch $DCS_DEPLOYMENT_REPO does not exist on the remote repository."
         exit 1
     fi
 }
