@@ -1,12 +1,18 @@
 #!/bin/bash
 
+CODE_REPO_DIR="code-repo"
+DATA_REPO_DIR="data-repo"
+MAUTIC_TRACKER_REPO_DIR="mautic-tracker-repo"
+BUILD_TOOL_REPO_DIR="build-tool-repo"
+DEPLOYMENT_REPO_DIR="deployment-repo"
+
 cd "$WORKSPACE" || { echo "Error: Couldn't access workspace directory"; exit 1; }
 
 echo "Cloning input data repository..."
-git clone -b $DCS_DATA_REPO "https://$GITHUB_USERNAME:$GITHUB_TOKEN@$DATA_REPO" data-repo || { echo "Failed to clone input data repository"; exit 1; }
+git clone -b $DCS_DATA_REPO "https://$GITHUB_USERNAME:$GITHUB_TOKEN@$DATA_REPO" $DATA_REPO_DIR || { echo "Failed to clone input data repository"; exit 1; }
 
 echo "Cloning Mautic tracker repository..."
-git clone -b $DCS_MAUTIC_TRACKER_REPO "https://$GITHUB_USERNAME:$GITHUB_TOKEN@$MAUTIC_TRACKER_REPO" mautic-tracker-repo || { echo "Failed to clone input data repository"; exit 1; }
+git clone -b $DCS_MAUTIC_TRACKER_REPO "https://$GITHUB_USERNAME:$GITHUB_TOKEN@$MAUTIC_TRACKER_REPO" $MAUTIC_TRACKER_REPO_DIR || { echo "Failed to clone input data repository"; exit 1; }
 
 echo "Cloning build tool repository..."
 git clone -b $DCS_BUILD_TOOL_REPO "https://$GITHUB_USERNAME:$GITHUB_TOKEN@$BUILD_TOOL_REPO" build-tool-repo || { echo "Failed to clone input data repository"; exit 1; }
@@ -52,7 +58,7 @@ setUPNodeJS() {
 }
 
 installDependencies() {
-    cd code-repo || { echo "Error: code-repo directory does not exist"; exit 1; }
+    cd $CODE_REPO_DIR || { echo "Error: $CODE_REPO_DIR directory does not exist"; exit 1; }
     processInfo="Installing Dependencies"
     echoStart "$processInfo"
     npm install || { echo "Error: Dependency installation failed"; exit 1; }
@@ -63,14 +69,14 @@ runBuilder() {
     echo "Running builder.js..."
     cd $WORKSPACE/build-tool-repo/ || { echo "Error: build-tool-repo directory does not exist"; exit 1; }
     npm install || { echo "Error: Dependency installation failed"; exit 1; }
-    node builder.js --websiteName "$WEBSITE_DIRECTORY_NAME" --siteName "$SITE_NAME" || { echo "Error: builder.js execution failed"; exit 1; }
+    node builder.js --codeRepoDir $CODE_REPO_DIR --dataRepoDir $DATA_REPO_DIR --mauticTrackerRepoDir $MAUTIC_TRACKER_REPO_DIR --siteName "$SITE_NAME" --websiteName "$WEBSITE_DIRECTORY_NAME" || { echo "Error: builder.js execution failed"; exit 1; }
     echo "builder.js executed successfully."
 }
 
 setupDeploymentRepo() {
     cd "$WORKSPACE"
-    mkdir -p deployment-repo
-    cd deployment-repo || { echo "Error: deployment-repo folder does not exist"; exit 1; }
+    mkdir -p $DEPLOYMENT_REPO_DIR
+    cd $DEPLOYMENT_REPO_DIR || { echo "Error: $DEPLOYMENT_REPO_DIR folder does not exist"; exit 1; }
     git init
     git config user.name "vivekWeberon"
     git config user.email "vivek@weberon.net"
@@ -88,9 +94,9 @@ setupDeploymentRepo() {
         echo "$DCS_DEPLOYMENT_REPO BRANCH NOT FOUND ON REMOTE REPO"
     fi
 
-    commit_hash=$(awk '{print $2}' "$WORKSPACE/code-repo/.git/logs/HEAD")
-    git_repo=$(grep -oP '(?<=clone: from ).*' "$WORKSPACE/code-repo/.git/logs/HEAD")
-    output_file="$WORKSPACE/deployment-repo/git_log.txt"
+    commit_hash=$(awk '{print $2}' "$WORKSPACE/$CODE_REPO_DIR/.git/logs/HEAD")
+    git_repo=$(grep -oP '(?<=clone: from ).*' "$WORKSPACE/$CODE_REPO_DIR/.git/logs/HEAD")
+    output_file="$WORKSPACE/$DEPLOYMENT_REPO_DIR/git_log.txt"
     echo "Commit hash: $commit_hash" > "$output_file"
     echo "Git repository: $git_repo" >> "$output_file"
     echo "Data has been saved to $output_file"
@@ -102,19 +108,19 @@ copyWebsiteToGithubRepo() {
     # Assume WEBSITE_DIRECTORY_NAME is a comma-separated list of directory names
     IFS=',' read -r -a websiteArray <<< "$WEBSITE_DIRECTORY_NAME"
 
-    # Navigate to deployment-repo and create a directory to hold all website builds (if desired)
-    cd deployment-repo || { echo "Error: Could not access deployment-repo directory"; exit 1; }
+    # Navigate to $DEPLOYMENT_REPO_DIR and create a directory to hold all website builds (if desired)
+    cd $DEPLOYMENT_REPO_DIR || { echo "Error: Could not access $DEPLOYMENT_REPO_DIR directory"; exit 1; }
 
     for website in "${websiteArray[@]}"; do
         website=$(echo "$website" | xargs)  # Trim whitespace
-        # Now check for the website directory inside code-repo
-        if [ -d "$WORKSPACE/code-repo/$website" ]; then
-            # Remove any existing copy in deployment-repo, then copy the website build from code-repo
+        # Now check for the website directory inside $CODE_REPO_DIR
+        if [ -d "$WORKSPACE/$CODE_REPO_DIR/$website" ]; then
+            # Remove any existing copy in $DEPLOYMENT_REPO_DIR, then copy the website build from $CODE_REPO_DIR
             rm -rf "$website"
-            cp -r "$WORKSPACE/code-repo/$website" .
-            echo "Copied directory '$website' from code-repo to deployment-repo."
+            cp -r "$WORKSPACE/$CODE_REPO_DIR/$website" .
+            echo "Copied directory '$website' from $CODE_REPO_DIR to $DEPLOYMENT_REPO_DIR."
         else
-            echo "Directory '$website' does not exist under code-repo."
+            echo "Directory '$website' does not exist under $CODE_REPO_DIR."
             exit 1
         fi
     done
