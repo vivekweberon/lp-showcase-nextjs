@@ -5,6 +5,7 @@ DATA_REPO_DIR="data-repo"
 MAUTIC_TRACKER_REPO_DIR="mautic-tracker-repo"
 BUILD_TOOL_REPO_DIR="build-tool-repo"
 DEPLOYMENT_REPO_DIR="deployment-repo"
+$OUTPUT_DIR="output"
 
 cd "$WORKSPACE" || { echo "Error: Couldn't access workspace directory"; exit 1; }
 
@@ -69,7 +70,7 @@ runBuilder() {
     echo "Running builder.js..."
     cd $WORKSPACE/build-tool-repo/ || { echo "Error: build-tool-repo directory does not exist"; exit 1; }
     npm install || { echo "Error: Dependency installation failed"; exit 1; }
-    node builder.js --codeRepoDir $CODE_REPO_DIR --dataRepoDir $DATA_REPO_DIR --mauticTrackerRepoDir $MAUTIC_TRACKER_REPO_DIR --siteName "$SITE_NAME" --websiteName "$WEBSITE_DIRECTORY_NAME" || { echo "Error: builder.js execution failed"; exit 1; }
+    node builder.js --codeRepoDir $CODE_REPO_DIR --dataRepoDir $DATA_REPO_DIR --mauticTrackerRepoDir $MAUTIC_TRACKER_REPO_DIR --siteName "$SITE_NAME" --websiteName "$WEBSITE_DIRECTORY_NAME" --outputDir $OUTPUT_DIR || { echo "Error: builder.js execution failed"; exit 1; }
     echo "builder.js executed successfully."
 }
 
@@ -117,7 +118,7 @@ copyWebsiteToGithubRepo() {
         if [ -d "$WORKSPACE/$CODE_REPO_DIR/$website" ]; then
             # Remove any existing copy in $DEPLOYMENT_REPO_DIR, then copy the website build from $CODE_REPO_DIR
             rm -rf "$website"
-            cp -r "$WORKSPACE/$CODE_REPO_DIR/$website" .
+            cp -r "$WORKSPACE/$OUTPUT_DIR/$website" .
             echo "Copied directory '$website' from $CODE_REPO_DIR to $DEPLOYMENT_REPO_DIR."
         else
             echo "Directory '$website' does not exist under $CODE_REPO_DIR."
