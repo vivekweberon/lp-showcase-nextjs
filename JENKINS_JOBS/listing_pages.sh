@@ -115,13 +115,13 @@ copyWebsiteToGithubRepo() {
     for website in "${websiteArray[@]}"; do
         website=$(echo "$website" | xargs)  # Trim whitespace
         # Now check for the website directory inside $CODE_REPO_DIR
-        if [ -d "$WORKSPACE/$CODE_REPO_DIR/$website" ]; then
+        if [ -d "$WORKSPACE/$OUTPUT_DIR/$website" ]; then
             # Remove any existing copy in $DEPLOYMENT_REPO_DIR, then copy the website build from $CODE_REPO_DIR
             rm -rf "$website"
             cp -r "$WORKSPACE/$OUTPUT_DIR/$website" .
-            echo "Copied directory '$website' from $CODE_REPO_DIR to $DEPLOYMENT_REPO_DIR."
+            echo "Copied directory '$website' from $OUTPUT_DIR to $DEPLOYMENT_REPO_DIR."
         else
-            echo "Directory '$website' does not exist under $CODE_REPO_DIR."
+            echo "Directory '$website' does not exist under $OUTPUT_DIR"
             exit 1
         fi
     done
