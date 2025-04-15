@@ -176,7 +176,7 @@ function addContact(contact) {
 
       <Navbar menu={menuItems} />
       {sections}
-      {chatbot.enable && <ChatBot />}
+      {chatbot?.enable && <ChatBot />}
       <Footer menu={menuItems} text={footertext} />
     </>
   );
