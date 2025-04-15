@@ -218,7 +218,7 @@ const PropertyPage = ({ propertyData, images }) => {
 };
 
 export async function getStaticPaths() {
-  const dataFolderPath = path.join(process.cwd(), "..", "data");
+  const dataFolderPath = path.join(process.cwd(), "..", "data-repo");
   const siteToBeBuilt = process.env.siteName;
   try {
     const files = await fs.readdir(dataFolderPath);
@@ -262,8 +262,8 @@ export async function getStaticProps(context) {
   const siteToBeBuilt = process.env.siteName;
   const originalId = getPropertyOutputDirectoryName(id);
 
-  const propertyDataPath = path.join(process.cwd(), "..", "data", originalId, "data.yaml");
-  const globalDataPath = path.join(process.cwd(), "..", "data", "global", "data.yaml");
+  const propertyDataPath = path.join(process.cwd(), "..", "data-repo", originalId, "data.yaml");
+  const globalDataPath = path.join(process.cwd(), "..", "data-repo", "global", "data.yaml");
 
   try {
     const propertyData = await loadYamlFile(propertyDataPath);
@@ -284,7 +284,7 @@ export async function getStaticProps(context) {
     const effectivePropertyData = getEffectiveData(propertyData, siteToBeBuilt);
 
     const mergedData = addGlobalData(effectiveGlobalData, effectivePropertyData);
-    const imagesFolder = path.join(process.cwd(), "..", "data", originalId, "images");
+    const imagesFolder = path.join(process.cwd(), "..", "data-repo", originalId, "images");
     const imageFiles = await fs.readdir(imagesFolder);
     const imageUrls = imageFiles.map((fileName) => `/data/${id}/images/${fileName}`);
     return {
