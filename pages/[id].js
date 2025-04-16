@@ -282,7 +282,13 @@ export async function getStaticProps(context) {
       effectiveGlobalData.realtor.logo = `/data/global/images/${effectiveGlobalData.realtor.logo}`;
     }
     const effectivePropertyData = getEffectiveData(propertyData, siteToBeBuilt);
-
+    if (effectivePropertyData.realtor.photo){
+      effectivePropertyData.realtor.photo = `/data/global/images/${effectivePropertyData.realtor.photo}`;
+    }
+    if (effectivePropertyData.realtor.logo){
+      effectivePropertyData.realtor.logo = `/data/global/images/${effectivePropertyData.realtor.logo}`;
+    }
+    
     const mergedData = addGlobalData(effectiveGlobalData, effectivePropertyData);
     const imagesFolder = path.join(process.cwd(), "..", "data-repo", originalId, "images");
     const imageFiles = await fs.readdir(imagesFolder);

@@ -33,7 +33,13 @@ export async function getStaticProps() {
     }
 
     const effectiveHomeData = getEffectiveData(homeData, siteToBeBuilt);
-
+    if (effectiveHomeData.realtor.photo){
+      effectiveHomeData.realtor.photo = `/data/global/images/${effectiveHomeData.realtor.photo}`;
+    }
+    if (effectiveHomeData.realtor.logo){
+      effectiveHomeData.realtor.logo = `/data/global/images/${effectiveHomeData.realtor.logo}`;
+    }
+    
     if (!globalData.siteName.includes(String(siteToBeBuilt).trim())) {
       console.error(`Skipping global data, "${siteToBeBuilt}" not found in global/data.yaml`);
       return { notFound: true };
