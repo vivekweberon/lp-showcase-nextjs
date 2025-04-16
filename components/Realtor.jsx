@@ -2,7 +2,7 @@ import React from "react";
 import { basePath } from "@/next.config.js";
 
 const Realtor = ({ realtor }) => {
-  const { photo, name, company, id, phone, logo, sectionTitle, rFooterLink, rFooterLinkText, menu } = realtor;
+  const { photo, name, company, id, phone, logo, sectionTitle, footerText, footerLink, footerLinkText, menu } = realtor;
 
   const path = `${basePath}${photo}?width=`;
   return (
@@ -69,7 +69,8 @@ const Realtor = ({ realtor }) => {
         style={{ marginTop: "20px" }}
       >
 			  <div className="col-12" style={{textAlign: "center"}}> 
-			    <h3 id="rFooterText"><a id="rFooterLink" href={rFooterLink} style={{color: "darkblue", textDecoration: "underline"}}>{rFooterLinkText}</a></h3>
+			    {footerText}
+          <h3 id="rFooterText"><a id="rFooterLink" href={footerLink} style={{color: "darkblue", textDecoration: "underline"}}>{footerLinkText}</a></h3>
 		    </div>
 			</div>
     </div>
