@@ -33,10 +33,10 @@ export async function getStaticProps() {
     }
 
     const effectiveHomeData = getEffectiveData(homeData, siteToBeBuilt);
-    if (effectiveHomeData.realtor.photo){
+    if (effectiveHomeData?.realtor?.photo){
       effectiveHomeData.realtor.photo = `/data/global/images/${effectiveHomeData.realtor.photo}`;
     }
-    if (effectiveHomeData.realtor.logo){
+    if (effectiveHomeData?.realtor?.logo){
       effectiveHomeData.realtor.logo = `/data/global/images/${effectiveHomeData.realtor.logo}`;
     }
     
@@ -46,10 +46,10 @@ export async function getStaticProps() {
     }
 
     const effectiveGlobalData = getEffectiveData(globalData, siteToBeBuilt);
-    if (effectiveGlobalData.realtor.photo){
+    if (effectiveGlobalData?.realtor?.photo){
       effectiveGlobalData.realtor.photo = `/data/global/images/${effectiveGlobalData.realtor.photo}`;
     }
-    if (effectiveGlobalData.realtor.logo){
+    if (effectiveGlobalData?.realtor?.logo){
       effectiveGlobalData.realtor.logo = `/data/global/images/${effectiveGlobalData.realtor.logo}`;
     }
     
