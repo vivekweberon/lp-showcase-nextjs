@@ -20,7 +20,7 @@ const Showcase = ({ showcase }) => {
       </div>
       <div id="scGrid" className="row no-gutters justify-content-center">
       {properties.map((property, index) => {
-        const path = `${basePath}/data/${property.listingPageURL}/${property.url}?width=`;
+        const path = `${basePath}/data/${property.listingPageURL}/images/${property.url}?width=`;
         return (
           <div
             className="col-sm-6 col-md-4 col-lg-3"
