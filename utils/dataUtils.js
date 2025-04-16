@@ -71,7 +71,7 @@ export const getpropertiesHomePageData = async (dataFolderPath, currentSiteName)
       }
 
       const listingPageURL = getPropertyOutputDirectoryName(folder);
-      effectivePropertyData.homePageData.listingPageURL = listingPageURL + '/';
+      effectivePropertyData.homePageData.listingPageURL = listingPageURL;
 
       propertiesData.push(effectivePropertyData.homePageData);
 
