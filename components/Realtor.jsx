@@ -5,7 +5,6 @@ const Realtor = ({ realtor }) => {
   const { photo, name, company, id, phone, logo, sectionTitle, footerText, footerLink, footerLinkText, menu } = realtor;
 
   const path = `${basePath}${photo}?width=`;
-  console.log(`Realtor photo path: ${path}`);
   return (
     <div
       id={menu ? menu.replace(/\s/g, '').toLowerCase() : 'realtor'}      
