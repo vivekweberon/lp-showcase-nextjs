@@ -22,7 +22,7 @@ createVersionFiles() {
     git show --oneline -s | awk '{print $1}' > "$WORKSPACE/$repo_dir/$git_archival_file"
     echo "Created $git_archival_file in $repo_dir"
     mv "$WORKSPACE/$repo_dir/$git_archival_file" "$WORKSPACE/$VERSION/"
-  fi  
+  fi
 }
 
 copyVersionFiles(){
@@ -41,14 +41,17 @@ mkdir -p "$WORKSPACE/$VERSION"
 createVersionFiles "$CODE_REPO_DIR"
 
 echo "Cloning input data repository..."
+cd "$WORKSPACE" || { echo "Error: Couldn't access workspace directory"; exit 1; }
 git clone -b $DCS_DATA_REPO "https://$GITHUB_USERNAME:$GITHUB_TOKEN@$DATA_REPO" $DATA_REPO_DIR || { echo "Failed to clone input data repository"; exit 1; }
 createVersionFiles "$DATA_REPO_DIR"
 
 echo "Cloning Mautic tracker repository..."
+cd "$WORKSPACE" || { echo "Error: Couldn't access workspace directory"; exit 1; }
 git clone -b $DCS_MAUTIC_TRACKER_REPO "https://$GITHUB_USERNAME:$GITHUB_TOKEN@$MAUTIC_TRACKER_REPO" $MAUTIC_TRACKER_REPO_DIR || { echo "Failed to clone input data repository"; exit 1; }
 createVersionFiles "$MAUTIC_TRACKER_REPO_DIR"
 
 echo "Cloning build tool repository..."
+cd "$WORKSPACE" || { echo "Error: Couldn't access workspace directory"; exit 1; }
 git clone -b $DCS_BUILD_TOOL_REPO "https://$GITHUB_USERNAME:$GITHUB_TOKEN@$BUILD_TOOL_REPO" build-tool-repo || { echo "Failed to clone input data repository"; exit 1; }
 createVersionFiles "$BUILD_TOOL_REPO_DIR"
 
