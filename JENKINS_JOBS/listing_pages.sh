@@ -19,7 +19,7 @@ createVersionFiles() {
     git show --oneline -s | awk '{print $1}' > "$WORKSPACE/$repo_dir/$git_archival_file"
     echo "Created $git_archival_file in $repo_dir"
   fi
-  cd $CODE_REPO_DIR || { echo "Error: $CODE_REPO_DIR directory does not exist"; exit 1; }
+  cd "$WORKSPACE/$CODE_REPO_DIR" || { echo "Error: $CODE_REPO_DIR directory does not exist"; exit 1; }
   if [ -d ".git" ]; then
     createVersionFiles
   else
