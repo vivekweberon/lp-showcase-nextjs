@@ -45,6 +45,6 @@ next-env.d.ts
 public/js/logger.js
 public/js/rb-config.js
 public/js/tracker-util.js
-public/js/tracker.js
+public/js/tracker_original.js
 public/data/
 public/images/
