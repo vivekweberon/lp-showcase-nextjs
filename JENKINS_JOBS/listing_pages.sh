@@ -29,10 +29,10 @@ createVersionFiles() {
 copyVersionFiles(){
     output_file="$WORKSPACE/$VERSION/version.txt"
     {
-        echo "DATA:            $(cat "$WORKSPACE/$VERSION/git_archival_$DATA_REPO_DIR.txt")"
-        echo "BUILD_TOOL:      $(cat "$WORKSPACE/$VERSION/git_archival_$BUILD_TOOL_REPO_DIR.txt")"
-        echo "CODE:            $(cat "$WORKSPACE/$VERSION/git_archival_$CODE_REPO_DIR.txt")"
-        echo "MAUTIC_TRACKER:  $(cat "$WORKSPACE/$VERSION/git_archival_$MAUTIC_TRACKER_REPO_DIR.txt")"
+        echo "DATA:        $(cat "$WORKSPACE/$VERSION/git_archival_$DATA_REPO_DIR.txt")"
+        echo "CODE:        $(cat "$WORKSPACE/$VERSION/git_archival_$CODE_REPO_DIR.txt")"
+        echo "TRACKER:     $(cat "$WORKSPACE/$VERSION/git_archival_$MAUTIC_TRACKER_REPO_DIR.txt")"
+        echo "BUILD_TOOL:  $(cat "$WORKSPACE/$VERSION/git_archival_$BUILD_TOOL_REPO_DIR.txt")"
     } > "$output_file"
     echo "Consolidated version info written to $output_file"
 }
