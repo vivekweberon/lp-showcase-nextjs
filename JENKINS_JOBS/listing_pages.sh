@@ -178,7 +178,7 @@ copyWebsiteToGithubRepo() {
     if git diff-index --quiet HEAD; then
         echo "No changes to commit."
     else
-        git commit -m "Automated Commit from the Jenkins build: $(date)" || { echo "Error: Commit failed"; exit 1; }
+        git commit -m "Automated Commit from the Jenkins build: $BUILD_URL" || { echo "Error: Commit failed"; exit 1; }
         echo "Commit to $DEPLOYMENT_REPO repo is done"
     fi
 
