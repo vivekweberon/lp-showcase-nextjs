@@ -7,17 +7,35 @@ BUILD_TOOL_REPO_DIR="build-tool-repo"
 DEPLOYMENT_REPO_DIR="deployment-repo"
 OUTPUT_DIR="output"
 
+createVersionFiles() {
+  local repo_dir="$1"
+  local git_archival_file="git_archival_$repo_dir.txt"
+
+  cd "$WORKSPACE/$repo_dir" || { echo "Error: Could not access $repo_dir"; return 1; }
+
+  # For Git repositories
+  if [ -d ".git" ]; then
+    git show --oneline -s | awk '{print $1}' > "$WORKSPACE/$repo_dir/$git_archival_file"
+    echo "Created $git_archival_file in $repo_dir"
+  fi
+  
+  cd "$WORKSPACE" # Go back to the workspace
+}
+
 cd "$WORKSPACE" || { echo "Error: Couldn't access workspace directory"; exit 1; }
 
 echo "Cloning input data repository..."
 git clone -b $DCS_DATA_REPO "https://$GITHUB_USERNAME:$GITHUB_TOKEN@$DATA_REPO" $DATA_REPO_DIR || { echo "Failed to clone input data repository"; exit 1; }
+createVersionFiles "$DATA_REPO_DIR"
 
 echo "Cloning Mautic tracker repository..."
 git clone -b $DCS_MAUTIC_TRACKER_REPO "https://$GITHUB_USERNAME:$GITHUB_TOKEN@$MAUTIC_TRACKER_REPO" $MAUTIC_TRACKER_REPO_DIR || { echo "Failed to clone input data repository"; exit 1; }
+createVersionFiles "$MAUTIC_TRACKER_REPO_DIR"
 
 echo "Cloning build tool repository..."
 git clone -b $DCS_BUILD_TOOL_REPO "https://$GITHUB_USERNAME:$GITHUB_TOKEN@$BUILD_TOOL_REPO" build-tool-repo || { echo "Failed to clone input data repository"; exit 1; }
-    
+createVersionFiles "$BUILD_TOOL_REPO_DIR"
+
 echoStart() {
     echo "Starting $1"
 }
@@ -101,6 +119,13 @@ setupDeploymentRepo() {
     echo "Commit hash: $commit_hash" > "$output_file"
     echo "Git repository: $git_repo" >> "$output_file"
     echo "Data has been saved to $output_file"
+    
+    # Copy the created text files to the final repository directory
+    cp -- "$WORKSPACE/$DATA_REPO_DIR/git_archival_$DATA_REPO_DIR.txt" "$WORKSPACE/$DEPLOYMENT_REPO_DIR/"
+    cp -- "$WORKSPACE/$BUILD_TOOL_REPO_DIR/hg_archival_$BUILD_TOOL_REPO_DIR.txt" "$WORKSPACE/$DEPLOYMENT_REPO_DIR/"
+    # cp -- "$WORKSPACE/$CODE_REPO_DIR/hg_archival_listing_pages.txt" "$WORKSPACE/$DEPLOYMENT_REPO_DIR/"
+    cp -- "$WORKSPACE/$MAUTIC_TRACKER_REPO_DIR/hg_archival_$MAUTIC_TRACKER_REPO_DIR.txt" "$WORKSPACE/$DEPLOYMENT_REPO_DIR/"
+    echo "Copied archival text files to $DEPLOYMENT_REPO_DIR"
 }
 
 copyWebsiteToGithubRepo() {
