@@ -14,6 +14,8 @@ createVersionFiles() {
   local repo_dir="$1"
   local git_archival_file="git_archival_$repo_dir.txt"
 
+  echo "$WORKSPACE/$repo_dir"
+  
   cd "$WORKSPACE/$repo_dir" || { echo "Error: Could not access $repo_dir"; return 1; }
 
   if [ -d ".git" ]; then
