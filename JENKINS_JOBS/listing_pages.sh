@@ -23,6 +23,14 @@ createVersionFiles() {
   cd "$WORKSPACE" 
 }
 
+cd $CODE_REPO_DIR || { echo "Error: $CODE_REPO_DIR directory does not exist"; exit 1; }
+if [ -d ".git" ]; then
+    createVersionFiles
+else
+    echo "Error creating archive file in $CODE_REPO_DIR"
+    exit 1
+fi
+
 echo "Cloning input data repository..."
 git clone -b $DCS_DATA_REPO "https://$GITHUB_USERNAME:$GITHUB_TOKEN@$DATA_REPO" $DATA_REPO_DIR || { echo "Failed to clone input data repository"; exit 1; }
 createVersionFiles "$DATA_REPO_DIR"
@@ -121,12 +129,14 @@ setupDeploymentRepo() {
 }
 
 copyVersionFiles(){
-    # Copy the created text files to the final repository directory
-    cp -- "$WORKSPACE/$DATA_REPO_DIR/git_archival_$DATA_REPO_DIR.txt" "$WORKSPACE/$OUTPUT_DIR/$website"
-    cp -- "$WORKSPACE/$BUILD_TOOL_REPO_DIR/git_archival_$BUILD_TOOL_REPO_DIR.txt" "$WORKSPACE/$OUTPUT_DIR/$website"
-    # cp -- "$WORKSPACE/$CODE_REPO_DIR/git_archival_listing_pages.txt" "$WORKSPACE/$OUTPUT_DIR/$website"
-    cp -- "$WORKSPACE/$MAUTIC_TRACKER_REPO_DIR/git_archival_$MAUTIC_TRACKER_REPO_DIR.txt" "$WORKSPACE/$OUTPUT_DIR/$website"
-    echo "Copied archival text files to $DEPLOYMENT_REPO_DIR"
+    output_file="$WORKSPACE/$OUTPUT_DIR/$website/version_info.txt"
+    {
+        echo "DATA_REPO_VERSION=$(cat "$WORKSPACE/$DATA_REPO_DIR/git_archival_$DATA_REPO_DIR.txt")"
+        echo "BUILD_TOOL_VERSION=$(cat "$WORKSPACE/$BUILD_TOOL_REPO_DIR/git_archival_$BUILD_TOOL_REPO_DIR.txt")"
+        echo "CODE_REPO_VERSION=$(cat "$WORKSPACE/$CODE_REPO_DIR/git_archival_listing_pages.txt")"
+        echo "MAUTIC_TRACKER_VERSION=$(cat "$WORKSPACE/$MAUTIC_TRACKER_REPO_DIR/git_archival_$MAUTIC_TRACKER_REPO_DIR.txt")"
+    } > "$output_file"
+    echo "Consolidated version info written to $output_file"
 }
 
 copyWebsiteToGithubRepo() {
