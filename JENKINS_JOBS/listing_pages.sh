@@ -57,6 +57,8 @@ createVersionFiles "$BUILD_TOOL_REPO_DIR"
 
 copyVersionFiles
 
+cd "$WORKSPACE" || { echo "Error: Couldn't access workspace directory"; exit 1; }
+
 echoStart() {
     echo "Starting $1"
 }
