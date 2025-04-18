@@ -119,13 +119,6 @@ setupDeploymentRepo() {
     echo "Commit hash: $commit_hash" > "$output_file"
     echo "Git repository: $git_repo" >> "$output_file"
     echo "Data has been saved to $output_file"
-    
-    # Copy the created text files to the final repository directory
-    cp -- "$WORKSPACE/$DATA_REPO_DIR/git_archival_$DATA_REPO_DIR.txt" "$WORKSPACE/$DEPLOYMENT_REPO_DIR/"
-    cp -- "$WORKSPACE/$BUILD_TOOL_REPO_DIR/hg_archival_$BUILD_TOOL_REPO_DIR.txt" "$WORKSPACE/$DEPLOYMENT_REPO_DIR/"
-    # cp -- "$WORKSPACE/$CODE_REPO_DIR/hg_archival_listing_pages.txt" "$WORKSPACE/$DEPLOYMENT_REPO_DIR/"
-    cp -- "$WORKSPACE/$MAUTIC_TRACKER_REPO_DIR/hg_archival_$MAUTIC_TRACKER_REPO_DIR.txt" "$WORKSPACE/$DEPLOYMENT_REPO_DIR/"
-    echo "Copied archival text files to $DEPLOYMENT_REPO_DIR"
 }
 
 copyWebsiteToGithubRepo() {
@@ -145,6 +138,13 @@ copyWebsiteToGithubRepo() {
             rm -rf "$website"
             cp -r "$WORKSPACE/$OUTPUT_DIR/$website" .
             echo "Copied directory '$website' from $OUTPUT_DIR to $DEPLOYMENT_REPO_DIR."
+            
+            # Copy the created text files to the final repository directory
+            cp -- "$WORKSPACE/$DATA_REPO_DIR/git_archival_$DATA_REPO_DIR.txt" "$WORKSPACE/$OUTPUT_DIR/$website"
+            cp -- "$WORKSPACE/$BUILD_TOOL_REPO_DIR/git_archival_$BUILD_TOOL_REPO_DIR.txt" "$WORKSPACE/$OUTPUT_DIR/$website"
+            # cp -- "$WORKSPACE/$CODE_REPO_DIR/git_archival_listing_pages.txt" "$WORKSPACE/$OUTPUT_DIR/$website"
+            cp -- "$WORKSPACE/$MAUTIC_TRACKER_REPO_DIR/git_archival_$MAUTIC_TRACKER_REPO_DIR.txt" "$WORKSPACE/$OUTPUT_DIR/$website"
+            echo "Copied archival text files to $DEPLOYMENT_REPO_DIR"
         else
             echo "Directory '$website' does not exist under $OUTPUT_DIR"
             exit 1
