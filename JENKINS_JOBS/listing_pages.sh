@@ -19,16 +19,11 @@ createVersionFiles() {
     git show --oneline -s | awk '{print $1}' > "$WORKSPACE/$repo_dir/$git_archival_file"
     echo "Created $git_archival_file in $repo_dir"
   fi
-
-  cd "$WORKSPACE/$CODE_REPO_DIR" || { echo "Error: Could not access $CODE_REPO_DIR"; return 1; }
-
-  if [ -d ".git" ]; then
-    git show --oneline -s | awk '{print $1}' > "$WORKSPACE/$CODE_REPO_DIR/$git_archival_file"
-    echo "Created $git_archival_file in $CODE_REPO_DIR"
-  fi
   
   cd "$WORKSPACE" 
 }
+
+createVersionFiles "$CODE_REPO_DIR"
 
 echo "Cloning input data repository..."
 git clone -b $DCS_DATA_REPO "https://$GITHUB_USERNAME:$GITHUB_TOKEN@$DATA_REPO" $DATA_REPO_DIR || { echo "Failed to clone input data repository"; exit 1; }
