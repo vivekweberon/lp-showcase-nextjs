@@ -5,6 +5,7 @@ DATA_REPO_DIR="data-repo"
 MAUTIC_TRACKER_REPO_DIR="mautic-tracker-repo"
 BUILD_TOOL_REPO_DIR="build-tool-repo"
 DEPLOYMENT_REPO_DIR="deployment-repo"
+VERSION_DIR="version"
 OUTPUT_DIR="output"
 VERSION="version"
 
@@ -114,7 +115,7 @@ runBuilder() {
     echo "Running builder.js..."
     cd $WORKSPACE/build-tool-repo/ || { echo "Error: build-tool-repo directory does not exist"; exit 1; }
     npm install || { echo "Error: Dependency installation failed"; exit 1; }
-    node builder.js --codeRepoDir $CODE_REPO_DIR --dataRepoDir $DATA_REPO_DIR --mauticTrackerRepoDir $MAUTIC_TRACKER_REPO_DIR --siteName "$SITE_NAME" --websiteName "$WEBSITE_DIRECTORY_NAME" --outputDir $OUTPUT_DIR || { echo "Error: builder.js execution failed"; exit 1; }
+    node builder.js --codeRepoDir $CODE_REPO_DIR --dataRepoDir $DATA_REPO_DIR --mauticTrackerRepoDir $MAUTIC_TRACKER_REPO_DIR --siteName "$SITE_NAME" --websiteName "$WEBSITE_DIRECTORY_NAME" --versionDir $VERSION_DIR  --outputDir $OUTPUT_DIR || { echo "Error: builder.js execution failed"; exit 1; }
     echo "builder.js executed successfully."
 }
 
