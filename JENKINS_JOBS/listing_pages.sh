@@ -6,12 +6,10 @@ MAUTIC_TRACKER_REPO_DIR="mautic-tracker-repo"
 BUILD_TOOL_REPO_DIR="build-tool-repo"
 DEPLOYMENT_REPO_DIR="deployment-repo"
 VERSION_DIR="version"
+VERSION_FILE="version.txt"
 OUTPUT_DIR="output"
-VERSION="version"
 
-cd "$WORKSPACE" || { echo "Error: Couldn't access workspace directory"; exit 1; }
-
-createVersionFiles() {
+createVersionFile() {
   local repo_dir="$1"
   local git_archival_file="git_archival_$repo_dir.txt"
 
@@ -22,26 +20,25 @@ createVersionFiles() {
   if [ -d ".git" ]; then
     git show --oneline -s | awk '{print $1}' > "$WORKSPACE/$repo_dir/$git_archival_file"
     echo "Created $git_archival_file in $repo_dir"
-    mv "$WORKSPACE/$repo_dir/$git_archival_file" "$WORKSPACE/$VERSION/"
+    mv "$WORKSPACE/$repo_dir/$git_archival_file" "$WORKSPACE/$VERSION_DIR/"
+  else
+    echo "Error: $repo_dir is not a git repository"
+    exit 1
   fi
 }
 
-copyVersionFiles(){
-    output_file="$WORKSPACE/$VERSION/version.txt"
+mergeVersionFiles(){
+    output_file="$WORKSPACE/$VERSION_DIR/$VERSION_FILE"
     {
-        echo "DATA:        $(cat "$WORKSPACE/$VERSION/git_archival_$DATA_REPO_DIR.txt")"
-        echo "CODE:        $(cat "$WORKSPACE/$VERSION/git_archival_$CODE_REPO_DIR.txt")"
-        echo "TRACKER:     $(cat "$WORKSPACE/$VERSION/git_archival_$MAUTIC_TRACKER_REPO_DIR.txt")"
-        echo "BUILD_TOOL:  $(cat "$WORKSPACE/$VERSION/git_archival_$BUILD_TOOL_REPO_DIR.txt")"
+        echo "DATA:        $(cat "$WORKSPACE/$VERSION_DIR/git_archival_$DATA_REPO_DIR.txt")"
+        echo "CODE:        $(cat "$WORKSPACE/$VERSION_DIR/git_archival_$CODE_REPO_DIR.txt")"
+        echo "TRACKER:     $(cat "$WORKSPACE/$VERSION_DIR/git_archival_$MAUTIC_TRACKER_REPO_DIR.txt")"
+        echo "BUILD_TOOL:  $(cat "$WORKSPACE/$VERSION_DIR/git_archival_$BUILD_TOOL_REPO_DIR.txt")"
     } > "$output_file"
     echo "Consolidated version info written to $output_file"
 }
 
-mkdir -p "$WORKSPACE/$VERSION"
-
-createVersionFiles "$CODE_REPO_DIR"
-
-function cloneRepo() {
+cloneRepo() {
     local repo_name="$1"
     local repo_url="$2"
     local branch_name="$3"
@@ -51,17 +48,6 @@ function cloneRepo() {
     cd "$WORKSPACE" || { echo "Error: Couldn't access workspace directory"; exit 1; }
     git clone -b "$branch_name" "https://$GITHUB_USERNAME:$GITHUB_TOKEN@$repo_url" "$target_dir" || { echo "Failed to clone $repo_name repository"; exit 1; }
 }
-
-cloneRepo "data" "$DATA_REPO" "$DCS_DATA_REPO" "$DATA_REPO_DIR"
-createVersionFiles "$DATA_REPO_DIR"
-
-cloneRepo "mautic_tracker" "$MAUTIC_TRACKER_REPO" "$DCS_MAUTIC_TRACKER_REPO" "$MAUTIC_TRACKER_REPO_DIR"
-createVersionFiles "$MAUTIC_TRACKER_REPO_DIR"
-
-cloneRepo "data" "$BUILD_TOOL_REPO" "$DCS_BUILD_TOOL_REPO" "$BUILD_TOOL_REPO_DIR"
-createVersionFiles "$BUILD_TOOL_REPO_DIR"
-
-copyVersionFiles
 
 echoStart() {
     echo "Starting $1"
@@ -192,6 +178,17 @@ copyWebsiteToGithubRepo() {
         exit 1
     fi
 }
+
+cd "$WORKSPACE" || { echo "Error: Couldn't access workspace directory"; exit 1; }
+mkdir -p "$WORKSPACE/$VERSION_DIR"
+createVersionFile "$CODE_REPO_DIR"
+cloneRepo "data" "$DATA_REPO" "$DCS_DATA_REPO" "$DATA_REPO_DIR"
+createVersionFile "$DATA_REPO_DIR"
+cloneRepo "mautic_tracker" "$MAUTIC_TRACKER_REPO" "$DCS_MAUTIC_TRACKER_REPO" "$MAUTIC_TRACKER_REPO_DIR"
+createVersionFile "$MAUTIC_TRACKER_REPO_DIR"
+cloneRepo "data" "$BUILD_TOOL_REPO" "$DCS_BUILD_TOOL_REPO" "$BUILD_TOOL_REPO_DIR"
+createVersionFile "$BUILD_TOOL_REPO_DIR"
+mergeVersionFiles
 
 setUPNodeJS
 installDependencies
