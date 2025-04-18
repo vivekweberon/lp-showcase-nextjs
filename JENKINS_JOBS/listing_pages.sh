@@ -6,6 +6,7 @@ MAUTIC_TRACKER_REPO_DIR="mautic-tracker-repo"
 BUILD_TOOL_REPO_DIR="build-tool-repo"
 DEPLOYMENT_REPO_DIR="deployment-repo"
 OUTPUT_DIR="output"
+VERSION="version"
 
 cd "$WORKSPACE" || { echo "Error: Couldn't access workspace directory"; exit 1; }
 
@@ -18,10 +19,22 @@ createVersionFiles() {
   if [ -d ".git" ]; then
     git show --oneline -s | awk '{print $1}' > "$WORKSPACE/$repo_dir/$git_archival_file"
     echo "Created $git_archival_file in $repo_dir"
-  fi
-  
-  cd "$WORKSPACE" 
+    mv "$WORKSPACE/$repo_dir/$git_archival_file" "$WORKSPACE/$VERSION/"
+  fi  
 }
+
+copyVersionFiles(){
+    output_file="$WORKSPACE/$VERSION/version.txt"
+    {
+        echo "DATA:            $(cat "$WORKSPACE/$VERSION/git_archival_$DATA_REPO_DIR.txt")"
+        echo "BUILD_TOOL:      $(cat "$WORKSPACE/$VERSION/git_archival_$BUILD_TOOL_REPO_DIR.txt")"
+        echo "CODE:            $(cat "$WORKSPACE/$VERSION/git_archival_$CODE_REPO_DIR.txt")"
+        echo "MAUTIC_TRACKER:  $(cat "$WORKSPACE/$VERSION/git_archival_$MAUTIC_TRACKER_REPO_DIR.txt")"
+    } > "$output_file"
+    echo "Consolidated version info written to $output_file"
+}
+
+mkdir -p "$WORKSPACE/$VERSION"
 
 createVersionFiles "$CODE_REPO_DIR"
 
@@ -36,6 +49,8 @@ createVersionFiles "$MAUTIC_TRACKER_REPO_DIR"
 echo "Cloning build tool repository..."
 git clone -b $DCS_BUILD_TOOL_REPO "https://$GITHUB_USERNAME:$GITHUB_TOKEN@$BUILD_TOOL_REPO" build-tool-repo || { echo "Failed to clone input data repository"; exit 1; }
 createVersionFiles "$BUILD_TOOL_REPO_DIR"
+
+copyVersionFiles
 
 echoStart() {
     echo "Starting $1"
@@ -122,17 +137,6 @@ setupDeploymentRepo() {
     echo "Data has been saved to $output_file"
 }
 
-copyVersionFiles(){
-    output_file="$WORKSPACE/$OUTPUT_DIR/$website/version_info.txt"
-    {
-        echo "DATA_REPO_VERSION=$(cat "$WORKSPACE/$DATA_REPO_DIR/git_archival_$DATA_REPO_DIR.txt")"
-        echo "BUILD_TOOL_VERSION=$(cat "$WORKSPACE/$BUILD_TOOL_REPO_DIR/git_archival_$BUILD_TOOL_REPO_DIR.txt")"
-        echo "CODE_REPO_VERSION=$(cat "$WORKSPACE/$CODE_REPO_DIR/git_archival_listing_pages.txt")"
-        echo "MAUTIC_TRACKER_VERSION=$(cat "$WORKSPACE/$MAUTIC_TRACKER_REPO_DIR/git_archival_$MAUTIC_TRACKER_REPO_DIR.txt")"
-    } > "$output_file"
-    echo "Consolidated version info written to $output_file"
-}
-
 copyWebsiteToGithubRepo() {
 
     cd "$WORKSPACE"
@@ -148,7 +152,6 @@ copyWebsiteToGithubRepo() {
         if [ -d "$WORKSPACE/$OUTPUT_DIR/$website" ]; then
             # Remove any existing copy in $DEPLOYMENT_REPO_DIR, then copy the website build from $CODE_REPO_DIR
             rm -rf "$website"
-            copyVersionFiles
             cp -r "$WORKSPACE/$OUTPUT_DIR/$website" .
             echo "Copied directory '$website' from $OUTPUT_DIR to $DEPLOYMENT_REPO_DIR."
         else

@@ -223,7 +223,7 @@ export async function getStaticPaths() {
   try {
     const files = await fs.readdir(dataFolderPath);
     const filteredFiles = files.filter(
-      (file) => file !== "global" && file !== "home" && file !== ".git" && file !== "readme.txt"
+      (file) => file !== "global" && file !== "home" && file !== ".git" && file.endsWith(".txt")
     );
     let paths = [];
     for (const file of filteredFiles) {
