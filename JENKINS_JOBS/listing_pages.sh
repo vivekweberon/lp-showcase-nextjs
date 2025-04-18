@@ -40,24 +40,27 @@ mkdir -p "$WORKSPACE/$VERSION"
 
 createVersionFiles "$CODE_REPO_DIR"
 
-echo "Cloning input data repository..."
-cd "$WORKSPACE" || { echo "Error: Couldn't access workspace directory"; exit 1; }
-git clone -b $DCS_DATA_REPO "https://$GITHUB_USERNAME:$GITHUB_TOKEN@$DATA_REPO" $DATA_REPO_DIR || { echo "Failed to clone input data repository"; exit 1; }
+function cloneRepo() {
+    local repo_name="$1"
+    local repo_url="$2"
+    local branch_name="$3"
+    local target_dir="$4"
+
+    echo "Cloning $repo_name repository..."
+    cd "$WORKSPACE" || { echo "Error: Couldn't access workspace directory"; exit 1; }
+    git clone -b "$branch_name" "https://$GITHUB_USERNAME:$GITHUB_TOKEN@$repo_url" "$target_dir" || { echo "Failed to clone $repo_name repository"; exit 1; }
+}
+
+cloneRepo "data" "$DATA_REPO" "$DCS_DATA_REPO" "$DATA_REPO_DIR"
 createVersionFiles "$DATA_REPO_DIR"
 
-echo "Cloning Mautic tracker repository..."
-cd "$WORKSPACE" || { echo "Error: Couldn't access workspace directory"; exit 1; }
-git clone -b $DCS_MAUTIC_TRACKER_REPO "https://$GITHUB_USERNAME:$GITHUB_TOKEN@$MAUTIC_TRACKER_REPO" $MAUTIC_TRACKER_REPO_DIR || { echo "Failed to clone input data repository"; exit 1; }
+cloneRepo "mautic_tracker" "$MAUTIC_TRACKER_REPO" "$DCS_MAUTIC_TRACKER_REPO" "$MAUTIC_TRACKER_REPO_DIR"
 createVersionFiles "$MAUTIC_TRACKER_REPO_DIR"
 
-echo "Cloning build tool repository..."
-cd "$WORKSPACE" || { echo "Error: Couldn't access workspace directory"; exit 1; }
-git clone -b $DCS_BUILD_TOOL_REPO "https://$GITHUB_USERNAME:$GITHUB_TOKEN@$BUILD_TOOL_REPO" build-tool-repo || { echo "Failed to clone input data repository"; exit 1; }
+cloneRepo "data" "$BUILD_TOOL_REPO" "$DCS_BUILD_TOOL_REPO" "$BUILD_TOOL_REPO_DIR"
 createVersionFiles "$BUILD_TOOL_REPO_DIR"
 
 copyVersionFiles
-
-cd "$WORKSPACE" || { echo "Error: Couldn't access workspace directory"; exit 1; }
 
 echoStart() {
     echo "Starting $1"
@@ -100,7 +103,7 @@ setUPNodeJS() {
 }
 
 installDependencies() {
-    cd $CODE_REPO_DIR || { echo "Error: $CODE_REPO_DIR directory does not exist"; exit 1; }
+    cd $WORKSPACE/$CODE_REPO_DIR || { echo "Error: $CODE_REPO_DIR directory does not exist"; exit 1; }
     processInfo="Installing Dependencies"
     echoStart "$processInfo"
     npm install || { echo "Error: Dependency installation failed"; exit 1; }
