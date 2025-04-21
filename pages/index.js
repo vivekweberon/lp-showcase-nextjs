@@ -180,7 +180,7 @@ function addContact(contact) {
       <Script src={`${basePath}/js/showdown-1.9.1.min.js`} strategy="beforeInteractive" />
       <Script src={`${basePath}/js/bootstrap.min.js`} strategy="beforeInteractive" />
       <Script src={`${basePath}/js/mauticTracking.js`} strategy="beforeInteractive" />
-      <Script src={`${basePath}/js/doNotExist.js`} type="text/javascript" strategy="beforeInteractive" onError="logResourceLoadError(this)" />
+      <Script src={`${basePath}/js/doNotExist.js`} type="text/javascript" strategy="beforeInteractive" onError={(e) => logResourceLoadError(e.target)} />
 
       <Navbar menu={menuItems} />
       {sections}
