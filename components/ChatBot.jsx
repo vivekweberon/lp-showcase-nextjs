@@ -2,11 +2,11 @@ import { basePath } from '@/next.config';
 import Script from 'next/script';
 import React, { useEffect } from 'react';
 
-const ChatBot = ({chatBotDFAgent}) => {
+const ChatBot = ({chatbotDFAgent}) => {
 
   useEffect(() => {
-    console.log("ChatBot component mounted", chatBotDFAgent);
-    setChatbotDFAgent(chatBotDFAgent);
+    console.log("ChatBot component mounted", chatbotDFAgent);
+    setChatbotDFAgent(chatbotDFAgent);
     console.log("ChatBot component updated");
   },[]);
 
