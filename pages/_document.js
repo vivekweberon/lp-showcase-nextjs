@@ -1,3 +1,4 @@
+import React from "react";
 import { Html, Head, Main, NextScript } from 'next/document'
 import Script from 'next/script'
 import { basePath } from '@/next.config'
