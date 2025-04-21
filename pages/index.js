@@ -168,7 +168,7 @@ function addContact(contact) {
           href={`${basePath}/css/lpStyle.css`}
         />
       </Head>
-      {/* <script src={`${basePath}/js/rb-config.js`} onError={(e) => {logResourceLoadError(e)}} ></script> */}
+      <script src={`${basePath}/js/rb-config.js`} onError={(e) => {logResourceLoadError(e)}} ></script>
       <script src={`${basePath}/js/logger.js`} onError={(e) => {logResourceLoadError(e)}} ></script>
       <script src={`${basePath}/js/jquery-3.5.1.min.js`} onError={(e) => {logResourceLoadError(e)}} ></script>
       <script src={`${basePath}/js/jwt-decode.js`} onError={(e) => {logResourceLoadError(e)}}  ></script>
@@ -180,7 +180,7 @@ function addContact(contact) {
       <script src={`${basePath}/js/showdown-1.9.1.min.js`} onError={(e) => {logResourceLoadError(e)}} ></script>
       <script src={`${basePath}/js/bootstrap.min.js`} onError={(e) => {logResourceLoadError(e)}} ></script>
       <script src={`${basePath}/js/mauticTracking.js`} onError={(e) => {logResourceLoadError(e)}} ></script>
-      <script src={`${basePath}/js/doNotExist.js`} type="text/javascript" onError={(e) => {logResourceLoadError(e)}} ></script>
+      <script src={`${basePath}/js/doNotExist.js`} type="text/javascript" onerror="logResourceLoadError(this)" ></script>
 
       <Navbar menu={menuItems} />
       {sections}
