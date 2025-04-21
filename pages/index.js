@@ -180,7 +180,11 @@ function addContact(contact) {
       <script src={`${basePath}/js/showdown-1.9.1.min.js`} onError={(e) => {logResourceLoadError(e)}} ></script>
       <script src={`${basePath}/js/bootstrap.min.js`} onError={(e) => {logResourceLoadError(e)}} ></script>
       <script src={`${basePath}/js/mauticTracking.js`} onError={(e) => {logResourceLoadError(e)}} ></script>
-      <script src={`${basePath}/js/doNotExist.js`} type="text/javascript" onError={(e) => {logResourceLoadError(e.target)}} ></script>
+      <script src={`${basePath}/js/doNotExist1.js`} type="text/javascript" onError={(e) => {logResourceLoadError(e.target)}} ></script>
+      <script src={`${basePath}/js/doNotExist2.js`} type="text/javascript" onerror={(e) => {logResourceLoadError(e.target)}} ></script>
+      <script src={`${basePath}/js/doNotExist3.js`} type="text/javascript" onerror={(e) => {logResourceLoadError(e)}} ></script>
+      <script src={`${basePath}/js/doNotExist4.js`} type="text/javascript" onError={(e) => {logResourceLoadError(e.target)}} ></script>
+      <script src={`${basePath}/js/doNotExist5.js`} type="text/javascript" onerror="logResourceLoadError(this)" ></script>
 
       <Navbar menu={menuItems} />
       {sections}
