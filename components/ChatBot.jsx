@@ -1,8 +1,15 @@
 import { basePath } from '@/next.config';
 import Script from 'next/script';
-import React from 'react';
+import React, { useEffect } from 'react';
 
-const ChatBot = () => {
+const ChatBot = ({chatBotDFAgent}) => {
+
+  useEffect(() => {
+    console.log("ChatBot component mounted", chatBotDFAgent);
+    setChatbotDFAgent(chatBotDFAgent);
+    console.log("ChatBot component updated");
+  },[]);
+
   return (
   <>
     <link rel="stylesheet" href={`${basePath}/css/chatbot.css`} />

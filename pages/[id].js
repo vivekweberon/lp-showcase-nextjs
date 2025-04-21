@@ -39,6 +39,7 @@ const PropertyPage = ({ propertyData, images }) => {
     propertyPageSectionsOrder
   } = propertyData;
 
+  let enableChatbot = chatbot?.enable && chatbot?.chatbotDFAgent;
   let menuItems = [];
   let sections;
 
@@ -211,7 +212,7 @@ const PropertyPage = ({ propertyData, images }) => {
       <Navbar menu={menuItems} />
       {sections}
       <Footer menu={menuItems} text={footertext} />
-      {chatbot?.enable && <ChatBot />}
+      {enableChatbot && <ChatBot chatbotDFAgent={chatbot.chatbotDFAgent} />}
       {(home?.youtubeVideoID || video?.youtubeVideoID) && <Script src="https://www.youtube.com/iframe_api" />}
     </div>
   );

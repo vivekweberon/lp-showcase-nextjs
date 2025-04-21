@@ -72,6 +72,7 @@ export async function getStaticProps() {
 function HomePage({ homeData }) {
   const { page, showcase, contact, realtor, footertext, chatbot, homePageSectionsOrder } = homeData;
 
+  let enableChatbot = chatbot?.enable && chatbot?.chatbotDFAgent;
   let menuItems = [];
 
   let sections;
@@ -182,7 +183,7 @@ function addContact(contact) {
 
       <Navbar menu={menuItems} />
       {sections}
-      {chatbot?.enable && <ChatBot />}
+      {enableChatbot && <ChatBot chatbotDFAgent={chatbot.chatbotDFAgent} />}
       <Footer menu={menuItems} text={footertext} />
     </>
   );
