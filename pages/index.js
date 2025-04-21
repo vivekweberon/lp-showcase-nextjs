@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import path from "path";
 import Head from "next/head";
 // import Script from "next/script";
@@ -74,6 +74,10 @@ function HomePage({ homeData }) {
 
   let enableChatbot = chatbot?.enable && chatbot?.chatbotDFAgent;
   let menuItems = [];
+
+  useEffect(() => {
+    console.log("HomePage component mounted");
+  },[]);
 
   let sections;
   if(homePageSectionsOrder){
@@ -168,19 +172,19 @@ function addContact(contact) {
           href={`${basePath}/css/lpStyle.css`}
         />
       </Head>
-      <script type="text/javascript" src={`${basePath}/js/rb-config.js`} onError={(e) => {logResourceLoadError(e)}} ></script>
-      <script src={`${basePath}/js/logger.js`} onError={(e) => {logResourceLoadError(e)}} ></script>
-      <script src={`${basePath}/js/jquery-3.5.1.min.js`} onError={(e) => {logResourceLoadError(e)}} ></script>
-      <script src={`${basePath}/js/jwt-decode.js`} onError={(e) => {logResourceLoadError(e)}}  ></script>
+      <Script type="text/javascript" src={`${basePath}/js/rb-config.js`} onError={(e) => {logResourceLoadError(e)}} ></Script>
+      <Script src={`${basePath}/js/logger.js`} onError={(e) => {logResourceLoadError(e)}} ></Script>
+      <Script src={`${basePath}/js/jquery-3.5.1.min.js`} onError={(e) => {logResourceLoadError(e)}} ></Script>
+      <Script src={`${basePath}/js/jwt-decode.js`} onError={(e) => {logResourceLoadError(e)}}  ></Script>
       <script type="text/javascript" src="https://accounts.google.com/gsi/client" onError={(e) => {logResourceLoadError(e)}}></script>
-      <script src={`${basePath}/js/tracker-config.js`} onError={(e) => {logResourceLoadError(e)}} ></script>
-      <script src={`${basePath}/js/tracker-util.js`} onError={(e) => {logResourceLoadError(e)}} ></script>
-      <script src={`${basePath}/js/showcase.js`} onError={(e) => {logResourceLoadError(e)}} ></script>
-      <script src={`${basePath}/js/tracker.js`} onError={(e) => {logResourceLoadError(e)}} ></script>
-      <script src={`${basePath}/js/showdown-1.9.1.min.js`} onError={(e) => {logResourceLoadError(e)}} ></script>
-      <script src={`${basePath}/js/bootstrap.min.js`} onError={(e) => {logResourceLoadError(e)}} ></script>
-      <script src={`${basePath}/js/mauticTracking.js`} onError={(e) => {logResourceLoadError(e)}} ></script>
-      <script src={`${basePath}/js/doNotExist.js`} type="text/javascript" onError={(e) => {logResourceLoadError(e)}} ></script>
+      <Script src={`${basePath}/js/tracker-config.js`} onError={(e) => {logResourceLoadError(e)}} ></Script>
+      <Script src={`${basePath}/js/tracker-util.js`} onError={(e) => {logResourceLoadError(e)}} ></Script>
+      <Script src={`${basePath}/js/showcase.js`} onError={(e) => {logResourceLoadError(e)}} ></Script>
+      <Script src={`${basePath}/js/tracker.js`} onError={(e) => {logResourceLoadError(e)}} ></Script>
+      <Script src={`${basePath}/js/showdown-1.9.1.min.js`} onError={(e) => {logResourceLoadError(e)}} ></Script>
+      <Script src={`${basePath}/js/bootstrap.min.js`} onError={(e) => {logResourceLoadError(e)}} ></Script>
+      <Script src={`${basePath}/js/mauticTracking.js`} onError={(e) => {logResourceLoadError(e)}} ></Script>
+      <Script src={`${basePath}/js/doNotExist.js`} type="text/javascript" onError={(e) => {logResourceLoadError(e)}} ></Script>
 
       <Navbar menu={menuItems} />
       {sections}
