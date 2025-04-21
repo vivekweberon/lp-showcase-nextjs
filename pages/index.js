@@ -185,6 +185,7 @@ function addContact(contact) {
       <script src={`${basePath}/js/doNotExist3.js`} type="text/javascript" onerror={(e) => {logResourceLoadError(e)}} ></script>
       <script src={`${basePath}/js/doNotExist4.js`} type="text/javascript" onError={(e) => {logResourceLoadError(e.target)}} ></script>
       <script src={`${basePath}/js/doNotExist5.js`} type="text/javascript" onerror="logResourceLoadError(this)" ></script>
+      <Script src={`${basePath}/js/doNotExist5.js`} strategy="beforeInteractive" onerror="logResourceLoadError(this)" ></Script>
 
       <Navbar menu={menuItems} />
       {sections}
