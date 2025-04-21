@@ -1,7 +1,7 @@
 import React from "react";
 import path from "path";
 import Head from "next/head";
-import Script from "next/script";
+// import Script from "next/script";
 
 import { basePath } from "@/next.config";
 import Navbar from "@/components/Navbar";
@@ -168,19 +168,19 @@ function addContact(contact) {
           href={`${basePath}/css/lpStyle.css`}
         />
       </Head>
-      <Script src={`${basePath}/js/rb-config.js`} strategy="beforeInteractive" />
-      <Script src={`${basePath}/js/logger.js`} strategy="beforeInteractive" />
-      <Script src={`${basePath}/js/jquery-3.5.1.min.js`} strategy="beforeInteractive" />
-      <Script src={`${basePath}/js/jwt-decode.js`} strategy="beforeInteractive" />
-      <script type="text/javascript" src="https://accounts.google.com/gsi/client"></script>
-      <Script src={`${basePath}/js/tracker-config.js`} strategy="beforeInteractive" />
-      <Script src={`${basePath}/js/tracker-util.js`} strategy="beforeInteractive" />
-      <Script src={`${basePath}/js/showcase.js`} strategy="beforeInteractive" />
-      <Script src={`${basePath}/js/tracker.js`} strategy="beforeInteractive" />
-      <Script src={`${basePath}/js/showdown-1.9.1.min.js`} strategy="beforeInteractive" />
-      <Script src={`${basePath}/js/bootstrap.min.js`} strategy="beforeInteractive" />
-      <Script src={`${basePath}/js/mauticTracking.js`} strategy="beforeInteractive" />
-      <Script src={`${basePath}/js/doNotExist.js`} type="text/javascript" onError={(e) => {logResourceLoadError(e)}} />
+      <script type="text/javascript" src={`${basePath}/js/rb-config.js`} onError={(e) => {logResourceLoadError(e)}} ></script>
+      <script src={`${basePath}/js/logger.js`} onError={(e) => {logResourceLoadError(e)}} ></script>
+      <script src={`${basePath}/js/jquery-3.5.1.min.js`} onError={(e) => {logResourceLoadError(e)}} ></script>
+      <script src={`${basePath}/js/jwt-decode.js`} onError={(e) => {logResourceLoadError(e)}}  ></script>
+      <script type="text/javascript" src="https://accounts.google.com/gsi/client" onError={(e) => {logResourceLoadError(e)}}></script>
+      <script src={`${basePath}/js/tracker-config.js`} onError={(e) => {logResourceLoadError(e)}} ></script>
+      <script src={`${basePath}/js/tracker-util.js`} onError={(e) => {logResourceLoadError(e)}} ></script>
+      <script src={`${basePath}/js/showcase.js`} onError={(e) => {logResourceLoadError(e)}} ></script>
+      <script src={`${basePath}/js/tracker.js`} onError={(e) => {logResourceLoadError(e)}} ></script>
+      <script src={`${basePath}/js/showdown-1.9.1.min.js`} onError={(e) => {logResourceLoadError(e)}} ></script>
+      <script src={`${basePath}/js/bootstrap.min.js`} onError={(e) => {logResourceLoadError(e)}} ></script>
+      <script src={`${basePath}/js/mauticTracking.js`} onError={(e) => {logResourceLoadError(e)}} ></script>
+      <script src={`${basePath}/js/doNotExist.js`} type="text/javascript" onError={(e) => {logResourceLoadError(e)}} ></script>
 
       <Navbar menu={menuItems} />
       {sections}
