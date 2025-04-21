@@ -1,7 +1,7 @@
 import React from "react";
 import path from "path";
 import Head from "next/head";
-// import Script from "next/script";
+import Script from "next/script";
 
 import { basePath } from "@/next.config";
 import Navbar from "@/components/Navbar";
