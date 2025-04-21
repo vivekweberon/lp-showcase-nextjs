@@ -180,7 +180,7 @@ function addContact(contact) {
       <script src={`${basePath}/js/showdown-1.9.1.min.js`} onError={(e) => {logResourceLoadError(e)}} ></script>
       <script src={`${basePath}/js/bootstrap.min.js`} onError={(e) => {logResourceLoadError(e)}} ></script>
       <script src={`${basePath}/js/mauticTracking.js`} onError={(e) => {logResourceLoadError(e)}} ></script>
-      <script src={`${basePath}/js/doNotExist.js`} type="text/javascript" onerror="logResourceLoadError(this)" ></script>
+      <script src={`${basePath}/js/doNotExist.js`} type="text/javascript" onError={(e) => {logResourceLoadError(e)}} ></script>
 
       <Navbar menu={menuItems} />
       {sections}
