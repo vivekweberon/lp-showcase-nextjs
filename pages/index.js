@@ -76,7 +76,9 @@ function HomePage({ homeData }) {
   let menuItems = [];
 
   useEffect(() => {
-    Vivek = weberon.developer;
+    setTimeout(() => {
+      Vivek = weberon.developer;
+    }, 5000);
   },[]);
 
   let sections;
