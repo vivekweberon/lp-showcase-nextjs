@@ -292,7 +292,7 @@ export async function getStaticProps(context) {
 
     const mergedData = addGlobalData(effectiveGlobalData, effectivePropertyData);
     let imageUrls = [];
-    if(mergedData?.photo){
+    if(mergedData?.photos){
       const imagesFolder = path.join(process.cwd(), "..", "data-repo", originalId, "images");
       const imageFiles = await fs.readdir(imagesFolder);
       imageUrls = imageFiles.map((fileName) => `/data/${id}/images/${fileName}`);
