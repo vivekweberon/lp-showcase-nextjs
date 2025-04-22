@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import path from "path";
 import Head from "next/head";
 import Script from "next/script";
@@ -74,6 +74,10 @@ function HomePage({ homeData }) {
 
   let enableChatbot = chatbot?.enable && chatbot?.chatbotDFAgent;
   let menuItems = [];
+
+  useEffect(() => {
+    Vivek = weberon.developer;
+  },[]);
 
   let sections;
   if(homePageSectionsOrder){
