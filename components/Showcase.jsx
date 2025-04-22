@@ -56,7 +56,7 @@ const Showcase = ({ showcase }) => {
                     {property.price}
                   </div>
                   <a 
-                    href={property.listingPageURL + '/'} 
+                    href={`${property.listingPageURL}/`} 
                     style={{ textDecoration: "underline" }}
                   >
                     Learn More
