@@ -10,9 +10,7 @@ function updateEndOfFormHeader(){
 }
 
 function getPageID(){
-  let pageID = getQueryParameter("id");
-  pageID = (pageID) ? pageID : currentPageName;
-  return pageID;
+  return getCurrentPageName();
 }
 
 function reWriteUrlsAndTrackPageView() {
@@ -23,11 +21,7 @@ function reWriteUrlsAndTrackPageView() {
 function getCurrentPageName(){
   var path = window.location.pathname;
   path = decodeURIComponent(path);
-  var arr = path.split("/");
-  var pageName = (arr[arr.length - 1] != '') ? arr[arr.length - 1] : arr[arr.length -2];
-  pageName = ((pageName == 'index.html') &&  (arr[arr.length - 2] != '')) ? arr[arr.length -2] : pageName;
-  pageName = pageName.split(".")[0];
-  return pageName;
+  return path.replace(/^\/|\/$/g, '');
 }
 
 function displayForm(lpModal, duration){
