@@ -174,7 +174,8 @@ function addContact(contact) {
           href={`${basePath}/css/lpStyle.css`}
         />
       </Head>
-      <script src={`${basePath}/js/rb-config.js`} onError={(e) => {logResourceLoadError(e)}} ></script>
+      {/* <script src={`${basePath}/js/rb-config.js`} onError={(e) => {logResourceLoadError(e)}} ></script> */}
+      <Script src={`${basePath}/js/rb-config.js`} strategy="beforeInteractive" />
       <script src={`${basePath}/js/logger.js`} onError={(e) => {logResourceLoadError(e)}} ></script>
       <script src={`${basePath}/js/jquery-3.5.1.min.js`} onError={(e) => {logResourceLoadError(e)}} ></script>
       <script src={`${basePath}/js/jwt-decode.js`} onError={(e) => {logResourceLoadError(e)}}  ></script>
