@@ -5,9 +5,7 @@ import React, { useEffect } from 'react';
 const ChatBot = ({chatbotDFAgent}) => {
 
   useEffect(() => {
-    console.log("ChatBot component mounted", chatbotDFAgent);
     setChatbotDFAgent(chatbotDFAgent);
-    console.log("ChatBot component updated");
   },[]);
 
   return (

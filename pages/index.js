@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import path from "path";
 import Head from "next/head";
 import Script from "next/script";
@@ -74,14 +74,8 @@ function HomePage({ homeData }) {
 
   let enableChatbot = chatbot?.enable && chatbot?.chatbotDFAgent;
   let menuItems = [];
-
-  useEffect(() => {
-    setTimeout(() => {
-      Vivek = weberon.developer;
-    }, 5000);
-  },[]);
-
   let sections;
+  
   if(homePageSectionsOrder){
     sections = homePageSectionsOrder.map((section) => {
         switch (section) {
@@ -175,17 +169,17 @@ function addContact(contact) {
         />
       </Head>
       <Script src={`${basePath}/js/rb-config.js`} strategy="beforeInteractive" />
-      <Script src={`${basePath}/js/logger.js`} strategy="beforeInteractive" onError={(e) => {logResourceLoadError(e)}} ></Script>
-      <Script src={`${basePath}/js/jquery-3.5.1.min.js`} strategy="beforeInteractive" onError={(e) => {logResourceLoadError(e)}} ></Script>
-      <Script src={`${basePath}/js/jwt-decode.js`} strategy="beforeInteractive" onError={(e) => {logResourceLoadError(e)}}  ></Script>
-      <script type="text/javascript" src="https://accounts.google.com/gsi/client" onError={(e) => {logResourceLoadError(e)}}></script>
-      <Script src={`${basePath}/js/tracker-config.js`} strategy="beforeInteractive" onError={(e) => {logResourceLoadError(e)}} ></Script>
-      <Script src={`${basePath}/js/tracker-util.js`} strategy="beforeInteractive" onError={(e) => {logResourceLoadError(e)}} ></Script>
-      <Script src={`${basePath}/js/showcase.js`} strategy="beforeInteractive" onError={(e) => {logResourceLoadError(e)}} ></Script>
-      <Script src={`${basePath}/js/tracker.js`} strategy="beforeInteractive" onError={(e) => {logResourceLoadError(e)}} ></Script>
-      <Script src={`${basePath}/js/showdown-1.9.1.min.js`} strategy="beforeInteractive" onError={(e) => {logResourceLoadError(e)}} ></Script>
-      <Script src={`${basePath}/js/bootstrap.min.js`} strategy="beforeInteractive" onError={(e) => {logResourceLoadError(e)}} ></Script>
-      <Script src={`${basePath}/js/mauticTracking.js`} strategy="beforeInteractive" onError={(e) => {logResourceLoadError(e)}} ></Script>
+      <Script src={`${basePath}/js/logger.js`} strategy="beforeInteractive" />
+      <Script src={`${basePath}/js/jquery-3.5.1.min.js`} strategy="beforeInteractive" />
+      <Script src={`${basePath}/js/jwt-decode.js`} strategy="beforeInteractive" />
+      <script type="text/javascript" src="https://accounts.google.com/gsi/client"></script>
+      <Script src={`${basePath}/js/tracker-config.js`} strategy="beforeInteractive" />
+      <Script src={`${basePath}/js/tracker-util.js`} strategy="beforeInteractive" />
+      <Script src={`${basePath}/js/showcase.js`} strategy="beforeInteractive" />
+      <Script src={`${basePath}/js/tracker.js`} strategy="beforeInteractive" />
+      <Script src={`${basePath}/js/showdown-1.9.1.min.js`} strategy="beforeInteractive" />
+      <Script src={`${basePath}/js/bootstrap.min.js`} strategy="beforeInteractive" />
+      <Script src={`${basePath}/js/mauticTracking.js`} strategy="beforeInteractive" />
       
       <Navbar menu={menuItems} />
       {sections}
