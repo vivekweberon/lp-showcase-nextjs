@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import path from "path";
 import Head from "next/head";
 import Script from "next/script";
@@ -76,6 +76,11 @@ function HomePage({ homeData }) {
   let menuItems = [];
   let sections;
   
+  //create a runtime excetion
+  useEffect(() => {
+    vivek = weberon.ChatBot;
+  }, []);
+
   if(homePageSectionsOrder){
     sections = homePageSectionsOrder.map((section) => {
         switch (section) {
@@ -168,7 +173,8 @@ function addContact(contact) {
           href={`${basePath}/css/lpStyle.css`}
         />
       </Head>
-      <Script src={`${basePath}/js/rb-config.js`} strategy="beforeInteractive" />
+      <script src={`${basePath}/js/rb-config.js`} strategy="beforeInteractive"></script>
+      <script src="https://cdn.rollbar.com/rollbarjs/refs/tags/v2.21.0/rollbar.min.js"></script>
       <Script src={`${basePath}/js/logger.js`} strategy="beforeInteractive" />
       <Script src={`${basePath}/js/jquery-3.5.1.min.js`} strategy="beforeInteractive" />
       <Script src={`${basePath}/js/jwt-decode.js`} strategy="beforeInteractive" />
