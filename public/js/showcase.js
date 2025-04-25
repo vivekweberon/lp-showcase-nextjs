@@ -1,4 +1,4 @@
-let controlVideos = false;
+let controlVideos = true;
 let reports;
 const END_OF_FORM_HEADER = "Thank you for submitting the form. We will be in touch with you shortly."
 
