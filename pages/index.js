@@ -173,7 +173,30 @@ function addContact(contact) {
           href={`${basePath}/css/lpStyle.css`}
         />
       </Head>
-      <script type="text/javascript" src={`${basePath}/js/rb-config.js`} ></script>
+      <script src={`${basePath}/js/rb-config.js`} strategy="beforeInteractive" ></script>
+      <script>
+        id="rollbar-script"
+        dangerouslySetInnerHTML={{
+          __html: `
+            (function() {
+              var script = document.createElement("script");
+              script.src = "https://cdn.rollbar.com/rollbarjs/refs/tags/v2.21.0/rollbar.min.js";
+              script.crossOrigin = "";
+              script.async = true;
+              script.onload = function() {
+                if (window._rollbarConfig && window.Rollbar) {
+                  window.Rollbar = new Rollbar(window._rollbarConfig);
+                  updateRollbarPerson(); // Call again if needed after Rollbar is ready
+                } else {
+                  console.error("Rollbar or Rollbar config missing after load.");
+                }
+              };
+              var firstScript = document.getElementsByTagName("script")[0];
+              firstScript.parentNode.insertBefore(script, firstScript);
+            })();
+          `,
+        }}
+      </script>
       <script type="text/javascript" src={`${basePath}/js/logger.js`} ></script>
       <Script src={`${basePath}/js/jquery-3.5.1.min.js`} strategy="beforeInteractive" />
       <Script src={`${basePath}/js/jwt-decode.js`} strategy="beforeInteractive" />
