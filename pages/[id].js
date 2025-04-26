@@ -39,7 +39,7 @@ const PropertyPage = ({ propertyData, images }) => {
     propertyPageSectionsOrder
   } = propertyData;
 
-  let enableChatbot = chatbot?.enable && chatbot?.chatbotDFAgent;
+  let enableChatbot = chatbot?.enable;
   let menuItems = [];
   let sections;
 

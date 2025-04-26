@@ -72,14 +72,14 @@ export async function getStaticProps() {
 function HomePage({ homeData }) {
   const { page, showcase, contact, realtor, footertext, chatbot, homePageSectionsOrder } = homeData;
 
-  let enableChatbot = chatbot?.enable && chatbot?.chatbotDFAgent;
+  let enableChatbot = chatbot?.enable;
   let menuItems = [];
   let sections;
   
   //create a runtime excetion
-  useEffect(() => {
-    vivek = weberon.ChatBot;
-  }, []);
+  // useEffect(() => {
+  //   vivek = weberon.ChatBot;
+  // }, []);
 
   if(homePageSectionsOrder){
     sections = homePageSectionsOrder.map((section) => {
