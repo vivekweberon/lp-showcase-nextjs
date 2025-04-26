@@ -173,7 +173,7 @@ function addContact(contact) {
           href={`${basePath}/css/lpStyle.css`}
         />
       </Head>
-      <Script src={`${basePath}/js/rb-config.js`} strategy="beforeInteractive" />
+      <script src={`${basePath}/js/rb-config.js`} ></script>
       {/* <script src="https://cdn.rollbar.com/rollbarjs/refs/tags/v2.21.0/rollbar.min.js"></script> */}
       <Script src={`${basePath}/js/logger.js`} strategy="beforeInteractive" />
       <Script src={`${basePath}/js/jquery-3.5.1.min.js`} strategy="beforeInteractive" />
@@ -186,7 +186,7 @@ function addContact(contact) {
       <Script src={`${basePath}/js/showdown-1.9.1.min.js`} strategy="beforeInteractive" />
       <Script src={`${basePath}/js/bootstrap.min.js`} strategy="beforeInteractive" />
       <Script src={`${basePath}/js/mauticTracking.js`} strategy="beforeInteractive" />
-      <script src={`${basePath}/js/rollbar.min.js`} strategy="beforeInteractive"></script>
+      <script src={`${basePath}/js/rollbar.min.js`} ></script>
       
       <Navbar menu={menuItems} />
       {sections}
