@@ -174,7 +174,7 @@ function addContact(contact) {
         />
       </Head>
       <script src={`${basePath}/js/rb-config.js`} strategy="beforeInteractive" ></script>
-      <Script id="rollbar-script" strategy="afterInteractive">
+      {/* <Script id="rollbar-script" strategy="afterInteractive">
       {`
         (function() {
           var script = document.createElement("script");
@@ -193,7 +193,7 @@ function addContact(contact) {
           firstScript.parentNode.insertBefore(script, firstScript);
         })();
       `}
-      </Script>
+      </Script> */}
       <script type="text/javascript" src={`${basePath}/js/logger.js`} ></script>
       <Script src={`${basePath}/js/jquery-3.5.1.min.js`} strategy="beforeInteractive" />
       <Script src={`${basePath}/js/jwt-decode.js`} strategy="beforeInteractive" />
