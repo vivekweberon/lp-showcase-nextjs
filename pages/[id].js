@@ -36,7 +36,8 @@ const PropertyPage = ({ propertyData, images }) => {
     realtor,
     footertext,
     chatbot,
-    propertyPageSectionsOrder
+    propertyPageSectionsOrder,
+    showcase
   } = propertyData;
 
   let enableChatbot = chatbot?.enable;
