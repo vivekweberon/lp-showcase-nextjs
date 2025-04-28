@@ -89,7 +89,7 @@ const PropertyPage = ({ propertyData, images }) => {
 
   function addShowcase(showcase) {
     if (!showcase) return null;
-    addMenuItem("/"); // 🛠️ just add "/" instead of the menu text
+    addMenuItem(`/${basePath}`); 
   }  
 
   function addHome(home) {
