@@ -76,7 +76,8 @@ const PropertyPage = ({ propertyData, images }) => {
         addPhotos(photos),
         addVideo(video),
         addContact(contact),
-        addRealtor(realtor)
+        addRealtor(realtor),
+        addShowcase(showcase)
       ];}
 
   function addMenuItem(menu) {
@@ -84,6 +85,11 @@ const PropertyPage = ({ propertyData, images }) => {
         menuItems.push(menu);
     }
   }
+
+  function addShowcase(showcase) {
+    if (!showcase) return null;
+    addMenuItem("/"); // 🛠️ just add "/" instead of the menu text
+  }  
 
   function addHome(home) {
     if (!home) return null;

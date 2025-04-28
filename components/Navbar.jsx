@@ -14,9 +14,9 @@ function MyNavbar({ menu }) {
       <Navbar.Collapse id="navbar-nav" className="justify-content-center">
         <Nav>
           {menu.map((item, index) => (
-            <Nav.Link key={index} href={`#${item.replace(/\s/g, '').toLowerCase()}`}>
-              {item}
-            </Nav.Link>
+            <Nav.Link key={index} href={item.startsWith('/') ? item : `#${item.replace(/\s/g, '').toLowerCase()}`}>
+              {item === "/" ? "Showcase" : item}
+            </Nav.Link>          
           ))}
         </Nav>
       </Navbar.Collapse>
