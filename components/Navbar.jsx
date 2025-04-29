@@ -1,7 +1,7 @@
 import React from "react";
 import { Nav, Navbar } from "react-bootstrap";
 
-function MyNavbar({ menu }) {
+function MyNavbar({ menu, siteName, homePageMenuName }) {
   return (
     <Navbar
       bg="dark"
@@ -14,10 +14,15 @@ function MyNavbar({ menu }) {
       <Navbar.Collapse id="navbar-nav" className="justify-content-center">
         <Nav>
           {menu.map((item, index) => (
-            <Nav.Link 
-              key={index} 
-              href={index === 0 ? homePageUrl : `#${item.replace(/\s/g, '').toLowerCase()}`}>
-            {item}
+            <Nav.Link
+              key={index}
+              href={
+                item === homePageMenuName
+                  ? `/${siteName}/`
+                  : `#${item.replace(/\s/g, '').toLowerCase()}`
+              }
+            >
+              {item}
           </Nav.Link>
           ))}
         </Nav>

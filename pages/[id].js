@@ -36,16 +36,14 @@ const PropertyPage = ({ propertyData, images }) => {
     realtor,
     footertext,
     chatbot,
-    propertyPageSectionsOrder
+    propertyPageSectionsOrder,
+    homePageNavigation
   } = propertyData;
 
   let enableChatbot = chatbot?.enable;
   let menuItems = [];
   let sections;
-
-  // Add homePageNavigation menu item first
-  let homePageNavigationMenu = propertyData?.homePageNavigation?.menu || "Home";
-  menuItems.push(homePageNavigationMenu);
+  const homePageMenuName = homePageNavigation?.menu || "Home Page";
 
   if (propertyPageSectionsOrder) {
     sections = propertyPageSectionsOrder.map((section) => {
@@ -213,7 +211,7 @@ const PropertyPage = ({ propertyData, images }) => {
       {(home?.youtubeVideoID || video?.youtubeVideoID) && <Script src={`${basePath}/js/ytvideo.js`} strategy="beforeInteractive" />}
       <Script src={`${basePath}/js/mauticTracking.js`} strategy="beforeInteractive" />
 
-      <Navbar menu={menuItems} />
+      <Navbar menu={menuItems} siteName={siteToBeBuilt} homePageMenuName={homePageMenuName} />
       {sections}
       <Footer menu={menuItems} text={footertext} />
       {enableChatbot && <ChatBot chatbotDFAgent={chatbot.chatbotDFAgent} />}
