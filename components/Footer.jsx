@@ -1,6 +1,6 @@
 import React from "react";
 
-const Footer = ({ menu, text }) => {
+const Footer = ({ menu, text, homePageMenuName }) => {
   return (
     <div
       id="footer"
