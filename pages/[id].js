@@ -227,6 +227,7 @@ const PropertyPage = ({ propertyData, images, siteToBeBuilt }) => {
 
 export async function getStaticPaths() {
   const dataFolderPath = path.join(process.cwd(), "..", "data-repo");
+  const siteToBeBuilt = process.env.siteName;
   try {
     const files = await fs.readdir(dataFolderPath);
     const filteredFiles = files.filter(
@@ -238,23 +239,19 @@ export async function getStaticPaths() {
       try {
         const fileContent = await fs.readFile(filePath, "utf-8");
         const parsedData = yaml.load(fileContent);
-
-        const hasOtherData = Object.keys(parsedData).some(key => key !== 'homePageData');
-
-        if (hasOtherData) {
-          if (parsedData.siteName && Array.isArray(parsedData.siteName) && parsedData.siteName.includes(process.env.siteName)) {
-            paths.push({
-              params: { id: getPropertyOutputDirectoryName(file) },
-            });
-          } else if (parsedData.siteName && typeof parsedData.siteName === 'string' && parsedData.siteName === process.env.siteName) {
-            paths.push({
-              params: { id: getPropertyOutputDirectoryName(file) },
-            });
-          } else {
-            console.log(`Skipping page for ${file} as siteName does not match.`);
-          }
-        } else {
-          console.log(`Skipping page for ${file} as it only contains homePageData.`);
+        const basicKeys = ['homePageData', 'siteName', 'siteSpecific'];
+        const parsedKeys = Object.keys(parsedData);
+        if (
+          parsedData.siteName &&
+          parsedData.siteName.includes(siteToBeBuilt) &&
+          !(
+            parsedKeys.every(key => basicKeys.includes(key)) &&
+            parsedKeys.length <= basicKeys.length
+          )
+        ) {
+          paths.push({
+            params: { id: getPropertyOutputDirectoryName(file) },
+          });
         }
       } catch (error) {
         console.error(`Error reading data.yaml for ${file}:`, error);
