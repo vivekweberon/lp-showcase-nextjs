@@ -43,13 +43,12 @@ const PropertyPage = ({ propertyData, images, siteToBeBuilt }) => {
   let enableChatbot = chatbot?.enable;
   let menuItems = [];
   let sections;
-  const homePageMenuName = homePageNavigation?.menu || "Home Page";
-
-  // Add the homePageMenuName to the menuItems array
-  if (homePageMenuName) {
+  
+  if(homePageNavigation){
+    let homePageMenuName = homePageNavigation?.menu || "Home Page";
     menuItems.push(homePageMenuName);
   }
-
+  
   if (propertyPageSectionsOrder) {
     sections = propertyPageSectionsOrder.map((section) => {
         switch (section) {
