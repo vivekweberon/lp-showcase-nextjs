@@ -45,6 +45,11 @@ const PropertyPage = ({ propertyData, images, siteToBeBuilt }) => {
   let sections;
   const homePageMenuName = homePageNavigation?.menu || "Home Page";
 
+  // Add the homePageMenuName to the menuItems array
+  if (homePageMenuName) {
+    menuItems.push(homePageMenuName);
+  }
+
   if (propertyPageSectionsOrder) {
     sections = propertyPageSectionsOrder.map((section) => {
         switch (section) {
