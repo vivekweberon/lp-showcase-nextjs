@@ -253,6 +253,7 @@ export async function getStaticPaths() {
             params: { id: getPropertyOutputDirectoryName(file) },
           });
         }
+        console.log("Paths", paths);
       } catch (error) {
         console.error(`Error reading data.yaml for ${file}:`, error);
         return {
