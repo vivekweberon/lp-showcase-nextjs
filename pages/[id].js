@@ -239,10 +239,15 @@ export async function getStaticPaths() {
       try {
         const fileContent = await fs.readFile(filePath, "utf-8");
         const parsedData = yaml.load(fileContent);
-        if (parsedData.siteName && parsedData.siteName.includes(siteToBeBuilt)) {
-          paths.push({
-            params: { id: getPropertyOutputDirectoryName(file) },
-          });
+        // Check if the data.yaml contains more than just homePageData
+        if (Object.keys(parsedData).some(key => key !== 'homePageData')) {
+          if (parsedData.siteName && parsedData.siteName.includes(siteToBeBuilt)) {
+            paths.push({
+              params: { id: getPropertyOutputDirectoryName(file) },
+            });
+          }
+        } else {
+          console.log(`Skipping page for ${file} as it only contains homePageData.`);
         }
       } catch (error) {
         console.error(`Error reading data.yaml for ${file}:`, error);
