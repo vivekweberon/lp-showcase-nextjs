@@ -25,7 +25,11 @@ const Footer = ({ menu, text }) => {
             >
               <a
                 className="nav-item nav-link"
-                href={`#${menuItem.replace(/\s/g, '').toLowerCase()}`}
+                href={
+                  item === homePageMenuName
+                    ? `/${siteName}/`
+                    : `#${item.replace(/\s/g, '').toLowerCase()}`
+                }
                 style={{ color: "#212529" }}
               >
                 {menuItem}

@@ -44,10 +44,8 @@ const PropertyPage = ({ propertyData, images, siteToBeBuilt }) => {
   let menuItems = [];
   let sections;
   
-  let homePageMenuName = "Home Page";
-
-  if (homePageNavigation) {
-    homePageMenuName = homePageNavigation?.menu || "Home Page";
+  if(homePageNavigation){
+    let homePageMenuName = homePageNavigation?.menu || "Home Page";
     menuItems.push(homePageMenuName);
   }
   
@@ -219,7 +217,7 @@ const PropertyPage = ({ propertyData, images, siteToBeBuilt }) => {
 
       <Navbar menu={menuItems} siteName={siteToBeBuilt} homePageMenuName={homePageMenuName} />
       {sections}
-      <Footer menu={menuItems} text={footertext} />
+      <Footer menu={menuItems} text={footertext} siteName={siteToBeBuilt} homePageMenuName={homePageMenuName} />
       {enableChatbot && <ChatBot chatbotDFAgent={chatbot.chatbotDFAgent} />}
       {(home?.youtubeVideoID || video?.youtubeVideoID) && <Script src="https://www.youtube.com/iframe_api" />}
     </div>
