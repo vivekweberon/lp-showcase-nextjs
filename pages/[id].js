@@ -44,8 +44,10 @@ const PropertyPage = ({ propertyData, images, siteToBeBuilt }) => {
   let menuItems = [];
   let sections;
   
-  if(homePageNavigation){
-    let homePageMenuName = homePageNavigation?.menu || "Home Page";
+  let homePageMenuName = "Home Page";
+
+  if (homePageNavigation) {
+    homePageMenuName = homePageNavigation?.menu || "Home Page";
     menuItems.push(homePageMenuName);
   }
   
