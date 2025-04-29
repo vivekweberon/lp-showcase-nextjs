@@ -36,13 +36,16 @@ const PropertyPage = ({ propertyData, images }) => {
     realtor,
     footertext,
     chatbot,
-    propertyPageSectionsOrder,
-    showcase
+    propertyPageSectionsOrder
   } = propertyData;
 
   let enableChatbot = chatbot?.enable;
   let menuItems = [];
   let sections;
+
+  // Add homePageNavigation menu item first
+  let homePageNavigationMenu = propertyData?.homePageNavigation?.menu || "Home";
+  menuItems.push(homePageNavigationMenu);
 
   if (propertyPageSectionsOrder) {
     sections = propertyPageSectionsOrder.map((section) => {
@@ -77,8 +80,7 @@ const PropertyPage = ({ propertyData, images }) => {
         addPhotos(photos),
         addVideo(video),
         addContact(contact),
-        addRealtor(realtor),
-        addShowcase(showcase)
+        addRealtor(realtor)
       ];}
 
   function addMenuItem(menu) {
@@ -86,11 +88,6 @@ const PropertyPage = ({ propertyData, images }) => {
         menuItems.push(menu);
     }
   }
-
-  function addShowcase(showcase) {
-    if (!showcase) return null;
-    addMenuItem(`/${basePath}`); 
-  }  
 
   function addHome(home) {
     if (!home) return null;
