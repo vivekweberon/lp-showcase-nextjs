@@ -5,7 +5,7 @@ import React, { useEffect } from 'react';
 const ChatBot = ({chatbotDFAgent}) => {
 
   useEffect(() => {
-    if(chatbotDFAgent.trim()){
+    if(chatbotDFAgent){
       setChatbotDFAgent(chatbotDFAgent);
     }
   },[]);
