@@ -1,8 +1,8 @@
 import React from "react";
 import { Nav, Navbar } from "react-bootstrap";
 
-function MyNavbar({ menu, siteName, homePageMenuName }) {
-  console.log("Navbar props:", { homePageMenuName });
+function MyNavbar({ menu, siteName }) {
+  // console.log("Navbar props:", { homePageMenuName });
   return (
     <Navbar
       bg="dark"
