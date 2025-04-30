@@ -22,7 +22,7 @@ import ChatBot from "@/components/ChatBot";
 import { getPropertyOutputDirectoryName } from "@/utils/renameUtils.js";
 import { loadYamlFile, getEffectiveData, addGlobalData } from "../utils/dataUtils";
 
-const PropertyPage = ({ propertyData, images, siteToBeBuilt }) => {
+const PropertyPage = ({ propertyData, images }) => {
   
   const {
     page,
