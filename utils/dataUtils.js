@@ -8,7 +8,7 @@ export const loadYamlFile = async (filePath) => {
   return yaml.load(fileData);
 };
 
-export function addGlobalData(global, home) {
+export function addGlobalData(global, home, enabledSections) {
   if (typeof global !== "object" || global === null) return home;
 
   if (global?.realtor?.photo){
@@ -19,7 +19,7 @@ export function addGlobalData(global, home) {
   }
 
   for (const key of Object.keys(global)) {
-    if (home[key] == null) {
+    if ((Array.isArray(enabledSections) && enabledSections.includes(key) && home[key] == null) || ((enabledSections == null) && home[key] == null)) {
       home[key] = global[key] 
     } 
   }

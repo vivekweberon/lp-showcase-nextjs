@@ -50,7 +50,7 @@ export async function getStaticProps() {
       console.error(`Skipping global data, "${siteToBeBuilt}" not found in global/data.yaml`);
     }else{
       let effectiveGlobalData = getEffectiveData(globalData, siteToBeBuilt);
-      homeDataFinal = addGlobalData(effectiveGlobalData, effectiveHomeData);
+      homeDataFinal = addGlobalData(effectiveGlobalData, effectiveHomeData, effectiveHomeData?.homePageSectionsOrder);
     }
     
     if(Object.keys(homeDataFinal).length === 0){

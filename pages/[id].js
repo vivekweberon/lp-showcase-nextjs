@@ -40,7 +40,7 @@ const PropertyPage = ({ propertyData, images }) => {
     // homePageNavigation
   } = propertyData;
 
-  let enableChatbot = chatbot?.enable;
+  let enableChatbot = chatbot && chatbot?.enable;
   let menuItems = [];
   let sections;
   
@@ -304,7 +304,7 @@ export async function getStaticProps(context) {
       console.error(`Skipping global data, "${siteToBeBuilt}" not found in global/data.yaml`);
     }else{
       let effectiveGlobalData = getEffectiveData(globalData, siteToBeBuilt);
-      mergedData = addGlobalData(effectiveGlobalData, effectivePropertyData);
+      mergedData = addGlobalData(effectiveGlobalData, effectivePropertyData, effectivePropertyData?.propertyPageSectionsOrder);
     }
 
     let imageUrls = [];
