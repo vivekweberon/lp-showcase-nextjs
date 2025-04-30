@@ -42,7 +42,6 @@ export async function getStaticProps() {
     
     if (!globalData.siteName.includes(String(siteToBeBuilt).trim())) {
       console.error(`Skipping global data, "${siteToBeBuilt}" not found in global/data.yaml`);
-      return { notFound: true };
     }
 
     const effectiveGlobalData = getEffectiveData(globalData, siteToBeBuilt);
