@@ -45,7 +45,7 @@ export async function getStaticProps() {
       effectiveHomeData.showcase.properties = propertiesHomePageData;
     }
 
-    let homeDataFinal;
+    let homeDataFinal = {};
     if (!globalData.siteName.includes(String(siteToBeBuilt).trim())) {
       console.error(`Skipping global data, "${siteToBeBuilt}" not found in global/data.yaml`);
     }else{
