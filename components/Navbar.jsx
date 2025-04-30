@@ -1,7 +1,7 @@
 import React from "react";
 import { Nav, Navbar } from "react-bootstrap";
 
-function MyNavbar({ menu, siteName }) {
+function MyNavbar({ menu }) {
   // console.log("Navbar props:", { homePageMenuName });
   return (
     <Navbar
@@ -17,11 +17,7 @@ function MyNavbar({ menu, siteName }) {
           {menu.map((item, index) => (
             <Nav.Link
               key={index}
-              href={
-                item === homePageMenuName
-                  ? `/${siteName}/`
-                  : `#${item.replace(/\s/g, '').toLowerCase()}`
-              }
+              href={`#${item.replace(/\s/g, '').toLowerCase()}`}
             >
               {item}
           </Nav.Link>
