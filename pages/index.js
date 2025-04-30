@@ -52,7 +52,12 @@ export async function getStaticProps() {
       let effectiveGlobalData = getEffectiveData(globalData, siteToBeBuilt);
       homeDataFinal = addGlobalData(effectiveGlobalData, effectiveHomeData);
     }
-    console.log("Home Data:", homeDataFinal);
+    
+    if(Object.keys(homeDataFinal).length === 0){
+      console.log("Skipping building Home Page as no sections are defined")
+      return { notFound: true };
+    }
+
     return {
       props: {
         homeData: homeDataFinal,
