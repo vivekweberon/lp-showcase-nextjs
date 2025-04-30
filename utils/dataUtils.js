@@ -23,6 +23,8 @@ export function addGlobalData(global, home) {
       home[key] = global[key] 
     } 
   }
+  console.log("Global Data:", global);
+  console.log("Home Data:", home);
   return home;
 }
 
