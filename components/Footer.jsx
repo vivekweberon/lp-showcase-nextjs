@@ -36,9 +36,9 @@ const Footer = ({ menu, text }) => {
       </div>
       <div className="row">
         <div className="col-12" style={{ textAlign: "center" }}>
-          <div id="ftLine1">{text.line1}</div>
-          <div id="ftLine2">{text.line2}</div>
-          <div id="ftLine3">{text.line3}</div>
+          {text && <div id="ftLine1">{text.line1}</div>}
+          {text && <div id="ftLine2">{text.line2}</div>}
+          {text && <div id="ftLine3">{text.line3}</div>}
         </div>
       </div>
     </div>
