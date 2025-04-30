@@ -34,29 +34,25 @@ export async function getStaticProps() {
 
     const effectiveHomeData = getEffectiveData(homeData, siteToBeBuilt);
     if (effectiveHomeData?.realtor?.photo){
-      effectiveHomeData.realtor.photo = `/data/global/images/${effectiveHomeData.realtor.photo}`;
+      effectiveHomeData.realtor.photo = `/data/home/images/${effectiveHomeData.realtor.photo}`;
     }
     if (effectiveHomeData?.realtor?.logo){
-      effectiveHomeData.realtor.logo = `/data/global/images/${effectiveHomeData.realtor.logo}`;
+      effectiveHomeData.realtor.logo = `/data/home/images/${effectiveHomeData.realtor.logo}`;
     }
     
+    if(effectiveHomeData?.showcase){
+      const propertiesHomePageData = await getpropertiesHomePageData(dataFolderPath, siteToBeBuilt);
+      effectiveHomeData.showcase.properties = propertiesHomePageData;
+    }
+
+    let homeDataFinal;
     if (!globalData.siteName.includes(String(siteToBeBuilt).trim())) {
       console.error(`Skipping global data, "${siteToBeBuilt}" not found in global/data.yaml`);
+    }else{
+      let effectiveGlobalData = getEffectiveData(globalData, siteToBeBuilt);
+      homeDataFinal = addGlobalData(effectiveGlobalData, effectiveHomeData);
     }
 
-    const effectiveGlobalData = getEffectiveData(globalData, siteToBeBuilt);
-    if (effectiveGlobalData?.realtor?.photo){
-      effectiveGlobalData.realtor.photo = `/data/global/images/${effectiveGlobalData.realtor.photo}`;
-    }
-    if (effectiveGlobalData?.realtor?.logo){
-      effectiveGlobalData.realtor.logo = `/data/global/images/${effectiveGlobalData.realtor.logo}`;
-    }
-    
-    const propertiesHomePageData = await getpropertiesHomePageData(dataFolderPath, siteToBeBuilt);
-    effectiveHomeData.showcase = effectiveHomeData.showcase || {};
-    effectiveHomeData.showcase.properties = propertiesHomePageData;
-
-    const homeDataFinal = addGlobalData(effectiveGlobalData, effectiveHomeData);
     return {
       props: {
         homeData: homeDataFinal,

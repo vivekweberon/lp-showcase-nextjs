@@ -291,22 +291,22 @@ export async function getStaticProps(context) {
       return { notFound: true };
     }
     
-    const effectiveGlobalData = getEffectiveData(globalData, siteToBeBuilt);
-    if (effectiveGlobalData?.realtor?.photo){
-      effectiveGlobalData.realtor.photo = `/data/global/images/${effectiveGlobalData.realtor.photo}`;
-    }
-    if (effectiveGlobalData?.realtor?.logo){
-      effectiveGlobalData.realtor.logo = `/data/global/images/${effectiveGlobalData.realtor.logo}`;
-    }
     const effectivePropertyData = getEffectiveData(propertyData, siteToBeBuilt);
     if (effectivePropertyData?.realtor?.photo){
-      effectivePropertyData.realtor.photo = `/data/global/images/${effectivePropertyData.realtor.photo}`;
+      effectivePropertyData.realtor.photo = `/data/${id}/images/${effectivePropertyData.realtor.photo}`;
     }
     if (effectivePropertyData?.realtor?.logo){
-      effectivePropertyData.realtor.logo = `/data/global/images/${effectivePropertyData.realtor.logo}`;
+      effectivePropertyData.realtor.logo = `/data/${id}/images/${effectivePropertyData.realtor.logo}`;
     }
 
-    const mergedData = addGlobalData(effectiveGlobalData, effectivePropertyData);
+    let mergedData = {};
+    if (!globalData.siteName.includes(String(siteToBeBuilt).trim())) {
+      console.error(`Skipping global data, "${siteToBeBuilt}" not found in global/data.yaml`);
+    }else{
+      let effectiveGlobalData = getEffectiveData(globalData, siteToBeBuilt);
+      mergedData = addGlobalData(effectiveGlobalData, effectivePropertyData);
+    }
+
     let imageUrls = [];
     if(mergedData?.photos){
       const imagesFolder = path.join(process.cwd(), "..", "data-repo", originalId, "images");

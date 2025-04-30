@@ -10,6 +10,14 @@ export const loadYamlFile = async (filePath) => {
 
 export function addGlobalData(global, home) {
   if (typeof global !== "object" || global === null) return home;
+
+  if (global?.realtor?.photo){
+    global.realtor.photo = `/data/global/images/${global.realtor.photo}`;
+  }
+  if (global?.realtor?.logo){
+    global.realtor.logo = `/data/global/images/${global.realtor.logo}`;
+  }
+
   for (const key of Object.keys(global)) {
     if (home[key] == null) {
       home[key] = global[key] 
