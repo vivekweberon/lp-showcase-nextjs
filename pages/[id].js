@@ -313,6 +313,12 @@ export async function getStaticProps(context) {
       const imageFiles = await fs.readdir(imagesFolder);
       imageUrls = imageFiles.map((fileName) => `/data/${id}/images/${fileName}`);
     }
+
+    if(Object.keys(mergedData).length === 0){
+      console.log("Skipping building Home Page as no sections are defined")
+      return { notFound: true };
+    }
+
     return {
       props: {
         propertyData: mergedData,
