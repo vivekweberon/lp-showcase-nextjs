@@ -52,7 +52,7 @@ export async function getStaticProps() {
       let effectiveGlobalData = getEffectiveData(globalData, siteToBeBuilt);
       homeDataFinal = addGlobalData(effectiveGlobalData, effectiveHomeData);
     }
-
+    console.log("Home Data:", homeDataFinal);
     return {
       props: {
         homeData: homeDataFinal,
