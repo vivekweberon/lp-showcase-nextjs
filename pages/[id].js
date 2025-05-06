@@ -37,17 +37,17 @@ const PropertyPage = ({ propertyData, images }) => {
     footertext,
     chatbot,
     propertyPageSectionsOrder,
-    // homePageNavigation
+    homePageNavigation
   } = propertyData;
 
   let enableChatbot = chatbot && chatbot?.enable;
   let menuItems = [];
   let sections;
   
-  // if(homePageNavigation){
-  //   let homePageMenuName = homePageNavigation?.menu || "Home Page";
-  //   menuItems.push(homePageMenuName);
-  // }
+  if(homePageNavigation){
+    let homePageMenuName = homePageNavigation?.menu || "Home Page";
+    menuItems.push(homePageMenuName);
+  }
   
   if (propertyPageSectionsOrder) {
     sections = propertyPageSectionsOrder.map((section) => {
@@ -215,9 +215,9 @@ const PropertyPage = ({ propertyData, images }) => {
       {(home?.youtubeVideoID || video?.youtubeVideoID) && <Script src={`${basePath}/js/ytvideo.js`} strategy="beforeInteractive" />}
       <Script src={`${basePath}/js/mauticTracking.js`} strategy="beforeInteractive" />
 
-      <Navbar menu={menuItems} />
+      <Navbar menu={menuItems} siteName={siteToBeBuilt} homePageMenuName={homePageMenuName} />
       {sections}
-      <Footer menu={menuItems} text={footertext} />
+      <Footer menu={menuItems} text={footertext} siteName={siteToBeBuilt} homePageMenuName={homePageMenuName} />
       {enableChatbot && <ChatBot chatbotDFAgent={chatbot.chatbotDFAgent} />}
       {(home?.youtubeVideoID || video?.youtubeVideoID) && <Script src="https://www.youtube.com/iframe_api" />}
     </div>

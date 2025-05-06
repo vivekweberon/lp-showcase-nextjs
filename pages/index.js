@@ -75,11 +75,6 @@ function HomePage({ homeData }) {
   let enableChatbot = chatbot && chatbot?.enable;
   let menuItems = [];
   let sections;
-  
-  //create a runtime excetion
-  // useEffect(() => {
-  //   vivek = weberon.ChatBot;
-  // }, []);
 
   if(homePageSectionsOrder){
     sections = homePageSectionsOrder.map((section) => {
