@@ -38,10 +38,7 @@ export function getEffectiveData(parsedYaml, currentSiteName) {
       if (value && value.disable === true) {
         delete effective[key]; 
       } else {
-        effective[key] = {
-          ...effective[key],
-          ...value,
-        };
+        effective[key] = value;
       }
     }
   }
@@ -51,7 +48,6 @@ export function getEffectiveData(parsedYaml, currentSiteName) {
 
   return effective;
 }
-
 export const getpropertiesHomePageData = async (dataFolderPath, currentSiteName) => {
   console.log("Current Environment Site Name:", currentSiteName);
 
