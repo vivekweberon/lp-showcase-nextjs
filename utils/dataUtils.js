@@ -28,12 +28,22 @@ export function addGlobalData(global, home, enabledSections) {
 
 export function getEffectiveData(parsedYaml, currentSiteName) {
   let effective = { ...parsedYaml };
-  
+
   if (parsedYaml.siteSpecific && parsedYaml.siteSpecific[currentSiteName]) {
-    effective = {
-      ...effective,
-      ...parsedYaml.siteSpecific[currentSiteName],
-    };
+    const siteOverrides = parsedYaml.siteSpecific[currentSiteName];
+
+    for (const key in siteOverrides) {
+      const value = siteOverrides[key];
+
+      if (value && value.disable === true) {
+        delete effective[key]; 
+      } else {
+        effective[key] = {
+          ...effective[key],
+          ...value,
+        };
+      }
+    }
   }
 
   delete effective.siteSpecific;
@@ -41,7 +51,6 @@ export function getEffectiveData(parsedYaml, currentSiteName) {
 
   return effective;
 }
-
 
 export const getpropertiesHomePageData = async (dataFolderPath, currentSiteName) => {
   console.log("Current Environment Site Name:", currentSiteName);
