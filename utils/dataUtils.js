@@ -28,22 +28,12 @@ export function addGlobalData(global, home, enabledSections) {
 
 export function getEffectiveData(parsedYaml, currentSiteName) {
   let effective = { ...parsedYaml };
-
+  
   if (parsedYaml.siteSpecific && parsedYaml.siteSpecific[currentSiteName]) {
-    const siteOverrides = parsedYaml.siteSpecific[currentSiteName];
-
-    for (const key in siteOverrides) {
-      const value = siteOverrides[key];
-
-      if (value && value.disable === true) {
-        delete effective[key]; 
-      } else {
-        effective[key] = {
-          ...effective[key],
-          ...value,
-        };
-      }
-    }
+    effective = {
+      ...effective,
+      ...parsedYaml.siteSpecific[currentSiteName],
+    };
   }
 
   delete effective.siteSpecific;
@@ -51,6 +41,7 @@ export function getEffectiveData(parsedYaml, currentSiteName) {
 
   return effective;
 }
+
 
 export const getpropertiesHomePageData = async (dataFolderPath, currentSiteName) => {
   console.log("Current Environment Site Name:", currentSiteName);
@@ -87,9 +78,13 @@ export const getpropertiesHomePageData = async (dataFolderPath, currentSiteName)
         continue;
       }
 
-      const listingPageURL = getPropertyOutputDirectoryName(folder);
-      effectivePropertyData.homePageData.listingPageURL = listingPageURL;
+      const propertyDirectoryName = getPropertyOutputDirectoryName(folder);
+      effectivePropertyData.homePageData.propertyDirectoryName = propertyDirectoryName;
 
+      if(!effectivePropertyData.homePageData.listingPageURL){
+        effectivePropertyData.homePageData.listingPageURL = propertyDirectoryName;
+      }
+      
       propertiesData.push(effectivePropertyData.homePageData);
 
       console.log(`✔ Added Property: ${folder} (Matches siteName)`);

@@ -34,7 +34,7 @@ const PropertyPage = ({ propertyData, images }) => {
     video,
     contact,
     realtor,
-    footertext,
+    footer,
     chatbot,
     propertyPageSectionsOrder,
     homePageLink
@@ -43,6 +43,7 @@ const PropertyPage = ({ propertyData, images }) => {
   let enableChatbot = chatbot && chatbot?.enable;
   let menuItems = [];
   let sections;
+  let homePageMenuName;
   
   if (propertyPageSectionsOrder) {
     sections = propertyPageSectionsOrder.map((section) => {
@@ -81,7 +82,7 @@ const PropertyPage = ({ propertyData, images }) => {
       ];}
 
   if(homePageLink){
-    let homePageMenuName = homePageLink?.menu || "Home Page";
+    homePageMenuName = homePageLink?.menu || "Home Page";
     addMenuItem(homePageMenuName);
   }
 
@@ -217,7 +218,7 @@ const PropertyPage = ({ propertyData, images }) => {
 
       <Navbar menu={menuItems} homePageMenuName={homePageMenuName} />
       {sections}
-      <Footer menu={menuItems} text={footertext} homePageMenuName={homePageMenuName} />
+      {footer && <Footer menu={menuItems} footer={footer} homePageMenuName={homePageMenuName} />}
       {enableChatbot && <ChatBot chatbotDFAgent={chatbot.chatbotDFAgent} />}
       {(home?.youtubeVideoID || video?.youtubeVideoID) && <Script src="https://www.youtube.com/iframe_api" />}
     </div>

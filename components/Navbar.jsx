@@ -18,8 +18,9 @@ function MyNavbar({ menu, homePageMenuName }) {
             <Nav.Link
               key={index}
               href={
+                homePageMenuName &&
                 item === homePageMenuName
-                  ? `/${basePath}/`
+                  ? `${basePath}/`
                   : `#${item.replace(/\s/g, '').toLowerCase()}`
               }
             >
