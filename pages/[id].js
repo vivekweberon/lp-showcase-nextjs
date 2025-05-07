@@ -40,7 +40,6 @@ const PropertyPage = ({ propertyData, images }) => {
     homePageLink
   } = propertyData;
 
-  let enableChatbot = chatbot && chatbot?.enable;
   let menuItems = [];
   let sections;
   let homePageMenuName;
@@ -187,7 +186,7 @@ const PropertyPage = ({ propertyData, images }) => {
       <Head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        {page && page?.title && <title>{page.title}</title>}
+        {page?.title && <title>{page.title}</title>}
         <link rel="icon" href="/favicon.ico" />
         <link
           rel="stylesheet"
@@ -219,7 +218,7 @@ const PropertyPage = ({ propertyData, images }) => {
       <Navbar menu={menuItems} homePageMenuName={homePageMenuName} />
       {sections}
       {footer && <Footer menu={menuItems} footer={footer} homePageMenuName={homePageMenuName} />}
-      {enableChatbot && <ChatBot chatbotDFAgent={chatbot.chatbotDFAgent} />}
+      {chatbot && <ChatBot chatbotDFAgent={chatbot.chatbotDFAgent} />}
       {(home?.youtubeVideoID || video?.youtubeVideoID) && <Script src="https://www.youtube.com/iframe_api" />}
     </div>
   );

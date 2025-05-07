@@ -17,7 +17,7 @@ const Footer = ({ menu, footer, homePageMenuName }) => {
         className="row justify-content-center"
         style={{ marginBottom: "40px" }}
       >
-        {menu?.map((menuItem) => {
+        {menu && menu.map((menuItem) => {
           return menuItem ? (
             <div
               key={menuItem}
