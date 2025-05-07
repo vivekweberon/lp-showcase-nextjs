@@ -37,17 +37,12 @@ const PropertyPage = ({ propertyData, images }) => {
     footertext,
     chatbot,
     propertyPageSectionsOrder,
-    homePageNavigation
+    homePageLink
   } = propertyData;
 
   let enableChatbot = chatbot && chatbot?.enable;
   let menuItems = [];
   let sections;
-  
-  if(homePageNavigation){
-    let homePageMenuName = homePageNavigation?.menu || "Home Page";
-    menuItems.push(homePageMenuName);
-  }
   
   if (propertyPageSectionsOrder) {
     sections = propertyPageSectionsOrder.map((section) => {
@@ -84,6 +79,11 @@ const PropertyPage = ({ propertyData, images }) => {
         addContact(contact),
         addRealtor(realtor)
       ];}
+
+  if(homePageLink){
+    let homePageMenuName = homePageLink?.menu || "Home Page";
+    addMenuItem(homePageMenuName);
+  }
 
   function addMenuItem(menu) {
     if (menu) {
@@ -215,9 +215,9 @@ const PropertyPage = ({ propertyData, images }) => {
       {(home?.youtubeVideoID || video?.youtubeVideoID) && <Script src={`${basePath}/js/ytvideo.js`} strategy="beforeInteractive" />}
       <Script src={`${basePath}/js/mauticTracking.js`} strategy="beforeInteractive" />
 
-      <Navbar menu={menuItems} siteName={siteToBeBuilt} homePageMenuName={homePageMenuName} />
+      <Navbar menu={menuItems} homePageMenuName={homePageMenuName} />
       {sections}
-      <Footer menu={menuItems} text={footertext} siteName={siteToBeBuilt} homePageMenuName={homePageMenuName} />
+      <Footer menu={menuItems} text={footertext} homePageMenuName={homePageMenuName} />
       {enableChatbot && <ChatBot chatbotDFAgent={chatbot.chatbotDFAgent} />}
       {(home?.youtubeVideoID || video?.youtubeVideoID) && <Script src="https://www.youtube.com/iframe_api" />}
     </div>
@@ -226,7 +226,7 @@ const PropertyPage = ({ propertyData, images }) => {
 
 export async function getStaticPaths() {
   const dataFolderPath = path.join(process.cwd(), "..", "data-repo");
-  const siteToBeBuilt = process.env.siteName;
+  const siteName = process.env.siteName;
   try {
     const files = await fs.readdir(dataFolderPath);
     const filteredFiles = files.filter(
@@ -238,21 +238,11 @@ export async function getStaticPaths() {
       try {
         const fileContent = await fs.readFile(filePath, "utf-8");
         const parsedData = yaml.load(fileContent);
-        const basicKeys = ['homePageData', 'siteName', 'siteSpecific'];
-        const parsedKeys = Object.keys(parsedData);
-        if (
-          parsedData.siteName &&
-          parsedData.siteName.includes(siteToBeBuilt) &&
-          !(
-            parsedKeys.every(key => basicKeys.includes(key)) &&
-            parsedKeys.length <= basicKeys.length
-          )
-        ) {
+        if (parsedData.siteName && parsedData.siteName.includes(siteName)) {
           paths.push({
             params: { id: getPropertyOutputDirectoryName(file) },
           });
         }
-        console.log("Paths", paths);
       } catch (error) {
         console.error(`Error reading data.yaml for ${file}:`, error);
         return {
@@ -276,7 +266,7 @@ export async function getStaticPaths() {
 
 export async function getStaticProps(context) {
   const { id } = context.params;
-  const siteToBeBuilt = process.env.siteName;
+  const siteName = process.env.siteName;
   const originalId = getPropertyOutputDirectoryName(id);
 
   const propertyDataPath = path.join(process.cwd(), "..", "data-repo", originalId, "data.yaml");
@@ -286,12 +276,12 @@ export async function getStaticProps(context) {
     const propertyData = await loadYamlFile(propertyDataPath);
     const globalData = await loadYamlFile(globalDataPath);
 
-    if (!propertyData.siteName || !propertyData.siteName.includes(siteToBeBuilt)) {
-      console.warn(`Skipping page for ${id}, siteName does not match ${siteToBeBuilt}`);
+    if (!propertyData.siteName || !propertyData.siteName.includes(siteName)) {
+      console.warn(`Skipping page for ${id}, siteName does not match ${siteName}`);
       return { notFound: true };
     }
     
-    const effectivePropertyData = getEffectiveData(propertyData, siteToBeBuilt);
+    const effectivePropertyData = getEffectiveData(propertyData, siteName);
     if (effectivePropertyData?.realtor?.photo){
       effectivePropertyData.realtor.photo = `/data/${id}/images/${effectivePropertyData.realtor.photo}`;
     }
@@ -300,10 +290,10 @@ export async function getStaticProps(context) {
     }
 
     let mergedData = {};
-    if (!globalData.siteName.includes(String(siteToBeBuilt).trim())) {
-      console.error(`Skipping global data, "${siteToBeBuilt}" not found in global/data.yaml`);
+    if (!globalData.siteName.includes(String(siteName).trim())) {
+      console.error(`Skipping global data, "${siteName}" not found in global/data.yaml`);
     }else{
-      let effectiveGlobalData = getEffectiveData(globalData, siteToBeBuilt);
+      let effectiveGlobalData = getEffectiveData(globalData, siteName);
       mergedData = addGlobalData(effectiveGlobalData, effectivePropertyData, effectivePropertyData?.propertyPageSectionsOrder);
     }
 
@@ -323,7 +313,6 @@ export async function getStaticProps(context) {
       props: {
         propertyData: mergedData,
         images: imageUrls,
-        siteToBeBuilt
       },
     };
   } catch (error) {
@@ -332,7 +321,6 @@ export async function getStaticProps(context) {
       props: {
         propertyData: null,
         images: [],
-        siteToBeBuilt
       },
     };
   }

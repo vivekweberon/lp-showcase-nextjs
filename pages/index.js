@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import path from "path";
 import Head from "next/head";
 import Script from "next/script";
@@ -168,28 +168,8 @@ function addContact(contact) {
           href={`${basePath}/css/lpStyle.css`}
         />
       </Head>
-      <script src={`${basePath}/js/rb-config.js`} strategy="beforeInteractive" ></script>
-      {/* <Script id="rollbar-script" strategy="afterInteractive">
-      {`
-        (function() {
-          var script = document.createElement("script");
-          script.src = "https://cdn.rollbar.com/rollbarjs/refs/tags/v2.21.0/rollbar.min.js";
-          script.crossOrigin = "";
-          script.async = true;
-          script.onload = function() {
-            if (window._rollbarConfig && window.Rollbar) {
-              window.Rollbar = new Rollbar(window._rollbarConfig);
-              updateRollbarPerson(); // Call again if needed after Rollbar is ready
-            } else {
-              console.error("Rollbar or Rollbar config missing after load.");
-            }
-          };
-          var firstScript = document.getElementsByTagName("script")[0];
-          firstScript.parentNode.insertBefore(script, firstScript);
-        })();
-      `}
-      </Script> */}
-      <script type="text/javascript" src={`${basePath}/js/logger.js`} ></script>
+      <Script src={`${basePath}/js/rb-config.js`} strategy="beforeInteractive" />
+      <Script src={`${basePath}/js/logger.js`} strategy="beforeInteractive" />
       <Script src={`${basePath}/js/jquery-3.5.1.min.js`} strategy="beforeInteractive" />
       <Script src={`${basePath}/js/jwt-decode.js`} strategy="beforeInteractive" />
       <script type="text/javascript" src="https://accounts.google.com/gsi/client"></script>

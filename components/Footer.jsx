@@ -1,6 +1,7 @@
 import React from "react";
+import { basePath } from "@/next.config.js";
 
-const Footer = ({ menu, text }) => {
+const Footer = ({ menu, text, homePageMenuName }) => {
   return (
     <div
       id="footer"
@@ -25,7 +26,11 @@ const Footer = ({ menu, text }) => {
             >
               <a
                 className="nav-item nav-link"
-                href={`#${menuItem.replace(/\s/g, '').toLowerCase()}`}
+                href={
+                  item === homePageMenuName
+                    ? `/${basePath}/`
+                    : `#${item.replace(/\s/g, '').toLowerCase()}`
+                }
                 style={{ color: "#212529" }}
               >
                 {menuItem}
@@ -35,11 +40,11 @@ const Footer = ({ menu, text }) => {
         })}
       </div>
       <div className="row">
-        <div className="col-12" style={{ textAlign: "center" }}>
-          {text && <div id="ftLine1">{text.line1}</div>}
-          {text && <div id="ftLine2">{text.line2}</div>}
-          {text && <div id="ftLine3">{text.line3}</div>}
-        </div>
+        {text && <div className="col-12" style={{ textAlign: "center" }}>
+          <div id="ftLine1">{text.line1}</div>
+          <div id="ftLine2">{text.line2}</div>
+          <div id="ftLine3">{text.line3}</div>
+        </div>}
       </div>
     </div>
   );

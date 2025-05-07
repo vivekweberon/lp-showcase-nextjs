@@ -1,8 +1,8 @@
 import React from "react";
 import { Nav, Navbar } from "react-bootstrap";
+import { basePath } from "@/next.config.js";
 
-function MyNavbar({ menu }) {
-  // console.log("Navbar props:", { homePageMenuName });
+function MyNavbar({ menu, homePageMenuName }) {
   return (
     <Navbar
       bg="dark"
@@ -17,7 +17,11 @@ function MyNavbar({ menu }) {
           {menu.map((item, index) => (
             <Nav.Link
               key={index}
-              href={`#${item.replace(/\s/g, '').toLowerCase()}`}
+              href={
+                item === homePageMenuName
+                  ? `/${basePath}/`
+                  : `#${item.replace(/\s/g, '').toLowerCase()}`
+              }
             >
               {item}
           </Nav.Link>
