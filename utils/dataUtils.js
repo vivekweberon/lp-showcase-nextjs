@@ -13,7 +13,7 @@ export function addGlobalData(global, page, enabledSections) {
   if (typeof global !== "object" || global === null) return page;
 
   for (const key of Object.keys(global)) {
-    if (!(page[key]) && ((Array.isArray(enabledSections) && enabledSections.includes(key)) || (enabledSections == null))) {
+    if (!(page[key])) {
       if (key == 'realtor'){
         if (global.realtor.photo){
           global.realtor.photo = `/data/global/images/${global.realtor.photo}`;
@@ -24,9 +24,11 @@ export function addGlobalData(global, page, enabledSections) {
       }
       page[key] = global[key] 
     }
+  }
+  for (const key of Object.keys(page)) {
     if (page[key] && page[key].disable === true) {
       delete page[key]; 
-    } 
+    }
   }
   console.log("Global Data Added:", page);
   return page;
