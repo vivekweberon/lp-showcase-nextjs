@@ -8,25 +8,46 @@ export const loadYamlFile = async (filePath) => {
   return yaml.load(fileData);
 };
 
-export function addGlobalData(global, home, enabledSections) {
-  if (typeof global !== "object" || global === null) return home;
-
-  if (global?.realtor?.photo){
-    global.realtor.photo = `/data/global/images/${global.realtor.photo}`;
-  }
-  if (global?.realtor?.logo){
-    global.realtor.logo = `/data/global/images/${global.realtor.logo}`;
-  }
+export function addGlobalData(global, page, enabledSections) {
+  if (typeof global !== "object" || global === null) return page;
 
   for (const key of Object.keys(global)) {
-    if ((Array.isArray(enabledSections) && enabledSections.includes(key) && home[key] == null) || ((enabledSections == null) && home[key] == null)) {
-      home[key] = global[key] 
+    if (!(page[key]) && ((Array.isArray(enabledSections) && enabledSections.includes(key)) || (enabledSections == null))) {
+      if (key == 'realtor'){
+        if (global.realtor.photo){
+          global.realtor.photo = `/data/global/images/${global.realtor.photo}`;
+        }
+        if (global.realtor.logo){
+          global.realtor.logo = `/data/global/images/${global.realtor.logo}`;
+        }
+      }
+      page[key] = global[key] 
+    }
+    if (page[key] && page[key].disable === true) {
+      delete page[key]; 
     } 
   }
-  return home;
+  return page;
 }
 
 export function getEffectiveData(parsedYaml, currentSiteName) {
+  let effective = { ...parsedYaml };
+
+  if (parsedYaml.siteSpecific && parsedYaml.siteSpecific[currentSiteName]) {
+    const siteOverrides = parsedYaml.siteSpecific[currentSiteName];
+
+    for (const key in siteOverrides) {
+      effective[key] = siteOverrides[key];
+    }
+  }
+
+  delete effective.siteSpecific;
+  delete effective.siteName;
+
+  return effective;
+}
+
+export function getEffectiveGlobalData(parsedYaml, currentSiteName) {
   let effective = { ...parsedYaml };
 
   if (parsedYaml.siteSpecific && parsedYaml.siteSpecific[currentSiteName]) {
@@ -48,6 +69,7 @@ export function getEffectiveData(parsedYaml, currentSiteName) {
 
   return effective;
 }
+
 export const getpropertiesHomePageData = async (dataFolderPath, currentSiteName) => {
   console.log("Current Environment Site Name:", currentSiteName);
 

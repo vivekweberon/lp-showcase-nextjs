@@ -293,7 +293,7 @@ export async function getStaticProps(context) {
     if (!globalData.siteName.includes(String(siteName).trim())) {
       console.error(`Skipping global data, "${siteName}" not found in global/data.yaml`);
     }else{
-      let effectiveGlobalData = getEffectiveData(globalData, siteName);
+      let effectiveGlobalData = getEffectiveGlobalData(globalData, siteName);
       mergedData = addGlobalData(effectiveGlobalData, effectivePropertyData, effectivePropertyData?.propertyPageSectionsOrder);
     }
 
