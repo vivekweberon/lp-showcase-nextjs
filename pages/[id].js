@@ -309,6 +309,10 @@ export async function getStaticProps(context) {
       return { notFound: true };
     }
 
+    if (id == '888'){
+      console.log("888 property data", mergedData);
+    }
+
     return {
       props: {
         propertyData: mergedData,
