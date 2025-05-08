@@ -293,8 +293,10 @@ export async function getStaticProps(context) {
     if (!globalData.siteName.includes(String(siteName).trim())) {
       console.error(`Skipping global data, "${siteName}" not found in global/data.yaml`);
     }else{
+      console.log("Global data found, merging with property data");
       let effectiveGlobalData = getEffectiveGlobalData(globalData, siteName);
       mergedData = addGlobalData(effectiveGlobalData, effectivePropertyData, effectivePropertyData?.propertyPageSectionsOrder);
+      console.log("Merged Data:", mergedData);
     }
 
     let imageUrls = [];

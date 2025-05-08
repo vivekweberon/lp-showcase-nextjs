@@ -9,6 +9,7 @@ export const loadYamlFile = async (filePath) => {
 };
 
 export function addGlobalData(global, page, enabledSections) {
+  console.log("addGlobalData called with:", global, page, enabledSections);
   if (typeof global !== "object" || global === null) return page;
 
   for (const key of Object.keys(global)) {
@@ -27,10 +28,12 @@ export function addGlobalData(global, page, enabledSections) {
       delete page[key]; 
     } 
   }
+  console.log("Global Data Added:", page);
   return page;
 }
 
 export function getEffectiveData(parsedYaml, currentSiteName) {
+  console.log("getEffectiveData called with:", parsedYaml, currentSiteName);
   let effective = { ...parsedYaml };
 
   if (parsedYaml.siteSpecific && parsedYaml.siteSpecific[currentSiteName]) {
@@ -44,10 +47,12 @@ export function getEffectiveData(parsedYaml, currentSiteName) {
   delete effective.siteSpecific;
   delete effective.siteName;
 
+  console.log("Effective Data:", effective);
   return effective;
 }
 
 export function getEffectiveGlobalData(parsedYaml, currentSiteName) {
+  console.log("getEffectiveGlobalData called with:", parsedYaml, currentSiteName);
   let effective = { ...parsedYaml };
 
   if (parsedYaml.siteSpecific && parsedYaml.siteSpecific[currentSiteName]) {
@@ -67,6 +72,7 @@ export function getEffectiveGlobalData(parsedYaml, currentSiteName) {
   delete effective.siteSpecific;
   delete effective.siteName;
 
+  console.log("Effective Global Data:", effective);
   return effective;
 }
 
