@@ -20,7 +20,7 @@ import PopupForm from "@/components/PopupForm";
 import ChatBot from "@/components/ChatBot";
 
 import { getPropertyOutputDirectoryName } from "@/utils/renameUtils.js";
-import { loadYamlFile, getEffectiveData, addGlobalData } from "../utils/dataUtils";
+import { loadYamlFile, getEffectiveData, addGlobalData, getEffectiveGlobalData } from "../utils/dataUtils";
 
 const PropertyPage = ({ propertyData, images }) => {
   
