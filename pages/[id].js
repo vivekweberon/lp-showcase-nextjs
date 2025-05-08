@@ -44,7 +44,7 @@ const PropertyPage = ({ propertyData, images }) => {
   let sections;
   let homePageMenuName;
   
-  if (Array.isArray(propertyPageSectionsOrder) {
+  if (Array.isArray(propertyPageSectionsOrder)) {
     sections = propertyPageSectionsOrder.map((section) => {
         switch (section) {
           case "home":
