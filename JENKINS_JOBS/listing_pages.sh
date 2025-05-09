@@ -144,9 +144,10 @@ copyWebsiteToGithubRepo() {
     cd $DEPLOYMENT_REPO_DIR || { echo "Error: Could not access $DEPLOYMENT_REPO_DIR directory"; exit 1; }
 
     for website in "${websiteArray[@]}"; do
-        echo "Processing website: $website"
-        website=$(echo "$website" | xargs)  # Trim whitespace
+        echo "Processing website before trim: $website"
+        website=$(echo "$website" | xargs)  
         # Now check for the website directory inside $CODE_REPO_DIR
+        echo "Processing website after trim: $website"
         if [ -d "$WORKSPACE/$OUTPUT_DIR/$website" ]; then
             # Remove any existing copy in $DEPLOYMENT_REPO_DIR, then copy the website build from $CODE_REPO_DIR
             rm -rf "$website"
