@@ -144,6 +144,7 @@ copyWebsiteToGithubRepo() {
     cd $DEPLOYMENT_REPO_DIR || { echo "Error: Could not access $DEPLOYMENT_REPO_DIR directory"; exit 1; }
 
     for website in "${websiteArray[@]}"; do
+        echo "Processing website: $website"
         website=$(echo "$website" | xargs)  # Trim whitespace
         # Now check for the website directory inside $CODE_REPO_DIR
         if [ -d "$WORKSPACE/$OUTPUT_DIR/$website" ]; then

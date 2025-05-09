@@ -44,7 +44,7 @@ const PropertyPage = ({ propertyData, images }) => {
   let sections;
   let homePageMenuName;
   
-  if (Array.isArray(propertyPageSectionsOrder)) {
+  if (propertyPageSectionsOrder) {
     sections = propertyPageSectionsOrder.map((section) => {
         switch (section) {
           case "home":
@@ -293,10 +293,8 @@ export async function getStaticProps(context) {
     if (!globalData.siteName.includes(String(siteName).trim())) {
       console.error(`Skipping global data, "${siteName}" not found in global/data.yaml`);
     }else{
-      console.log("Global data found, merging with property data");
       let effectiveGlobalData = getEffectiveGlobalData(globalData, siteName);
       mergedData = addGlobalData(effectiveGlobalData, effectivePropertyData, effectivePropertyData?.propertyPageSectionsOrder);
-      console.log("Merged Data:", mergedData);
     }
 
     let imageUrls = [];
@@ -309,10 +307,6 @@ export async function getStaticProps(context) {
     if(Object.keys(mergedData).length === 0){
       console.log("Skipping building Home Page as no sections are defined")
       return { notFound: true };
-    }
-
-    if (id == '888'){
-      console.log("888 property data", mergedData);
     }
 
     return {
