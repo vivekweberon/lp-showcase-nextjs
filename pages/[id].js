@@ -163,9 +163,13 @@ const PropertyPage = ({ propertyData, images }) => {
     let form = contact.mauticForm;
     if (form){
       if (form.popupForm){
-        return form.popupForm.enable === false
-          ? <EmbeddedForm key='contact' contact={contact} />
-          : <PopupForm key='contact' contact={contact} />;
+        if (form.popupForm.enable === false)
+        {
+          addMenuItem(contact.menu);
+          return <EmbeddedForm key='contact' contact={contact} />
+        }else{
+          return <PopupForm key='contact' contact={contact} />;
+        }
       }else{
         addMenuItem(contact.menu);
         return <EmbeddedForm key='contact' contact={contact} />
@@ -283,10 +287,10 @@ export async function getStaticProps(context) {
     
     const effectivePropertyData = getEffectiveData(propertyData, siteName);
     if (effectivePropertyData?.realtor?.photo){
-      effectivePropertyData.realtor.photo = `/data/${id}/images/${effectivePropertyData.realtor.photo}`;
+      effectivePropertyData.realtor.photo = `/data/global/images/${effectivePropertyData.realtor.photo}`;
     }
     if (effectivePropertyData?.realtor?.logo){
-      effectivePropertyData.realtor.logo = `/data/${id}/images/${effectivePropertyData.realtor.logo}`;
+      effectivePropertyData.realtor.logo = `/data/global/images/${effectivePropertyData.realtor.logo}`;
     }
 
     let mergedData = {};

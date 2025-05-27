@@ -119,44 +119,27 @@ setupDeploymentRepo() {
         echo "$DCS_DEPLOYMENT_REPO BRANCH EXISTS ON REMOTE REPO"
         git pull origin $DCS_DEPLOYMENT_REPO
 
-        # Remove the directory if it already exists in the final repo
-        # rm -rf "$WEBSITE_DIRECTORY_NAME"
-        # echo "Removed the existing files"
     else
         echo "$DCS_DEPLOYMENT_REPO BRANCH NOT FOUND ON REMOTE REPO"
     fi
 
-    commit_hash=$(awk '{print $2}' "$WORKSPACE/$CODE_REPO_DIR/.git/logs/HEAD")
-    git_repo=$(grep -oP '(?<=clone: from ).*' "$WORKSPACE/$CODE_REPO_DIR/.git/logs/HEAD")
-    output_file="$WORKSPACE/$DEPLOYMENT_REPO_DIR/git_log.txt"
-    echo "Commit hash: $commit_hash" > "$output_file"
-    echo "Git repository: $git_repo" >> "$output_file"
-    echo "Data has been saved to $output_file"
 }
 
 copyWebsiteToGithubRepo() {
 
     cd "$WORKSPACE"
-    # Assume WEBSITE_DIRECTORY_NAME is a comma-separated list of directory names
-    IFS=',' read -r -a websiteArray <<< "$WEBSITE_DIRECTORY_NAME"
 
-    # Navigate to $DEPLOYMENT_REPO_DIR and create a directory to hold all website builds (if desired)
     cd $DEPLOYMENT_REPO_DIR || { echo "Error: Could not access $DEPLOYMENT_REPO_DIR directory"; exit 1; }
 
-    for website in "${websiteArray[@]}"; do
-        echo "Processing website before trim: $website"
-        website=$(echo "$website" | xargs)  
-        # Now check for the website directory inside $CODE_REPO_DIR
-        echo "Processing website after trim: $website"
-        if [ -d "$WORKSPACE/$OUTPUT_DIR/$website" ]; then
-            # Remove any existing copy in $DEPLOYMENT_REPO_DIR, then copy the website build from $CODE_REPO_DIR
-            rm -rf "$website"
-            cp -r "$WORKSPACE/$OUTPUT_DIR/$website" .
-            echo "Copied directory '$website' from $OUTPUT_DIR to $DEPLOYMENT_REPO_DIR."
-        else
-            echo "Directory '$website' does not exist under $OUTPUT_DIR"
-            exit 1
-        fi
+    # Loop through all website directories found in the output directory
+    for website_dir in "$WORKSPACE/$OUTPUT_DIR"/*/; do
+
+        website_name=$(basename "$website_dir")
+
+        rm -rf "$website_name"
+
+        cp -r "$website_dir" .
+        echo "Copied '$website_name'."
     done
 
     # Stage all changes for commit

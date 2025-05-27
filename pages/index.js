@@ -34,10 +34,10 @@ export async function getStaticProps() {
 
     const effectiveHomeData = getEffectiveData(homeData, siteToBeBuilt);
     if (effectiveHomeData?.realtor?.photo){
-      effectiveHomeData.realtor.photo = `/data/home/images/${effectiveHomeData.realtor.photo}`;
+      effectiveHomeData.realtor.photo = `/data/global/images/${effectiveHomeData.realtor.photo}`;
     }
     if (effectiveHomeData?.realtor?.logo){
-      effectiveHomeData.realtor.logo = `/data/home/images/${effectiveHomeData.realtor.logo}`;
+      effectiveHomeData.realtor.logo = `/data/global/images/${effectiveHomeData.realtor.logo}`;
     }
     
     if(effectiveHomeData?.showcase){
