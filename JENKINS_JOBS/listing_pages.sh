@@ -110,8 +110,8 @@ setupDeploymentRepo() {
     mkdir -p $DEPLOYMENT_REPO_DIR
     cd $DEPLOYMENT_REPO_DIR || { echo "Error: $DEPLOYMENT_REPO_DIR folder does not exist"; exit 1; }
     git init
-    # git config user.name "vivekWeberon"
-    # git config user.email "vivek@weberon.net"
+    git config user.name "Developer-Weberon"
+    git config user.email "developer@weberon.net"
     git remote add origin https://$GITHUB_TOKEN@$DEPLOYMENT_REPO
     git checkout -B $DCS_DEPLOYMENT_REPO || { echo "Error: $DCS_DEPLOYMENT_REPO branch does not exist"; exit 1; }
 
