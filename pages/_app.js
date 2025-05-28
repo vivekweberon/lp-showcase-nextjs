@@ -1,4 +1,3 @@
-import '@/styles/globals.css';
 import { Provider, ErrorBoundary } from '@rollbar/react';
 
 import { clientConfig } from '@/rollbar';
