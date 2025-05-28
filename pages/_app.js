@@ -1,11 +1,22 @@
-import React from "react";
+import '@/styles/globals.css';
+import { Provider, ErrorBoundary } from '@rollbar/react';
 
-function MyApp({ Component, pageProps }) {
+import { clientConfig } from '@/rollbar';
+
+export default function App({ Component, pageProps }) {
   return (
-    <>
-      <Component {...pageProps} />
-    </>
+    <Provider config={clientConfig}>
+      <ErrorBoundary
+        level="critical"
+        errorMessage="example error boundary message"
+        fallbackUI={() => (
+          <p style={{ color: 'red' }}>Oops, there was an error.</p>
+        )}
+        extra={{ more: 'data' }}
+        callback={() => console.log('an exception was sent to rollbar')}
+      >
+        <Component {...pageProps} />
+      </ErrorBoundary>
+    </Provider>
   );
 }
-
-export default MyApp;
