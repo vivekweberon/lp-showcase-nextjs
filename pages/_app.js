@@ -1,3 +1,4 @@
+import React from 'react';
 import { Provider, ErrorBoundary } from '@rollbar/react';
 
 import { clientConfig } from '@/rollbar';
