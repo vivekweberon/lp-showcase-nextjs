@@ -12,7 +12,6 @@ import PopupForm from "@/components/PopupForm";
 import ChatBot from "@/components/ChatBot";
 
 import { ErrorBoundary } from '@rollbar/react';
-import { ResetPage } from '@/components/ResetPage';
 
 import {
   loadYamlFile,
@@ -149,7 +148,7 @@ function HomePage({ homeData }) {
   }
 
   return (
-    <ErrorBoundary fallbackUI={() => <ResetPage reset={() => {}} />}>
+    <ErrorBoundary>
       <>
         <Head>
           <meta charSet="utf-8" />
