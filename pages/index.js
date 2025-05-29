@@ -78,9 +78,12 @@ export async function getStaticProps() {
 
 function HomePage({ homeData }) {
   useEffect(() => {
-    rollbar.info('HomePage loaded');
-    throw new Error('💥 Test Rollbar Error in useEffect');
+    if (rollbar) {
+      rollbar.info('HomePage loaded');
+      rollbar.error('💥 Test Rollbar Error in useEffect');
+    }
   }, []);
+
 
   const { page, showcase, contact, realtor, footer, chatbot, homePageSectionsOrder } = homeData;
 
