@@ -2,7 +2,7 @@ import React from "react";
 import path from "path";
 import Head from "next/head";
 import Script from "next/script";
-
+import { useEffect } from "react";
 import { basePath } from "@/next.config";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -70,6 +70,10 @@ export async function getStaticProps() {
 }
 
 function HomePage({ homeData }) {
+  useEffect(() => {
+    rollbar.info('HomePage loaded');
+    // rollbar.error(new Error('Test error'));
+  }, []);
   const { page, showcase, contact, realtor, footer, chatbot, homePageSectionsOrder } = homeData;
 
   let menuItems = [];
