@@ -2,7 +2,7 @@ import React from "react";
 import path from "path";
 import Head from "next/head";
 import Script from "next/script";
-// import { useEffect } from "react";
+
 import { basePath } from "@/next.config";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -11,7 +11,6 @@ import Realtor from "@/components/Realtor";
 import EmbeddedForm from "@/components/EmbeddedForm";
 import PopupForm from "@/components/PopupForm";
 import ChatBot from "@/components/ChatBot";
-// import rollbar from "@/rollbar";
 
 import { loadYamlFile, getEffectiveData, getpropertiesHomePageData, addGlobalData, getEffectiveGlobalData } from "../utils/dataUtils";
 
@@ -19,9 +18,9 @@ const siteToBeBuilt = process.env.siteName;
 
 export async function getStaticProps() {
   try {
-    const homeDataFilePath = path.join(process.cwd(), "..","lp-showcase-nextjs", "data-repo", "home", "data.yaml");
-    const globalDataFilePath = path.join(process.cwd(), "..","lp-showcase-nextjs", "data-repo", "global", "data.yaml");
-    const dataFolderPath = path.join(process.cwd(), "..","lp-showcase-nextjs", "data-repo");
+    const homeDataFilePath = path.join(process.cwd(), "..", "data-repo", "home", "data.yaml");
+    const globalDataFilePath = path.join(process.cwd(), "..", "data-repo", "global", "data.yaml");
+    const dataFolderPath = path.join(process.cwd(), "..", "data-repo");
 
     const [homeData, globalData] = await Promise.all([
       loadYamlFile(homeDataFilePath),
@@ -71,17 +70,6 @@ export async function getStaticProps() {
 }
 
 function HomePage({ homeData }) {
-  // const handleClientError = () => {
-  //   try {
-  //     throw new Error('Client-side SSG page error!');
-  //   } catch (err) {
-  //     rollbar.error(err);
-  //   }
-  // };
-  // useEffect(() => {
-  //   rollbar.info('HomePage loaded');
-  //   rollbar.error(new Error('Test error'));
-  // }, []);
   const { page, showcase, contact, realtor, footer, chatbot, homePageSectionsOrder } = homeData;
 
   let menuItems = [];
@@ -180,10 +168,6 @@ function addContact(contact) {
         />
       </Head>
       <Script src={`${basePath}/js/rb-config.js`} strategy="beforeInteractive" />
-      <Script
-      src="https://cdn.rollbar.com/rollbarjs/refs/tags/v2.22.0/rollbar.min.js"
-      strategy="beforeInteractive"
-        />
       <Script src={`${basePath}/js/logger.js`} strategy="beforeInteractive" />
       <Script src={`${basePath}/js/jquery-3.5.1.min.js`} strategy="beforeInteractive" />
       <Script src={`${basePath}/js/jwt-decode.js`} strategy="beforeInteractive" />
@@ -200,7 +184,6 @@ function addContact(contact) {
       {sections}
       {chatbot && <ChatBot chatbotDFAgent={chatbot.chatbotDFAgent} />}
       {footer && <Footer menu={menuItems} footer={footer} />}
-      {/* <button onClick={handleClientError}>Trigger Client Error</button> */}
     </>
   );
 }

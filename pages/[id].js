@@ -229,7 +229,7 @@ const PropertyPage = ({ propertyData, images }) => {
 };
 
 export async function getStaticPaths() {
-  const dataFolderPath = path.join(process.cwd(), "..","lp-showcase-nextjs", "data-repo");
+  const dataFolderPath = path.join(process.cwd(), "..", "data-repo");
   const siteName = process.env.siteName;
   try {
     const files = await fs.readdir(dataFolderPath);
