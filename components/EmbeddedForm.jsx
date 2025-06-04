@@ -6,6 +6,12 @@ const EmbeddedForm = ({ contact}) => {
 
   useEffect(() => {
     if (mauticForm) {
+
+      window.MAUTIC_FORM = {
+      name: mauticForm.name,
+      id: mauticForm.id,
+      };
+
       setMauticForms(mauticForm.formSetName);
       setEmailFormHeader(mauticForm.emailFormHeader);
       setPhoneFormHeader(mauticForm.phoneFormHeader);

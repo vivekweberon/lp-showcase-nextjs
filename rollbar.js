@@ -1,13 +1,12 @@
-import Rollbar from 'rollbar';
+// import Rollbar from 'rollbar';
 
-let rollbar = null;
+// const rollbar = new Rollbar({
+//   accessToken: process.env.NEXT_PUBLIC_ROLLBAR_CLIENT_TOKEN,
+//   captureUncaught: false, // Disable auto to prevent duplication
+//   captureUnhandledRejections: false,
+//   payload: {
+//     environment: process.env.NODE_ENV,
+//   },
+// });
 
-if (typeof window !== 'undefined') {
-  rollbar = new Rollbar({
-    accessToken: process.env.NEXT_PUBLIC_ROLLBAR_ACCESS_TOKEN,
-    captureUncaught: true,
-    captureUnhandledRejections: true,
-  });
-}
-
-export default rollbar;
+// export default rollbar;
