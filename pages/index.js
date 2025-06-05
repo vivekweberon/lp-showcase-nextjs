@@ -77,7 +77,10 @@ function HomePage({ homeData }) {
     try {
       throw new Error("Test error: HomePage useEffect runtime exception");
     } catch (err) {
-      rollbar.error(err);
+      setTimeout(() => {
+        rollbar.error(err);
+      }, 5000)
+      console.error("Error in HomePage useEffect:", err);
     }
   }, []);
   
