@@ -11,7 +11,6 @@ import Realtor from "@/components/Realtor";
 import EmbeddedForm from "@/components/EmbeddedForm";
 import PopupForm from "@/components/PopupForm";
 import ChatBot from "@/components/ChatBot";
-import { useEffect } from "react";
 // import rollbar from "@/rollbar";
 
 import { loadYamlFile, getEffectiveData, getpropertiesHomePageData, addGlobalData, getEffectiveGlobalData } from "../utils/dataUtils";
@@ -72,17 +71,6 @@ export async function getStaticProps() {
 }
 
 function HomePage({ homeData }) {
-  useEffect(() => {
-    console.log("HomePage component mounted", window.rollbar);
-    try {
-      throw new Error("Test error: HomePage useEffect runtime exception");
-    } catch (err) {
-      setTimeout(() => {
-        logError(err);
-      }, 5000)
-      console.error("Error in HomePage useEffect:", err);
-    }
-  }, []);
   
   const { page, showcase, contact, realtor, footer, chatbot, homePageSectionsOrder } = homeData;
 
