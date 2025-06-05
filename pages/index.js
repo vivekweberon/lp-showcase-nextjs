@@ -175,7 +175,7 @@ function addContact(contact) {
       {/* <script src="https://cdn.rollbar.com/rollbarjs/refs/tags/v2.22.0/rollbar.min.js"></script> */}
       </Head>
       <script src={`${basePath}/js/rb-config.js`}></script>
-      <script src="https://cdn.rollbar.com/rollbarjs/refs/tags/v2.22.0/rollbar.min.js"></script>
+      {/* <script src="https://cdn.rollbar.com/rollbarjs/refs/tags/v2.22.0/rollbar.min.js"></script> */}
       <script src={`${basePath}/js/logger.js`}></script>
       <Script src={`${basePath}/js/jquery-3.5.1.min.js`} strategy="beforeInteractive" />
       <Script src={`${basePath}/js/jwt-decode.js`} strategy="beforeInteractive" />
