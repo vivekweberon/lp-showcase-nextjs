@@ -76,13 +76,22 @@ function HomePage({ homeData }) {
   //   throw new Error("Test error: HomePage useEffect runtime exception");
   // }, []);
   useEffect(() => {
+    // 1. Load Rollbar
     const rollbarScript = document.createElement("script");
     rollbarScript.src = "https://cdn.rollbar.com/rollbarjs/refs/tags/v2.22.0/rollbar.min.js";
     rollbarScript.async = true;
     rollbarScript.onload = () => {
+      // 2. Load rb-config.js
       const rbConfigScript = document.createElement("script");
       rbConfigScript.src = `${basePath}/js/rb-config.js`;
       rbConfigScript.async = true;
+      rbConfigScript.onload = () => {
+        // 3. Load logger.js
+        const loggerScript = document.createElement("script");
+        loggerScript.src = `${basePath}/js/logger.js`;
+        loggerScript.async = true;
+        document.body.appendChild(loggerScript);
+      };
       document.body.appendChild(rbConfigScript);
     };
     document.body.appendChild(rollbarScript);
@@ -189,7 +198,7 @@ function addContact(contact) {
       </Head>
       {/* <script src="https://cdn.rollbar.com/rollbarjs/refs/tags/v2.22.0/rollbar.min.js"></script> */}
       {/* <script src={`${basePath}/js/rb-config.js`}></script> */}
-      <Script src={`${basePath}/js/logger.js`} strategy="beforeInteractive" />
+      {/* <Script src={`${basePath}/js/logger.js`} strategy="beforeInteractive" /> */}
       <Script src={`${basePath}/js/jquery-3.5.1.min.js`} strategy="beforeInteractive" />
       <Script src={`${basePath}/js/jwt-decode.js`} strategy="beforeInteractive" />
       <script type="text/javascript" src="https://accounts.google.com/gsi/client"></script>
