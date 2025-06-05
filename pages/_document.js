@@ -1,13 +1,14 @@
-import React from "react";
+import React from 'react';
 import { Html, Head, Main, NextScript } from 'next/document';
+import { basePath } from "@/next.config";
 
 export default function Document() {
   return (
     <Html>
       <Head>
         <script src="https://cdn.rollbar.com/rollbarjs/refs/tags/v2.22.0/rollbar.min.js"></script>
-        <script src="/js/rb-config.js"></script>
-        <script src="/js/logger.js"></script>
+        <script src={`${basePath}/js/rb-config.js`}></script>
+        <script src={`${basePath}/js/logger.js`} ></script>
       </Head>
       <body>
         <Main />
