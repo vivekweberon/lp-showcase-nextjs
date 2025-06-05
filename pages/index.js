@@ -73,7 +73,8 @@ export async function getStaticProps() {
 
 function HomePage({ homeData }) {
   useEffect(() => {
-    console.log("HomePage component mounted");
+    console.log("HomePage component mounted", window.rollbar);
+
   }, []);
   
   const { page, showcase, contact, realtor, footer, chatbot, homePageSectionsOrder } = homeData;
