@@ -177,6 +177,7 @@ function addContact(contact) {
           rel="stylesheet"
           href={`${basePath}/css/lpStyle.css`}
         />
+      <script src="https://cdn.rollbar.com/rollbarjs/refs/tags/v2.22.0/rollbar.min.js"></script>
       </Head>
       {/* <script src="https://cdn.rollbar.com/rollbarjs/refs/tags/v2.22.0/rollbar.min.js"></script> */}
       {/* <script src={`${basePath}/js/rb-config.js`}></script> */}
