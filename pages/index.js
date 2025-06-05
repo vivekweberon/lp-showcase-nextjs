@@ -73,7 +73,7 @@ export async function getStaticProps() {
 
 function HomePage({ homeData }) {
   useEffect(() => {
-    console.log("HomePage component mounted");
+    console.log("HomePage component mounted", window.rollbar);
     try {
       throw new Error("Test error: HomePage useEffect runtime exception");
     } catch (err) {
