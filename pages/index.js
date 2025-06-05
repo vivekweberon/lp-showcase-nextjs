@@ -12,7 +12,7 @@ import EmbeddedForm from "@/components/EmbeddedForm";
 import PopupForm from "@/components/PopupForm";
 import ChatBot from "@/components/ChatBot";
 import { useEffect } from "react";
-import rollbar from "@/rollbar";
+// import rollbar from "@/rollbar";
 
 import { loadYamlFile, getEffectiveData, getpropertiesHomePageData, addGlobalData, getEffectiveGlobalData } from "../utils/dataUtils";
 
@@ -77,7 +77,7 @@ function HomePage({ homeData }) {
     try {
       throw new Error("Test error: HomePage useEffect runtime exception");
     } catch (err) {
-      rollbar.error(err); // Send error to Rollbar
+      rollbar.error(err);
     }
   }, []);
   
@@ -177,11 +177,11 @@ function addContact(contact) {
           rel="stylesheet"
           href={`${basePath}/css/lpStyle.css`}
         />
-      <script src="https://cdn.rollbar.com/rollbarjs/refs/tags/v2.22.0/rollbar.min.js"></script>
-      </Head>
       {/* <script src="https://cdn.rollbar.com/rollbarjs/refs/tags/v2.22.0/rollbar.min.js"></script> */}
-      {/* <script src={`${basePath}/js/rb-config.js`}></script> */}
-      {/* <Script src={`${basePath}/js/logger.js`} strategy="beforeInteractive" /> */}
+      </Head>
+      <script src="https://cdn.rollbar.com/rollbarjs/refs/tags/v2.22.0/rollbar.min.js"></script>
+      <script src={`${basePath}/js/rb-config.js`}></script>
+      <script src={`${basePath}/js/logger.js`}></script>
       <Script src={`${basePath}/js/jquery-3.5.1.min.js`} strategy="beforeInteractive" />
       <Script src={`${basePath}/js/jwt-decode.js`} strategy="beforeInteractive" />
       <script type="text/javascript" src="https://accounts.google.com/gsi/client"></script>
