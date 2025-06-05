@@ -5,8 +5,8 @@ export default function Document() {
     <Html>
       <Head>
         <script src="https://cdn.rollbar.com/rollbarjs/refs/tags/v2.22.0/rollbar.min.js"></script>
-        <script src={`${basePath}/js/rb-config.js`}></script>
-        <script src={`${basePath}/js/logger.js`} ></script>
+        <script src="/js/rb-config.js"></script>
+        <script src="/js/logger.js"></script>
       </Head>
       <body>
         <Main />
