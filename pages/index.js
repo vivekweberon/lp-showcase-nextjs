@@ -71,8 +71,23 @@ export async function getStaticProps() {
 }
 
 function HomePage({ homeData }) {
+  // useEffect(() => {
+  //   console.log("HomePage component mounted");
+  //   throw new Error("Test error: HomePage useEffect runtime exception");
+  // }, []);
   useEffect(() => {
-    console.log("HomePage component mounted");
+    const rollbarScript = document.createElement("script");
+    rollbarScript.src = "https://cdn.rollbar.com/rollbarjs/refs/tags/v2.22.0/rollbar.min.js";
+    rollbarScript.async = true;
+    rollbarScript.onload = () => {
+      const rbConfigScript = document.createElement("script");
+      rbConfigScript.src = `${basePath}/js/rb-config.js`;
+      rbConfigScript.async = true;
+      document.body.appendChild(rbConfigScript);
+    };
+    document.body.appendChild(rollbarScript);
+
+    // Test error for Rollbar
     throw new Error("Test error: HomePage useEffect runtime exception");
   }, []);
   const { page, showcase, contact, realtor, footer, chatbot, homePageSectionsOrder } = homeData;
@@ -172,8 +187,8 @@ function addContact(contact) {
           href={`${basePath}/css/lpStyle.css`}
         />
       </Head>
-      <script src="https://cdn.rollbar.com/rollbarjs/refs/tags/v2.22.0/rollbar.min.js"></script>
-      <script src={`${basePath}/js/rb-config.js`}></script>
+      {/* <script src="https://cdn.rollbar.com/rollbarjs/refs/tags/v2.22.0/rollbar.min.js"></script> */}
+      {/* <script src={`${basePath}/js/rb-config.js`}></script> */}
       <Script src={`${basePath}/js/logger.js`} strategy="beforeInteractive" />
       <Script src={`${basePath}/js/jquery-3.5.1.min.js`} strategy="beforeInteractive" />
       <Script src={`${basePath}/js/jwt-decode.js`} strategy="beforeInteractive" />
