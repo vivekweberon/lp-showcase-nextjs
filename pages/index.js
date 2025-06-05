@@ -11,7 +11,7 @@ import Realtor from "@/components/Realtor";
 import EmbeddedForm from "@/components/EmbeddedForm";
 import PopupForm from "@/components/PopupForm";
 import ChatBot from "@/components/ChatBot";
-import { useEffect } from "react";
+// import { useEffect } from "react";
 
 import { loadYamlFile, getEffectiveData, getpropertiesHomePageData, addGlobalData, getEffectiveGlobalData } from "../utils/dataUtils";
 
@@ -72,8 +72,7 @@ export async function getStaticProps() {
 
 function HomePage({ homeData }) {
   useEffect(() => {
-    rollbar.info('HomePage loaded');
-    rollbar.error(new Error('Test error'));
+    console.log("HomePage component mounted");
   }, []);
   const { page, showcase, contact, realtor, footer, chatbot, homePageSectionsOrder } = homeData;
 
