@@ -205,12 +205,12 @@ const PropertyPage = ({ propertyData, images }) => {
           href={`${basePath}/css/lpStyle.css`}
         />
       </Head>
-      <Script src={`${basePath}/js/rb-config.js`} strategy="beforeInteractive" />
+      {/* <Script src={`${basePath}/js/rb-config.js`} strategy="beforeInteractive" />
       <Script
       src="https://cdn.rollbar.com/rollbarjs/refs/tags/v2.22.0/rollbar.min.js"
       strategy="beforeInteractive"
         />
-      <Script src={`${basePath}/js/logger.js`} strategy="beforeInteractive" />
+      <Script src={`${basePath}/js/logger.js`} strategy="beforeInteractive" /> */}
       <Script src={`${basePath}/js/jquery-3.5.1.min.js`} strategy="beforeInteractive" />
       <Script src={`${basePath}/js/jwt-decode.js`} strategy="beforeInteractive" />
       <script type="text/javascript" src="https://accounts.google.com/gsi/client"></script>

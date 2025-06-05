@@ -71,34 +71,11 @@ export async function getStaticProps() {
 }
 
 function HomePage({ homeData }) {
-  // useEffect(() => {
-  //   console.log("HomePage component mounted");
-  //   throw new Error("Test error: HomePage useEffect runtime exception");
-  // }, []);
   useEffect(() => {
-    // 1. Load Rollbar
-    const rollbarScript = document.createElement("script");
-    rollbarScript.src = "https://cdn.rollbar.com/rollbarjs/refs/tags/v2.22.0/rollbar.min.js";
-    rollbarScript.async = true;
-    rollbarScript.onload = () => {
-      // 2. Load rb-config.js
-      const rbConfigScript = document.createElement("script");
-      rbConfigScript.src = `${basePath}/js/rb-config.js`;
-      rbConfigScript.async = true;
-      rbConfigScript.onload = () => {
-        // 3. Load logger.js
-        const loggerScript = document.createElement("script");
-        loggerScript.src = `${basePath}/js/logger.js`;
-        loggerScript.async = true;
-        document.body.appendChild(loggerScript);
-      };
-      document.body.appendChild(rbConfigScript);
-    };
-    document.body.appendChild(rollbarScript);
-
-    // Test error for Rollbar
+    console.log("HomePage component mounted");
     throw new Error("Test error: HomePage useEffect runtime exception");
   }, []);
+  
   const { page, showcase, contact, realtor, footer, chatbot, homePageSectionsOrder } = homeData;
 
   let menuItems = [];
