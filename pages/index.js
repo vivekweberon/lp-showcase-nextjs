@@ -11,7 +11,7 @@ import Realtor from "@/components/Realtor";
 import EmbeddedForm from "@/components/EmbeddedForm";
 import PopupForm from "@/components/PopupForm";
 import ChatBot from "@/components/ChatBot";
-// import { useEffect } from "react";
+import { useEffect } from "react";
 
 import { loadYamlFile, getEffectiveData, getpropertiesHomePageData, addGlobalData, getEffectiveGlobalData } from "../utils/dataUtils";
 
