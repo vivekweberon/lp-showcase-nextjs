@@ -70,8 +70,20 @@ export async function getStaticProps() {
   }
 }
 
+
 function HomePage({ homeData }) {
   
+  function logResourceLoadError(ref) {
+    console.log("logResourceLoadError called with ref: ", ref);
+    let err = "Error loading: '"+ (ref.src || ref.href) +"'";
+    if(window.Rollbar){
+      Rollbar.error(err);
+    }else{
+      console.log(err);
+    }
+    return false;
+  }
+
   const { page, showcase, contact, realtor, footer, chatbot, homePageSectionsOrder } = homeData;
 
   let menuItems = [];
