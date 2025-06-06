@@ -74,7 +74,7 @@ export async function getStaticProps() {
 function HomePage({ homeData }) {
   
   function logResourceLoadError(ref) {
-    console.log("logResourceLoadError called with ref: ", ref);
+    console.log("logResourceLoadError called with ref:", ref);
     let err = "Error loading: '"+ (ref.src || ref.href) +"'";
     if(window.Rollbar){
       Rollbar.error(err);
@@ -210,7 +210,7 @@ function addContact(contact) {
       <Script src={`${basePath}/js/showdown-1.9.1.min.js`} strategy="beforeInteractive" />
       <Script src={`${basePath}/js/bootstrap.min.js`} strategy="beforeInteractive" />
       <Script src={`${basePath}/js/mauticTracking.js`} strategy="beforeInteractive" />
-      <Script src="https://www.youtube.com/iframe_api11" onError={logResourceLoadError(e)}/>
+      <Script src="https://www.youtube.com/iframe_api11" onError={() => logResourceLoadError(e)}/>
       <Navbar menu={menuItems} />
       {sections}
       {chatbot && <ChatBot chatbotDFAgent={chatbot.chatbotDFAgent} />}
