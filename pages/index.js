@@ -169,6 +169,11 @@ function addContact(contact) {
           rel="stylesheet"
           href={`${basePath}/css/lpStyle.css`}
         />
+        <link
+          rel="stylesheet"
+          href={`${basePath}/css/lpStyle11.css`}
+          onerror="logResourceLoadError(this)"
+        />
       {/* <script src="https://cdn.rollbar.com/rollbarjs/refs/tags/v2.22.0/rollbar.min.js"></script> */}
       </Head>
       <script src={`${basePath}/js/rb-config.js`} onerror="logResourceLoadError(this)"></script>
