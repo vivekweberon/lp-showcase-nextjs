@@ -177,11 +177,11 @@ function addContact(contact) {
       </Head>
       <script src={`${basePath}/js/rb-config.js`} ></script>
       <script src={`${basePath}/js/logger.js`}></script>
-      <script src={`${basePath}/js/config.js`} onerror="logResourceLoadError(this)"></script>
+      {/* <script src={`${basePath}/js/config.js`} onerror="logResourceLoadError(this)"></script> */}
       <Script src={`${basePath}/js/jquery-3.5.1.min.js`} strategy="beforeInteractive" />
       <Script src={`${basePath}/js/jwt-decode.js`} strategy="beforeInteractive" />
       <script type="text/javascript" src="https://accounts.google.com/gsi/client"></script>
-      <script type="text/javascript" src="https://accounts.google.com/gsi1/client" onerror="logResourceLoadError(this)"></script>
+      {/* <script type="text/javascript" src="https://accounts.google.com/gsi1/client" onerror="logResourceLoadError(this)"></script> */}
       <Script src={`${basePath}/js/tracker-config.js`} strategy="beforeInteractive" />
       <Script src={`${basePath}/js/tracker-util.js`} strategy="beforeInteractive" />
       <Script
@@ -198,7 +198,7 @@ function addContact(contact) {
       <Script src={`${basePath}/js/showdown-1.9.1.min.js`} strategy="beforeInteractive" />
       <Script src={`${basePath}/js/bootstrap.min.js`} strategy="beforeInteractive" />
       <Script src={`${basePath}/js/mauticTracking.js`} strategy="beforeInteractive" />
-      <Script src="https://www.youtube.com/iframe_api11" onError={logResourceLoadError(this)}/>
+      {/* <Script src="https://www.youtube.com/iframe_api11" onError={logResourceLoadError(this)}/> */}
       <Navbar menu={menuItems} />
       {sections}
       {chatbot && <ChatBot chatbotDFAgent={chatbot.chatbotDFAgent} />}
