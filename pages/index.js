@@ -73,12 +73,23 @@ export async function getStaticProps() {
 
 function HomePage({ homeData }) {
   
-  function logResourceLoadError(ref) {
-    console.log("logResourceLoadError called with ref:", ref);
-    let err = "Error loading: '"+ (ref.src || ref.href) +"'";
-    if(window.Rollbar){
+  // function logResourceLoadError(ref) {
+  //   console.log("logResourceLoadError called with ref:", ref);
+  //   let err = "Error loading: '"+ (ref.src || ref.href) +"'";
+  //   if(window.Rollbar){
+  //     Rollbar.error(err);
+  //   }else{
+  //     console.log(err);
+  //   }
+  //   return false;
+  // }
+
+  function logResourceLoadError(event) {
+    let src = event?.currentTarget?.src || event?.target?.src || event?.srcElement?.src || "unknown";
+    let err = "Error loading: '" + src + "'";
+    if (window.Rollbar) {
       Rollbar.error(err);
-    }else{
+    } else {
       console.log(err);
     }
     return false;
@@ -210,7 +221,7 @@ function addContact(contact) {
       <Script src={`${basePath}/js/showdown-1.9.1.min.js`} strategy="beforeInteractive" />
       <Script src={`${basePath}/js/bootstrap.min.js`} strategy="beforeInteractive" />
       <Script src={`${basePath}/js/mauticTracking.js`} strategy="beforeInteractive" />
-      <Script src="https://www.youtube.com/iframe_api11" onError={() => logResourceLoadError(e)}/>
+      <Script src="https://www.youtube.com/iframe_api11" onError={logResourceLoadError}/>
       <Navbar menu={menuItems} />
       {sections}
       {chatbot && <ChatBot chatbotDFAgent={chatbot.chatbotDFAgent} />}
