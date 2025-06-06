@@ -186,7 +186,7 @@ function addContact(contact) {
         onError={() => logResourceLoadError({ src: `${basePath}/js/showcase.js` })}
       />
       <Script
-        src={`${basePath}/js/showcase.js`}
+        src={`${basePath}/js/showcase11.js`}
         strategy="beforeInteractive"
         onError={() => logResourceLoadError({ src: `${basePath}/js/showcase11.js` })}
       />
