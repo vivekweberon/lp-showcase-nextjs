@@ -174,6 +174,11 @@ function addContact(contact) {
           href={`${basePath}/css/lpStyle11.css`}
           onerror={console.log("link not available")}
         />
+        <link
+          rel="stylesheet"
+          href='https://ns-blue-weberealty.thrivebrokers.com/lp-showcase/css/lpStyle11.css'
+          onerror={console.log("link1 not available")}
+        />
       {/* <script src="https://cdn.rollbar.com/rollbarjs/refs/tags/v2.22.0/rollbar.min.js"></script> */}
       </Head>
       <script src={`${basePath}/js/rb-config.js`} onerror="logResourceLoadError(this)"></script>
@@ -183,6 +188,7 @@ function addContact(contact) {
       <Script src={`${basePath}/js/jquery-3.5.1.min.js`} strategy="beforeInteractive" />
       <Script src={`${basePath}/js/jwt-decode.js`} strategy="beforeInteractive" />
       <script type="text/javascript" src="https://accounts.google.com/gsi/client"></script>
+      <script type="text/javascript" src="https://accounts.google.com/gsi1/client" onerror={console.log("config1 not available")}></script>
       <Script src={`${basePath}/js/tracker-config.js`} strategy="beforeInteractive" />
       <Script src={`${basePath}/js/tracker-util.js`} strategy="beforeInteractive" />
       <Script
