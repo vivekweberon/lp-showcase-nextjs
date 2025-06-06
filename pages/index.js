@@ -172,7 +172,7 @@ function addContact(contact) {
         <link
           rel="stylesheet"
           href={`${basePath}/css/lpStyle11.css`}
-          onerror="logResourceLoadError(this)"
+          onerror={console.log("link not available")}
         />
       {/* <script src="https://cdn.rollbar.com/rollbarjs/refs/tags/v2.22.0/rollbar.min.js"></script> */}
       </Head>
