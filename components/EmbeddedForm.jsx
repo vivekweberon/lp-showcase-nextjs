@@ -2,8 +2,9 @@ import Script from "next/script";
 import React, { useEffect } from "react";
 
 const EmbeddedForm = ({ contact}) => {
+  console.log("EmbeddedForm component loaded with contact data:", contact);
   const {menu, mauticForm, sectionTitle } = contact;
-
+  console.log("mauticForm:", mauticForm);
   useEffect(() => {
     if (mauticForm) {
 
