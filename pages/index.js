@@ -170,8 +170,8 @@ function addContact(contact) {
         />
       {/* <script src="https://cdn.rollbar.com/rollbarjs/refs/tags/v2.22.0/rollbar.min.js"></script> */}
       </Head>
-      <script src={`${basePath}/js/rb-config.js`} onError="logResourceLoadError(this)"></script>
-      <script src={`${basePath}/js/config.js`} onError="logResourceLoadError(this)"></script>
+      <script src={`${basePath}/js/rb-config.js`} onerror="logResourceLoadError(this)"></script>
+      <script src={`${basePath}/js/config.js`} onerror="logResourceLoadError(this)"></script>
       {/* <script src="https://cdn.rollbar.com/rollbarjs/refs/tags/v2.22.0/rollbar.min.js"></script> */}
       <script src={`${basePath}/js/logger.js`}></script>
       <Script src={`${basePath}/js/jquery-3.5.1.min.js`} strategy="beforeInteractive" />
@@ -179,7 +179,11 @@ function addContact(contact) {
       <script type="text/javascript" src="https://accounts.google.com/gsi/client"></script>
       <Script src={`${basePath}/js/tracker-config.js`} strategy="beforeInteractive" />
       <Script src={`${basePath}/js/tracker-util.js`} strategy="beforeInteractive" />
-      <Script src={`${basePath}/js/showcase.js`} strategy="beforeInteractive" onError={() => logResourceLoadError({src: `${basePath}/js/showcase.js`})}/>
+      <Script
+        src={`${basePath}/js/showcase.js`}
+        strategy="beforeInteractive"
+        onError={() => logResourceLoadError({ src: `${basePath}/js/showcase.js` })}
+      />
       <Script src={`${basePath}/js/tracker.js`} strategy="beforeInteractive" />
       <Script src={`${basePath}/js/showdown-1.9.1.min.js`} strategy="beforeInteractive" />
       <Script src={`${basePath}/js/bootstrap.min.js`} strategy="beforeInteractive" />
