@@ -168,6 +168,7 @@ function addContact(contact) {
         <link
           rel="stylesheet"
           href={`${basePath}/css/lpStyle.css`}
+          onerror={console.log("link not available")}
         />
         <link
           rel="stylesheet"
