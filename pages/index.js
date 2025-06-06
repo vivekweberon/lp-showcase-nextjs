@@ -164,7 +164,12 @@ function addContact(contact) {
           rel="stylesheet"
           href={`${basePath}/css/fa.min.css`}
         />
-        <link
+        
+      </Head>
+      <script src={`${basePath}/js/rb-config.js`} onerror="logResourceLoadError(this)"></script>
+      <script src={`${basePath}/js/config.js`} onerror="logResourceLoadError(this)"></script>
+      <script src={`${basePath}/js/logger.js`}></script>
+      <link
           rel="stylesheet"
           href={`${basePath}/css/lpStyle.css`}
           onerror="logResourceLoadError(this)"
@@ -173,11 +178,7 @@ function addContact(contact) {
           rel="stylesheet"
           href={`${basePath}/css/lpStyle11.css`}
           onerror="logResourceLoadError(this)"
-        />
-      </Head>
-      <script src={`${basePath}/js/rb-config.js`} onerror="logResourceLoadError(this)"></script>
-      <script src={`${basePath}/js/config.js`} onerror="logResourceLoadError(this)"></script>
-      <script src={`${basePath}/js/logger.js`}></script>
+      />
       <Script src={`${basePath}/js/jquery-3.5.1.min.js`} strategy="beforeInteractive" />
       <Script src={`${basePath}/js/jwt-decode.js`} strategy="beforeInteractive" />
       <script type="text/javascript" src="https://accounts.google.com/gsi/client"></script>
