@@ -85,6 +85,7 @@ function HomePage({ homeData }) {
   // }
 
   function logResourceLoadError(event) {
+    console.log("logResourceLoadError called with event - server", event);
     let src = event?.currentTarget?.src || event?.target?.src || event?.srcElement?.src || "unknown";
     let err = "Error loading: '" + src + "'";
     if (window.Rollbar) {
