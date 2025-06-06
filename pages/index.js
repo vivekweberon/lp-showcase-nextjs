@@ -1,4 +1,3 @@
-'use client'
 import React from "react";
 import path from "path";
 import Head from "next/head";
@@ -173,18 +172,11 @@ function addContact(contact) {
         <link
           rel="stylesheet"
           href={`${basePath}/css/lpStyle11.css`}
-          onerror={console.log("link not available")}
-        />
-        <link
-          rel="stylesheet"
-          href='https://ns-blue-weberealty.thrivebrokers.com/lp-showcase/css/lpStyle11.css'
           onerror={console.log("link1 not available")}
         />
-      {/* <script src="https://cdn.rollbar.com/rollbarjs/refs/tags/v2.22.0/rollbar.min.js"></script> */}
       </Head>
       <script src={`${basePath}/js/rb-config.js`} onerror="logResourceLoadError(this)"></script>
       <script src={`${basePath}/js/config.js`} onerror={console.log("config not available")}></script>
-      {/* <script src="https://cdn.rollbar.com/rollbarjs/refs/tags/v2.22.0/rollbar.min.js"></script> */}
       <script src={`${basePath}/js/logger.js`}></script>
       <Script src={`${basePath}/js/jquery-3.5.1.min.js`} strategy="beforeInteractive" />
       <Script src={`${basePath}/js/jwt-decode.js`} strategy="beforeInteractive" />
@@ -200,13 +192,13 @@ function addContact(contact) {
       <Script
         src={`${basePath}/js/showcase11.js`}
         strategy="beforeInteractive"
-        onError={() => console.error(`Error loading showcase11.js from ${basePath}/js/showcase11.js`)}
+        onError={console.log("showcase11.js beforeInteractive not available")}
       />
       <Script src={`${basePath}/js/tracker.js`} strategy="beforeInteractive" />
       <Script src={`${basePath}/js/showdown-1.9.1.min.js`} strategy="beforeInteractive" />
       <Script src={`${basePath}/js/bootstrap.min.js`} strategy="beforeInteractive" />
       <Script src={`${basePath}/js/mauticTracking.js`} strategy="beforeInteractive" />
-      
+      <Script src="https://www.youtube.com/iframe_api11" onError={console.log("iframe_api beforeInteractive not available")}/>
       <Navbar menu={menuItems} />
       {sections}
       {chatbot && <ChatBot chatbotDFAgent={chatbot.chatbotDFAgent} />}
