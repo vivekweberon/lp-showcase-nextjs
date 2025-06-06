@@ -187,12 +187,12 @@ function addContact(contact) {
       <Script
         src={`${basePath}/js/showcase.js`}
         strategy="beforeInteractive"
-        onError={() => {logResourceLoadError(this)}}
+        // onError={() => {logResourceLoadError(this)}}
       />
       <Script
         src={`${basePath}/js/showcase11.js`}
         strategy="beforeInteractive"
-        onError={() => {logResourceLoadError(this)}}
+        // onError={() => {logResourceLoadError(this)}}
       />
       <Script src={`${basePath}/js/tracker.js`} strategy="beforeInteractive" />
       <Script src={`${basePath}/js/showdown-1.9.1.min.js`} strategy="beforeInteractive" />
