@@ -197,7 +197,7 @@ function addContact(contact) {
         <link
           rel="stylesheet"
           href={`${basePath}/css/lpStyle11.css`}
-          onerror="logResourceLoadError(this)"
+          // onerror="logResourceLoadError(this)"
         />
       </Head>
       <script src={`${basePath}/js/rb-config.js`} ></script>
@@ -223,7 +223,7 @@ function addContact(contact) {
       <Script src={`${basePath}/js/showdown-1.9.1.min.js`} strategy="beforeInteractive" />
       <Script src={`${basePath}/js/bootstrap.min.js`} strategy="beforeInteractive" />
       <Script src={`${basePath}/js/mauticTracking.js`} strategy="beforeInteractive" />
-      <Script src="https://www.youtube.com/iframe_api11" onError={logResourceLoadError}/>
+      {/* <Script src="https://www.youtube.com/iframe_api11" onError={logResourceLoadError}/> */}
       <Navbar menu={menuItems} />
       {sections}
       {chatbot && <ChatBot chatbotDFAgent={chatbot.chatbotDFAgent} />}
