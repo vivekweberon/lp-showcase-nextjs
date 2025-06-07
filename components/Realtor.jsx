@@ -4,15 +4,15 @@ import { basePath } from "@/next.config.js";
 const Realtor = ({ realtor }) => {
   
   function logResourceLoadError(ref) {
-  console.log("logResourceLoadError called with ref - client", ref);
-  let err = "Error loading: '"+ (ref.src || ref.href) +"'";
-  if(window.Rollbar){
-    Rollbar.error(err);
-  }else{
-    console.log(err);
+    console.log("logResourceLoadError called with ref - client", ref);
+    let err = "Error loading: '"+ (ref.src || ref.href) +"'";
+    if(window.Rollbar){
+      Rollbar.error(err);
+    }else{
+      console.log(err);
+    }
+    return false;
   }
-  return false;
-}
 
   const { photo, name, company, id, phone, logo, sectionTitle, footerText, footerLink, footerLinkText, menu } = realtor;
 
@@ -49,7 +49,7 @@ const Realtor = ({ realtor }) => {
             src={`${path}1920`}
             style={{ width: "100%" }}
             alt={name}
-            onerror={logResourceLoadError}
+            onError={(e) => logResourceLoadError(e.target)}
           />
         </div>
         <div
@@ -73,7 +73,7 @@ const Realtor = ({ realtor }) => {
             src={basePath + logo}
             alt="Logo"
             style={{ width: "50%" }}
-            onError={logResourceLoadError}
+            onError={(e) => console.log("Error loading logo", e.target.src)}
           />
         </div>
       </div>
