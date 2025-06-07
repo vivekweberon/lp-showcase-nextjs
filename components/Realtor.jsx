@@ -2,6 +2,19 @@ import React from "react";
 import { basePath } from "@/next.config.js";
 
 const Realtor = ({ realtor }) => {
+  
+  function logResourceLoadError(event) {
+    console.log("logResourceLoadError called with event - server", event);
+    let src = event?.currentTarget?.src || event?.target?.src || event?.srcElement?.src || "unknown";
+    let err = "Error loading: '" + src + "'";
+    if (window.Rollbar) {
+      Rollbar.error(err);
+    } else {
+      console.log(err);
+    }
+    return false;
+  }
+
   const { photo, name, company, id, phone, logo, sectionTitle, footerText, footerLink, footerLinkText, menu } = realtor;
 
   const path = `${basePath}${photo}?width=`;

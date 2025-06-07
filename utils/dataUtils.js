@@ -122,3 +122,4 @@ export const getpropertiesHomePageData = async (dataFolderPath, currentSiteName)
   }
   return propertiesData;
 };
+
