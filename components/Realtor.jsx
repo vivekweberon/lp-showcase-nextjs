@@ -3,17 +3,17 @@ import { basePath } from "@/next.config.js";
 
 const Realtor = ({ realtor }) => {
   
-  function logResourceLoadError(event) {
-    console.log("logResourceLoadError called with event - server", event);
-    let src = event?.currentTarget?.src || event?.target?.src || event?.srcElement?.src || "unknown";
-    let err = "Error loading: '" + src + "'";
-    if (window.Rollbar) {
-      Rollbar.error(err);
-    } else {
-      console.log(err);
-    }
-    return false;
-  }
+  // function logResourceLoadError(event) {
+  //   console.log("logResourceLoadError called with event - server", event);
+  //   let src = event?.currentTarget?.src || event?.target?.src || event?.srcElement?.src || "unknown";
+  //   let err = "Error loading: '" + src + "'";
+  //   if (window.Rollbar) {
+  //     Rollbar.error(err);
+  //   } else {
+  //     console.log(err);
+  //   }
+  //   return false;
+  // }
 
   const { photo, name, company, id, phone, logo, sectionTitle, footerText, footerLink, footerLinkText, menu } = realtor;
 
@@ -50,9 +50,9 @@ const Realtor = ({ realtor }) => {
             src={`${path}1920`}
             style={{ width: "100%" }}
             alt={name}
-            onError={() => {
-                console.log(logResourceLoadError());
-            }}
+            // onError={() => {
+            //     console.log(logResourceLoadError());
+            // }}
           />
         </div>
         <div
@@ -76,7 +76,7 @@ const Realtor = ({ realtor }) => {
             src={basePath + logo}
             alt="Logo"
             style={{ width: "50%" }}
-            onError={console.log(logResourceLoadError())}
+            // onError={console.log(logResourceLoadError())}
           />
         </div>
       </div>

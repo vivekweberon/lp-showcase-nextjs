@@ -202,7 +202,7 @@ function addContact(contact) {
       </Head>
       <script src={`${basePath}/js/rb-config.js`} ></script>
       <script src={`${basePath}/js/logger.js`}></script>
-      {/* <script src={`${basePath}/js/config.js`} onerror="logResourceLoadError(this)"></script> */}
+      <script src={`${basePath}/js/config.js`} onerror="logResourceLoadError(this)"></script>
       <Script src={`${basePath}/js/jquery-3.5.1.min.js`} strategy="beforeInteractive" />
       <Script src={`${basePath}/js/jwt-decode.js`} strategy="beforeInteractive" />
       <script type="text/javascript" src="https://accounts.google.com/gsi/client"></script>
@@ -217,7 +217,7 @@ function addContact(contact) {
       <Script
         src={`${basePath}/js/showcase11.js`}
         strategy="beforeInteractive"
-        // onError={() => {logResourceLoadError(this)}}
+        onError={logResourceLoadError}
       />
       <Script src={`${basePath}/js/tracker.js`} strategy="beforeInteractive" />
       <Script src={`${basePath}/js/showdown-1.9.1.min.js`} strategy="beforeInteractive" />
