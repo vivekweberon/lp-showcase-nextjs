@@ -3,7 +3,7 @@ import { basePath } from "@/next.config.js";
 
 const Realtor = ({ realtor }) => {
   
-  function logResourceLoadError(event) {
+  function logResourceLoadError1(event) {
     console.log("logResourceLoadError called with event - server", event);
     let src = event?.currentTarget?.src || event?.target?.src || event?.srcElement?.src || "unknown";
     let err = "Error loading: '" + src + "'";
@@ -50,7 +50,7 @@ const Realtor = ({ realtor }) => {
             src={`${path}1920`}
             style={{ width: "100%" }}
             alt={name}
-            onerror={logResourceLoadError}
+            onerror={logResourceLoadError1}
           />
         </div>
         <div
@@ -74,7 +74,7 @@ const Realtor = ({ realtor }) => {
             src={basePath + logo}
             alt="Logo"
             style={{ width: "50%" }}
-            onError={logResourceLoadError}
+            onError={logResourceLoadError1}
           />
         </div>
       </div>
