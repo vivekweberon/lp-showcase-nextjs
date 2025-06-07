@@ -49,7 +49,7 @@ const Realtor = ({ realtor }) => {
             src={`${path}1920`}
             style={{ width: "100%" }}
             alt={name}
-            onError={(e) => logResourceLoadError(e.target)}
+            onerror={() => logResourceLoadError()}
           />
         </div>
         <div
@@ -73,7 +73,7 @@ const Realtor = ({ realtor }) => {
             src={basePath + logo}
             alt="Logo"
             style={{ width: "50%" }}
-            onError={(e) => console.log("Error loading logo", e.target.src)}
+            onerror={(e) => logResourceLoadError(e.target)}
           />
         </div>
       </div>
