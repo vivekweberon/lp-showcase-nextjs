@@ -1,6 +1,6 @@
 import React from "react";
 import { basePath } from "@/next.config.js";
-import { logResourceLoadError } from "@/utils/dataUtils";
+import { logResourceLoadError } from "@/utils/clientUtils";
 
 const Realtor = ({ realtor }) => {
   

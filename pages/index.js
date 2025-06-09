@@ -12,7 +12,7 @@ import EmbeddedForm from "@/components/EmbeddedForm";
 import PopupForm from "@/components/PopupForm";
 import ChatBot from "@/components/ChatBot";
 // import rollbar from "@/rollbar";
-import { logResourceLoadError } from "@/utils/dataUtils";
+import { logResourceLoadError } from "@/utils/clientUtils";
 
 import { loadYamlFile, getEffectiveData, getpropertiesHomePageData, addGlobalData, getEffectiveGlobalData } from "../utils/dataUtils";
 
