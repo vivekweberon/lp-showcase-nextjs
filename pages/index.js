@@ -12,7 +12,7 @@ import EmbeddedForm from "@/components/EmbeddedForm";
 import PopupForm from "@/components/PopupForm";
 import ChatBot from "@/components/ChatBot";
 // import rollbar from "@/rollbar";
-// import { logResourceLoadError } from "@/utils/logger";
+import { logResourceLoadError } from "@/utils/dataUtils";
 
 import { loadYamlFile, getEffectiveData, getpropertiesHomePageData, addGlobalData, getEffectiveGlobalData } from "../utils/dataUtils";
 
@@ -85,17 +85,17 @@ function HomePage({ homeData }) {
   //   return false;
   // }
 
-  function logResourceLoadError(event) {
-    console.log("logResourceLoadError called with event - server", event);
-    let src = event?.currentTarget?.src || event?.target?.src || event?.srcElement?.src || "unknown";
-    let err = "Error loading: '" + src + "'";
-    if (window.Rollbar) {
-      Rollbar.error(err);
-    } else {
-      console.log(err);
-    }
-    return false;
-  }
+  // function logResourceLoadError(event) {
+  //   console.log("logResourceLoadError called with event - server", event);
+  //   let src = event?.currentTarget?.src || event?.target?.src || event?.srcElement?.src || "unknown";
+  //   let err = "Error loading: '" + src + "'";
+  //   if (window.Rollbar) {
+  //     Rollbar.error(err);
+  //   } else {
+  //     console.log(err);
+  //   }
+  //   return false;
+  // }
 
   const { page, showcase, contact, realtor, footer, chatbot, homePageSectionsOrder } = homeData;
 

@@ -1,5 +1,6 @@
 import React from "react";
 import { basePath } from "@/next.config.js";
+import { logResourceLoadError } from "@/utils/dataUtils";
 
 const Realtor = ({ realtor }) => {
   
@@ -50,9 +51,9 @@ const Realtor = ({ realtor }) => {
             src={`${path}1920`}
             style={{ width: "100%" }}
             alt={name}
-            // onError={() => {
-            //     console.log(logResourceLoadError());
-            // }}
+            onError={() => {
+                console.log(logResourceLoadError());
+            }}
           />
         </div>
         <div
@@ -76,7 +77,7 @@ const Realtor = ({ realtor }) => {
             src={basePath + logo}
             alt="Logo"
             style={{ width: "50%" }}
-            // onError={console.log(logResourceLoadError())}
+            onError={logResourceLoadError}
           />
         </div>
       </div>
