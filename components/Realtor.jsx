@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import { basePath } from "@/next.config.js";
 // import { logResourceLoadError } from "@/utils/clientUtils";
 
@@ -52,7 +52,7 @@ const Realtor = ({ realtor }) => {
       </div>
       <div className="row no-gutters justify-content-center">
         <div className="col-8 col-sm-4 col-lg-3" style={{ marginTop: "20px" }}>
-          {setShowImages && <img
+          {showImages && <img
             id="rImage"
             srcSet={`
               ${path}360 360w, 
