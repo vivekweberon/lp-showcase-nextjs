@@ -12,7 +12,7 @@ import EmbeddedForm from "@/components/EmbeddedForm";
 import PopupForm from "@/components/PopupForm";
 import ChatBot from "@/components/ChatBot";
 // import rollbar from "@/rollbar";
-import { logResourceLoadError } from "@/utils/clientUtils";
+// import { logResourceLoadError } from "@/utils/clientUtils";
 
 import { loadYamlFile, getEffectiveData, getpropertiesHomePageData, addGlobalData, getEffectiveGlobalData } from "../utils/dataUtils";
 
@@ -74,16 +74,16 @@ export async function getStaticProps() {
 
 function HomePage({ homeData }) {
   
-  function logResourceLoadError(ref) {
-    console.log("logResourceLoadError called with ref:", ref);
-    let err = "Error loading: '"+ (ref.src || ref.href) +"'";
-    if(window.Rollbar){
-      Rollbar.error(err);
-    }else{
-      console.log(err);
-    }
-    return false;
-  }
+  // function logResourceLoadError(ref) {
+  //   console.log("logResourceLoadError called with ref:", ref);
+  //   let err = "Error loading: '"+ (ref.src || ref.href) +"'";
+  //   if(window.Rollbar){
+  //     Rollbar.error(err);
+  //   }else{
+  //     console.log(err);
+  //   }
+  //   return false;
+  // }
 
   // function logResourceLoadError(event) {
   //   console.log("logResourceLoadError called with event - server", event);
