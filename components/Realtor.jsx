@@ -1,20 +1,20 @@
 import React from "react";
 import { basePath } from "@/next.config.js";
-import { logResourceLoadError } from "@/utils/clientUtils";
+// import { logResourceLoadError } from "@/utils/clientUtils";
 
 const Realtor = ({ realtor }) => {
   
-  // function logResourceLoadError(event) {
-  //   console.log("logResourceLoadError called with event - server", event);
-  //   let src = event?.currentTarget?.src || event?.target?.src || event?.srcElement?.src || "unknown";
-  //   let err = "Error loading: '" + src + "'";
-  //   if (window.Rollbar) {
-  //     Rollbar.error(err);
-  //   } else {
-  //     console.log(err);
-  //   }
-  //   return false;
-  // }
+  function logResourceLoadError(event) {
+    console.log("logResourceLoadError called with event - server", event);
+    let src = event?.currentTarget?.src || event?.target?.src || event?.srcElement?.src || "unknown";
+    let err = "Error loading: '" + src + "'";
+    if (window.Rollbar) {
+      Rollbar.error(err);
+    } else {
+      console.log(err);
+    }
+    return false;
+  }
 
   const { photo, name, company, id, phone, logo, sectionTitle, footerText, footerLink, footerLinkText, menu } = realtor;
 
@@ -51,9 +51,7 @@ const Realtor = ({ realtor }) => {
             src={`${path}1920`}
             style={{ width: "100%" }}
             alt={name}
-            onError={() => {
-                console.log(logResourceLoadError());
-            }}
+            onError={(e) => logResourceLoadError(e.currentTarget)}
           />
         </div>
         <div
