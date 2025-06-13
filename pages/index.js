@@ -85,17 +85,43 @@ function HomePage({ homeData }) {
   //   return false;
   // }
 
-  function logResourceLoadError(event) {
-    console.log("logResourceLoadError called with event - server", event);
-    let src = event?.currentTarget?.src || event?.target?.src || event?.srcElement?.src || "unknown";
-    let err = "Error loading: '" + src + "'";
-    if (window.Rollbar) {
-      Rollbar.error(err);
-    } else {
-      console.log(err);
+  // function logResourceLoadError(event) {
+  //   console.log("logResourceLoadError called with event - server", event);
+  //   let src = event?.currentTarget?.src || event?.target?.src || event?.srcElement?.src || "unknown";
+  //   let err = "Error loading: '" + src + "'";
+  //   if (window.Rollbar) {
+  //     Rollbar.error(err);
+  //   } else {
+  //     console.log(err);
+  //   }
+  //   return false;
+  // }
+
+  function logResourceLoadError(input) {
+    let src = "unknown";
+
+    // If called with an event object (e.g., from onError handler)
+    if (input?.target || input?.currentTarget || input?.srcElement) {
+      console.log("logResourceLoadError called with event - server", input);
+      src = input.currentTarget?.src || input.target?.src || input.srcElement?.src || "unknown";
+    } 
+    // If called with a direct ref (like an img or link element)
+    else if (input?.src || input?.href) {
+      console.log("logResourceLoadError called with ref - client", input);
+      src = input.src || input.href || "unknown";
+    } 
+    // Fallback
+    else {
+      console.log("logResourceLoadError called with unknown input", input);
     }
+
+    const err = `Error loading: '${src}'`;
+    if (typeof Rollbar !== "undefined" && Rollbar.error) {
+      Rollbar.error(err);
+    }
+    console.log(err);
     return false;
-  }
+  } 
 
   const { page, showcase, contact, realtor, footer, chatbot, homePageSectionsOrder } = homeData;
 
@@ -197,12 +223,12 @@ function addContact(contact) {
         <link
           rel="stylesheet"
           href={`${basePath}/css/lpStyle11.css`}
-          // onerror="logResourceLoadError(this)"
+          onerror="logResourceLoadError(this)"
         />
       </Head>
       <script src={`${basePath}/js/rb-config.js`} ></script>
       <script src={`${basePath}/js/logger.js`}></script>
-      {/* <script src={`${basePath}/js/config.js`} onerror="logResourceLoadError(this)"></script> */}
+      <script src={`${basePath}/js/config.js`} onerror="logResourceLoadError(this)"></script>
       <Script src={`${basePath}/js/jquery-3.5.1.min.js`} strategy="beforeInteractive" />
       <Script src={`${basePath}/js/jwt-decode.js`} strategy="beforeInteractive" />
       <script type="text/javascript" src="https://accounts.google.com/gsi/client"></script>
@@ -223,18 +249,11 @@ function addContact(contact) {
       <Script src={`${basePath}/js/showdown-1.9.1.min.js`} strategy="beforeInteractive" />
       <Script src={`${basePath}/js/bootstrap.min.js`} strategy="beforeInteractive" />
       <Script src={`${basePath}/js/mauticTracking.js`} strategy="beforeInteractive" />
-      {/* <Script src="https://www.youtube.com/iframe_api11" onError={logResourceLoadError}/> */}
+      <Script src="https://www.youtube.com/iframe_api11" onError={logResourceLoadError}/>
       <Navbar menu={menuItems} />
       {sections}
       {chatbot && <ChatBot chatbotDFAgent={chatbot.chatbotDFAgent} />}
       {footer && <Footer menu={menuItems} footer={footer} />}
-      <img
-        id="rLogo"
-        src="/assets/missing-image.png"
-        alt="Logo"
-        style={{ width: "50%" }}
-        onError={logResourceLoadError}
-      />
     </>
   );
 }
