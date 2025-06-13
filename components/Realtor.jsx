@@ -68,7 +68,7 @@ const Realtor = ({ realtor }) => {
             src={`${path}1920`}
             style={{ width: "100%" }}
             alt={name}
-            onError={(e) => logResourceLoadError(e.currentTarget)}
+            onError={console.log("Error loading image: " + photo)} // Log error if image fails to load
           />
         </div>
         <div
