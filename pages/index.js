@@ -230,7 +230,7 @@ function addContact(contact) {
       {footer && <Footer menu={menuItems} footer={footer} />}
       <img
         id="rLogo"
-        src={basePath + logo}
+        src="/assets/missing-image.png"
         alt="Logo"
         style={{ width: "50%" }}
         onError={logResourceLoadError}
