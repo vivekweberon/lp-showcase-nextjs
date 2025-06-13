@@ -16,11 +16,11 @@ const Realtor = ({ realtor }) => {
   //   return false;
   // }
 
-  const [showImages, setShowImages] = useState(false);
+  // const [showImages, setShowImages] = useState(false);
 
-  useEffect(() => {
-    setShowImages(true);
-  }, []);
+  // useEffect(() => {
+  //   setShowImages(true);
+  // }, []);
 
   function logResourceLoadError(ref) {
     console.log("logResourceLoadError called with ref - client", ref);
@@ -52,7 +52,7 @@ const Realtor = ({ realtor }) => {
       </div>
       <div className="row no-gutters justify-content-center">
         <div className="col-8 col-sm-4 col-lg-3" style={{ marginTop: "20px" }}>
-          {showImages && <img
+          <img
             id="rImage"
             srcSet={`
               ${path}360 360w, 
@@ -69,7 +69,7 @@ const Realtor = ({ realtor }) => {
             style={{ width: "100%" }}
             alt={name}
             onError={(e) => logResourceLoadError(e.currentTarget)}
-          />}
+          />
         </div>
         <div
           className="col-12 col-sm-6 col-xl-5"
