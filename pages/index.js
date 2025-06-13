@@ -85,17 +85,17 @@ function HomePage({ homeData }) {
   //   return false;
   // }
 
-  // function logResourceLoadError(event) {
-  //   console.log("logResourceLoadError called with event - server", event);
-  //   let src = event?.currentTarget?.src || event?.target?.src || event?.srcElement?.src || "unknown";
-  //   let err = "Error loading: '" + src + "'";
-  //   if (window.Rollbar) {
-  //     Rollbar.error(err);
-  //   } else {
-  //     console.log(err);
-  //   }
-  //   return false;
-  // }
+  function logResourceLoadError(event) {
+    console.log("logResourceLoadError called with event - server", event);
+    let src = event?.currentTarget?.src || event?.target?.src || event?.srcElement?.src || "unknown";
+    let err = "Error loading: '" + src + "'";
+    if (window.Rollbar) {
+      Rollbar.error(err);
+    } else {
+      console.log(err);
+    }
+    return false;
+  }
 
   const { page, showcase, contact, realtor, footer, chatbot, homePageSectionsOrder } = homeData;
 
@@ -228,6 +228,13 @@ function addContact(contact) {
       {sections}
       {chatbot && <ChatBot chatbotDFAgent={chatbot.chatbotDFAgent} />}
       {footer && <Footer menu={menuItems} footer={footer} />}
+      <img
+        id="rLogo"
+        src={basePath + logo}
+        alt="Logo"
+        style={{ width: "50%" }}
+        onError={logResourceLoadError}
+      />
     </>
   );
 }
