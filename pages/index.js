@@ -97,44 +97,22 @@ function HomePage({ homeData }) {
   //   return false;
   // }
 
-  // function logResourceLoadError(input) {
-  //   let src = "unknown";
-
-  //   // If called with an event object (e.g., from onError handler)
-  //   if (input?.target || input?.currentTarget || input?.srcElement) {
-  //     console.log("logResourceLoadError called with event - server", input);
-  //     src = input.currentTarget?.src || input.target?.src || input.srcElement?.src || "unknown";
-  //   } 
-  //   // If called with a direct ref (like an img or link element)
-  //   else if (input?.src || input?.href) {
-  //     console.log("logResourceLoadError called with ref - client", input);
-  //     src = input.src || input.href || "unknown";
-  //   } 
-  //   // Fallback
-  //   else {
-  //     console.log("logResourceLoadError called with unknown input", input);
-  //   }
-
-  //   const err = `Error loading: '${src}'`;
-  //   if (typeof Rollbar !== "undefined" && Rollbar.error) {
-  //     Rollbar.error(err);
-  //   }
-  //   console.log(err);
-  //   return false;
-  // } 
-
-  if (typeof window !== "undefined") {
-  window.logResourceLoadError = function(input) {
+  function logResourceLoadError(input) {
     let src = "unknown";
 
+    // If called with an event object (e.g., from onError handler)
     if (input?.target || input?.currentTarget || input?.srcElement) {
-      console.log("logResourceLoadError called with event - server", input);
+      console.log("logResourceLoadError called with event - server(In component)", input);
       src = input.currentTarget?.src || input.target?.src || input.srcElement?.src || "unknown";
-    } else if (input?.src || input?.href) {
-      console.log("logResourceLoadError called with ref - client", input);
+    } 
+    // If called with a direct ref (like an img or link element)
+    else if (input?.src || input?.href) {
+      console.log("logResourceLoadError called with ref - client(In component)", input);
       src = input.src || input.href || "unknown";
-    } else {
-      console.log("logResourceLoadError called with unknown input", input);
+    } 
+    // Fallback
+    else {
+      console.log("logResourceLoadError called with unknown input (In component)", input);
     }
 
     const err = `Error loading: '${src}'`;
@@ -143,9 +121,7 @@ function HomePage({ homeData }) {
     }
     console.log(err);
     return false;
-  };
-}
-
+  } 
 
   const { page, showcase, contact, realtor, footer, chatbot, homePageSectionsOrder } = homeData;
 
