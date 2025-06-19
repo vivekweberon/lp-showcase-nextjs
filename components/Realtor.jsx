@@ -94,7 +94,7 @@ const Realtor = ({ realtor }) => {
             src={`${path}1920`}
             style={{ width: "100%" }}
             alt={name}
-            onError={logResourceLoadError} // Log error if image fails to load
+            // onError={logResourceLoadError} 
           />
         </div>
         <div
@@ -118,7 +118,7 @@ const Realtor = ({ realtor }) => {
             src={basePath + logo}
             alt="Logo"
             style={{ width: "50%" }}
-            onError={logResourceLoadError}
+            // onError={logResourceLoadError}
           />
         </div>
       </div>
