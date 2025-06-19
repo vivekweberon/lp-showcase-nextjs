@@ -223,12 +223,12 @@ function addContact(contact) {
         <link
           rel="stylesheet"
           href={`${basePath}/css/lpStyle11.css`}
-          onerror="logResourceLoadError(this)"
+          // onerror="logResourceLoadError(this)"
         />
       </Head>
       <script src={`${basePath}/js/rb-config.js`} ></script>
       <script src={`${basePath}/js/logger.js`}></script>
-      <script src={`${basePath}/js/config.js`} onerror="logResourceLoadError(this)"></script>
+      {/* <script src={`${basePath}/js/config.js`} onerror="logResourceLoadError(this)"></script> */}
       <Script src={`${basePath}/js/jquery-3.5.1.min.js`} strategy="beforeInteractive" />
       <Script src={`${basePath}/js/jwt-decode.js`} strategy="beforeInteractive" />
       <script type="text/javascript" src="https://accounts.google.com/gsi/client"></script>
