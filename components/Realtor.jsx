@@ -1,3 +1,4 @@
+'use client';
 import React, {useState, useEffect} from "react";
 import { basePath } from "@/next.config.js";
 // import { logResourceLoadError } from "@/utils/clientUtils";
