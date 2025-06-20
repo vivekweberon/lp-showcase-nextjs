@@ -59,6 +59,14 @@ const Realtor = ({ realtor }) => {
   //   return false;
   // } 
 
+  function logResourceLoadError(ref) {
+    console.log("logResourceLoadError called with ref - client", ref);
+    let err = "Error loading: '"+ (ref.target.src || ref.target.href) +"'";
+    Rollbar.error(err);
+    console.log(err);
+    return false;
+  }
+
   const { photo, name, company, id, phone, logo, sectionTitle, footerText, footerLink, footerLinkText, menu } = realtor;
 
   const path = `${basePath}${photo}?width=`;
@@ -94,7 +102,7 @@ const Realtor = ({ realtor }) => {
             src={`${path}1920`}
             style={{ width: "100%" }}
             alt={name}
-            // onError={logResourceLoadError} 
+            onError={e => logResourceLoadError(e)}
           />
         </div>
         <div
@@ -118,7 +126,7 @@ const Realtor = ({ realtor }) => {
             src={basePath + logo}
             alt="Logo"
             style={{ width: "50%" }}
-            // onError={logResourceLoadError}
+            onError={e => logResourceLoadError(e)}
           />
         </div>
       </div>
