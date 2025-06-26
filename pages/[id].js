@@ -306,11 +306,17 @@ export async function getStaticProps(context) {
     }
 
     let imageUrls = [];
-    if(mergedData?.photos){
+    if (mergedData?.photos) {
       const imagesFolder = path.join(process.cwd(), "..", "data-repo", originalId, "images");
-      const imageFiles = await fs.readdir(imagesFolder);
-      imageUrls = imageFiles.map((fileName) => `/data/${id}/images/${fileName}`);
+      try {
+        const imageFiles = await fs.readdir(imagesFolder);
+        imageUrls = imageFiles.map((fileName) => `/data/${id}/images/${fileName}`);
+      } catch (err) {
+        console.warn(`No images folder found for property ${id}:`, err.message);
+        imageUrls = [];
+      }
     }
+
 
     if(Object.keys(mergedData).length === 0){
       console.log("Skipping building Home Page as no sections are defined")
