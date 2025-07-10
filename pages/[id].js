@@ -283,7 +283,7 @@ export async function getStaticProps(context) {
     const propertyData = await loadYamlFile(propertyDataPath);
     const globalData = await loadYamlFile(globalDataPath);
 
-    if (!propertyData.siteName || !propertyData.siteName.includes(siteName)) {
+    if ((!propertyData.siteName || !propertyData.siteName.includes(siteName)) || (propertyData.createPage && propertyData.createPage === false)) {
       console.warn(`Skipping page for ${id}, siteName does not match ${siteName}`);
       return { notFound: true };
     }
@@ -302,16 +302,6 @@ export async function getStaticProps(context) {
     }else{
       let effectiveGlobalData = getEffectiveGlobalData(globalData, siteName);
       mergedData = addGlobalData(effectiveGlobalData, effectivePropertyData, effectivePropertyData?.propertyPageSectionsOrder);
-    }
-
-    if (!mergedData || typeof mergedData !== "object"){
-      const keys = Object.keys(mergedData);
-        if(keys.length === 2 &&
-        keys.includes("siteName") &&
-        keys.includes("homePageData")){
-          console.warn(`Skipping page for ${id}, as it contains only homePageData section`);
-          return { notFound: true };
-        }
     }
 
     let imageUrls = [];
