@@ -39,7 +39,13 @@ export function getEffectiveData(parsedYaml, currentSiteName) {
     const siteOverrides = parsedYaml.siteSpecific[currentSiteName];
 
     for (const key in siteOverrides) {
-      effective[key] = siteOverrides[key];
+      const value = siteOverrides[key];
+
+      if (value && value.disable === true) {
+        delete effective[key]; 
+      } else {
+        effective[key] = value;
+      }
     }
   }
 

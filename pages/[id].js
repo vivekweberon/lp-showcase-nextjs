@@ -288,16 +288,6 @@ export async function getStaticProps(context) {
       return { notFound: true };
     }
 
-    if (!propertyData || typeof propertyData !== "object"){
-      const keys = Object.keys(propertyData);
-        if(keys.length === 2 &&
-        keys.includes("siteName") &&
-        keys.includes("homePageData")){
-          console.warn(`Skipping page for ${id}, as it contains only homePageData section`);
-          return { notFound: true };
-        }
-    }
-    
     const effectivePropertyData = getEffectiveData(propertyData, siteName);
     if (effectivePropertyData?.realtor?.photo){
       effectivePropertyData.realtor.photo = `/data/global/images/${effectivePropertyData.realtor.photo}`;
@@ -312,6 +302,16 @@ export async function getStaticProps(context) {
     }else{
       let effectiveGlobalData = getEffectiveGlobalData(globalData, siteName);
       mergedData = addGlobalData(effectiveGlobalData, effectivePropertyData, effectivePropertyData?.propertyPageSectionsOrder);
+    }
+
+    if (!mergedData || typeof mergedData !== "object"){
+      const keys = Object.keys(mergedData);
+        if(keys.length === 2 &&
+        keys.includes("siteName") &&
+        keys.includes("homePageData")){
+          console.warn(`Skipping page for ${id}, as it contains only homePageData section`);
+          return { notFound: true };
+        }
     }
 
     let imageUrls = [];
