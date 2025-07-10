@@ -296,7 +296,8 @@ export async function getStaticProps(context) {
       effectivePropertyData.realtor.logo = `/data/global/images/${effectivePropertyData.realtor.logo}`;
     }
     
-    if (effectivePropertyData.createPage && effectivePropertyData.createPage === false){
+    console.log("Effective Property Data:", effectivePropertyData.createPage?.disable);
+    if (effectivePropertyData.createPage && effectivePropertyData.createPage.disable === true){
       console.warn(`Skipping page for ${id}, as createPage is set to false`);
       return { notFound: true };
     }
