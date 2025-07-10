@@ -58,7 +58,6 @@ const Photos = ({ imageUrls, photos }) => {
                     className="d-block"
                     alt="Property"
                     style={{ margin: "auto", objectFit: "contain" }}
-                    // onError={console.log(`Error loading carousel image: ${url}`)}
                   />
                 </Carousel.Item>
               );

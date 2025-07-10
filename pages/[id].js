@@ -195,22 +195,21 @@ const PropertyPage = ({ propertyData, images }) => {
         <link
           rel="stylesheet"
           href={`${basePath}/css/bootstrap.min.css`}
+          onerror="logResourceLoadError(this)"
         />
         <link
           rel="stylesheet"
           href={`${basePath}/css/fa.min.css`}
+          onerror="logResourceLoadError(this)"
         />
         <link
           rel="stylesheet"
           href={`${basePath}/css/lpStyle.css`}
+          onerror="logResourceLoadError(this)"
         />
       </Head>
-      {/* <Script src={`${basePath}/js/rb-config.js`} strategy="beforeInteractive" />
-      <Script
-      src="https://cdn.rollbar.com/rollbarjs/refs/tags/v2.22.0/rollbar.min.js"
-      strategy="beforeInteractive"
-        />
-      <Script src={`${basePath}/js/logger.js`} strategy="beforeInteractive" /> */}
+      <Script src={`${basePath}/js/rb-config.js`} strategy="beforeInteractive" />
+      <Script src={`${basePath}/js/logger.js`} strategy="beforeInteractive" />
       <Script src={`${basePath}/js/jquery-3.5.1.min.js`} strategy="beforeInteractive" />
       <Script src={`${basePath}/js/jwt-decode.js`} strategy="beforeInteractive" />
       <script type="text/javascript" src="https://accounts.google.com/gsi/client"></script>
@@ -288,6 +287,16 @@ export async function getStaticProps(context) {
       console.warn(`Skipping page for ${id}, siteName does not match ${siteName}`);
       return { notFound: true };
     }
+
+    if (!propertyData || typeof propertyData !== "object"){
+      const keys = Object.keys(propertyData);
+        if(keys.length === 2 &&
+        keys.includes("siteName") &&
+        keys.includes("homePageData")){
+          console.warn(`Skipping page for ${id}, as it contains only homePageData section`);
+          return { notFound: true };
+        }
+    }
     
     const effectivePropertyData = getEffectiveData(propertyData, siteName);
     if (effectivePropertyData?.realtor?.photo){
@@ -306,17 +315,11 @@ export async function getStaticProps(context) {
     }
 
     let imageUrls = [];
-    if (mergedData?.photos) {
+    if(mergedData?.photos){
       const imagesFolder = path.join(process.cwd(), "..", "data-repo", originalId, "images");
-      try {
-        const imageFiles = await fs.readdir(imagesFolder);
-        imageUrls = imageFiles.map((fileName) => `/data/${id}/images/${fileName}`);
-      } catch (err) {
-        console.warn(`No images folder found for property ${id}:`, err.message);
-        imageUrls = [];
-      }
+      const imageFiles = await fs.readdir(imagesFolder);
+      imageUrls = imageFiles.map((fileName) => `/data/${id}/images/${fileName}`);
     }
-
 
     if(Object.keys(mergedData).length === 0){
       console.log("Skipping building Home Page as no sections are defined")

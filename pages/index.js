@@ -11,8 +11,6 @@ import Realtor from "@/components/Realtor";
 import EmbeddedForm from "@/components/EmbeddedForm";
 import PopupForm from "@/components/PopupForm";
 import ChatBot from "@/components/ChatBot";
-// import rollbar from "@/rollbar";
-// import { logResourceLoadError } from "@/utils/clientUtils";
 
 import { loadYamlFile, getEffectiveData, getpropertiesHomePageData, addGlobalData, getEffectiveGlobalData } from "../utils/dataUtils";
 
@@ -71,58 +69,8 @@ export async function getStaticProps() {
   }
 }
 
-
 function HomePage({ homeData }) {
   
-  // function logResourceLoadError(ref) {
-  //   console.log("logResourceLoadError called with ref:", ref);
-  //   let err = "Error loading: '"+ (ref.src || ref.href) +"'";
-  //   if(window.Rollbar){
-  //     Rollbar.error(err);
-  //   }else{
-  //     console.log(err);
-  //   }
-  //   return false;
-  // }
-
-  // function logResourceLoadError(event) {
-  //   console.log("logResourceLoadError called with event - server", event);
-  //   let src = event?.currentTarget?.src || event?.target?.src || event?.srcElement?.src || "unknown";
-  //   let err = "Error loading: '" + src + "'";
-  //   if (window.Rollbar) {
-  //     Rollbar.error(err);
-  //   } else {
-  //     console.log(err);
-  //   }
-  //   return false;
-  // }
-
-  // function logResourceLoadError(input) {
-  //   let src = "unknown";
-
-  //   // If called with an event object (e.g., from onError handler)
-  //   if (input?.target || input?.currentTarget || input?.srcElement) {
-  //     console.log("logResourceLoadError called with event - server(In component)", input);
-  //     src = input.currentTarget?.src || input.target?.src || input.srcElement?.src || "unknown";
-  //   } 
-  //   // If called with a direct ref (like an img or link element)
-  //   else if (input?.src || input?.href) {
-  //     console.log("logResourceLoadError called with ref - client(In component)", input);
-  //     src = input.src || input.href || "unknown";
-  //   } 
-  //   // Fallback
-  //   else {
-  //     console.log("logResourceLoadError called with unknown input (In component)", input);
-  //   }
-
-  //   const err = `Error loading: '${src}'`;
-  //   if (typeof Rollbar !== "undefined" && Rollbar.error) {
-  //     Rollbar.error(err);
-  //   }
-  //   console.log(err);
-  //   return false;
-  // } 
-
   const { page, showcase, contact, realtor, footer, chatbot, homePageSectionsOrder } = homeData;
 
   let menuItems = [];
@@ -210,46 +158,32 @@ function addContact(contact) {
         <link
           rel="stylesheet"
           href={`${basePath}/css/bootstrap.min.css`}
+          onerror="logResourceLoadError(this)"
         />
         <link
           rel="stylesheet"
           href={`${basePath}/css/fa.min.css`}
+          onerror="logResourceLoadError(this)"
         />
         <link
           rel="stylesheet"
           href={`${basePath}/css/lpStyle.css`}
-          // onerror="logResourceLoadError(this)"
-        />
-        <link
-          rel="stylesheet"
-          href={`${basePath}/css/lpStyle11.css`}
-          // onerror="logResourceLoadError(this)"
+          onerror="logResourceLoadError(this)"
         />
       </Head>
-      <script src={`${basePath}/js/rb-config.js`} ></script>
-      <script src={`${basePath}/js/logger.js`}></script>
-      {/* <script src={`${basePath}/js/config.js`} onerror="logResourceLoadError(this)"></script> */}
+      <Script src={`${basePath}/js/rb-config.js`} strategy="beforeInteractive" />
+      <Script src={`${basePath}/js/logger.js`} strategy="beforeInteractive" />
       <Script src={`${basePath}/js/jquery-3.5.1.min.js`} strategy="beforeInteractive" />
       <Script src={`${basePath}/js/jwt-decode.js`} strategy="beforeInteractive" />
       <script type="text/javascript" src="https://accounts.google.com/gsi/client"></script>
-      {/* <script type="text/javascript" src="https://accounts.google.com/gsi1/client" onerror="logResourceLoadError(this)"></script> */}
       <Script src={`${basePath}/js/tracker-config.js`} strategy="beforeInteractive" />
       <Script src={`${basePath}/js/tracker-util.js`} strategy="beforeInteractive" />
-      <Script
-        src={`${basePath}/js/showcase.js`}
-        strategy="beforeInteractive"
-        // onError={() => {logResourceLoadError(this)}}
-      />
-      <Script
-        src={`${basePath}/js/showcase11.js`}
-        strategy="beforeInteractive"
-        // onError={logResourceLoadError}
-      />
+      <Script src={`${basePath}/js/showcase.js`} strategy="beforeInteractive" />
       <Script src={`${basePath}/js/tracker.js`} strategy="beforeInteractive" />
       <Script src={`${basePath}/js/showdown-1.9.1.min.js`} strategy="beforeInteractive" />
       <Script src={`${basePath}/js/bootstrap.min.js`} strategy="beforeInteractive" />
       <Script src={`${basePath}/js/mauticTracking.js`} strategy="beforeInteractive" />
-      {/* <Script src="https://www.youtube.com/iframe_api11" onError={logResourceLoadError}/> */}
+      
       <Navbar menu={menuItems} />
       {sections}
       {chatbot && <ChatBot chatbotDFAgent={chatbot.chatbotDFAgent} />}

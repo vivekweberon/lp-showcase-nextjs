@@ -15,7 +15,6 @@
     "@babel/preset-react": "^7.23.3",
     "@fortawesome/fontawesome-free": "^6.5.1",
     "@next/eslint-plugin-next": "^14.1.0",
-    "@rollbar/react": "^0.12.1",
     "axios": "^1.6.7",
     "babel-eslint": "^10.1.0",
     "babel-jest": "^29.7.0",
@@ -30,7 +29,7 @@
     "js-yaml": "^4.1.0",
     "markdown-it": "^14.1.0",
     "markdown-it-anchor": "^9.0.1",
-    "next": "latest",
+    "next": "^14.1.0",
     "prettier": "^3.2.5",
     "react": "^18",
     "react-bootstrap": "^2.10.1",
@@ -41,7 +40,6 @@
     "rehype-raw": "^7.0.0",
     "rehype-stringify": "^10.0.0",
     "remark-gfm": "^4.0.0",
-    "rollbar": "^2.26.4",
     "unified": "^11.0.5"
   },
   "devDependencies": {

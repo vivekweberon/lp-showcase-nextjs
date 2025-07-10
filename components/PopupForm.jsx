@@ -5,12 +5,15 @@ const Contact = ({ contact }) => {
     const { mauticForm } = contact;
 
     useEffect(() => {
-        setMauticForms(mauticForm.formSetName);
-        setEmailFormHeader(mauticForm.emailFormHeader);
-        setPhoneFormHeader(mauticForm.phoneFormHeader);
-        enablePopupForm(mauticForm.popupForm.x, mauticForm.popupForm.y, mauticForm.popupForm.z);
-        loadForm("lpContent");
-    }, []);
+        if (mauticForm) {            
+            setMauticForms(mauticForm.formName, mauticForm.formID);
+            setEmailFormHeader(mauticForm.emailFormHeader);
+            setPhoneFormHeader(mauticForm.phoneFormHeader);
+            enablePopupForm(mauticForm.popupForm.x, mauticForm.popupForm.y, mauticForm.popupForm.z);
+            loadForm("lpContent");
+        }
+    }, 
+    []);
 
     return (
         <>

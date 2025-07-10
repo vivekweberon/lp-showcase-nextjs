@@ -12,7 +12,7 @@ const ChatBot = ({chatbotDFAgent}) => {
 
   return (
   <>
-    <link rel="stylesheet" href={`${basePath}/css/chatbot.css`} />
+    <link rel="stylesheet" href={`${basePath}/css/chatbot.css`} onerror="logResourceLoadError(this)"/>
     <Script src={`${basePath}/js/chatbot.js`} strategy="beforeInteractive" />
     <Script src={`${basePath}/js/index.js`} strategy="beforeInteractive" />
     <Script src="https://kit.fontawesome.com/c3c47df7d6.js" strategy="beforeInteractive" />
