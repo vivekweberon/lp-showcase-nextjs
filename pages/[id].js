@@ -20,7 +20,7 @@ import PopupForm from "@/components/PopupForm";
 import ChatBot from "@/components/ChatBot";
 
 import { getPropertyOutputDirectoryName } from "@/utils/renameUtils.js";
-import { loadYamlFile, getEffectiveData, addGlobalData, getEffectiveGlobalData } from "../utils/dataUtils";
+import { loadYamlFile, getEffectiveData, addGlobalData } from "../utils/dataUtils";
 
 const PropertyPage = ({ propertyData, images }) => {
   
@@ -296,7 +296,6 @@ export async function getStaticProps(context) {
       effectivePropertyData.realtor.logo = `/data/global/images/${effectivePropertyData.realtor.logo}`;
     }
     
-    console.log("Effective Property Data:", effectivePropertyData.page?.build);
     if (effectivePropertyData.page && effectivePropertyData.page.build === false){
       console.warn(`Skipping page for ${id}, as createPage is set to false`);
       return { notFound: true };
@@ -306,7 +305,7 @@ export async function getStaticProps(context) {
     if (!globalData.siteName.includes(String(siteName).trim())) {
       console.error(`Skipping global data, "${siteName}" not found in global/data.yaml`);
     }else{
-      let effectiveGlobalData = getEffectiveGlobalData(globalData, siteName);
+      let effectiveGlobalData = getEffectiveData(globalData, siteName);
       mergedData = addGlobalData(effectiveGlobalData, effectivePropertyData, effectivePropertyData?.propertyPageSectionsOrder);
     }
 

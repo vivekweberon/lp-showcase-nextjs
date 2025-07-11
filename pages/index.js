@@ -12,7 +12,7 @@ import EmbeddedForm from "@/components/EmbeddedForm";
 import PopupForm from "@/components/PopupForm";
 import ChatBot from "@/components/ChatBot";
 
-import { loadYamlFile, getEffectiveData, getpropertiesHomePageData, addGlobalData, getEffectiveGlobalData } from "../utils/dataUtils";
+import { loadYamlFile, getEffectiveData, getpropertiesHomePageData, addGlobalData } from "../utils/dataUtils";
 
 const siteToBeBuilt = process.env.siteName;
 
@@ -49,7 +49,7 @@ export async function getStaticProps() {
     if (!globalData.siteName.includes(String(siteToBeBuilt).trim())) {
       console.error(`Skipping global data, "${siteToBeBuilt}" not found in global/data.yaml`);
     }else{
-      let effectiveGlobalData = getEffectiveGlobalData(globalData, siteToBeBuilt);
+      let effectiveGlobalData = getEffectiveData(globalData, siteToBeBuilt);
       homeDataFinal = addGlobalData(effectiveGlobalData, effectiveHomeData, effectiveHomeData?.homePageSectionsOrder);
     }
     

@@ -55,29 +55,6 @@ export function getEffectiveData(parsedYaml, currentSiteName) {
   return effective;
 }
 
-export function getEffectiveGlobalData(parsedYaml, currentSiteName) {
-  let effective = { ...parsedYaml };
-
-  if (parsedYaml.siteSpecific && parsedYaml.siteSpecific[currentSiteName]) {
-    const siteOverrides = parsedYaml.siteSpecific[currentSiteName];
-
-    for (const key in siteOverrides) {
-      const value = siteOverrides[key];
-
-      if (value && value.disable === true) {
-        delete effective[key]; 
-      } else {
-        effective[key] = value;
-      }
-    }
-  }
-
-  delete effective.siteSpecific;
-  delete effective.siteName;
-
-  return effective;
-}
-
 export const getpropertiesHomePageData = async (dataFolderPath, currentSiteName) => {
 
   const propertyFolders = await fs.promises.readdir(dataFolderPath);
